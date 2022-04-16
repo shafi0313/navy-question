@@ -25,10 +25,13 @@
                 </div>
             </div>
                 <div class="card-body" id="printableArea">
-                    <div class="text-center">
-                        <h2>Bangladesh Navy</h2>
-                        <p>{{ $questions->first()->exam->name }} Exam Question Paper-{{ Carbon\Carbon::parse($questions->first()->exam->date_time)->format('Y') }}</p>
-                        <p>{{ $questions->first()->subject->name }}</p>
+                    <div class="navy">
+                        <div class="title">
+                            <h2>Bangladesh Navy</h2>
+                            <p>{{ $questions->first()->exam->name }} Exam Question Paper-{{ Carbon\Carbon::parse($questions->first()->exam->date_time)->format('Y') }}</p>
+                            <p>{{ $questions->first()->exam->subject->name }}</p>
+                        </div>
+                        <p><span>Time: {{$questions->first()->exam->time}}</span> <span style="float:right">Total marks: {{$questions->first()->exam->total_mark}}</span> </p>
                     </div>
                     <h4 class="quesType">Multiple Choice</h4>
                     @foreach ($questions->where('type','Multiple Choice') as $key => $question)

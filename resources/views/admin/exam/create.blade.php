@@ -83,24 +83,15 @@
                                         @endif
                                         </div>
                                     </div>
-                                    {{-- <div class="col-md-6">
+                                    <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="mark_per_right_ans">Mark Per Right Question <span class="t_r">*</span></label>
-                                            <input type="text" name="mark_per_right_ans" class="form-control" value="{{ old('mark_per_right_ans') }}" onInput="this.value = this.value.replace(/[a-zA-z\-*/]/g,'');" required>
-                                            @if ($errors->has('mark_per_right_ans'))
-                                            <div class="alert alert-danger">{{ $errors->first('mark_per_right_ans') }}</div>
+                                            <label for="total_mark">Total Marks <span class="t_r">*</span></label>
+                                            <input type="text" name="total_mark" class="form-control" value="{{ old('total_mark') }}" onInput="this.value = this.value.replace(/[a-zA-z\-*/]/g,'');" required>
+                                            @if ($errors->has('total_mark'))
+                                            <div class="alert alert-danger">{{ $errors->first('total_mark') }}</div>
                                         @endif
                                         </div>
-                                    </div> --}}
-                                    {{-- <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="mark_per_wrong_ans">Mark Per Wrong Question <span class="t_r">*</span></label>
-                                            <input type="text" name="mark_per_wrong_ans" class="form-control" value="{{ old('mark_per_wrong_ans') }}" onInput="this.value = this.value.replace(/[a-zA-z\-*/]/g,'');" required>
-                                            @if ($errors->has('mark_per_wrong_ans'))
-                                            <div class="alert alert-danger">{{ $errors->first('mark_per_wrong_ans') }}</div>
-                                        @endif
-                                        </div>
-                                    </div> --}}
+                                    </div>
                                 </div>
                             </div>
                             <div class="text-center card-action">

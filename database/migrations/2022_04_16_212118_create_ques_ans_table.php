@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('exam_id')->constrained()->cascadeOnDelete();
             $table->foreignId('question_id')->constrained()->cascadeOnDelete();
             $table->mediumText('ans');
+            $table->float('mark');
             $table->timestamps();
         });
     }

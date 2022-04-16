@@ -101,6 +101,13 @@
                     </a>
                 </li>
 
+                <li class="nav-item {{$m=='answerPaper'?'active':''}}">
+                    <a href="{{ route('admin.answerPaper.index') }}">
+                        <i class="fa-solid fa-book-atlas"></i>
+                        <p>Answer Paper</p>
+                    </a>
+                </li>
+
                 <li class="nav-item {{$m=='backup'?'active':''}}">
                     <a href="{{ route('admin.backup.password') }}">
                         <i class="fas fa-database"></i>

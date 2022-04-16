@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('code',60);
             $table->dateTime('date_time');
             $table->tinyInteger('total_ques');
+            $table->tinyInteger('total_mark');
             $table->string('time',10);
             // $table->tinyInteger('mark_per_right_ans');
             // $table->tinyInteger('mark_per_wrong_ans');

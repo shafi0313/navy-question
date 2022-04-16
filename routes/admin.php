@@ -8,10 +8,11 @@ use App\Http\Controllers\Admin\BackupController;
 use App\Http\Controllers\Admin\ChapterController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\SubjectController;
-use App\Http\Controllers\Admin\QuestionEntryController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\AnswerPaperController;
 use App\Http\Controllers\Admin\VisitorInfoController;
+use App\Http\Controllers\Admin\QuestionEntryController;
 use App\Http\Controllers\Admin\QuestionPaperController;
 use App\Http\Controllers\Admin\GenerateQuestionPaperController;
 
@@ -116,6 +117,12 @@ Route::middleware(['auth','admin'])->prefix('admin')->name('admin.')->group(func
     Route::controller(QuestionPaperController::class)->prefix('question-paper')->name('generatedQues.')->group(function(){
         Route::get('/', 'index')->name('index');
         Route::get('/show/{id}', 'show')->name('show');
+    });
+
+    Route::controller(AnswerPaperController::class)->prefix('answer-paper')->name('answerPaper.')->group(function(){
+        Route::get('/', 'index')->name('index');
+        Route::get('/show/{userId}/{examId}', 'show')->name('show');
+        Route::post('/store', 'store')->name('store');
     });
 
     Route::controller(ExamController::class)->prefix('exam')->name('exam.')->group(function(){
