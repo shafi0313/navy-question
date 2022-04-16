@@ -46,22 +46,22 @@
                                     </tfoot>
                                     <tbody>
                                         @php $x = 1 @endphp
-                                        @foreach ($questions->groupBy('exam_id') as $questio)
-                                        @php $question = $questio->first() @endphp
+                                        @foreach ($exams as $exam)
+                                        {{-- @php $exam = $questio->first() @endphp --}}
                                         <tr>
                                             <td class="text-center">{{ $x++ }}</td>
-                                            {{-- <td>{{ $question->user->name }}</td> --}}
-                                            <td>{{ $question->exam->name }}</td>
-                                            <td>{{ $question->subject->name }}</td>
+                                            {{-- <td>{{ $exam->user->name }}</td> --}}
+                                            <td>{{ $exam->name }}</td>
+                                            <td>{{ $exam->subject->name }}</td>
                                             <td>
                                                 <div class="form-button-action">
-                                                    {{-- <a href="{{ route('admin.question.show', $question->exam_id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
+                                                    {{-- <a href="{{ route('admin.question.show', $exam->exam_id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
                                                         Show
                                                     </a> --}}
-                                                    <a href="{{ route('admin.question.create', $question->exam_id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
+                                                    <a href="{{ route('admin.question.create', $exam->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
                                                         Question Entry
                                                     </a>
-                                                    {{-- <a href="{{ route('admin.adminUser.edit', $question->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">
+                                                    {{-- <a href="{{ route('admin.adminUser.edit', $exam->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">
                                                         <i class="fa fa-edit"></i>
                                                     </a> --}}
                                                     {{-- <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove">

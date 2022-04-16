@@ -32,12 +32,14 @@
 @endif
                         <form action="{{ route('admin.question.store') }}" method="post">
                             @csrf
+                            <input type="hidden" name="exam_id" class="form-control" value="{{ $exam->id }}" readonly>
+                            <input type="hidden" name="subject_id" class="form-control" value="{{ $exam->subject_id }}" readonly>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="exam_id">Exam <span class="t_r">*</span></label>
-                                            <input name="exam_id" class="form-control" value="{{ $exam->name }}" readonly>
+                                            <input class="form-control" value="{{ $exam->name }}" readonly>
                                             {{-- <select class="form-control" name="exam_id" id="exam_id">
                                                 <option selected value disabled>Select</option>
                                                 @foreach ($exams as $exam)
@@ -52,7 +54,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="subject_id">Subject <span class="t_r">*</span></label>
-                                            <input name="subject_id" class="form-control" value="{{ $exam->subject->name }}" readonly>
+                                            <input class="form-control" value="{{ $exam->subject->name }}" readonly>
                                             {{-- <select class="form-control" name="subject_id" id="subject_id">
                                             </select> --}}
                                             @if ($errors->has('subject_id'))

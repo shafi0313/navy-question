@@ -19,8 +19,8 @@ class QuestionEntryController extends Controller
         if ($error = $this->sendPermissionError('index')) {
             return $error;
         }
-        $questions = Question::all();
-        return view('admin.question_entry.index', compact('questions'));
+        $exams = Exam::all();
+        return view('admin.question_entry.index', compact('exams'));
     }
 
     public function create($examId)
@@ -75,7 +75,7 @@ class QuestionEntryController extends Controller
         }
     }
 
- 
+
 
     public function edit($id)
     {
