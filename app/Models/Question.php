@@ -30,4 +30,6 @@ class Question extends Model
     public function enroll(){
         return $this->belongsTo(Enroll::class, 'exam_id');
     }
+
+    
 }

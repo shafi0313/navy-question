@@ -13,6 +13,7 @@ Route::middleware(['auth','user'])->prefix('user')->name('user.')->group(functio
         Route::get('/', 'index')->name('index');
         Route::get('/show/{id}', 'show')->name('show');
         Route::post('/enroll', 'enroll')->name('enroll');
+        Route::post('/store', 'store')->name('store');
     });
 
 

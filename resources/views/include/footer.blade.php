@@ -20,7 +20,7 @@
             </ul>
         </nav>
         <div class="copyright ml-auto">
-            {{date('Y')}}, Developed <i class="fa fa-heart heart text-danger"></i> by <a href="https://shafi95.com">Shafi</a>
+            {{date('Y')}}, Developed <i class="fa fa-heart heart text-danger"></i> by <a href="http://www.lscominc.com/">LS Communication</a>
         </div>
     </div>
 </footer>

@@ -31,7 +31,7 @@
                                     <thead class="bg-secondary thw">
                                         <tr>
                                             <th>SL</th>
-                                            <th>Creator Name</th>
+                                            {{-- <th>Creator Name</th> --}}
                                             <th>Exam</th>
                                             <th>Subject</th>
                                             <th>Date & Time</th>
@@ -45,28 +45,26 @@
                                             <th></th>
                                             <th></th>
                                             <th></th>
-                                            <th></th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
                                         @php $x = 1 @endphp
-                                        @foreach ($questions->groupBy('exam_id') as $questio)
-                                        @php $question = $questio->first() @endphp
+                                        @foreach ($exams as $exam)
+                                        {{-- @php $exam = $exa->first() @endphp --}}
                                         <tr>
                                             <td class="text-center">{{ $x++ }}</td>
-                                            <td>{{ $question->user->name }}</td>
-                                            <td>{{ $question->exam->name }}</td>
-                                            <td>{{ $question->subject->name }}</td>
-                                            <td>{{ Carbon\Carbon::parse($question->exam->date_time)->format('d/m/Y g:i A') }}</td>
-                                            {{-- <td>{{ Carbon\Carbon::parse($question->exam->date_time)->diffForHumans(Carbon\Carbon::now()) }}</td> --}}
+                                            {{-- <td>{{ $exam->user->name }}</td> --}}
+                                            <td>{{ $exam->name }}</td>
+                                            <td>{{ $exam->subject->name }}</td>
+                                            <td>{{ Carbon\Carbon::parse($exam->date_time)->format('d/m/Y g:i A') }}</td>
+                                            {{-- <td>{{ Carbon\Carbon::parse($exam->exam->date_time)->diffForHumans(Carbon\Carbon::now()) }}</td> --}}
                                             <td>
-
-                                                <a href="{{ route('user.generatedQues.show', $question->exam_id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
-                                                        Show
-                                                    </a>
+                                                <a href="{{ route('user.generatedQues.show', $exam->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
+                                                    Show
+                                                </a>
                                             </td>
                                             @php
-                                                $init = Carbon\Carbon::parse($question->exam->date_time)->diffInSeconds(Carbon\Carbon::now());
+                                                $init = Carbon\Carbon::parse($exam->date_time)->diffInSeconds(Carbon\Carbon::now());
                                                 $day = floor($init / 86400);
                                                 $hours = floor(($init -($day*86400)) / 3600);
                                                 $minutes = floor(($init / 60) % 60);
@@ -75,17 +73,14 @@
 
                                             <td>
                                                 <div class="form-button-action">
-                                                    {{-- <a href="{{ route('user.generatedQues.show', $question->exam_id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
+                                                    {{-- <a href="" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
                                                         Show
-                                                    </a> --}}
-                                                    {{-- <a href="{{ route('user.adminUser.edit', $question->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">
-                                                        <i class="fa fa-edit"></i>
                                                     </a> --}}
                                                     {{-- <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove">
                                                         <i class="fa fa-times"></i>
                                                     </button> --}}
 
-                                                    @if ($question->enroll->count() > 0)
+                                                    @if ($exam->enroll)
                                                     {{-- <div class="counter" style='color: green;'>
                                                         <span class='e-m-days'>{{ $day }}</span> Days |
                                                         <span class='e-m-hours'>{{ $hours }}</span> Hours |
@@ -95,7 +90,7 @@
                                                     @else
                                                     <form action="{{ route('user.generatedQues.enroll') }}" method="post">
                                                         @csrf
-                                                        <input type="hidden" name="exam_id" value="{{ $question->exam_id }}">
+                                                        <input type="hidden" name="exam_id" value="{{ $exam->id }}">
                                                         <button type="submit" class="btn btn-primary btn-sm">Enroll</button>
                                                     </form>
                                                     @endif
