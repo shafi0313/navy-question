@@ -6,7 +6,7 @@ use App\Models\Question;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class GeneratedQuesController extends Controller
+class QuestionPaperController extends Controller
 {
     public function index()
     {
@@ -14,7 +14,7 @@ class GeneratedQuesController extends Controller
             return $error;
         }
         $questions = Question::all();
-        return view('admin.generated_ques.index', compact('questions'));
+        return view('admin.question_paper.index', compact('questions'));
     }
 
     public function show($examId)
@@ -23,6 +23,6 @@ class GeneratedQuesController extends Controller
             return $error;
         }
         $questions = Question::with('options')->whereSelected(1)->whereExam_id($examId)->get();
-        return view('admin.generated_ques.show', compact('questions'));
+        return view('admin.question_paper.show', compact('questions'));
     }
 }

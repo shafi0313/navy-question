@@ -9,4 +9,8 @@ class Exam extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+    
+    public function subject(){
+        return $this->belongsTo(Subject::class, 'subject_id');
+    }
 }

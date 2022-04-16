@@ -20,9 +20,9 @@
                         <div class="card-header">
                             <div class="d-flex align-items-center">
                                 <h4 class="card-title">Add Row</h4>
-                                <a href="{{ route('admin.question.create') }}" class="btn btn-primary btn-round ml-auto text-light" style="min-width: 200px">
+                                {{-- <a href="{{ route('admin.question.create') }}" class="btn btn-primary btn-round ml-auto text-light" style="min-width: 200px">
                                     <i class="fa fa-plus"></i> Add New
-                                </a>
+                                </a> --}}
                             </div>
                         </div>
                         <div class="card-body">
@@ -31,7 +31,7 @@
                                     <thead class="bg-secondary thw">
                                         <tr>
                                             <th>SL</th>
-                                            <th>Creator Name</th>
+                                            {{-- <th>Creator Name</th> --}}
                                             <th>Exam</th>
                                             <th>Subject</th>
                                             <th class="no-sort" width="40px">Action</th>
@@ -50,13 +50,16 @@
                                         @php $question = $questio->first() @endphp
                                         <tr>
                                             <td class="text-center">{{ $x++ }}</td>
-                                            <td>{{ $question->user->name }}</td>
+                                            {{-- <td>{{ $question->user->name }}</td> --}}
                                             <td>{{ $question->exam->name }}</td>
                                             <td>{{ $question->subject->name }}</td>
                                             <td>
                                                 <div class="form-button-action">
-                                                    <a href="{{ route('admin.question.show', $question->exam_id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
+                                                    {{-- <a href="{{ route('admin.question.show', $question->exam_id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
                                                         Show
+                                                    </a> --}}
+                                                    <a href="{{ route('admin.question.create', $question->exam_id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
+                                                        Question Entry
                                                     </a>
                                                     {{-- <a href="{{ route('admin.adminUser.edit', $question->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">
                                                         <i class="fa fa-edit"></i>

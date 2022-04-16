@@ -31,7 +31,7 @@
                                     <thead class="bg-secondary thw">
                                         <tr>
                                             <th>SL</th>
-                                            <th>Creator Name</th>
+                                            {{-- <th>Creator Name</th> --}}
                                             <th>Exam</th>
                                             <th>Subject</th>
                                             <th class="no-sort" width="40px">Action</th>
@@ -50,7 +50,7 @@
                                         @php $question = $questio->first() @endphp
                                         <tr>
                                             <td class="text-center">{{ $x++ }}</td>
-                                            <td>{{ $question->user->name }}</td>
+                                            {{-- <td>{{ $question->user->name }}</td> --}}
                                             <td>{{ $question->exam->name }}</td>
                                             <td>{{ $question->subject->name }}</td>
                                             <td>
@@ -58,9 +58,7 @@
                                                     <a href="{{ route('admin.generatedQues.show', $question->exam_id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
                                                         Show
                                                     </a>
-                                                    {{-- <a href="{{ route('admin.adminUser.edit', $question->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">
-                                                        <i class="fa fa-edit"></i>
-                                                    </a> --}}
+                                                    
                                                     {{-- <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove">
                                                         <i class="fa fa-times"></i>
                                                     </button> --}}

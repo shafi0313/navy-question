@@ -8,11 +8,12 @@ use App\Http\Controllers\Admin\BackupController;
 use App\Http\Controllers\Admin\ChapterController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\SubjectController;
-use App\Http\Controllers\Admin\QuestionController;
+use App\Http\Controllers\Admin\QuestionEntryController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\VisitorInfoController;
-use App\Http\Controllers\Admin\GeneratedQuesController;
+use App\Http\Controllers\Admin\QuestionPaperController;
+use App\Http\Controllers\Admin\GenerateQuestionPaperController;
 
 
 Route::get('/t', function () {
@@ -87,9 +88,9 @@ Route::middleware(['auth','admin'])->prefix('admin')->name('admin.')->group(func
         Route::post('/update/{id}', 'update')->name('update');
 
     });
-    Route::controller(QuestionController::class)->prefix('question')->name('question.')->group(function(){
+    Route::controller(QuestionEntryController::class)->prefix('question')->name('question.')->group(function(){
         Route::get('/', 'index')->name('index');
-        Route::get('/create', 'create')->name('create');
+        Route::get('/create/{examId}', 'create')->name('create');
         Route::post('/store', 'store')->name('store');
         Route::get('/edit/{id}', 'edit')->name('edit');
         Route::post('/update/{id}', 'update')->name('update');
@@ -100,7 +101,19 @@ Route::middleware(['auth','admin'])->prefix('admin')->name('admin.')->group(func
         Route::get('/get-chapter', 'getChapter')->name('getChapter');
     });
 
-    Route::controller(GeneratedQuesController::class)->prefix('generated-question')->name('generatedQues.')->group(function(){
+    Route::controller(GenerateQuestionPaperController::class)->prefix('generate-question-paper')->name('generateQuestion.')->group(function(){
+        Route::get('/', 'index')->name('index');
+        Route::get('/create/{examId}', 'create')->name('create');
+        Route::post('/store', 'store')->name('store');
+        Route::get('/edit/{id}', 'edit')->name('edit');
+        Route::post('/update/{id}', 'update')->name('update');
+        Route::get('/show/{id}', 'show')->name('show');
+        Route::get('/option/destroy/{id}', 'optionDestroy')->name('optionDestroy');
+        Route::post('/ques-generate', 'quesGenerate')->name('quesGenerate');
+        Route::get('/get-question', 'getQuestion')->name('getQuestion');
+    });
+
+    Route::controller(QuestionPaperController::class)->prefix('question-paper')->name('generatedQues.')->group(function(){
         Route::get('/', 'index')->name('index');
         Route::get('/show/{id}', 'show')->name('show');
     });

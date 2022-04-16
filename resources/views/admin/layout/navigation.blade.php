@@ -83,14 +83,21 @@
                 <li class="nav-item {{$m=='question'?'active':''}}">
                     <a href="{{ route('admin.question.index') }}">
                         <i class="fa-solid fa-book-atlas"></i>
-                        <p>Question Create</p>
+                        <p>Question Entry</p>
+                    </a>
+                </li>
+
+                <li class="nav-item {{$m=='generateQuestion'?'active':''}}">
+                    <a href="{{ route('admin.generateQuestion.index') }}">
+                        <i class="fa-solid fa-book-atlas"></i>
+                        <p>Generate Question Paper</p>
                     </a>
                 </li>
 
                 <li class="nav-item {{$m=='generatedQues'?'active':''}}">
                     <a href="{{ route('admin.generatedQues.index') }}">
                         <i class="fa-solid fa-book-atlas"></i>
-                        <p>Generated Question</p>
+                        <p>Question Paper</p>
                     </a>
                 </li>
 

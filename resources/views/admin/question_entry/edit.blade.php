@@ -12,25 +12,25 @@
                     <li class="separator"><i class="flaticon-right-arrow"></i></li>
                     <li class="nav-item"><a href="{{ route('admin.exam.index') }}">Question</a></li>
                     <li class="separator"><i class="flaticon-right-arrow"></i></li>
-                    <li class="nav-item">Create</li>
+                    <li class="nav-item">Edit</li>
                 </ul>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <div class="card-title">Add Question</div>
+                            <div class="card-title">Edit Question</div>
                         </div>
                         @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-                        <form action="{{ route('admin.question.store') }}" method="post">
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                        <form action="{{ route('admin.question.update', $question->id) }}" method="post">
                             @csrf
                             <div class="card-body">
                                 <div class="row">
@@ -38,9 +38,9 @@
                                         <div class="form-group">
                                             <label for="exam_id">Exam <span class="t_r">*</span></label>
                                             <select class="form-control" name="exam_id" id="exam_id">
-                                                <option selected value disabled>Select</option>
+                                                <option selected value="{{ $question->exam_id }}">{{ $question->exam->name }}</option>
                                                 @foreach ($exams as $exam)
-                                                <option value="{{ $exam->id }}">{{ $exam->name }}</option>
+                                                    <option value="{{ $exam->id }}">{{ $exam->name }}</option>
                                                 @endforeach
                                             </select>
                                             @if ($errors->has('exam_id'))
@@ -52,6 +52,7 @@
                                         <div class="form-group">
                                             <label for="subject_id">Subject <span class="t_r">*</span></label>
                                             <select class="form-control" name="subject_id" id="subject_id">
+                                                <option selected value="{{ $question->subject_id }}">{{ $question->subject->name }}</option>
                                             </select>
                                             @if ($errors->has('subject_id'))
                                                 <div class="alert alert-danger">{{ $errors->first('subject_id') }}</div>
@@ -62,6 +63,7 @@
                                         <div class="form-group">
                                             <label for="chapter_id">Chapter <span class="t_r">*</span></label>
                                             <select class="form-control" name="chapter_id" id="chapter_id">
+                                                <option selected value="{{ $question->chapter_id }}">{{ $question->chapter->name }}</option>
                                             </select>
                                             @if ($errors->has('chapter_id'))
                                                 <div class="alert alert-danger">{{ $errors->first('chapter_id') }}</div>
@@ -75,10 +77,9 @@
                                         <div class="form-group">
                                             <label for="type">Question Type <span class="t_r">*</span></label>
                                             <select class="form-control" name="type" id="quesType" required>
-                                                <option selected value disabled>Select</option>
-                                                <option value="Multiple Choice">Multiple Choice</option>
-                                                <option value="Short Question">Short Question</option>
-                                                <option value="Long Question">Long Question</option>
+                                                <option value="Multiple Choice" {{$question->type == 'Multiple Choice' ? 'selected' : ''}}>Multiple Choice</option>
+                                                <option value="Short Question" {{$question->type == 'Short Question' ? 'selected' : ''}}>Short Question</option>
+                                                <option value="Long Question" {{$question->type == 'Long Question' ? 'selected' : ''}}>Long Question</option>
                                             </select>
                                             @if ($errors->has('type'))
                                                 <div class="alert alert-danger">{{ $errors->first('type') }}</div>
@@ -89,7 +90,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="mark">Marks <span class="t_r">*</span></label>
-                                            <input name="mark" class="form-control" required>
+                                            <input name="mark" class="form-control" value="{{ $question->mark }}" required>
                                             @if ($errors->has('mark'))
                                                 <div class="alert alert-danger">{{ $errors->first('mark') }}</div>
                                             @endif
@@ -99,28 +100,40 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="ques">Question <span class="t_r">*</span></label>
-                                            <textarea name="ques" class="form-control" id="ques" rows="5" required></textarea>
+                                            <textarea name="ques" class="form-control" id="ques" rows="5" required>{{ $question->ques }}</textarea>
                                             @if ($errors->has('ques'))
                                                 <div class="alert alert-danger">{{ $errors->first('ques') }}</div>
                                             @endif
                                         </div>
                                     </div>
-
-                                    <div class="col-md-6 quesTypeDiv" style="display: none">
+                                    @if ($question->type == 'Multiple Choice')
+                                    <div class="col-md-6 quesTypeDiv">
                                         <table class="table table-bordered">
                                             <tr>
                                                 <th>Option</th>
-                                                <th style="width: 20px;text-align:center;">
+                                                <th style="width: 100px;text-align:center;">
                                                     <span class="btn btn-info btn-sm" style="padding: 4px 13px"><i class="fas fa-mouse"></i></span>
                                                 </th>
                                             </tr>
+                                            @foreach ($question->options as $option)
                                             <tr>
-                                                <td><input type="text" name="option[]" id="option" class="form-control" /></td>
-                                                <td style="width: 20px"><span class="btn btn-sm btn-success addrow"><i class="fa fa-plus" aria-hidden="true"></i></span></td>
+                                                <input type="hidden" name="option_id[]" class="form-control" value="{{ $option->id }}" />
+                                                <td><input type="text" name="option[]"  id="option" class="form-control" value="{{ $option->option }}" /></td>
+                                                <td class="text-center">
+                                                    <span class="btn btn-sm btn-success addrow"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                                    <a href="{{ route('admin.question.optionDestroy', $option->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove" onclick="return confirm('Are you sure')">
+                                                        <i class="fa fa-times"></i>
+                                                    </a>
+                                                </td>
                                             </tr>
+                                            @endforeach
+
                                             <tbody id="showItem" class=""></tbody>
                                         </table>
                                     </div>
+                                    @endif
+
+
                                 </div>
                             </div>
                             <div class="text-center card-action">

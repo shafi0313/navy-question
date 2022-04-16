@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
-class QuestionController extends Controller
+class QuestionEntryController extends Controller
 {
     public function index()
     {
@@ -20,16 +20,17 @@ class QuestionController extends Controller
             return $error;
         }
         $questions = Question::all();
-        return view('admin.question.index', compact('questions'));
+        return view('admin.question_entry.index', compact('questions'));
     }
 
-    public function create()
+    public function create($examId)
     {
         if ($error = $this->sendPermissionError('create')) {
             return $error;
         }
-        $exams = Exam::all();
-        return view('admin.question.create', compact('exams'));
+        $exam = Exam::whereId($examId)->first();
+        $chapters = Chapter::whereSubject_id($exam->subject_id)->get();
+        return view('admin.question_entry.create', compact('exam','chapters'));
     }
 
     public function store(Request $request)
@@ -74,11 +75,7 @@ class QuestionController extends Controller
         }
     }
 
-    public function show($examId)
-    {
-        $questions = Question::with('options')->whereExam_id($examId)->get();
-        return view('admin.question.show', compact('questions'));
-    }
+ 
 
     public function edit($id)
     {
@@ -87,7 +84,7 @@ class QuestionController extends Controller
         }
         $question = Question::with('options')->find($id);
         $exams = Exam::all();
-        return view('admin.question.edit', compact('question','exams'));
+        return view('admin.question_entry.edit', compact('question','exams'));
     }
 
     public function update(Request $request, $id)
@@ -125,27 +122,6 @@ class QuestionController extends Controller
         }catch(\Exception $ex){
             return $ex->getMessage();
             DB::rollBack();
-            toast('error','Error');
-            return redirect()->back();
-        }
-    }
-
-    public function quesGenerate(Request $request)
-    {
-        // foreach($request->question_id as $key => $value){
-        //     $data=[
-        //         'user_id' => auth()->user()->id,
-        //         'exam_id' => $request->exam_id[$key],
-        //         'question_id' => $request->question_id[$key],
-            // ];
-
-        // }
-        try{
-            Question::whereIn('id',$request->question_id)->update(['selected' => 1]);
-            toast('success','Success');
-            return redirect()->back();
-        }catch(\Exception $ex){
-            return $ex->getMessage();
             toast('error','Error');
             return redirect()->back();
         }
