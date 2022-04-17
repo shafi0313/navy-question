@@ -66,7 +66,7 @@
                                         <div class="form-group">
                                             <label for="chapter_id">Chapter <span class="t_r">*</span></label>
                                             {{-- <select class="form-control" name="chapter_id" id="chapter_id"> --}}
-                                            <select class="form-control" name="chapter_id" id="">
+                                            <select class="form-control" name="chapter_id" id="chapter_id">
                                             <option selected value disabled>Select</option>
                                             @foreach ($chapters as $chapter)
                                                 <option value="{{ $chapter->id }}">{{ $chapter->name }}</option>
@@ -131,12 +131,22 @@
                                         </table>
                                     </div>
                                 </div>
+                                <br>
+
+
                             </div>
                             <div class="text-center card-action">
                                 <button type="submit" class="btn btn-primary">Submit</button>
                                 <button type="reset" class="btn btn-danger">Cancel</button>
                             </div>
                         </form>
+                        <div class="col-md-12">
+                            <hr class="bg-danger">
+                        </div>
+                        <div class="col-md-8">
+                            <h3 class="text-primary">Question</h3>
+                            <div class="questionArea" id="questionArea"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -146,6 +156,34 @@
 </div>
 
 @push('custom_scripts')
+<script>
+    $('#chapter_id').change(function () {
+        $("#questionArea").html('');
+        $.ajax({
+            url:"{{route('admin.generateQuestion.getQuestion')}}",
+            data:{chapterId:$(this).val()},
+            method:'get',
+            success:res=>{
+                if(res.status == 200){
+                    var quesData = '';
+                    $.each(res.questions,function(i,v){
+                        quesData += '<h4 class="question">'
+                        quesData += '<input type="hidden" name="exam_id[]" value="'+v.exam_id+'">'
+                        quesData += '<label>&nbsp;&nbsp; </label>'+v.ques+'';
+                        quesData += '<span style="float:right">'+v.mark+'</span>';
+                        quesData += '</h4">';
+                    });
+                    $("#questionArea").append(quesData);
+                }else{
+                    alert('No question found')
+                }
+            },
+            error:err=>{
+                alert('No question found')
+            }
+        });
+    });
+</script>
 <script>
     $('#exam_id').change(function () {
         // $('#post_bank_account').val($(this).val());
@@ -199,9 +237,7 @@
 <script>
 
     $("#quesType").change(function(){
-
         const type = $(this).val();
-
         if(type == "Multiple Choice"){
             $(".quesTypeDiv").show();
         }else{

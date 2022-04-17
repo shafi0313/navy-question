@@ -15,8 +15,8 @@ class GenerateQuestionPaperController extends Controller
         if ($error = $this->sendPermissionError('index')) {
             return $error;
         }
-        $questions = Question::all();
-        return view('admin.generate_question_paper.index', compact('questions'));
+        $exams = Exam::all();
+        return view('admin.generate_question_paper.index', compact('exams'));
     }
 
     public function create($examId)

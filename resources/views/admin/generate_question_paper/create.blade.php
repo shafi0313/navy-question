@@ -123,6 +123,7 @@
 @push('custom_scripts')
 <script>
     $('#chapter_id').change(function () {
+        $("#questionArea").html('');
         $.ajax({
             url:"{{route('admin.generateQuestion.getQuestion')}}",
             data:{chapterId:$(this).val()},
