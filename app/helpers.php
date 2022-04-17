@@ -15,6 +15,12 @@ if(!function_exists('bdDate')){
     }
 }
 
+if(!function_exists('examDateTime')){
+    function examDateTime($date){
+        return Carbon::parse($date)->format('d/m/Y g:i A');
+    }
+}
+
 if(!function_exists('permissionText')){
     function permissionText($permission){
         switch($permission){

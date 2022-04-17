@@ -39,10 +39,8 @@ class ExamController extends Controller
             'code' => 'required|max:60',
             'date_time' => 'required|after:starting_hour',
             'time' => 'required',
-            'total_ques' => 'required|integer',
+            'total_ques' => 'nullable|integer',
             'total_mark' => 'required|integer',
-            // 'mark_per_right_ans' => 'required|integer',
-            // 'mark_per_wrong_ans' => 'required|integer',
         ]);
         $data['user_id'] = auth()->user()->id;
         $data['status'] = 'Pending';

@@ -36,8 +36,6 @@
                                             <th>Exam Date & Time</th>
                                             <th>Exam Duration</th>
                                             <th>Total Question</th>
-                                            {{-- <th>Mark Per Right Question</th>
-                                            <th>Mark Per Wrong Question</th> --}}
                                             <th>States</th>
                                             <th>Created at</th>
                                             <th class="no-sort" width="40px">Action</th>
@@ -62,13 +60,11 @@
                                             <td class="text-center">{{ $x++ }}</td>
                                             <td>{{ $exam->name }}</td>
                                             <td>{{ $exam->code }}</td>
-                                            <td>{{ Carbon\Carbon::parse($exam->date_time)->format('d/m/Y g:i A') }}</td>
+                                            <td>{{ examDateTime($exam->date_time) }}</td>
                                             <td>{{ $exam->time }}</td>
                                             <td>{{ $exam->total_ques }}</td>
-                                            {{-- <td>{{ $exam->mark_per_right_ans }}</td>
-                                            <td>{{ $exam->mark_per_wrong_ans }}</td> --}}
                                             <td>{{ $exam->status }}</td>
-                                            <td>{{ Carbon\Carbon::parse($exam->created_at)->format('d/m/Y g:i A') }}</td>
+                                            <td>{{ examDateTime($exam->created_at) }}</td>
                                             <td>
                                                 <div class="form-button-action">
                                                     <a href="{{ route('admin.adminUser.edit', $exam->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">

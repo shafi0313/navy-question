@@ -33,6 +33,9 @@
                                             <th>SL</th>
                                             {{-- <th>Creator Name</th> --}}
                                             <th>Exam</th>
+                                            <th>Exam Code</th>
+                                            <th>Exam Date & Time</th>
+                                            <th>Exam Duration</th>
                                             <th>Subject</th>
                                             <th class="no-sort" width="40px">Action</th>
                                         </tr>
@@ -52,13 +55,16 @@
                                             <td class="text-center">{{ $x++ }}</td>
                                             {{-- <td>{{ $question->user->name }}</td> --}}
                                             <td>{{ $question->exam->name }}</td>
+                                            <td>{{ $question->exam->code }}</td>
+                                            <td>{{ examDateTime($question->exam->date_time) }}</td>
+                                            <td>{{ $question->exam->time }}</td>
                                             <td>{{ $question->subject->name }}</td>
                                             <td>
                                                 <div class="form-button-action">
                                                     <a href="{{ route('admin.generatedQues.show', $question->exam_id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
                                                         Show
                                                     </a>
-                                                    
+
                                                     {{-- <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove">
                                                         <i class="fa fa-times"></i>
                                                     </button> --}}

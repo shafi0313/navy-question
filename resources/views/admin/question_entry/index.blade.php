@@ -33,6 +33,9 @@
                                             <th>SL</th>
                                             {{-- <th>Creator Name</th> --}}
                                             <th>Exam</th>
+                                            <th>Exam Code</th>
+                                            <th>Exam Date & Time</th>
+                                            <th>Exam Duration</th>
                                             <th>Subject</th>
                                             <th class="no-sort" width="40px">Action</th>
                                         </tr>
@@ -52,6 +55,9 @@
                                             <td class="text-center">{{ $x++ }}</td>
                                             {{-- <td>{{ $exam->user->name }}</td> --}}
                                             <td>{{ $exam->name }}</td>
+                                            <td>{{ $exam->code }}</td>
+                                            <td>{{ examDateTime($exam->date_time) }}</td>
+                                            <td>{{ $exam->time }}</td>
                                             <td>{{ $exam->subject->name }}</td>
                                             <td>
                                                 <div class="form-button-action">

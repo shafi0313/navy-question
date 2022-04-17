@@ -1,7 +1,7 @@
 @extends('admin.layout.master')
-@section('title', 'Generated Question')
+@section('title', 'Answer Paper')
 @section('content')
-@php $m='generatedQues'; $sm=''; $ssm=''; @endphp
+@php $m='answerPaper'; $sm=''; $ssm=''; @endphp
 
 <div class="main-panel">
     <div class="content">
@@ -33,6 +33,9 @@
                                             <th>SL</th>
                                             <th>Student Name</th>
                                             <th>Exam</th>
+                                            <th>Exam Code</th>
+                                            <th>Exam Date & Time</th>
+                                            <th>Exam Duration</th>
                                             <th>Subject</th>
                                             <th class="no-sort" width="40px">Action</th>
                                         </tr>
@@ -51,6 +54,9 @@
                                         <tr>
                                             <td class="text-center">{{ $x++ }}</td>
                                             <td>{{ $answerPaper->user->name }}</td>
+                                            <td>{{ $answerPaper->exam->code }}</td>
+                                            <td>{{ examDateTime($answerPaper->exam->date_time) }}</td>
+                                            <td>{{ $answerPaper->exam->time }}</td>
                                             <td>{{ $answerPaper->exam->name }}</td>
                                             <td>{{ $answerPaper->exam->subject->name }}</td>
                                             <td>

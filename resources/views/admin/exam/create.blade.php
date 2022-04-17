@@ -68,7 +68,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="time">Exam Duration <span class="t_r">*</span></label>
-                                            <input type="text" name="time" class="form-control" value="{{ old('time') }}" required>
+                                            <input type="time" name="time" class="form-control" value="{{ old('time') }}" required>
                                             @if ($errors->has('time'))
                                             <div class="alert alert-danger">{{ $errors->first('time') }}</div>
                                         @endif
@@ -76,8 +76,8 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="total_ques">Total Question <span class="t_r">*</span></label>
-                                            <input type="text" name="total_ques" class="form-control" value="{{ old('total_ques') }}" onInput="this.value = this.value.replace(/[a-zA-z\-*/]/g,'');" required>
+                                            <label for="total_ques">Total Question</label>
+                                            <input type="text" name="total_ques" class="form-control" value="{{ old('total_ques') }}" onInput="this.value = this.value.replace(/[a-zA-z\-*/]/g,'');">
                                             @if ($errors->has('total_ques'))
                                             <div class="alert alert-danger">{{ $errors->first('total_ques') }}</div>
                                         @endif
