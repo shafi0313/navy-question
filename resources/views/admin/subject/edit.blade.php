@@ -1,7 +1,7 @@
 @extends('admin.layout.master')
 @section('title', 'Admin User')
 @section('content')
-@php $m='admin'; $sm='adminUser'; $ssm=''; @endphp
+@php $m='setup'; $sm='subject'; $ssm=''; @endphp
 <div class="main-panel">
     <div class="content">
         <div class="page-inner">

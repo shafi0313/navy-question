@@ -1,7 +1,7 @@
 @extends('admin.layout.master')
 @section('title', 'Exam')
 @section('content')
-@php $m='exam'; $sm=''; $ssm=''; @endphp
+@php $m='setup'; $sm='exam'; $ssm=''; @endphp
 
 <div class="main-panel">
     <div class="content">
@@ -31,10 +31,10 @@
                                     <thead class="bg-secondary thw">
                                         <tr>
                                             <th>SL</th>
-                                            <th>Name</th>
-                                            <th>Exam Code</th>
-                                            <th>Exam Date & Time</th>
-                                            <th>Exam Duration</th>
+                                            <th>Exam/Course</th>
+                                            <th>Exam/Course Code</th>
+                                            <th>Date & Time</th>
+                                            <th>Duration</th>
                                             <th>Total Question</th>
                                             <th>States</th>
                                             <th>Created at</th>

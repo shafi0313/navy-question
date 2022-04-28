@@ -19,29 +19,74 @@ class QuestionEntryController extends Controller
         if ($error = $this->sendPermissionError('index')) {
             return $error;
         }
-        $exams = Exam::all();
-        return view('admin.question_entry.index', compact('exams'));
+        $questions = Question::all();
+        return view('admin.question_entry.index', compact('questions'));
     }
 
-    public function create($examId)
+    public function create()
     {
         if ($error = $this->sendPermissionError('create')) {
             return $error;
         }
-        $exam = Exam::whereId($examId)->first();
-        $chapters = Chapter::whereSubject_id($exam->subject_id)->get();
-        return view('admin.question_entry.create', compact('exam','chapters'));
+        // $exam = Exam::whereId($examId)->first();
+        $subjects = Subject::all();
+        $chapters = Chapter::all();
+        return view('admin.question_entry.create', compact('subjects','chapters'));
     }
+
+    public function read(Request $request)
+    {
+        $inputs = Question::whereSubject_id($request->subject_id)->whereChapter_id($request->chapter_id)->get();
+        $questions = view('admin.question_entry.ajax', ['inputs' => $inputs])->render();
+        return response()->json(['status' => 'success', 'html' => $questions, 'questions']);
+    }
+
+    // public function store(Request $request)
+    // {
+    //     // return $request;
+    //     if ($error = $this->sendPermissionError('create')) {
+    //         return $error;
+    //     }
+
+    //     $data = $this->validate($request, [
+    //         'exam_id' => 'required|integer',
+    //         'subject_id' => 'required|integer',
+    //         'chapter_id' => 'required|integer',
+    //         'type' => 'required',
+    //         'mark' => 'required',
+    //         'ques' => 'required',
+    //     ]);
+    //     $data['user_id'] = auth()->user()->id;
+
+    //     DB::beginTransaction();
+    //     $question = Question::create($data);
+
+    //     if($request->type == "Multiple Choice"){
+    //         foreach($request->option as $key => $value){
+    //             $option=[
+    //                 'question_id' => $question->id,
+    //                 'option' => $request->option[$key],
+    //             ];
+    //             QuesOption::create($option);
+    //         }
+    //     }
+
+    //     try{
+    //         DB::commit();
+    //         toast('success','Success');
+    //         return redirect()->back();
+    //     }catch(\Exception $ex){
+    //         return $ex->getMessage();
+    //         DB::rollBack();
+    //         toast('error','Error');
+    //         return redirect()->back();
+    //     }
+    // }
 
     public function store(Request $request)
     {
-        // return $request;
-        if ($error = $this->sendPermissionError('create')) {
-            return $error;
-        }
-
         $data = $this->validate($request, [
-            'exam_id' => 'required|integer',
+            // 'exam_id' => 'required|integer',
             'subject_id' => 'required|integer',
             'chapter_id' => 'required|integer',
             'type' => 'required',
@@ -50,32 +95,9 @@ class QuestionEntryController extends Controller
         ]);
         $data['user_id'] = auth()->user()->id;
 
-        DB::beginTransaction();
-        $question = Question::create($data);
-
-        if($request->type == "Multiple Choice"){
-            foreach($request->option as $key => $value){
-                $option=[
-                    'question_id' => $question->id,
-                    'option' => $request->option[$key],
-                ];
-                QuesOption::create($option);
-            }
-        }
-
-        try{
-            DB::commit();
-            toast('success','Success');
-            return redirect()->back();
-        }catch(\Exception $ex){
-            return $ex->getMessage();
-            DB::rollBack();
-            toast('error','Error');
-            return redirect()->back();
-        }
+        $questionEntry = Question::create($data);
+        return response()->json($questionEntry, 200);
     }
-
-
 
     public function edit($id)
     {
@@ -161,14 +183,14 @@ class QuestionEntryController extends Controller
         }
     }
 
-    public function getSubject(Request $request)
-    {
-        if ($request->ajax()) {
-            $subjectId = Exam::find($request->examId)->subject_id;
-            $subjects = Subject::whereId($subjectId)->get();
-            return response()->json(['subjects'=>$subjects,'status'=>200]);
-        }
-    }
+    // public function getSubject(Request $request)
+    // {
+    //     if ($request->ajax()) {
+    //         $subjectId = Exam::find($request->examId)->subject_id;
+    //         $subjects = Subject::whereId($subjectId)->get();
+    //         return response()->json(['subjects'=>$subjects,'status'=>200]);
+    //     }
+    // }
     public function getChapter(Request $request)
     {
         if ($request->ajax()) {

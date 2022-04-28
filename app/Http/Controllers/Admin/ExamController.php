@@ -34,7 +34,6 @@ class ExamController extends Controller
             return $error;
         }
         $data = $this->validate($request, [
-            'subject_id' => 'required|integer',
             'name' => 'required|max:100',
             'code' => 'required|max:60',
             'date_time' => 'required|after:starting_hour',

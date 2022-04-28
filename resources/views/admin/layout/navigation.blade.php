@@ -66,19 +66,29 @@
                     </div>
                 </li>
 
-                <li class="nav-item {{$m=='subject'?'active':''}}">
-                    <a href="{{ route('admin.subject.index') }}">
-                        <i class="fa-solid fa-book-atlas"></i>
-                        <p>Subject & Chapter</p>
+                <li class="nav-item {{$m=='setup'?'active submenu':''}}">
+                    <a data-toggle="collapse" href="#setup">
+                        <i class="fas fa-users-cog"></i>
+                        <p>Setup</p>
+                        <span class="caret"></span>
                     </a>
+                    <div class="collapse {{$m=='setup'?'show':''}}" id="setup">
+                        <ul class="nav nav-collapse">
+                            <li class="{{$sm=='subject'?'activeSub':''}}">
+                                <a href="{{ route('admin.subject.index') }}">
+                                    <span class="sub-item">Subject & Chapter</span>
+                                </a>
+                            </li>
+                            <li class="{{$sm=='exam'?'activeSub':''}}">
+                                <a href="{{ route('admin.exam.index') }}">
+                                    <span class="sub-item">Exam/Course</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
 
-                <li class="nav-item {{$m=='exam'?'active':''}}">
-                    <a href="{{ route('admin.exam.index') }}">
-                        <i class="fa-solid fa-book-atlas"></i>
-                        <p>Exam</p>
-                    </a>
-                </li>
+
 
                 <li class="nav-item {{$m=='question'?'active':''}}">
                     <a href="{{ route('admin.question.index') }}">

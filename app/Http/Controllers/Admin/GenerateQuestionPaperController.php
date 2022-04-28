@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Exam;
 use App\Models\Chapter;
+use App\Models\Subject;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -15,8 +16,10 @@ class GenerateQuestionPaperController extends Controller
         if ($error = $this->sendPermissionError('index')) {
             return $error;
         }
+        $subjects = Subject::all();
+        $chapters = Chapter::all();
         $exams = Exam::all();
-        return view('admin.generate_question_paper.index', compact('exams'));
+        return view('admin.generate_question_paper.index', compact('subjects','chapters','exams'));
     }
 
     public function create($examId)

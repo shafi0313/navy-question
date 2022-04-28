@@ -91,14 +91,15 @@ Route::middleware(['auth','admin'])->prefix('admin')->name('admin.')->group(func
     });
     Route::controller(QuestionEntryController::class)->prefix('question')->name('question.')->group(function(){
         Route::get('/', 'index')->name('index');
-        Route::get('/create/{examId}', 'create')->name('create');
-        Route::post('/store', 'store')->name('store');
+        Route::get('/create', 'create')->name('create');
+        Route::get('/store', 'store')->name('store');
+        Route::get('/read', 'read')->name('read');
         Route::get('/edit/{id}', 'edit')->name('edit');
         Route::post('/update/{id}', 'update')->name('update');
         Route::get('/show/{id}', 'show')->name('show');
         Route::get('/option/destroy/{id}', 'optionDestroy')->name('optionDestroy');
         Route::post('/ques-generate', 'quesGenerate')->name('quesGenerate');
-        Route::get('/get-subject', 'getSubject')->name('getSubject');
+        // Route::get('/get-subject', 'getSubject')->name('getSubject');
         Route::get('/get-chapter', 'getChapter')->name('getChapter');
     });
 
