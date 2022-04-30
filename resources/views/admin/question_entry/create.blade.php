@@ -30,8 +30,9 @@
                                 </ul>
                             </div>
                         @endif
-                        {{-- <form>
-                            @csrf --}}
+
+                        <form action="{{ route('admin.question.store') }}" method="POST" id="quesStore">
+                            @csrf
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -62,9 +63,9 @@
                                             @endif
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
+                                    {{-- <div class="col-md-12">
                                         <hr class="bg-danger">
-                                    </div>
+                                    </div> --}}
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="type">Question Type <span class="t_r">*</span></label>
@@ -99,32 +100,37 @@
                                             @endif
                                         </div>
                                     </div>
-
-                                    <div class="col-md-6 quesTypeDiv" style="display: none">
-                                        <table class="table table-bordered">
-                                            <tr>
-                                                <th>Option</th>
-                                                <th style="width: 20px;text-align:center;">
-                                                    <span class="btn btn-info btn-sm" style="padding: 4px 13px"><i class="fas fa-mouse"></i></span>
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <td><input type="text" name="option[]" class="form-control option" /></td>
-                                                <td style="width: 20px"><span class="btn btn-sm btn-success addrow"><i class="fa fa-plus" aria-hidden="true"></i></span></td>
-                                            </tr>
-                                            <tbody id="showItem" class=""></tbody>
-                                        </table>
-                                    </div>
                                 </div>
-                                <br>
-
-
+                            </div>
+                            <div class="row quesTypeDiv ml-2" style="display: none">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="form-group " >
+                                            <label>Option: </label>
+                                            <input type="text" name="option" id="option" class="form-control" style="width: 222%">
+                                        </div>
+                                        <div style="margin-top: 38px; margin-left:238px">
+                                            <button class="btn btn-success add-item" type="button">Add</button>
+                                        </div>
+                                    </div>
+                                    <table class="table table-bordered table-hover item-table">
+                                        <thead>
+                                            <tr>
+                                                <th>SN</th>
+                                                <th >Option</th>
+                                                <th width="50px"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                             <div class="text-center card-action">
-                                <button id="add" class="btn btn-primary">Add</button>
+                                <button type="submit" class="btn btn-primary">Add</button>
                                 <button type="reset" class="btn btn-danger">Cancel</button>
                             </div>
-                        {{-- </form> --}}
+                        </form>
                         <div class="col-md-12">
                             <hr class="bg-danger">
                         </div>
@@ -142,28 +148,62 @@
 </div>
 
 @push('custom_scripts')
+@include('include.toast');
 <script>
-    // question()
-      $('#add').click(function (e) {
-        e.preventDefault();
-        // console.log($('.option').val())
-        $("input[name^='option']").each(function() {
-            console.log($(this).val());
-        });
+    $('.add-item').on('click', function() {
+        var option = $('#option').val();
+        // if (job_title == '') {
+        //     alert('Please enter job title');
+        //     $('#job_title').focus();
+        //     return false;
+        // }
+        var html = '<tr>';
+        html += '<tr class="trData"><td class="serial"></td><td>' + option + '</td><td align="center">';
+        html += '<input type="hidden" name="option[]" value="' + option + '" />';
+        html += '<a class="item-delete" href="#"><i class="fas fa-trash"></i></a></td></tr>';
+        toast('success','Added');
+        $('.item-table tbody').append(html);
+        $('#option').val('');
+        serialMaintain();
+    });
 
-        var data = getData();
+    $('.item-table').on('click', '.item-delete', function(e) {
+        var element = $(this).parents('tr');
+        element.remove();
+        toast('warning','item removed!');
+        e.preventDefault();
+        serialMaintain();
+    });
+
+    $('#quesStore').on('submit',function(e){
+        e.preventDefault();
+        let data   = $(this).serialize();
+        let url    = $(this).attr('action');
+        let method = $(this).attr('method');
         var request = $.ajax({
-            url: "{{ route('admin.question.store') }}",
-            method: "GET",
+            url: url,
+            method:method,
             data: data,
-        });
-        request.done(function( response ) {
-            clear();
-            toast('success','Success!');
-            question()
-        });
-        request.fail(function( jqXHR, textStatus ) {
-            alert( "Request failed: " + textStatus + jqXHR.responseText );
+            success:res=>{
+                toast('success','Success!');
+                clear();
+                question()
+                $(".trData").remove();
+                // if(res.status == 200){
+                //     toast('success','Success!');
+                //     clear();
+                //     question()
+
+                //  toast('success', res.message);
+                // }else{
+                //     toast('error',res.message);
+                // }
+            },
+            error:err=>{
+                $.each(err.responseJSON.errors, (i,v)=>{
+                    toast('error', v);
+                })
+            }
         });
     });
 
@@ -171,7 +211,7 @@
         $("#questionArea").html('');
         $("#ques").val('');
         $("#mark").val('');
-        $(".option").val('');
+        $("#option").val('');
     }
 
     function question(){
@@ -197,10 +237,31 @@
             'type' : $('#quesType').val(),
             'mark' : $('#mark').val(),
             'ques' : $('#ques').val(),
-            'option' : $('.option').val(),
+            'option' : $('#option').val(),
         };
     }
+
+
+    function serialMaintain() {
+        var i = 1;
+        var subtotal = gst_amt_subtotal=0;
+        $('.serial').each(function(key, element) {
+            $(element).html(i);
+            // var total = $(element).parents('tr').find('input[name="totalamount[]"]').val();
+            // var gst_amt = $(element).parents('tr').find('input[name="gst_amt[]"]').val();
+            // subtotal += + parseFloat(total);
+            // gst_amt_subtotal += + parseFloat(gst_amt);
+            i++;
+        });
+        // $('.sub-total').html(subtotal.toFixed(2));
+        // $('#total_amount').val(subtotal);
+        // $('#gst_amt_subtotal').val(gst_amt_subtotal);
+    };
+
 </script>
+
+
+
 <script>
     $('#chapter_id').change(function () {
         $("#questionArea").html('');
@@ -263,26 +324,8 @@
             $(".quesTypeDiv").hide();
         }
     })
-
-	$(document).ready(function(){
-		var i = 1;
-		$('.addrow').click(function()
-			{i++;
-				html ='';
-				html +='<tr id="remove_'+i+'" class="post_item">';
-	            html +='	<td><input type="text" name="option[]" class="form-control option"/></td>';
-	            html +='	<td style="width: 20px"  class="col-md-2"><span class="btn btn-sm btn-danger" onclick="return remove('+i+')"><i class="fa fa-times" aria-hidden="true"></i></span></td>';
-	            html +='</tr>';
-	            $('#showItem').append(html);
-			});
-	});
-	function remove(id)
-	{
-		$('#remove_'+id).remove();
-		total_price();
-    }
 </script>
-@include('include.toast');
+
 @endpush
 @endsection
 

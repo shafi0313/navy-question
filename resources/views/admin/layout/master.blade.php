@@ -9,7 +9,7 @@
     <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <link rel="icon" href="../assets/img/icon.ico" type="image/x-icon" />
-    
+
     <!-- Fonts and icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="{{ asset('backend/js/plugin/webfont/webfont.min.js') }}"></script>
@@ -112,11 +112,11 @@
     <script src="{{ asset('backend/js/setting-demo.js') }}"></script>
     <script src="{{ asset('backend/js/demo.js') }}"></script>
 
-    <script>
+    {{-- <script>
         $("form").on('submit', function(e){
             $(this).find('button[type="submit"]').attr('disabled', 'disabled');
         });
-    </script>
+    </script> --}}
 
     @include('sweetalert::alert')
 	@stack('custom_scripts')

@@ -53,44 +53,52 @@
                             </table>
                         </div>
                     </div>
-                    <h4 class="quesType">Multiple Choice</h4>
-                    @foreach ($questionPapers->where('type','Multiple Choice') as $key => $question)
-                    <div class="questionArea">
-                        <h4 class="question">{{ $question->question->ques }}
-                            <span style="float:right">{{ $question->question->mark }}</span>
-                        </h4>
-                        @foreach ($question->question->options as $option)
-                        <div class="col-md-6 option">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="{{$option->id}}" id="exampleRadios{{$option->id}}">
-                                <label class="form-check-label" for="exampleRadios{{$option->id}}" id="exampleRadios{{$option->id}}">
-                                    {{ $option->option }}
-                                </label>
+                    @if($questionPapers->where('type','Multiple Choice')->count() > 0)
+                        <h4 class="quesType">Multiple Choice</h4>
+                        @foreach ($questionPapers->where('type','Multiple Choice') as $key => $question)
+                        <div class="questionArea">
+                            <h4 class="question">{{ $question->question->ques }}
+                                <span style="float:right">{{ $question->question->mark }}</span>
+                            </h4>
+                            @foreach ($question->question->options as $option)
+                            <div class="col-md-6 option">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="{{$option->id}}" id="exampleRadios{{$option->id}}">
+                                    <label class="form-check-label" for="exampleRadios{{$option->id}}" id="exampleRadios{{$option->id}}">
+                                        {{ $option->option }}
+                                    </label>
+                                </div>
                             </div>
+                            @endforeach
                         </div>
                         @endforeach
-                    </div>
-                    @endforeach
-                    <br>
-                    <br>
-                    <h4 class="quesType">Short Question</h4>
-                    @foreach ($questionPapers->where('type','Short Question') as $question)
-                    <div class="questionArea">
-                        <h4 class="question">{{ $question->question->ques }}
-                            <span style="float:right">{{ $question->question->mark }}</span>
-                        </h4>
-                    </div>
-                    @endforeach
-                    <br>
-                    <br>
-                    <h4 class="quesType">Long Question</h4>
-                    @foreach ($questionPapers->where('type','Long Question') as $question)
-                    <div class="questionArea">
-                        <h4 class="question">{{ $question->ques }}
-                            <span style="float:right">{{ $question->mark }}</span>
-                        </h4>
-                    </div>
-                    @endforeach
+                        <br>
+                        <br>
+                    @endif
+
+                    @if ($questionPapers->where('type','Short Question')->count() > 0)
+                        <h4 class="quesType">Short Question</h4>
+                        @foreach ($questionPapers->where('type','Short Question') as $question)
+                        <div class="questionArea">
+                            <h4 class="question">{{ $question->question->ques }}
+                                <span style="float:right">{{ $question->question->mark }}</span>
+                            </h4>
+                        </div>
+                        @endforeach
+                        <br>
+                        <br>
+                    @endif
+
+                    @if ($questionPapers->where('type','Long Question')->count() > 0)
+                        <h4 class="quesType">Long Question</h4>
+                        @foreach ($questionPapers->where('type','Long Question') as $question)
+                        <div class="questionArea">
+                            <h4 class="question">{{ $question->ques }}
+                                <span style="float:right">{{ $question->mark }}</span>
+                            </h4>
+                        </div>
+                        @endforeach
+                    @endif
                 </div>
             </form>
         </div>
