@@ -19,4 +19,5 @@ class Exam extends Model
     public function ans(){
         return $this->hasOne(QuesAns::class, 'exam_id');
     }
+    
 }

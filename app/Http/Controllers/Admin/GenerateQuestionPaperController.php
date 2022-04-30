@@ -7,6 +7,7 @@ use App\Models\Chapter;
 use App\Models\Subject;
 use App\Models\Question;
 use Illuminate\Http\Request;
+use App\Models\QuestionPaper;
 use App\Http\Controllers\Controller;
 
 class GenerateQuestionPaperController extends Controller
@@ -22,15 +23,15 @@ class GenerateQuestionPaperController extends Controller
         return view('admin.generate_question_paper.index', compact('subjects','chapters','exams'));
     }
 
-    public function create($examId)
-    {
-        if ($error = $this->sendPermissionError('create')) {
-            return $error;
-        }
-        $exam = Exam::whereId($examId)->first();
-        $chapters = Chapter::whereSubject_id($exam->subject_id)->get();
-        return view('admin.generate_question_paper.create', compact('exam','chapters'));
-    }
+    // public function create($examId)
+    // {
+    //     if ($error = $this->sendPermissionError('create')) {
+    //         return $error;
+    //     }
+    //     $exam = Exam::whereId($examId)->first();
+    //     $chapters = Chapter::whereSubject_id($exam->subject_id)->get();
+    //     return view('admin.generate_question_paper.create', compact('exam','chapters'));
+    // }
 
     public function getQuestion(Request $request)
     {
@@ -43,16 +44,17 @@ class GenerateQuestionPaperController extends Controller
 
     public function store(Request $request)
     {
-        // foreach($request->question_id as $key => $value){
-        //     $data=[
-        //         'user_id' => auth()->user()->id,
-        //         'exam_id' => $request->exam_id[$key],
-        //         'question_id' => $request->question_id[$key],
-            // ];
-
-        // }
+        $type = Question::whereIn('id',$request->question_id)->get(['type'])->pluck('type');
+        foreach($request->question_id as $key => $value){
+            $data=[
+                'user_id' => auth()->user()->id,
+                'exam_id' => $request->exam_id,
+                'question_id' => $request->question_id[$key],
+                'type' => $type[$key],
+            ];
+            QuestionPaper::create($data);
+        }
         try{
-            Question::whereIn('id',$request->question_id)->update(['selected' => 1]);
             toast('success','Success');
             return redirect()->back();
         }catch(\Exception $ex){

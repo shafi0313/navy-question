@@ -15,8 +15,10 @@ return new class extends Migration
     {
         Schema::create('question_papers', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('exam_id')->constrained()->cascadeOnDelete();
             $table->foreignId('question_id')->constrained()->cascadeOnDelete();
+            $table->enum('type', ["Multiple Choice","Short Question","Long Question"]);
             $table->timestamps();
         });
     }

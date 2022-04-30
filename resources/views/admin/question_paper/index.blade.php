@@ -36,7 +36,7 @@
                                             <th>Exam Code</th>
                                             <th>Exam Date & Time</th>
                                             <th>Exam Duration</th>
-                                            <th>Subject</th>
+                                            {{-- <th>Subject</th> --}}
                                             <th class="no-sort" width="40px">Action</th>
                                         </tr>
                                     </thead>
@@ -49,19 +49,17 @@
                                     </tfoot>
                                     <tbody>
                                         @php $x = 1 @endphp
-                                        @foreach ($questions->groupBy('exam_id') as $questio)
-                                        @php $question = $questio->first() @endphp
+                                        @foreach ($exams as $exam)
                                         <tr>
                                             <td class="text-center">{{ $x++ }}</td>
                                             {{-- <td>{{ $question->user->name }}</td> --}}
-                                            <td>{{ $question->exam->name }}</td>
-                                            <td>{{ $question->exam->code }}</td>
-                                            <td>{{ examDateTime($question->exam->date_time) }}</td>
-                                            <td>{{ $question->exam->time }}</td>
-                                            <td>{{ $question->subject->name }}</td>
+                                            <td>{{ $exam->name }}</td>
+                                            <td>{{ $exam->code }}</td>
+                                            <td>{{ examDateTime($exam->date_time) }}</td>
+                                            <td>{{ $exam->time }}</td>
                                             <td>
                                                 <div class="form-button-action">
-                                                    <a href="{{ route('admin.generatedQues.show', $question->exam_id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
+                                                    <a href="{{ route('admin.generatedQues.show', $exam->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
                                                         Show
                                                     </a>
 

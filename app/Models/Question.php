@@ -14,9 +14,6 @@ class Question extends Model
     public function user(){
         return $this->belongsTo(User::class, 'user_id');
     }
-    public function exam(){
-        return $this->belongsTo(Exam::class, 'exam_id');
-    }
     public function subject(){
         return $this->belongsTo(Subject::class, 'subject_id');
     }
@@ -31,5 +28,5 @@ class Question extends Model
         return $this->belongsTo(Enroll::class, 'exam_id');
     }
 
-    
+
 }

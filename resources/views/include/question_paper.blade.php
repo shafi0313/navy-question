@@ -1,5 +1,5 @@
 <div class="row justify-content-center">
-    <div class="col-md-8">
+    <div class="col-md-12">
         <div class="card">
             <style>
                 .quesType{
@@ -17,6 +17,10 @@
                     position: absolute;
                     left: 0;
                 }
+                .title h4{
+                    padding: 0;
+                    margin: 0;
+                }
             </style>
             <div class="card-header">
                 <div class="d-flex align-items-center">
@@ -27,19 +31,35 @@
                 <div class="card-body" id="printableArea">
                     <div class="navy">
                         <div class="title">
-                            <h2>Bangladesh Navy</h2>
-                            <p>{{ $questions->first()->exam->name }} Exam Question Paper-{{ Carbon\Carbon::parse($questions->first()->exam->date_time)->format('Y') }}</p>
-                            <p>{{ $questions->first()->exam->subject->name }}</p>
+                            <h4>CONFIDENTIAL</h4>
+                            <h4>EXAM IN CONFIDENCE</h4>
+                            <h4>PROGRAM EXAM FOR THE RANK OF </h4>
+                            <h4>TRADE:</h4>
+                            <h4>SUBJECT: {{ $questionPapers->first()->question->subject->name }}</h4>
+                            {{-- <p>{{ $questionPapers->first()->exam->name }} Exam Question Paper-{{ Carbon\Carbon::parse($questionPapers->first()->exam->date_time)->format('Y') }}</p> --}}
+                            <table class="table table-bordered text-left">
+                                <tr>
+                                    <td>Mode of Examination</td>
+                                    <td> :</td>
+                                    <td>Total Marks</td>
+                                    <td> : {{$questionPapers->first()->exam->total_mark}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Duration of Examination</td>
+                                    <td> : {{$questionPapers->first()->exam->time}}</td>
+                                    <td>Pass Marks</td>
+                                    <td>:</td>
+                                </tr>
+                            </table>
                         </div>
-                        <p><span>Time: {{$questions->first()->exam->time}}</span> <span style="float:right">Total marks: {{$questions->first()->exam->total_mark}}</span> </p>
                     </div>
                     <h4 class="quesType">Multiple Choice</h4>
-                    @foreach ($questions->where('type','Multiple Choice') as $key => $question)
+                    @foreach ($questionPapers->where('type','Multiple Choice') as $key => $question)
                     <div class="questionArea">
-                        <h4 class="question">{{ $question->ques }}
-                            <span style="float:right">{{ $question->mark }}</span>
+                        <h4 class="question">{{ $question->question->ques }}
+                            <span style="float:right">{{ $question->question->mark }}</span>
                         </h4>
-                        @foreach ($question->options as $option)
+                        @foreach ($question->question->options as $option)
                         <div class="col-md-6 option">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="{{$option->id}}" id="exampleRadios{{$option->id}}">
@@ -54,17 +74,17 @@
                     <br>
                     <br>
                     <h4 class="quesType">Short Question</h4>
-                    @foreach ($questions->where('type','Short Question') as $question)
+                    @foreach ($questionPapers->where('type','Short Question') as $question)
                     <div class="questionArea">
-                        <h4 class="question">{{ $question->ques }}
-                            <span style="float:right">{{ $question->mark }}</span>
+                        <h4 class="question">{{ $question->question->ques }}
+                            <span style="float:right">{{ $question->question->mark }}</span>
                         </h4>
                     </div>
                     @endforeach
                     <br>
                     <br>
                     <h4 class="quesType">Long Question</h4>
-                    @foreach ($questions->where('type','Long Question') as $question)
+                    @foreach ($questionPapers->where('type','Long Question') as $question)
                     <div class="questionArea">
                         <h4 class="question">{{ $question->ques }}
                             <span style="float:right">{{ $question->mark }}</span>

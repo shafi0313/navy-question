@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Exam;
 use App\Models\Question;
 use Illuminate\Http\Request;
+use App\Models\QuestionPaper;
 use App\Http\Controllers\Controller;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -14,8 +16,8 @@ class QuestionPaperController extends Controller
         if ($error = $this->sendPermissionError('index')) {
             return $error;
         }
-        $questions = Question::all();
-        return view('admin.question_paper.index', compact('questions'));
+        $exams = Exam::all();
+        return view('admin.question_paper.index', compact('exams'));
     }
 
     public function show($examId)
@@ -23,17 +25,11 @@ class QuestionPaperController extends Controller
         if ($error = $this->sendPermissionError('show')) {
             return $error;
         }
-
-
-        $questions = Question::with('options')->whereSelected(1)->whereExam_id($examId)->get();
-        if($questions->count() <= 0 ){
+        $questionPapers = QuestionPaper::with(['exam','question'])->whereExam_id($examId)->get();
+        if($questionPapers->count() <= 0 ){
             Alert::error('No Data Found');
             return back();
         }
-        return view('admin.question_paper.show', compact('questions'));
-
-
-
-
+        return view('admin.question_paper.show', compact('questionPapers'));
     }
 }

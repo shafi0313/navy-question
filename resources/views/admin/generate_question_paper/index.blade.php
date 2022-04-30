@@ -22,22 +22,21 @@
                             <div class="card-title">Add Question</div>
                         </div>
                         @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-                        {{-- <form action="{{ route('admin.question.store') }}" method="post"> --}}
-
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                        <form action="{{ route('admin.generateQuestion.store') }}" method="post">
+                            @csrf
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="exam_id">Exam <span class="t_r">*</span></label>
-                                            {{-- <input name="exam_id" class="form-control" value="{{ $exam->name }}" readonly> --}}
                                             <select class="form-control" name="exam_id" id="exam_id">
                                                 <option selected value disabled>Select</option>
                                                 @foreach ($exams as $exam)
@@ -52,7 +51,6 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="subject_id">Subject <span class="t_r">*</span></label>
-                                            {{-- <input name="subject_id" class="form-control" value="{{ $exam->subject->name }}" readonly> --}}
                                             <select class="form-control" name="subject_id" id="subject_id">
                                                 <option selected value disabled>Select</option>
                                                 @foreach ($subjects as $subject)
@@ -67,12 +65,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="chapter_id">Chapter <span class="t_r">*</span></label>
-                                            {{-- <select class="form-control" name="chapter_id" id="chapter_id"> --}}
                                             <select class="form-control" name="chapter_id" id="chapter_id">
-                                            {{-- <option selected value disabled>Select</option>
-                                            @foreach ($chapters as $chapter)
-                                                <option value="{{ $chapter->id }}">{{ $chapter->name }}</option>
-                                            @endforeach --}}
                                             </select>
                                             @if ($errors->has('chapter_id'))
                                                 <div class="alert alert-danger">{{ $errors->first('chapter_id') }}</div>
@@ -88,9 +81,9 @@
                                             border-bottom: 1px solid gray;
                                             margin-bottom: 10px !important;
                                         }
-                                        .questionArea {
+                                        /* .questionArea {
                                             padding: 0 20px;
-                                        }
+                                        } */
 
                                         .question span{
                                             margin-left: 100px;
@@ -99,17 +92,18 @@
                                             margin-left: 30px;
                                         }
                                     </style>
-
-
-                                    <form action="{{ route('admin.generateQuestion.store') }}" method="POST">
-                                        @csrf
-                                    <div class="questionArea" id="questionArea">
+                                    <div class="col-md-12">
+                                        <table class="table table-striped table-bordered table-hover w-100" >
+                                            <thead>
+                                                <tr>
+                                                    <th>Question</th>
+                                                    <th>Type</th>
+                                                    <th>Marks</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="questionArea" id="questionArea"></tbody>
+                                        </table>
                                     </div>
-
-
-
-
-
                                 </div>
                             </div>
                             <div class="text-center card-action">
@@ -159,11 +153,12 @@
                 if(res.status == 200){
                     var quesData = '';
                     $.each(res.questions,function(i,v){
-                        quesData += '<h4 class="question">'
-                        quesData += '<input type="hidden" name="exam_id[]" value="'+v.exam_id+'">'
-                        quesData += '<label><input type="checkbox" name="question_id[]" class="child" value="'+v.id+'">&nbsp;&nbsp; </label>'+v.ques+'';
-                        quesData += '<span style="float:right">'+v.mark+'</span>';
-                        quesData += '</h4">';
+                        quesData += '<tr>'
+                        quesData += '<input type="hidden" name="type[]" value="'+v.type+'">'
+                        quesData += '<td><input type="checkbox" name="question_id[]" value="'+v.id+'">&nbsp;&nbsp; '+v.ques+'</td>'
+                        quesData += '<td>'+v.type+'</td>'
+                        quesData += '<td>'+v.mark+'</td>'
+                        quesData += '</tr>'
                     });
                     $("#questionArea").append(quesData);
                 }else{
@@ -177,7 +172,6 @@
     });
 </script>
 <script>
-
     $("#quesType").change(function(){
         const type = $(this).val();
         if(type == "Multiple Choice"){

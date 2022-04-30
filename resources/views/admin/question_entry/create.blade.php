@@ -109,7 +109,7 @@
                                                 </th>
                                             </tr>
                                             <tr>
-                                                <td><input type="text" name="option[]" id="option" class="form-control" /></td>
+                                                <td><input type="text" name="option[]" class="form-control option" /></td>
                                                 <td style="width: 20px"><span class="btn btn-sm btn-success addrow"><i class="fa fa-plus" aria-hidden="true"></i></span></td>
                                             </tr>
                                             <tbody id="showItem" class=""></tbody>
@@ -145,7 +145,12 @@
 <script>
     // question()
       $('#add').click(function (e) {
-          e.preventDefault();
+        e.preventDefault();
+        // console.log($('.option').val())
+        $("input[name^='option']").each(function() {
+            console.log($(this).val());
+        });
+
         var data = getData();
         var request = $.ajax({
             url: "{{ route('admin.question.store') }}",
@@ -153,16 +158,21 @@
             data: data,
         });
         request.done(function( response ) {
-            // clear();
+            clear();
+            toast('success','Success!');
             question()
-            $("#questionArea").html('');
         });
-
         request.fail(function( jqXHR, textStatus ) {
             alert( "Request failed: " + textStatus + jqXHR.responseText );
         });
-
     });
+
+    function clear() {
+        $("#questionArea").html('');
+        $("#ques").val('');
+        $("#mark").val('');
+        $(".option").val('');
+    }
 
     function question(){
         $.ajax({
@@ -187,40 +197,37 @@
             'type' : $('#quesType').val(),
             'mark' : $('#mark').val(),
             'ques' : $('#ques').val(),
-            'option' : $('#option').val(),
+            'option' : $('.option').val(),
         };
     }
-
 </script>
 <script>
-
-        $('#chapter_id').change(function () {
-            $("#questionArea").html('');
-            $.ajax({
-                url:"{{route('admin.generateQuestion.getQuestion')}}",
-                data:{chapterId:$(this).val()},
-                method:'get',
-                success:res=>{
-                    if(res.status == 200){
-                        var quesData = '';
-                        $.each(res.questions,function(i,v){
-                            quesData += '<h4 class="question">'
-                            quesData += '<input type="hidden" name="exam_id[]" value="'+v.exam_id+'">'
-                            quesData += '<label>&nbsp;&nbsp; </label>'+v.ques+'';
-                            quesData += '<span style="float:right">'+v.mark+'</span>';
-                            quesData += '</h4">';
-                        });
-                        $("#questionArea").append(quesData);
-                    }else{
-                        alert('No question found')
-                    }
-                },
-                error:err=>{
+    $('#chapter_id').change(function () {
+        $("#questionArea").html('');
+        $.ajax({
+            url:"{{route('admin.generateQuestion.getQuestion')}}",
+            data:{chapterId:$(this).val()},
+            method:'get',
+            success:res=>{
+                if(res.status == 200){
+                    var quesData = '';
+                    $.each(res.questions,function(i,v){
+                        quesData += '<h4 class="question">'
+                        quesData += '<input type="hidden" name="exam_id[]" value="'+v.exam_id+'">'
+                        quesData += '<label>&nbsp;&nbsp; </label>'+v.ques+'';
+                        quesData += '<span style="float:right">'+v.mark+'</span>';
+                        quesData += '</h4">';
+                    });
+                    $("#questionArea").append(quesData);
+                }else{
                     alert('No question found')
                 }
-            });
+            },
+            error:err=>{
+                alert('No question found')
+            }
         });
-
+    });
 </script>
 <script>
     $('#subject_id').change(function () {
@@ -248,7 +255,6 @@
     });
 </script>
 <script>
-
     $("#quesType").change(function(){
         const type = $(this).val();
         if(type == "Multiple Choice"){
@@ -264,7 +270,7 @@
 			{i++;
 				html ='';
 				html +='<tr id="remove_'+i+'" class="post_item">';
-	            html +='	<td><input type="text" name="option[]" id="purchase_" class="form-control form-control-sm"/></td>';
+	            html +='	<td><input type="text" name="option[]" class="form-control option"/></td>';
 	            html +='	<td style="width: 20px"  class="col-md-2"><span class="btn btn-sm btn-danger" onclick="return remove('+i+')"><i class="fa fa-times" aria-hidden="true"></i></span></td>';
 	            html +='</tr>';
 	            $('#showItem').append(html);
@@ -276,6 +282,7 @@
 		total_price();
     }
 </script>
+@include('include.toast');
 @endpush
 @endsection
 

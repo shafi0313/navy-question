@@ -94,8 +94,17 @@ class QuestionEntryController extends Controller
             'ques' => 'required',
         ]);
         $data['user_id'] = auth()->user()->id;
-
         $questionEntry = Question::create($data);
+
+        if($request->type == "Multiple Choice"){
+            foreach($request->option as $key => $value){
+                $option=[
+                    'question_id' => $questionEntry->id,
+                    'option' => $request->option[$key],
+                ];
+                QuesOption::create($option);
+            }
+        }
         return response()->json($questionEntry, 200);
     }
 
