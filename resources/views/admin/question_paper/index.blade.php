@@ -19,7 +19,7 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-items-center">
-                                <h4 class="card-title">Add Row</h4>
+                                {{-- <h4 class="card-title">Add Row</h4> --}}
                                 {{-- <a href="{{ route('admin.question.create') }}" class="btn btn-primary btn-round ml-auto text-light" style="min-width: 200px">
                                     <i class="fa fa-plus"></i> Add New
                                 </a> --}}
@@ -31,9 +31,10 @@
                                     <thead class="bg-secondary thw">
                                         <tr>
                                             <th>SL</th>
-                                            {{-- <th>Creator Name</th> --}}
                                             <th>Exam</th>
                                             <th>Exam Code</th>
+                                            <th>Exam Mode</th>
+                                            <th>Exam Trade</th>
                                             <th>Exam Date & Time</th>
                                             <th>Exam Duration</th>
                                             {{-- <th>Subject</th> --}}
@@ -42,6 +43,10 @@
                                     </thead>
                                     <tfoot>
                                         <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
                                             <th></th>
                                             <th></th>
                                             <th></th>
@@ -55,8 +60,10 @@
                                             {{-- <td>{{ $question->user->name }}</td> --}}
                                             <td>{{ $exam->name }}</td>
                                             <td>{{ $exam->code }}</td>
+                                            <td>{{ $exam->mode }}</td>
+                                            <td>{{ $exam->trade }}</td>
                                             <td>{{ examDateTime($exam->date_time) }}</td>
-                                            <td>{{ $exam->time }}</td>
+                                            <td>{{ $exam->duration }}</td>
                                             <td>
                                                 <div class="form-button-action">
                                                     <a href="{{ route('admin.generatedQues.show', $exam->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
