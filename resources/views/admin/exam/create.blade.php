@@ -35,7 +35,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="code">Exam/Course Code <span class="t_r">*</span></label>
+                                            <label for="code">Code <span class="t_r">*</span></label>
                                             <input type="text" name="code" class="form-control" value="{{ old('code') }}" required>
                                             @if ($errors->has('code'))
                                             <div class="alert alert-danger">{{ $errors->first('code') }}</div>
@@ -44,7 +44,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="date_time">Exam/Course Date & Time <span class="t_r">*</span></label>
+                                            <label for="date_time">Date & Time <span class="t_r">*</span></label>
                                             <input type="datetime-local" name="date_time" class="form-control" value="{{ old('date_time') }}" required>
                                             @if ($errors->has('date_time'))
                                             <div class="alert alert-danger">{{ $errors->first('date_time') }}</div>
@@ -53,7 +53,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="duration">Exam/Course Duration <span class="t_r">*</span></label>
+                                            <label for="duration">Duration <span class="t_r">*</span></label>
                                             <input type="text" name="duration" class="form-control" value="{{ old('duration') }}" placeholder="Ex: 1:30" required>
                                             @if ($errors->has('duration'))
                                             <div class="alert alert-danger">{{ $errors->first('duration') }}</div>
@@ -62,10 +62,19 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="total_ques">Total Question</label>
-                                            <input type="text" name="total_ques" class="form-control" value="{{ old('total_ques') }}" onInput="this.value = this.value.replace(/[a-zA-z\-*/]/g,'');">
-                                            @if ($errors->has('total_ques'))
-                                            <div class="alert alert-danger">{{ $errors->first('total_ques') }}</div>
+                                            <label for="mode">Mode <span class="t_r">*</span></label>
+                                            <input type="text" name="mode" class="form-control" value="{{ old('mode') }}" required>
+                                            @if ($errors->has('mode'))
+                                            <div class="alert alert-danger">{{ $errors->first('mode') }}</div>
+                                        @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="trade">Trade</label>
+                                            <input type="text" name="trade" class="form-control" value="{{ old('trade') }}" required>
+                                            @if ($errors->has('trade'))
+                                            <div class="alert alert-danger">{{ $errors->first('trade') }}</div>
                                         @endif
                                         </div>
                                     </div>
@@ -75,6 +84,15 @@
                                             <input type="text" name="total_mark" class="form-control" value="{{ old('total_mark') }}" onInput="this.value = this.value.replace(/[a-zA-z\-*/]/g,'');" required>
                                             @if ($errors->has('total_mark'))
                                             <div class="alert alert-danger">{{ $errors->first('total_mark') }}</div>
+                                        @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="pass_mark">Pass Marks <span class="t_r">*</span></label>
+                                            <input type="text" name="pass_mark" class="form-control" value="{{ old('pass_mark') }}" onInput="this.value = this.value.replace(/[a-zA-z\-*/]/g,'');" required>
+                                            @if ($errors->has('pass_mark'))
+                                            <div class="alert alert-danger">{{ $errors->first('pass_mark') }}</div>
                                         @endif
                                         </div>
                                     </div>

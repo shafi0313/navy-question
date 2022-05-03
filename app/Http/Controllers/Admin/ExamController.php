@@ -37,15 +37,15 @@ class ExamController extends Controller
             'name' => 'required|max:100',
             'code' => 'required|max:60',
             'date_time' => 'required|after:starting_hour',
-            'time' => 'required',
-            'total_ques' => 'nullable|integer',
+            'duration' => 'required',
+            'mode' => 'required',
+            'trade' => 'nullable',
             'total_mark' => 'required|integer',
+            'pass_mark' => 'required|integer',
         ]);
         $data['user_id'] = auth()->user()->id;
         $data['status'] = 'Pending';
-
         DB::beginTransaction();
-
         try{
             Exam::create($data);
             DB::commit();
