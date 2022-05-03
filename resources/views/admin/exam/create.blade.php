@@ -53,10 +53,10 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="time">Exam/Course Duration <span class="t_r">*</span></label>
-                                            <input type="text" name="time" class="form-control" value="{{ old('time') }}" placeholder="Ex: 1:30" required>
-                                            @if ($errors->has('time'))
-                                            <div class="alert alert-danger">{{ $errors->first('time') }}</div>
+                                            <label for="duration">Exam/Course Duration <span class="t_r">*</span></label>
+                                            <input type="text" name="duration" class="form-control" value="{{ old('duration') }}" placeholder="Ex: 1:30" required>
+                                            @if ($errors->has('duration'))
+                                            <div class="alert alert-danger">{{ $errors->first('duration') }}</div>
                                         @endif
                                         </div>
                                     </div>

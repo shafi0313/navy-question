@@ -53,11 +53,12 @@
                             </table>
                         </div>
                     </div>
+                    @php $x = 1 @endphp
                     @if($questionPapers->where('type','Multiple Choice')->count() > 0)
                         <h4 class="quesType">Multiple Choice</h4>
                         @foreach ($questionPapers->where('type','Multiple Choice') as $key => $question)
                         <div class="questionArea">
-                            <h4 class="question">{{ $question->question->ques }}
+                            <h4 class="question">{{$x++}}. {{ $question->question->ques }}
                                 <span style="float:right">{{ $question->question->mark }}</span>
                             </h4>
                             @foreach ($question->question->options as $option)
@@ -80,7 +81,7 @@
                         <h4 class="quesType">Short Question</h4>
                         @foreach ($questionPapers->where('type','Short Question') as $question)
                         <div class="questionArea">
-                            <h4 class="question">{{ $question->question->ques }}
+                            <h4 class="question">{{$x++}}. {{ $question->question->ques }}
                                 <span style="float:right">{{ $question->question->mark }}</span>
                             </h4>
                         </div>
@@ -93,7 +94,7 @@
                         <h4 class="quesType">Long Question</h4>
                         @foreach ($questionPapers->where('type','Long Question') as $question)
                         <div class="questionArea">
-                            <h4 class="question">{{ $question->ques }}
+                            <h4 class="question">{{$x++}}. {{ $question->ques }}
                                 <span style="float:right">{{ $question->mark }}</span>
                             </h4>
                         </div>
