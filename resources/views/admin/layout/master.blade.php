@@ -45,7 +45,7 @@
         <div class="main-header">
             <!-- Logo Header -->
             <div class="logo-header" data-background-color="purple">
-                <a href="{{ route('admin.dashboard') }}" class="logo"> <h4 class="display:4 text-light" style="margin-top: 20px">Company Name</h4>
+                <a href="{{ route('admin.dashboard') }}" class="logo"> <h4 class="display:4 text-light" style="margin-top: 20px">Navy</h4>
 				</a>
                 {{-- <a href="index.html" class="logo">
                     <img src="{{ asset('backend/img/logo.svg') }}" alt="navbar brand" class="navbar-brand">

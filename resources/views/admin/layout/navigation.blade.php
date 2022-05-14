@@ -68,7 +68,7 @@
 
                 <li class="nav-item {{$m=='setup'?'active submenu':''}}">
                     <a data-toggle="collapse" href="#setup">
-                        <i class="fas fa-users-cog"></i>
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
                         <p>Setup</p>
                         <span class="caret"></span>
                     </a>

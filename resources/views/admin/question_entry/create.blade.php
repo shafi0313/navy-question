@@ -107,7 +107,7 @@
                                     <div class="row">
                                         <div class="form-group " >
                                             <label>Option: </label>
-                                            <input type="text" name="option" id="option" class="form-control" style="width: 222%">
+                                            <input type="text" name="option" id="option" class="form-control" style="width: 230%">
                                         </div>
                                         <div style="margin-top: 38px; margin-left:238px">
                                             <button class="btn btn-success add-item" type="button">Add</button>
