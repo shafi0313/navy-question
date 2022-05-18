@@ -55,14 +55,12 @@
                                             <td class="text-center">{{ $x++ }}</td>
                                             {{-- <td>{{ $exam->user->name }}</td> --}}
                                             <td>{{ $exam->name }}</td>
-                                            <td>{{ $exam->subject->name }}</td>
+                                            <td>{{ $exam->questionPaper->subject->name }}</td>
                                             <td>{{ Carbon\Carbon::parse($exam->date_time)->format('d/m/Y g:i A') }}</td>
                                             {{-- <td>{{ Carbon\Carbon::parse($exam->exam->date_time)->diffForHumans(Carbon\Carbon::now()) }}</td> --}}
-                                            <td>
-                                                <a href="{{ route('user.generatedQues.show', $exam->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
-                                                    Show
-                                                </a>
-                                            </td>
+                                            {{-- <td>
+
+                                            </td> --}}
                                             @php
                                                 $init = Carbon\Carbon::parse($exam->date_time)->diffInSeconds(Carbon\Carbon::now());
                                                 $day = floor($init / 86400);
@@ -73,6 +71,9 @@
 
                                             <td>
                                                 <div class="form-button-action">
+                                                    <a style="display: none"  href="{{ route('user.generatedQues.show', $exam->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg exam_btn" data-original-title="Show">
+                                                        Show
+                                                    </a>
                                                     {{-- <a href="" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
                                                         Show
                                                     </a> --}}
@@ -81,12 +82,12 @@
                                                     </button> --}}
 
                                                     @if ($exam->enroll)
-                                                    {{-- <div class="counter" style='color: green;'>
+                                                    <div class="counter" style='color: green;'>
                                                         <span class='e-m-days'>{{ $day }}</span> Days |
                                                         <span class='e-m-hours'>{{ $hours }}</span> Hours |
                                                         <span class='e-m-minutes'>{{ $minutes }}</span> Minutes |
                                                         <span class='e-m-seconds'>{{ $seconds }}</span> Seconds
-                                                      </div> --}}
+                                                    </div>
                                                     @else
                                                     <form action="{{ route('user.generatedQues.enroll') }}" method="post">
                                                         @csrf
@@ -116,45 +117,53 @@
     <!-- Datatables -->
     @include('include.data_table')
     <script>
-        $(function () {
-            function getCounterData(obj) {
-                var days = parseInt($('.e-m-days', obj).text());
-                var hours = parseInt($('.e-m-hours', obj).text());
-                var minutes = parseInt($('.e-m-minutes', obj).text());
-                var seconds = parseInt($('.e-m-seconds', obj).text());
-                return seconds + (minutes * 60) + (hours * 3600) + (days * 3600 * 24);
-            }
-
-            function setCounterData(s, obj) {
-                var days = Math.floor(s / (3600 * 24));
-                var hours = Math.floor((s % (60 * 60 * 24)) / (3600));
-                var minutes = Math.floor((s % (60 * 60)) / 60);
-                var seconds = Math.floor(s % 60);
-
-                console.log(days, hours, minutes, seconds);
-
-                // if(days==0 && hours==0 && minutes==0 && seconds==1){
-                //     alert("Please select")
-                // }
-
-                $('.e-m-days', obj).html(days);
-                $('.e-m-hours', obj).html(hours);
-                $('.e-m-minutes', obj).html(minutes);
-                $('.e-m-seconds', obj).html(seconds);
-            }
-
-            var count = getCounterData($(".counter"));
-
-            var timer = setInterval(function () {
-                count--;
-                if (count == 0) {
-                    clearInterval(timer);
-                    return;
+        if ({{Carbon\Carbon::parse($exam->date_time)}} >= {{Carbon\Carbon::parse(Carbon\Carbon::now())}}) {
+            console.log(new Date($.now()))
+            $(function () {
+                function getCounterData(obj) {
+                    var days = parseInt($('.e-m-days', obj).text());
+                    var hours = parseInt($('.e-m-hours', obj).text());
+                    var minutes = parseInt($('.e-m-minutes', obj).text());
+                    var seconds = parseInt($('.e-m-seconds', obj).text());
+                    return seconds + (minutes * 60) + (hours * 3600) + (days * 3600 * 24);
                 }
-                setCounterData(count, $(".counter"));
-            }, 1000);
 
-        });
+                function setCounterData(s, obj) {
+                    var days = Math.floor(s / (3600 * 24));
+                    var hours = Math.floor((s % (60 * 60 * 24)) / (3600));
+                    var minutes = Math.floor((s % (60 * 60)) / 60);
+                    var seconds = Math.floor(s % 60);
+
+                    console.log(days, hours, minutes, seconds);
+
+                    if (days == 0 && hours == 0 && minutes == 0 && seconds == 1) {
+                        $('.exam_btn').show();
+                        $('.counter').hide();
+                    }
+
+                    $('.e-m-days', obj).html(days);
+                    $('.e-m-hours', obj).html(hours);
+                    $('.e-m-minutes', obj).html(minutes);
+                    $('.e-m-seconds', obj).html(seconds);
+                }
+
+                var count = getCounterData($(".counter"));
+
+                var timer = setInterval(function () {
+                    count--;
+                    if (count == 0) {
+                        clearInterval(timer);
+                        return;
+                    }
+                    setCounterData(count, $(".counter"));
+                }, 1000);
+
+            });
+        }else{
+            $('.exam_btn').show();
+            $('.counter').hide();
+        }
+
     </script>
 @endpush
 @endsection

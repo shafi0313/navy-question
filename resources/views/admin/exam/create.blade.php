@@ -53,11 +53,15 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="duration">Duration <span class="t_r">*</span></label>
-                                            <input type="text" name="duration" class="form-control" value="{{ old('duration') }}" placeholder="Ex: 1:30" required>
-                                            @if ($errors->has('duration'))
-                                            <div class="alert alert-danger">{{ $errors->first('duration') }}</div>
-                                        @endif
+                                            <label for="duration">Duration <span class="t_r">*</span></label><br>
+                                            <input style="width:50%; display: inline-block" type="text" name="d_hour" class="form-control" value="{{ old('d_hour') }}" placeholder="Hour" onInput="this.value = this.value.replace(/[^\d]/g,'');" >
+                                            <input style="width:49%; display: inline-block" type="text" name="d_minute" class="form-control" value="{{ old('d_minute') }}" placeholder="Minute" onInput="this.value = this.value.replace(/[^\d]/g,'');" >
+                                            @if ($errors->has('d_hour'))
+                                                <div class="alert alert-danger">{{ $errors->first('d_hour') }}</div>
+                                            @endif
+                                            @if ($errors->has('d_minute'))
+                                                <div class="alert alert-danger">{{ $errors->first('d_minute') }}</div>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="col-md-6">

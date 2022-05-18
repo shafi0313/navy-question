@@ -62,6 +62,7 @@
                                             @endif
                                         </div>
                                     </div>
+
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="chapter_id">Chapter <span class="t_r">*</span></label>
@@ -72,6 +73,21 @@
                                             @endif
                                         </div>
                                     </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="type">Question Type <span class="t_r">*</span></label>
+                                            <select class="form-control" name="type" id="quesType" required>
+                                                <option selected value disabled>Select</option>
+                                                <option value="Multiple Choice">Multiple Choice</option>
+                                                <option value="Short Question">Short Question</option>
+                                                <option value="Long Question">Long Question</option>
+                                            </select>
+                                            @if ($errors->has('type'))
+                                                <div class="alert alert-danger">{{ $errors->first('type') }}</div>
+                                            @endif
+                                        </div>
+                                    </div>
+
                                     <div class="col-md-12">
                                         <hr class="bg-danger">
                                     </div>
@@ -143,11 +159,14 @@
             }
         });
     });
-    $('#chapter_id').change(function () {
+
+    $('#quesType').change(function () {
         $("#questionArea").html('');
+        let chapterId = $('#chapter_id').find(":selected").val();
+        let quesType = $(this).val();
         $.ajax({
             url:"{{route('admin.generateQuestion.getQuestion')}}",
-            data:{chapterId:$(this).val()},
+            data:{chapterId:chapterId, quesType:quesType},
             method:'get',
             success:res=>{
                 if(res.status == 200){

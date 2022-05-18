@@ -69,7 +69,7 @@
                                             <td>{{ $exam->trade }}</td>
                                             <td>{{ $exam->mode }}</td>
                                             <td>{{ examDateTime($exam->date_time) }}</td>
-                                            <td>{{ $exam->duration }}</td>
+                                            <td>{{ $exam->d_hour}}:{{ $exam->d_minute}}</td>
                                             <td>{{ $exam->total_mark }}</td>
                                             <td>{{ $exam->pass_mark }}</td>
                                             <td>{{ $exam->status }}</td>

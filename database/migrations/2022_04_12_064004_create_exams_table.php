@@ -21,7 +21,8 @@ return new class extends Migration
             $table->dateTime('date_time');
             $table->tinyInteger('total_mark');
             $table->tinyInteger('pass_mark');
-            $table->string('duration',10);
+            $table->tinyInteger('d_hour')->default(0);
+            $table->tinyInteger('d_minute')->default(0);
             $table->string('mode',80);
             $table->string('trade',80)->nullable();
             $table->enum('status',['Pending', 'Started', 'Completed']);

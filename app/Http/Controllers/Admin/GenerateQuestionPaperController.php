@@ -36,7 +36,7 @@ class GenerateQuestionPaperController extends Controller
     public function getQuestion(Request $request)
     {
         if ($request->ajax()) {
-            $questions = Question::whereChapter_id($request->chapterId)->get();
+            $questions = Question::whereChapter_id($request->chapterId)->whereType($request->quesType)->get();
             // $questions = Question::whereExam_id($request->examId)->whereSubject_id($request->subjectId)->whereChapter_id($request->chapterId)->get();
             return response()->json(['questions'=>$questions,'status'=>200]);
         }
@@ -49,6 +49,7 @@ class GenerateQuestionPaperController extends Controller
             $data=[
                 'user_id' => auth()->user()->id,
                 'exam_id' => $request->exam_id,
+                'subject_id' => $request->subject_id,
                 'question_id' => $request->question_id[$key],
                 'type' => $type[$key],
             ];

@@ -21,11 +21,6 @@
                     margin-bottom: 0;
                     padding: 0px;
                 }
-                .title h4{
-                    padding: 0;
-                    margin: 0;
-                    text-transform: uppercase;
-                }
             </style>
             <div class="card-header">
                 <div class="d-flex align-items-center">
@@ -34,29 +29,7 @@
                 </div>
             </div>
                 <div class="card-body" id="printableArea">
-                    <div class="navy">
-                        <div class="title">
-                            <h4>CONFIDENTIAL</h4>
-                            <h4>EXAM IN CONFIDENCE</h4>
-                            <h4>PROGRAM EXAM FOR THE RANK OF {{$questionPapers->first()->exam->name}}</h4>
-                            <h4>TRADE: {{$questionPapers->first()->exam->trade}}</h4>
-                            <h4>SUBJECT: {{ $questionPapers->first()->question->subject->name }}</h4>
-                            <table class="table table-bordered text-left">
-                                <tr>
-                                    <td>Mode of Examination</td>
-                                    <td> : {{$questionPapers->first()->exam->mode}}</td>
-                                    <td>Total Marks</td>
-                                    <td> : {{$questionPapers->first()->exam->total_mark}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Duration of Examination</td>
-                                    <td> : {{$questionPapers->first()->exam->duration}}</td>
-                                    <td>Pass Marks</td>
-                                    <td>: {{$questionPapers->first()->exam->pass_mark}}</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
+                    @include('include.question_paper_head')
                     @php $x = 1 @endphp
                     @if($questionPapers->where('type','Multiple Choice')->count() > 0)
                         <h4 class="quesType">Multiple Choice</h4>
@@ -105,7 +78,6 @@
                         @endforeach
                     @endif
                 </div>
-            </form>
         </div>
     </div>
 </div>

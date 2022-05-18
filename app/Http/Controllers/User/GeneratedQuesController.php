@@ -9,13 +9,14 @@ use App\Models\QuesAns;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\QuestionPaper;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class GeneratedQuesController extends Controller
 {
     public function index()
     {
-        $exams = Exam::with(['enroll','subject'])->get();
+        $exams = Exam::with(['questionPaper'])->get();
         return view('user.generated_ques.index', compact('exams'));
     }
 
@@ -32,8 +33,9 @@ class GeneratedQuesController extends Controller
             Alert::info('You have completed the exam');
             return back();
         }
-        $questions = Question::with(['options'])->whereSelected(1)->whereExam_id($examId)->get();
-        return view('user.generated_ques.show', compact('questions'));
+        $questions = QuestionPaper::with(['options'])->whereExam_id($examId)->get();
+        $questionPapers = QuestionPaper::with(['options'])->whereExam_id($examId)->get();
+        return view('user.generated_ques.show', compact('questions','questionPapers'));
     }
 
     public function enroll(Request $request)
