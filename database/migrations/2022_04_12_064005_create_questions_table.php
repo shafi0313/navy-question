@@ -21,7 +21,7 @@ return new class extends Migration
             $table->enum('type', ["Multiple Choice","Short Question","Long Question"]);
             $table->string('ques',500);
             $table->integer('mark');
-            $table->boolean('selected')->default(0);
+            // $table->boolean('selected')->default(0);
             $table->timestamps();
         });
     }

@@ -34,6 +34,12 @@ class GenerateQuestionPaperController extends Controller
 
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'exam_id' => 'required',
+            'subject_id' => 'required',
+            'chapter_id' => 'required',
+            'type' => 'required',
+        ]);
         if($request->has('question_id') && !empty($request->question_id)){
             $type = Question::whereIn('id',$request->question_id)->get(['type'])->pluck('type');
             foreach($request->question_id as $key => $value){
@@ -44,14 +50,15 @@ class GenerateQuestionPaperController extends Controller
                     'question_id' => $request->question_id[$key],
                     'type' => $type[$key],
                 ];
-                QuestionPaper::create($data);
+                QuestionPaper::updateOrCreate($data);
             }
         }else{
             if($request->type != 'Multiple Choice'){
                 Alert::info('Percentage worked only for multiple choice');
                 return back();
             }
-            $questions = Question::whereSubject_id($request->subject_id)->whereChapter_id($request->chapter_id)->whereType('Multiple Choice')->inRandomOrder()->limit($request->percentage)->get()->pluck('id');
+            $percentage = Exam::find($request->exam_id)->total_mark * $request->percentage / 100;
+            $questions = Question::whereSubject_id($request->subject_id)->whereChapter_id($request->chapter_id)->whereType('Multiple Choice')->inRandomOrder()->limit(round($percentage))->get()->pluck('id');
             foreach($questions as $key => $value){
                 $data=[
                     'user_id' => auth()->user()->id,
@@ -60,7 +67,7 @@ class GenerateQuestionPaperController extends Controller
                     'question_id' => $value,
                     'type' => $request->type,
                 ];
-                QuestionPaper::create($data);
+                QuestionPaper::updateOrCreate($data);
             }
         }
 
