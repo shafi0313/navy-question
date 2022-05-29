@@ -119,7 +119,6 @@ class QuestionEntryController extends Controller
             return $error;
         }
         $data = $this->validate($request, [
-            'exam_id' => 'required|integer',
             'subject_id' => 'required|integer',
             'chapter_id' => 'required|integer',
             'type' => 'required',
@@ -137,13 +136,22 @@ class QuestionEntryController extends Controller
                     'question_id' => $id,
                     'option' => $request->option[$key],
                 ];
-                QuesOption::updateOrCreate(['id' => $request->option_id],$option);
+                if(!empty(QuesOption::whereId($request->option_id[$key]))){
+                    QuesOption::where('id', $request->option_id[$key])->update($option);
+                }else{
+                    QuesOption::create($option);
+                }
+                // QuesOption::updateOrCreate(['id' => $request->option_id],$option);
+                // $update = QuesOption::where('id', $request->option_id[$key])->update($option);
+                // if(!$update){
+                //     QuesOption::create($option);
+                // }
             }
         }
 
         try{
             DB::commit();
-            toast('success','Success');
+            toast('Success!','success');
             return redirect()->back();
         }catch(\Exception $ex){
             return $ex->getMessage();

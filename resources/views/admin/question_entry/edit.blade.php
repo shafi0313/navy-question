@@ -151,12 +151,10 @@
                 $("#chapter_id").html(opt);
                 }else{
                     alert('No chapter found')
-                    // toast('error', 'No Codes found')
                 }
             },
             error:err=>{
                 alert('No chapter found')
-                // toast('error', 'No Codes found')
             }
         });
     });
@@ -164,9 +162,7 @@
 <script>
 
     $("#quesType").change(function(){
-
         const type = $(this).val();
-
         if(type == "Multiple Choice"){
             $(".quesTypeDiv").show();
         }else{
@@ -180,8 +176,9 @@
 			{i++;
 				html ='';
 				html +='<tr id="remove_'+i+'" class="post_item">';
+	            html +='	<input type="hidden" name="option_id[]" value="{{ $option->id }}">';
 	            html +='	<td><input type="text" name="option[]" id="purchase_" class="form-control form-control-sm"/></td>';
-	            html +='	<td style="width: 20px"  class="col-md-2"><span class="btn btn-sm btn-danger" onclick="return remove('+i+')"><i class="fa fa-times" aria-hidden="true"></i></span></td>';
+	            html +='	<td style="width: 20px"  class="col-md-2"><span class="btn btn-sm btn-danger" onClick="return remove('+i+')"><i class="fa fa-times" aria-hidden="true"></i></span></td>';
 	            html +='</tr>';
 	            $('#showItem').append(html);
 			});
