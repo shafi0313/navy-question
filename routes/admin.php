@@ -16,13 +16,6 @@ use App\Http\Controllers\Admin\QuestionEntryController;
 use App\Http\Controllers\Admin\QuestionPaperController;
 use App\Http\Controllers\Admin\GenerateQuestionPaperController;
 
-
-Route::get('/t', function () {
-    return User::with('permissionn')->get();
-
-});
-
-
 Route::controller(AuthController::class)->group(function(){
     Route::get('/login', 'login')->name('login');
     // Route::get('/register', 'register'])->name('register');

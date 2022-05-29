@@ -37,7 +37,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="exam_id">Exam <span class="t_r">*</span></label>
-                                            <select class="form-control" name="exam_id" id="exam_id">
+                                            <select class="form-control select2" name="exam_id" id="exam_id">
                                                 <option selected value disabled>Select</option>
                                                 @foreach ($exams as $exam)
                                                 <option value="{{ $exam->id }}">{{ $exam->name }}</option>
@@ -51,7 +51,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="subject_id">Subject <span class="t_r">*</span></label>
-                                            <select class="form-control" name="subject_id" id="subject_id">
+                                            <select class="form-control select2" name="subject_id" id="subject_id">
                                                 <option selected value disabled>Select</option>
                                                 @foreach ($subjects as $subject)
                                                 <option value="{{ $subject->id }}">{{ $subject->name }}</option>
@@ -66,7 +66,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="chapter_id">Chapter <span class="t_r">*</span></label>
-                                            <select class="form-control" name="chapter_id" id="chapter_id">
+                                            <select class="form-control select2" name="chapter_id" id="chapter_id">
                                             </select>
                                             @if ($errors->has('chapter_id'))
                                                 <div class="alert alert-danger">{{ $errors->first('chapter_id') }}</div>
@@ -91,19 +91,6 @@
                                     <div class="col-md-12">
                                         <hr class="bg-danger">
                                     </div>
-                                    <style>
-                                        .quesType{
-                                            font-size: 18px;
-                                            border-bottom: 1px solid gray;
-                                            margin-bottom: 10px !important;
-                                        }
-                                        .question span{
-                                            margin-left: 100px;
-                                        }
-                                        .option{
-                                            margin-left: 30px;
-                                        }
-                                    </style>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="type">Question Generate by Percentage</label>

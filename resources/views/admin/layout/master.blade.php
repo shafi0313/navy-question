@@ -29,6 +29,8 @@
             }
         });
     </script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
 
     <!-- CSS Files -->
     <link rel="stylesheet" href="{{ asset('backend/css/bootstrap.min.css') }}">
@@ -91,7 +93,7 @@
 
     <!-- jQuery Sparkline -->
     {{-- <script src="{{ asset('backend/js/plugin/jquery.sparkline/jquery.sparkline.min.js') }}"></script> --}}
-
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 
     <!-- Bootstrap Notify -->
@@ -117,6 +119,11 @@
             $(this).find('button[type="submit"]').attr('disabled', 'disabled');
         });
     </script> --}}
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2();
+        });
+    </script>
 
     @include('sweetalert::alert')
 	@stack('custom_scripts')

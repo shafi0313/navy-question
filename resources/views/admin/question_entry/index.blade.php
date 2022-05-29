@@ -26,67 +26,59 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <div class="table-responsive">
-                                <table id="multi-filter-select" class="display table table-striped table-hover">
-                                    <thead class="bg-secondary thw">
-                                        <tr>
-                                            <th>SL</th>
-                                            <th>By</th>
-                                            <th>Subject</th>
-                                            <th>Chapter</th>
-                                            <th>Type</th>
-                                            <th>Question</th>
-                                            <th>Mark</th>
-                                            <th>Date & Time</th>
-                                            <th class="no-sort" width="40px">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-                                        @php $x = 1 @endphp
-                                        @foreach ($questions as $question)
-                                        {{-- @php $question = $questio->first() @endphp --}}
-                                        <tr>
-                                            <td class="text-center">{{ $x++ }}</td>
-                                            <td>{{ $question->user->name }}</td>
-                                            <td>{{ $question->subject->name }}</td>
-                                            <td>{{ $question->chapter->name }}</td>
-                                            <td>{{ $question->type }}</td>
-                                            <td>{{ $question->ques }}</td>
-                                            <td>{{ $question->mark }}</td>
-                                            <td>{{ examDateTime($question->created_at) }}</td>
-                                            {{-- <td>{{ $question->subject->name }}</td> --}}
-                                            <td>
-                                                <div class="form-button-action">
-                                                    {{-- <a href="{{ route('admin.question.show', $question->exam_id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
-                                                        Show
-                                                    </a> --}}
-                                                    {{-- <a href="{{ route('admin.question.create', $question->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
-                                                        Question Entry
-                                                    </a> --}}
-                                                    {{-- <a href="{{ route('admin.adminUser.edit', $question->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">
-                                                        <i class="fa fa-edit"></i>
-                                                    </a> --}}
-                                                    {{-- <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove">
-                                                        <i class="fa fa-times"></i>
-                                                    </button> --}}
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="subject_id">Subject <span class="t_r">*</span></label>
+                                        <select class="form-control select2" name="subject_id" id="subject_id">
+                                            <option selected value disabled>Select</option>
+                                            @foreach ($subjects as $subject)
+                                            <option value="{{ $subject->id }}">{{ $subject->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @if ($errors->has('subject_id'))
+                                            <div class="alert alert-danger">{{ $errors->first('subject_id') }}</div>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="chapter_id">Chapter <span class="t_r">*</span></label>
+                                        <select class="form-control select2" name="chapter_id" id="chapter_id">
+                                        </select>
+                                        @if ($errors->has('chapter_id'))
+                                            <div class="alert alert-danger">{{ $errors->first('chapter_id') }}</div>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="type">Question Type <span class="t_r">*</span></label>
+                                        <select class="form-control" name="type" id="quesType" required>
+                                            <option selected value disabled>Select</option>
+                                            <option value="Multiple Choice">Multiple Choice</option>
+                                            <option value="Short Question">Short Question</option>
+                                            <option value="Long Question">Long Question</option>
+                                        </select>
+                                        @if ($errors->has('type'))
+                                            <div class="alert alert-danger">{{ $errors->first('type') }}</div>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <table class="table table-striped table-bordered table-hover w-100" >
+                                        <thead>
+                                            <tr>
+                                                <th>Question</th>
+                                                <th>Type</th>
+                                                <th>Marks</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="questionArea" id="questionArea"></tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -100,6 +92,69 @@
 @push('custom_scripts')
     <!-- Datatables -->
     @include('include.data_table')
+    <script>
+        $('#subject_id').change(function () {
+            $.ajax({
+                url:"{{route('admin.question.getChapter')}}",
+                data:{subjectId:$(this).val()},
+                method:'get',
+                success:res=>{
+                    let opt = '<option disabled selected>- -</option>';
+                    if(res.status == 200){
+                    $.each(res.chapters,function(i,v){
+                        opt += '<option value="'+v.id+'">'+v.name+'</option>';
+                    });
+                    $("#chapter_id").html(opt);
+                    }else{
+                        alert('No chapter found')
+                        // toast('error', 'No Codes found')
+                    }
+                },
+                error:err=>{
+                    alert('No chapter found')
+                    // toast('error', 'No Codes found')
+                }
+            });
+        });
+        $('#quesType').change(function () {
+        $("#questionArea").html('');
+        let chapterId = $('#chapter_id').find(":selected").val();
+        let quesType = $(this).val();
+        $.ajax({
+            url:"{{route('admin.generateQuestion.getQuestion')}}",
+            data:{chapterId:chapterId, quesType:quesType},
+            method:'get',
+            success:res=>{
+                if(res.status == 200){
+                    let quesData = '';
+                    $.each(res.questions,function(i,v){
+                        let id = v.id;
+                        let url = '{{ route("admin.question.edit", ":id") }}';
+                        url = url.replace(':id', id);
+
+                        quesData += '<tr>'
+                        // quesData += '<input type="hidden" name="type" value="'+v.type+'">'
+                        quesData += '<td><input type="checkbox" name="question_id[]" value="'+v.id+'">&nbsp;&nbsp; '+v.ques+'</td>'
+                        quesData += '<td>'+v.type+'</td>'
+                        quesData += '<td>'+v.mark+'</td>'
+                        quesData += '<td>'
+                        quesData +=     '<div class="form-button-action">'
+                        quesData +=         '<a href='+url+' data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">Edit</a>'
+                        quesData +=     '</div>'
+                        quesData += '</td>'
+                        quesData += '</tr>'
+                    });
+                    $("#questionArea").append(quesData);
+                }else{
+                    alert('No question found')
+                }
+            },
+            error:err=>{
+                alert('No question found')
+            }
+        });
+    });
+    </script>
 @endpush
 @endsection
 

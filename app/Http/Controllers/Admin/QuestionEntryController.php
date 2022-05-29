@@ -7,7 +7,6 @@ use App\Models\Chapter;
 use App\Models\Subject;
 use App\Models\Question;
 use App\Models\QuesOption;
-use App\Models\QuesGenerate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -20,7 +19,8 @@ class QuestionEntryController extends Controller
             return $error;
         }
         $questions = Question::all();
-        return view('admin.question_entry.index', compact('questions'));
+        $subjects = Subject::all();
+        return view('admin.question_entry.index', compact('questions','subjects'));
     }
 
     public function create()
@@ -28,7 +28,6 @@ class QuestionEntryController extends Controller
         if ($error = $this->sendPermissionError('create')) {
             return $error;
         }
-        // $exam = Exam::whereId($examId)->first();
         $subjects = Subject::all();
         $chapters = Chapter::all();
         return view('admin.question_entry.create', compact('subjects','chapters'));
@@ -86,7 +85,6 @@ class QuestionEntryController extends Controller
     public function store(Request $request)
     {
         $data = $this->validate($request, [
-            // 'exam_id' => 'required|integer',
             'subject_id' => 'required|integer',
             'chapter_id' => 'required|integer',
             'type' => 'required',
@@ -95,16 +93,13 @@ class QuestionEntryController extends Controller
         ]);
         $data['user_id'] = auth()->user()->id;
         $questionEntry = Question::create($data);
-
-        // if($request->type == "Multiple Choice"){
-            foreach($request->option as $key => $value){
-                $option=[
-                    'question_id' => $questionEntry->id,
-                    'option' => $request->option[$key],
-                ];
-                QuesOption::create($option);
-            }
-        // }
+        foreach($request->option as $key => $value){
+            $option=[
+                'question_id' => $questionEntry->id,
+                'option' => $request->option[$key],
+            ];
+            QuesOption::create($option);
+        }
         return response()->json($questionEntry, 200);
     }
 

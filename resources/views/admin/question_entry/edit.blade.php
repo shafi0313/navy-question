@@ -36,20 +36,6 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="exam_id">Exam <span class="t_r">*</span></label>
-                                            <select class="form-control" name="exam_id" id="exam_id">
-                                                <option selected value="{{ $question->exam_id }}">{{ $question->exam->name }}</option>
-                                                @foreach ($exams as $exam)
-                                                    <option value="{{ $exam->id }}">{{ $exam->name }}</option>
-                                                @endforeach
-                                            </select>
-                                            @if ($errors->has('exam_id'))
-                                                <div class="alert alert-danger">{{ $errors->first('exam_id') }}</div>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
                                             <label for="subject_id">Subject <span class="t_r">*</span></label>
                                             <select class="form-control" name="subject_id" id="subject_id">
                                                 <option selected value="{{ $question->subject_id }}">{{ $question->subject->name }}</option>
@@ -151,31 +137,6 @@
 
 @push('custom_scripts')
 <script>
-    $('#exam_id').change(function () {
-        // $('#post_bank_account').val($(this).val());
-        // alert($(this).val())
-        $.ajax({
-            url:"{{route('admin.question.getSubject')}}",
-            data:{examId:$(this).val()},
-            method:'get',
-            success:res=>{
-                let opt = '<option disabled selected>- -</option>';
-                if(res.status == 200){
-                $.each(res.subjects,function(i,v){
-                    opt += '<option value="'+v.id+'">'+v.name+'</option>';
-                });
-                $("#subject_id").html(opt);
-                }else{
-                    alert('No subject found')
-                    // toast('error', 'No Codes found')
-                }
-            },
-            error:err=>{
-                alert('No subject found')
-                // toast('error', 'No Codes found')
-            }
-        });
-    });
     $('#subject_id').change(function () {
         $.ajax({
             url:"{{route('admin.question.getChapter')}}",
