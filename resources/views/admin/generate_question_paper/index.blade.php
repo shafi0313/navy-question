@@ -97,10 +97,6 @@
                                             border-bottom: 1px solid gray;
                                             margin-bottom: 10px !important;
                                         }
-                                        /* .questionArea {
-                                            padding: 0 20px;
-                                        } */
-
                                         .question span{
                                             margin-left: 100px;
                                         }
@@ -108,6 +104,15 @@
                                             margin-left: 30px;
                                         }
                                     </style>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="type">Question Generate by Percentage</label>
+                                            <input type="text" name="percentage" class="form-control">
+                                            @if ($errors->has('type'))
+                                                <div class="alert alert-danger">{{ $errors->first('type') }}</div>
+                                            @endif
+                                        </div>
+                                    </div>
                                     <div class="col-md-12">
                                         <table class="table table-striped table-bordered table-hover w-100" >
                                             <thead>
@@ -120,6 +125,7 @@
                                             <tbody class="questionArea" id="questionArea"></tbody>
                                         </table>
                                     </div>
+
                                 </div>
                             </div>
                             <div class="text-center card-action">
@@ -173,7 +179,7 @@
                     var quesData = '';
                     $.each(res.questions,function(i,v){
                         quesData += '<tr>'
-                        quesData += '<input type="hidden" name="type[]" value="'+v.type+'">'
+                        // quesData += '<input type="hidden" name="type" value="'+v.type+'">'
                         quesData += '<td><input type="checkbox" name="question_id[]" value="'+v.id+'">&nbsp;&nbsp; '+v.ques+'</td>'
                         quesData += '<td>'+v.type+'</td>'
                         quesData += '<td>'+v.mark+'</td>'
