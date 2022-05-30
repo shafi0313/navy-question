@@ -158,8 +158,6 @@
             }
         });
     });
-</script>
-<script>
 
     $("#quesType").change(function(){
         const type = $(this).val();
@@ -169,25 +167,24 @@
             $(".quesTypeDiv").hide();
         }
     })
-
-	$(document).ready(function(){
-		var i = 1;
-		$('.addrow').click(function()
-			{i++;
-				html ='';
-				html +='<tr id="remove_'+i+'" class="post_item">';
-	            html +='	<input type="hidden" name="option_id[]" value="{{ $option->id }}">';
-	            html +='	<td><input type="text" name="option[]" id="purchase_" class="form-control form-control-sm"/></td>';
-	            html +='	<td style="width: 20px"  class="col-md-2"><span class="btn btn-sm btn-danger" onClick="return remove('+i+')"><i class="fa fa-times" aria-hidden="true"></i></span></td>';
-	            html +='</tr>';
-	            $('#showItem').append(html);
-			});
-	});
-	function remove(id)
-	{
-		$('#remove_'+id).remove();
-		total_price();
-    }
+        $(document).ready(function(){
+            var i = 1;
+            $('.addrow').click(function()
+                {i++;
+                    html ='';
+                    html +='<tr id="remove_'+i+'" class="post_item">';
+                    html +='	<input type="hidden" name="option_id[]" value="{{ $option->id??0 }}">';
+                    html +='	<td><input type="text" name="option[]" id="purchase_" class="form-control form-control-sm"/></td>';
+                    html +='	<td style="width: 20px"  class="col-md-2"><span class="btn btn-sm btn-danger" onClick="return remove('+i+')"><i class="fa fa-times" aria-hidden="true"></i></span></td>';
+                    html +='</tr>';
+                    $('#showItem').append(html);
+                });
+        });
+        function remove(id)
+        {
+            $('#remove_'+id).remove();
+            total_price();
+        }
 </script>
 @endpush
 @endsection

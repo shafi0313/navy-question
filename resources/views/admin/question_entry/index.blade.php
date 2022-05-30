@@ -117,43 +117,43 @@
             });
         });
         $('#quesType').change(function () {
-        $("#questionArea").html('');
-        let chapterId = $('#chapter_id').find(":selected").val();
-        let quesType = $(this).val();
-        $.ajax({
-            url:"{{route('admin.generateQuestion.getQuestion')}}",
-            data:{chapterId:chapterId, quesType:quesType},
-            method:'get',
-            success:res=>{
-                if(res.status == 200){
-                    let quesData = '';
-                    $.each(res.questions,function(i,v){
-                        let id = v.id;
-                        let url = '{{ route("admin.question.edit", ":id") }}';
-                        url = url.replace(':id', id);
+            $("#questionArea").html('');
+            let chapterId = $('#chapter_id').find(":selected").val();
+            let quesType = $(this).val();
+            $.ajax({
+                url:"{{route('admin.generateQuestion.getQuestion')}}",
+                data:{chapterId:chapterId, quesType:quesType},
+                method:'get',
+                success:res=>{
+                    if(res.status == 200){
+                        let quesData = '';
+                        $.each(res.questions,function(i,v){
+                            let id = v.id;
+                            let url = '{{ route("admin.question.edit", ":id") }}';
+                            url = url.replace(':id', id);
 
-                        quesData += '<tr>'
-                        // quesData += '<input type="hidden" name="type" value="'+v.type+'">'
-                        quesData += '<td><input type="checkbox" name="question_id[]" value="'+v.id+'">&nbsp;&nbsp; '+v.ques+'</td>'
-                        quesData += '<td>'+v.type+'</td>'
-                        quesData += '<td>'+v.mark+'</td>'
-                        quesData += '<td>'
-                        quesData +=     '<div class="form-button-action">'
-                        quesData +=         '<a href='+url+' data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">Edit</a>'
-                        quesData +=     '</div>'
-                        quesData += '</td>'
-                        quesData += '</tr>'
-                    });
-                    $("#questionArea").append(quesData);
-                }else{
+                            quesData += '<tr>'
+                            // quesData += '<input type="hidden" name="type" value="'+v.type+'">'
+                            quesData += '<td><input type="checkbox" name="question_id[]" value="'+v.id+'">&nbsp;&nbsp; '+v.ques+'</td>'
+                            quesData += '<td>'+v.type+'</td>'
+                            quesData += '<td>'+v.mark+'</td>'
+                            quesData += '<td>'
+                            quesData +=     '<div class="form-button-action">'
+                            quesData +=         '<a href='+url+' data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">Edit</a>'
+                            quesData +=     '</div>'
+                            quesData += '</td>'
+                            quesData += '</tr>'
+                        });
+                        $("#questionArea").append(quesData);
+                    }else{
+                        alert('No question found')
+                    }
+                },
+                error:err=>{
                     alert('No question found')
                 }
-            },
-            error:err=>{
-                alert('No question found')
-            }
+            });
         });
-    });
     </script>
 @endpush
 @endsection

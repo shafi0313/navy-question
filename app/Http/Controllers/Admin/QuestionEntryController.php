@@ -35,7 +35,7 @@ class QuestionEntryController extends Controller
 
     public function read(Request $request)
     {
-        $inputs = Question::whereSubject_id($request->subject_id)->whereChapter_id($request->chapter_id)->get();
+        $inputs = Question::whereSubject_id($request->subject_id)->whereChapter_id($request->chapter_id)->whereType($request->type)->get();
         $questions = view('admin.question_entry.ajax', ['inputs' => $inputs])->render();
         return response()->json(['status' => 'success', 'html' => $questions, 'questions']);
     }
@@ -93,12 +93,14 @@ class QuestionEntryController extends Controller
         ]);
         $data['user_id'] = auth()->user()->id;
         $questionEntry = Question::create($data);
-        foreach($request->option as $key => $value){
-            $option=[
-                'question_id' => $questionEntry->id,
-                'option' => $request->option[$key],
-            ];
-            QuesOption::create($option);
+        if($request->type == "Multiple Choice"){
+            foreach($request->option as $key => $value){
+                $option=[
+                    'question_id' => $questionEntry->id,
+                    'option' => $request->option[$key],
+                ];
+                QuesOption::create($option);
+            }
         }
         return response()->json($questionEntry, 200);
     }
@@ -195,14 +197,6 @@ class QuestionEntryController extends Controller
         }
     }
 
-    // public function getSubject(Request $request)
-    // {
-    //     if ($request->ajax()) {
-    //         $subjectId = Exam::find($request->examId)->subject_id;
-    //         $subjects = Subject::whereId($subjectId)->get();
-    //         return response()->json(['subjects'=>$subjects,'status'=>200]);
-    //     }
-    // }
     public function getChapter(Request $request)
     {
         if ($request->ajax()) {
