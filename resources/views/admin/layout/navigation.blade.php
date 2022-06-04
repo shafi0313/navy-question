@@ -2,6 +2,7 @@
 <div class="sidebar"  data-background-color="white">
     <div class="sidebar-wrapper scrollbar scrollbar-inner">
         <div class="sidebar-content">
+
             {{-- <div class="user">
                 @if ($user->email == devAdminEmail())
                     @php $profileImg =  asset('uploads/images/users/shafi.jpg') @endphp
@@ -66,7 +67,7 @@
                     </div>
                 </li>
 
-                <li class="nav-item {{$m=='setup'?'active submenu':''}}">
+                <li class="nav-item {{ openNav(['admin.subject.*','admin.exam.*','admin.markDistribution.*']) }}">
                     <a data-toggle="collapse" href="#setup">
                         <i class="fa-solid fa-screwdriver-wrench"></i>
                         <p>Setup</p>
@@ -74,14 +75,19 @@
                     </a>
                     <div class="collapse {{$m=='setup'?'show':''}}" id="setup">
                         <ul class="nav nav-collapse">
-                            <li class="{{$sm=='subject'?'activeSub':''}}">
+                            <li class="{{ activeSubNav('admin.subject.*') }}">
                                 <a href="{{ route('admin.subject.index') }}">
                                     <span class="sub-item">Subject & Chapter</span>
                                 </a>
                             </li>
-                            <li class="{{$sm=='exam'?'activeSub':''}}">
+                            <li class="{{ activeSubNav('admin.exam.*') }}">
                                 <a href="{{ route('admin.exam.index') }}">
                                     <span class="sub-item">Exam/Course</span>
+                                </a>
+                            </li>
+                            <li class="{{ activeSubNav('admin.markDistribution.*') }}">
+                                <a href="{{ route('admin.markDistribution.index') }}">
+                                    <span class="sub-item">Mark Distribution</span>
                                 </a>
                             </li>
                         </ul>
@@ -97,8 +103,8 @@
                     </a>
                 </li>
 
-                <li class="nav-item {{$m=='generateQuestion'?'active':''}}">
-                    <a href="{{ route('admin.generateQuestion.index') }}">
+                <li class="nav-item {{ activeNav('admin.generateQuestion.*') }}">
+                    <a href="{{ route('admin.generateQuestion.create') }}">
                         <i class="fa-solid fa-file-circle-question"></i>
                         <p>Generate Question Paper</p>
                     </a>

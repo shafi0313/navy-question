@@ -5,23 +5,26 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Exam;
 use App\Models\Chapter;
 use App\Models\Subject;
+use App\Models\QuesInfo;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use App\Models\QuestionPaper;
+use App\Models\MarkDistribution;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class GenerateQuestionPaperController extends Controller
 {
-    public function index()
+    public function create()
     {
-        if ($error = $this->sendPermissionError('index')) {
+        if ($error = $this->sendPermissionError('create')) {
             return $error;
         }
         $subjects = Subject::all();
         $chapters = Chapter::all();
         $exams = Exam::all();
-        return view('admin.generate_question_paper.index', compact('subjects','chapters','exams'));
+        return view('admin.generate_question_paper.create', compact('subjects','chapters','exams'));
     }
 
     public function getQuestion(Request $request)
@@ -34,49 +37,86 @@ class GenerateQuestionPaperController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, [
+        // $this->validate($request, [
+        //     'exam_id' => 'required',
+        //     'subject_id' => 'required',
+        //     // 'chapter_id' => 'required',
+        //     // 'type' => 'required',
+        // ]);
+        DB::beginTransaction();
+        $quesInfo = $request->validate([
             'exam_id' => 'required',
             'subject_id' => 'required',
-            'chapter_id' => 'required',
-            'type' => 'required',
+            'code' => 'required|max:60',
+            'date_time' => 'required|after:starting_hour',
+            'd_hour' => 'sometimes',
+            'd_minute' => 'sometimes',
+            'mode' => 'required',
+            'trade' => 'nullable',
+            'total_mark' => 'required|integer',
+            'pass_mark' => 'required|integer',
         ]);
-        if($request->has('question_id') && !empty($request->question_id)){
-            $type = Question::whereIn('id',$request->question_id)->get(['type'])->pluck('type');
-            foreach($request->question_id as $key => $value){
-                $data=[
-                    'user_id' => auth()->user()->id,
-                    'exam_id' => $request->exam_id,
-                    'subject_id' => $request->subject_id,
-                    'question_id' => $request->question_id[$key],
-                    'type' => $type[$key],
-                ];
-                QuestionPaper::updateOrCreate($data);
-            }
-        }else{
-            if($request->type != 'Multiple Choice'){
-                Alert::info('Percentage worked only for multiple choice');
-                return back();
-            }
-            $percentage = Exam::find($request->exam_id)->total_mark * $request->percentage / 100;
-            $questions = Question::whereSubject_id($request->subject_id)->whereChapter_id($request->chapter_id)->whereType('Multiple Choice')->inRandomOrder()->limit(round($percentage))->get()->pluck('id');
+        $quesInfo['user_id'] = auth()->user()->id;
+        $quesInfo['set'] = QuesInfo::whereExam_id($request->exam_id)->whereSubject_id($request->subject_id)->count() + 1;
+        $questionInfo = QuesInfo::create($quesInfo);
+
+        $quesMark = MarkDistribution::whereSubject_id($request->subject_id);
+        $multipleQues = $quesMark->whereType('Multiple Choice')->get(['chapter_id','mark']);
+        // $questions = Question::whereSubject_id($request->subject_id)->whereIn($multipleQues->pluck('chapter_id'))->whereType('Multiple Choice')->inRandomOrder()->limit($multipleQuesMark)->get()->pluck('id');
+        foreach($multipleQues as $k => $v){
+            $questions = Question::whereSubject_id($request->subject_id)->whereChapter_id($v->pluck('chapter_id')[$k])->whereType('Multiple Choice')->inRandomOrder()->limit($v->pluck('mark')[$k])->get()->pluck('id');
             foreach($questions as $key => $value){
                 $data=[
-                    'user_id' => auth()->user()->id,
-                    'exam_id' => $request->exam_id,
-                    'subject_id' => $request->subject_id,
+                    'ques_info_id' => $questionInfo->id,
                     'question_id' => $value,
-                    'type' => $request->type,
+                    'type' => 'Multiple Choice',
                 ];
                 QuestionPaper::updateOrCreate($data);
             }
         }
 
+
+
+
+        // if($request->has('question_id') && !empty($request->question_id)){
+        //     $type = Question::whereIn('id',$request->question_id)->get(['type'])->pluck('type');
+        //     foreach($request->question_id as $key => $value){
+        //         $data=[
+        //             'user_id' => auth()->user()->id,
+        //             'exam_id' => $request->exam_id,
+        //             'subject_id' => $request->subject_id,
+        //             'question_id' => $request->question_id[$key],
+        //             'type' => $type[$key],
+        //         ];
+        //         QuestionPaper::updateOrCreate($data);
+        //     }
+        // }else{
+        //     if($request->type != 'Multiple Choice'){
+        //         Alert::info('Percentage worked only for multiple choice');
+        //         return back();
+        //     }
+        //     $percentage = Exam::find($request->exam_id)->total_mark * $request->percentage / 100;
+        //     $questions = Question::whereSubject_id($request->subject_id)->whereChapter_id($request->chapter_id)->whereType('Multiple Choice')->inRandomOrder()->limit(round($percentage))->get()->pluck('id');
+        //     foreach($questions as $key => $value){
+        //         $data=[
+        //             'user_id' => auth()->user()->id,
+        //             'exam_id' => $request->exam_id,
+        //             'subject_id' => $request->subject_id,
+        //             'question_id' => $value,
+        //             'type' => $request->type,
+        //         ];
+        //         QuestionPaper::updateOrCreate($data);
+        //     }
+        // }
+
         try{
             toast('Success!','success');
+            DB::commit();
             return redirect()->back();
         }catch(\Exception $ex){
             return $ex->getMessage();
             toast('Error','error');
+            DB::rollBack();
             return redirect()->back();
         }
     }

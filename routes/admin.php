@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\AnswerPaperController;
 use App\Http\Controllers\Admin\VisitorInfoController;
 use App\Http\Controllers\Admin\QuestionEntryController;
 use App\Http\Controllers\Admin\QuestionPaperController;
+use App\Http\Controllers\Admin\MarkDistributionController;
 use App\Http\Controllers\Admin\GenerateQuestionPaperController;
 
 Route::controller(AuthController::class)->group(function(){
@@ -96,9 +97,20 @@ Route::middleware(['auth','admin'])->prefix('admin')->name('admin.')->group(func
         Route::get('/get-chapter', 'getChapter')->name('getChapter');
     });
 
-    Route::controller(GenerateQuestionPaperController::class)->prefix('generate-question-paper')->name('generateQuestion.')->group(function(){
+    Route::controller(MarkDistributionController::class)->prefix('mark-distribution')->name('markDistribution.')->group(function(){
         Route::get('/', 'index')->name('index');
-        Route::get('/create/{examId}', 'create')->name('create');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/store', 'store')->name('store');
+        Route::get('/read', 'read')->name('read');
+        Route::get('/edit/{id}', 'edit')->name('edit');
+        Route::post('/update/{id}', 'update')->name('update');
+        Route::get('/show/{id}', 'show')->name('show');
+        Route::get('/get-mark-info', 'getMarkInfo')->name('getMarkInfo');
+    });
+
+    Route::controller(GenerateQuestionPaperController::class)->prefix('generate-question-paper')->name('generateQuestion.')->group(function(){
+        // Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
         Route::post('/store', 'store')->name('store');
         Route::get('/edit/{id}', 'edit')->name('edit');
         Route::post('/update/{id}', 'update')->name('update');

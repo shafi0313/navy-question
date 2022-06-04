@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 if (!function_exists('devAdminEmail')) {
     function devAdminEmail()
@@ -76,6 +77,45 @@ if (!function_exists('readableSize')) {
             $bytes /= 1024;
         }
         return round($bytes, 2) . ' ' . $units[$i];
+    }
+}
+
+if (!function_exists('activeSubNav')) {
+    function activeSubNav($route)
+    {
+        if (is_array($route)) {
+            $rt = '';
+            foreach ($route as $rut) {
+                $rt .= request()->routeIs($rut) || '';
+            }
+            return $rt ? ' activeSub ' : '';
+        }
+        return request()->routeIs($route) ? ' activeSub ' : '';
+    }
+}
+
+if (!function_exists('activeNav')) {
+    function activeNav($route)
+    {
+        if (is_array($route)) {
+            $rt = '';
+            foreach ($route as $rut) {
+                $rt .= request()->routeIs($rut) || '';
+            }
+            return $rt ? ' active ' : '';
+        }
+        return request()->routeIs($route) ? ' active ' : '';
+    }
+}
+
+if (!function_exists('openNav')) {
+    function openNav(array $routes)
+    {
+        $rt = '';
+        foreach ($routes as $route) {
+            $rt .= request()->routeIs($route) || '';
+        }
+        return $rt ? ' show ' : '';
     }
 }
 
