@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Chapter;
 use App\Models\Subject;
 use App\Models\Question;
 use Illuminate\Http\Request;
@@ -17,7 +18,17 @@ class MarkDistributionController extends Controller
         }
         $questions = Question::all();
         $subjects = Subject::all();
+        $subjects = Subject::all();
         return view('admin.mark_distribution.index', compact('questions','subjects'));
+    }
+
+
+
+    public function show($subjectId)
+    {
+        $subject = Subject::find($subjectId);
+        $chapters = Chapter::whereSubject_id($subjectId)->get();
+        return view('admin.mark_distribution.show', compact('subject','chapters'));
     }
 
     public function create()
@@ -32,16 +43,29 @@ class MarkDistributionController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'subject_id' => 'required|integer',
-            'chapter_id' => 'required|integer',
-            'type' => 'required',
-            'mark' => 'required',
-        ]);
-        $data['user_id'] = auth()->user()->id;
+        // $request->validate([
+        //     'subject_id' => 'required|integer',
+        //     'chapter_id' => 'required|integer',
+        //     // 'type' => 'required',
+        //     // 'mark' => 'required',
+        //     'multiple' => 'nullable',
+        //     'sort' => 'nullable',
+        //     'long' => 'nullable',
+        // ]);
+        foreach($request->chapter_id as $k => $v) {
+            $data=[
+                'user_id' => auth()->user()->id,
+                'subject_id' => $request->subject_id,
+                'chapter_id' => $request->chapter_id[$k],
+                'multiple' => $request->multiple[$k],
+                'sort' => $request->sort[$k],
+                'long' => $request->long[$k],
+            ];
+            MarkDistribution::create($data);
+        }
 
         try {
-            MarkDistribution::create($data);
+
             toast('Success!', 'success');
             return redirect()->route('admin.markDistribution.index');
         } catch (\Exception $ex) {

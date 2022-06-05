@@ -35,17 +35,8 @@ class ExamController extends Controller
         }
         $data = $this->validate($request, [
             'name' => 'required|max:100',
-            'code' => 'required|max:60',
-            'date_time' => 'required|after:starting_hour',
-            'd_hour' => 'sometimes',
-            'd_minute' => 'sometimes',
-            'mode' => 'required',
-            'trade' => 'nullable',
-            'total_mark' => 'required|integer',
-            'pass_mark' => 'required|integer',
         ]);
         $data['user_id'] = auth()->user()->id;
-        $data['status'] = 'Pending';
         DB::beginTransaction();
         try{
             Exam::create($data);

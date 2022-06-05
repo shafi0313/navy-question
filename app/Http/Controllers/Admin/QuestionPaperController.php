@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Exam;
-use App\Models\Question;
+use App\Models\QuesInfo;
 use Illuminate\Http\Request;
 use App\Models\QuestionPaper;
 use App\Http\Controllers\Controller;
@@ -16,8 +16,8 @@ class QuestionPaperController extends Controller
         if ($error = $this->sendPermissionError('index')) {
             return $error;
         }
-        $exams = Exam::all();
-        return view('admin.question_paper.index', compact('exams'));
+        $datum = QuesInfo::with(['exam'])->get();
+        return view('admin.question_paper.index', compact('datum'));
     }
 
     public function show($examId)

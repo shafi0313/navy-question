@@ -18,8 +18,11 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('subject_id')->constrained()->cascadeOnDelete();
             $table->foreignId('chapter_id')->constrained()->cascadeOnDelete();
-            $table->enum('type', ["Multiple Choice","Short Question","Long Question"]);
-            $table->integer('mark');
+            $table->integer('multiple')->default(0);
+            $table->integer('sort')->default(0);
+            $table->integer('long')->default(0);
+            // $table->enum('type', ["Multiple Choice","Short Question","Long Question"]);
+            // $table->integer('mark');
             $table->timestamps();
         });
     }

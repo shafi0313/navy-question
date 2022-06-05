@@ -32,28 +32,12 @@
                                         <tr>
                                             <th>SL</th>
                                             <th>Exam/Course</th>
-                                            <th>Code</th>
-                                            <th>Trade</th>
-                                            <th>Mode</th>
-                                            <th>Date & Time</th>
-                                            <th>Duration</th>
-                                            <th>Total Mark</th>
-                                            <th>Pass Mark</th>
-                                            <th>States</th>
                                             <th>Created at</th>
                                             <th class="no-sort" width="40px">Action</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
                                             <th></th>
                                             <th></th>
                                             <th></th>
@@ -65,14 +49,6 @@
                                         <tr>
                                             <td class="text-center">{{ $x++ }}</td>
                                             <td>{{ $exam->name }}</td>
-                                            <td>{{ $exam->code }}</td>
-                                            <td>{{ $exam->trade }}</td>
-                                            <td>{{ $exam->mode }}</td>
-                                            <td>{{ examDateTime($exam->date_time) }}</td>
-                                            <td>{{ $exam->d_hour}}:{{ $exam->d_minute}}</td>
-                                            <td>{{ $exam->total_mark }}</td>
-                                            <td>{{ $exam->pass_mark }}</td>
-                                            <td>{{ $exam->status }}</td>
                                             <td>{{ examDateTime($exam->created_at) }}</td>
                                             <td>
                                                 <div class="form-button-action">

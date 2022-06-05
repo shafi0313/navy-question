@@ -60,11 +60,16 @@ class GenerateQuestionPaperController extends Controller
         $quesInfo['set'] = QuesInfo::whereExam_id($request->exam_id)->whereSubject_id($request->subject_id)->count() + 1;
         $questionInfo = QuesInfo::create($quesInfo);
 
-        $quesMark = MarkDistribution::whereSubject_id($request->subject_id);
-        $multipleQues = $quesMark->whereType('Multiple Choice')->get(['chapter_id','mark']);
+        $quesMarks = MarkDistribution::whereSubject_id($request->subject_id)->get();
+        // $multipleQues = $quesMark->whereType('Multiple Choice')->get();
         // $questions = Question::whereSubject_id($request->subject_id)->whereIn($multipleQues->pluck('chapter_id'))->whereType('Multiple Choice')->inRandomOrder()->limit($multipleQuesMark)->get()->pluck('id');
-        foreach($multipleQues as $k => $v){
-            $questions = Question::whereSubject_id($request->subject_id)->whereChapter_id($v->pluck('chapter_id')[$k])->whereType('Multiple Choice')->inRandomOrder()->limit($v->pluck('mark')[$k])->get()->pluck('id');
+        foreach($quesMarks as $k => $v){
+            $questions = Question::whereSubject_id($request->subject_id)
+                                ->whereChapter_id($v->pluck('chapter_id')[$k])
+                                ->whereType('Multiple Choice')->inRandomOrder()
+                                ->limit($v->pluck('multiple')[$k])
+                                ->get()
+                                ->pluck('id');
             foreach($questions as $key => $value){
                 $data=[
                     'ques_info_id' => $questionInfo->id,

@@ -67,13 +67,13 @@
                     </div>
                 </li>
 
-                <li class="nav-item {{ openNav(['admin.subject.*','admin.exam.*','admin.markDistribution.*']) }}">
+                <li class="nav-item {{ activeNav(['admin.subject.*','admin.exam.*','admin.markDistribution.*']) }}">
                     <a data-toggle="collapse" href="#setup">
                         <i class="fa-solid fa-screwdriver-wrench"></i>
                         <p>Setup</p>
                         <span class="caret"></span>
                     </a>
-                    <div class="collapse {{$m=='setup'?'show':''}}" id="setup">
+                    <div class="collapse {{ openNav(['admin.subject.*','admin.exam.*','admin.markDistribution.*']) }}" id="setup">
                         <ul class="nav nav-collapse">
                             <li class="{{ activeSubNav('admin.subject.*') }}">
                                 <a href="{{ route('admin.subject.index') }}">

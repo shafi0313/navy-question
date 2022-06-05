@@ -54,19 +54,19 @@
                                     </tfoot>
                                     <tbody>
                                         @php $x = 1 @endphp
-                                        @foreach ($exams as $exam)
+                                        @foreach ($datum as $data)
                                         <tr>
                                             <td class="text-center">{{ $x++ }}</td>
                                             {{-- <td>{{ $question->user->name }}</td> --}}
-                                            <td>{{ $exam->name }}</td>
-                                            <td>{{ $exam->code }}</td>
-                                            <td>{{ $exam->mode }}</td>
-                                            <td>{{ $exam->trade }}</td>
-                                            <td>{{ examDateTime($exam->date_time) }}</td>
-                                            <td>{{ $exam->duration }}</td>
+                                            <td>{{ $data->exam->name }}</td>
+                                            <td>{{ $data->code }}</td>
+                                            <td>{{ $data->mode }}</td>
+                                            <td>{{ $data->trade }}</td>
+                                            <td>{{ examDateTime($data->date_time) }}</td>
+                                            <td>{{ $data->duration }}</td>
                                             <td>
                                                 <div class="form-button-action">
-                                                    <a href="{{ route('admin.generatedQues.show', $exam->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
+                                                    <a href="{{ route('admin.generatedQues.show', $data->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
                                                         Show
                                                     </a>
 

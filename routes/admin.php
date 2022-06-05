@@ -104,7 +104,7 @@ Route::middleware(['auth','admin'])->prefix('admin')->name('admin.')->group(func
         Route::get('/read', 'read')->name('read');
         Route::get('/edit/{id}', 'edit')->name('edit');
         Route::post('/update/{id}', 'update')->name('update');
-        Route::get('/show/{id}', 'show')->name('show');
+        Route::get('/show/{subjectId}', 'show')->name('show');
         Route::get('/get-mark-info', 'getMarkInfo')->name('getMarkInfo');
     });
 

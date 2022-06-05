@@ -9,4 +9,7 @@ class QuesInfo extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+    public function exam(){
+        return $this->belongsTo(Exam::class);
+    }
 }

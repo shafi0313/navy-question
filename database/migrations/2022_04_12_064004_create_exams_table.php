@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('exams', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->comment('Admin')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('name',100);
-            $table->integer('year');
+            // $table->integer('year');
             // $table->string('code',60);
             // $table->dateTime('date_time');
             // $table->tinyInteger('total_mark');
