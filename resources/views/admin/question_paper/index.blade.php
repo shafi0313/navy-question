@@ -32,6 +32,7 @@
                                         <tr>
                                             <th>SL</th>
                                             <th>Exam</th>
+                                            <th>Year</th>
                                             <th>Exam Code</th>
                                             <th>Exam Mode</th>
                                             <th>Exam Trade</th>
@@ -54,11 +55,15 @@
                                     </tfoot>
                                     <tbody>
                                         @php $x = 1 @endphp
-                                        @foreach ($datum as $data)
+                                        @foreach ($datum as $dat)
+                                        @php
+                                            $data = $dat->first()
+                                        @endphp
                                         <tr>
                                             <td class="text-center">{{ $x++ }}</td>
                                             {{-- <td>{{ $question->user->name }}</td> --}}
                                             <td>{{ $data->exam->name }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($data->date_time)->format('Y') }}</td>
                                             <td>{{ $data->code }}</td>
                                             <td>{{ $data->mode }}</td>
                                             <td>{{ $data->trade }}</td>
@@ -66,7 +71,7 @@
                                             <td>{{ $data->duration }}</td>
                                             <td>
                                                 <div class="form-button-action">
-                                                    <a href="{{ route('admin.generatedQues.show', $data->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
+                                                    <a href="{{ route('admin.generatedQues.show', $data->ques_info_id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
                                                         Show
                                                     </a>
 

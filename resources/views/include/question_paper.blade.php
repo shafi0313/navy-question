@@ -29,7 +29,7 @@
                 </div>
             </div>
                 <div class="card-body" id="printableArea">
-                    @include('include.question_paper_head')
+                    {{-- @include('include.question_paper_head') --}}
                     @php $x = 1 @endphp
                     @if($questionPapers->where('type','Multiple Choice')->count() > 0)
                         <h4 class="quesType">Multiple Choice</h4>

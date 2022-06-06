@@ -60,16 +60,18 @@ class GenerateQuestionPaperController extends Controller
         $quesInfo['set'] = QuesInfo::whereExam_id($request->exam_id)->whereSubject_id($request->subject_id)->count() + 1;
         $questionInfo = QuesInfo::create($quesInfo);
 
+
         $quesMarks = MarkDistribution::whereSubject_id($request->subject_id)->get();
-        // $multipleQues = $quesMark->whereType('Multiple Choice')->get();
+        // $multipleQues = $quesMarks->whereType('Multiple Choice');
         // $questions = Question::whereSubject_id($request->subject_id)->whereIn($multipleQues->pluck('chapter_id'))->whereType('Multiple Choice')->inRandomOrder()->limit($multipleQuesMark)->get()->pluck('id');
         foreach($quesMarks as $k => $v){
             $questions = Question::whereSubject_id($request->subject_id)
                                 ->whereChapter_id($v->pluck('chapter_id')[$k])
                                 ->whereType('Multiple Choice')->inRandomOrder()
-                                ->limit($v->pluck('multiple')[$k])
+                                ->limit($v->multiple)
                                 ->get()
                                 ->pluck('id');
+
             foreach($questions as $key => $value){
                 $data=[
                     'ques_info_id' => $questionInfo->id,
@@ -79,40 +81,6 @@ class GenerateQuestionPaperController extends Controller
                 QuestionPaper::updateOrCreate($data);
             }
         }
-
-
-
-
-        // if($request->has('question_id') && !empty($request->question_id)){
-        //     $type = Question::whereIn('id',$request->question_id)->get(['type'])->pluck('type');
-        //     foreach($request->question_id as $key => $value){
-        //         $data=[
-        //             'user_id' => auth()->user()->id,
-        //             'exam_id' => $request->exam_id,
-        //             'subject_id' => $request->subject_id,
-        //             'question_id' => $request->question_id[$key],
-        //             'type' => $type[$key],
-        //         ];
-        //         QuestionPaper::updateOrCreate($data);
-        //     }
-        // }else{
-        //     if($request->type != 'Multiple Choice'){
-        //         Alert::info('Percentage worked only for multiple choice');
-        //         return back();
-        //     }
-        //     $percentage = Exam::find($request->exam_id)->total_mark * $request->percentage / 100;
-        //     $questions = Question::whereSubject_id($request->subject_id)->whereChapter_id($request->chapter_id)->whereType('Multiple Choice')->inRandomOrder()->limit(round($percentage))->get()->pluck('id');
-        //     foreach($questions as $key => $value){
-        //         $data=[
-        //             'user_id' => auth()->user()->id,
-        //             'exam_id' => $request->exam_id,
-        //             'subject_id' => $request->subject_id,
-        //             'question_id' => $value,
-        //             'type' => $request->type,
-        //         ];
-        //         QuestionPaper::updateOrCreate($data);
-        //     }
-        // }
 
         try{
             toast('Success!','success');
