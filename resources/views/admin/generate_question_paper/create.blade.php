@@ -120,7 +120,7 @@
                                             <div class="alert alert-danger">{{ $errors->first('total_mark') }}</div>
                                         @endif
                                         </div>
-                                    </div>
+                                    </div>--}}
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="pass_mark">Pass Marks <span class="t_r">*</span></label>
@@ -129,7 +129,7 @@
                                             <div class="alert alert-danger">{{ $errors->first('pass_mark') }}</div>
                                         @endif
                                         </div>
-                                    </div> --}}
+                                    </div>
 
 
 

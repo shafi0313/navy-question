@@ -10,8 +10,8 @@ class QuestionPaper extends Model
     use HasFactory;
     protected $guarded = ['id'];
 
-    public function exam(){
-        return $this->belongsTo(Exam::class, 'exam_id');
+    public function quesInfo(){
+        return $this->belongsTo(QuesInfo::class);
     }
     public function subject(){
         return $this->belongsTo(Subject::class, 'subject_id');

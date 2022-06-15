@@ -1,7 +1,7 @@
 @extends('admin.layout.master')
 @section('title', 'Generated Question')
 @section('content')
-@php $m='generatedQues'; $sm=''; $ssm=''; @endphp
+@php $m='generatedQues'; $sm=''; $ssm=''; $complete='c' @endphp
 
 <div class="main-panel">
     <div class="content">
@@ -23,6 +23,7 @@
 @push('custom_scripts')
     <!-- Datatables -->
     @include('include.data_table')
+    @include('include.printJs')
     <script>
         $(function () {
             $("#checkAll").on("click", function () {

@@ -61,12 +61,6 @@ class GenerateQuestionPaperController extends Controller
 
     public function store(Request $request)
     {
-        // $this->validate($request, [
-        //     'exam_id' => 'required',
-        //     'subject_id' => 'required',
-        //     // 'chapter_id' => 'required',
-        //     // 'type' => 'required',
-        // ]);
         DB::beginTransaction();
         $quesInfo = $request->validate([
             'exam_id' => 'required',
@@ -77,11 +71,11 @@ class GenerateQuestionPaperController extends Controller
             'mode' => 'required',
             'trade' => 'nullable',
             // 'total_mark' => 'required|integer',
-            // 'pass_mark' => 'required|integer',
+            'pass_mark' => 'required|integer',
         ]);
         $quesInfo['status'] = 'Pending';
         $quesInfo['user_id'] = auth()->user()->id;
-        $quesInfo['set'] = QuesInfo::whereExam_id($request->exam_id)->whereSubject_id($request->subject_id)->count() + 1;
+        $quesInfo['set'] = QuesInfo::whereExam_id($request->exam_id)->whereSubject_id($request->subject_id)->whereStatus('Pending')->count() + 1;
         $questionInfo = QuesInfo::create($quesInfo);
 
 

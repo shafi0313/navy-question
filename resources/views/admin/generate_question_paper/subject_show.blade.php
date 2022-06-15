@@ -68,8 +68,8 @@
                                             <td>{{ $data->duration }}</td>
                                             <td>
                                                 <div class="form-button-action">
-                                                    <a href="{{ route('admin.generateQuestion.showBySet',[ $data->subject->id,\Carbon\Carbon::parse($data->date_time)->format('Y')]) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
-                                                        Show
+                                                    <a href="{{ route('admin.generateQuestion.showBySet',[$data->subject->id,\Carbon\Carbon::parse($data->date_time)->format('Y')]) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
+                                                        Show by Set
                                                     </a>
 
                                                     {{-- <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove">

@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\QuesInfo;
 use Illuminate\Http\Request;
 use App\Models\QuestionPaper;
+use App\Models\MarkDistribution;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -40,11 +41,13 @@ class QuestionPaperController extends Controller
         if ($error = $this->sendPermissionError('show')) {
             return $error;
         }
-        $questionPapers = QuestionPaper::with(['exam','question'])->whereQues_info_id($quesInfoId)->get();
+        $questionPapers = QuestionPaper::with(['quesInfo','question'])->whereQues_info_id($quesInfoId)->get();
+        $mark = MarkDistribution::whereSubject_id($questionPapers->first()->quesInfo->subject_id);
+        $totalMark = $mark->sum('multiple') + $mark->sum('sort') + $mark->sum('long');
         if($questionPapers->count() <= 0 ){
             Alert::error('No Data Found');
             return back();
         }
-        return view('admin.question_paper.show', compact('questionPapers'));
+        return view('admin.question_paper.show', compact('questionPapers','totalMark'));
     }
 }

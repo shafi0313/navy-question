@@ -72,7 +72,7 @@
                                             <td>
                                                 <div class="form-button-action">
                                                     <a href="{{ route('admin.generatedQues.showBySubject', \Carbon\Carbon::parse($data->date_time)->format('Y')) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
-                                                        Show
+                                                        Show by Subject
                                                     </a>
 
                                                     {{-- <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove">

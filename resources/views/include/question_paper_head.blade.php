@@ -11,21 +11,21 @@
                 <div class="title">
                     <h4>CONFIDENTIAL</h4>
                     <h4>EXAM IN CONFIDENCE</h4>
-                    <h4>PROGRAM EXAM FOR THE RANK OF {{$questionPapers->first()->exam->name}}</h4>
-                    <h4>TRADE: {{$questionPapers->first()->exam->trade}}</h4>
+                    <h4>PROGRAM EXAM FOR THE RANK OF {{$questionPapers->first()->quesInfo->name}}</h4>
+                    <h4>TRADE: {{$questionPapers->first()->quesInfo->trade}}</h4>
                     <h4>SUBJECT: {{ $questionPapers->first()->question->subject->name }}</h4>
                     <table class="table table-bordered text-left">
                         <tr>
                             <td>Mode of Examination</td>
-                            <td> : {{$questionPapers->first()->exam->mode}}</td>
+                            <td> : {{$questionPapers->first()->quesInfo->mode}}</td>
                             <td>Total Marks</td>
-                            <td> : {{$questionPapers->first()->exam->total_mark}}</td>
+                            <td> : {{$totalMark}}</td>
                         </tr>
                         <tr>
                             <td>Duration of Examination</td>
-                            <td> : {{$questionPapers->first()->exam->duration}}</td>
+                            <td> : {{$questionPapers->first()->quesInfo->duration}}</td>
                             <td>Pass Marks</td>
-                            <td>: {{$questionPapers->first()->exam->pass_mark}}</td>
+                            <td>: {{$questionPapers->first()->quesInfo->pass_mark}}</td>
                         </tr>
                     </table>
                 </div>
