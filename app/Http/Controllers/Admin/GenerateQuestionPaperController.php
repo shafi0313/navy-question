@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Carbon\Carbon;
 use App\Models\Exam;
 use App\Models\Chapter;
 use App\Models\Subject;
@@ -16,6 +17,29 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class GenerateQuestionPaperController extends Controller
 {
+    public function index()
+    {
+        if ($error = $this->sendPermissionError('index')) {
+            return $error;
+        }
+        $datum = QuesInfo::with(['exam'])->select('*',DB::raw('DATE_FORMAT(date_time, "%Y") as date'))->whereStatus('Pending')->get()->groupBy('date');
+        return view('admin.generate_question_paper.index', compact('datum'));
+    }
+
+    public function showBySubject($year)
+    {
+        // $datum = QuesInfo::with(['exam'])->whereSet($set)->get();
+        $datum = QuesInfo::with(['exam'])->whereYear('date_time',$year)->whereStatus('Pending')->get()->groupBy('subject_id');
+        return view('admin.generate_question_paper.subject_show', compact('datum'));
+    }
+
+    public function showBySet($subjectId,$year)
+    {
+        // $datum = QuesInfo::with(['exam'])->whereSet($set)->get();
+        $datum = QuesInfo::with(['exam'])->whereSubject_id($subjectId)->whereStatus('Pending')->whereYear('date_time',$year)->get();
+        return view('admin.generate_question_paper.set_show', compact('datum'));
+    }
+
     public function create()
     {
         if ($error = $this->sendPermissionError('create')) {
@@ -47,15 +71,15 @@ class GenerateQuestionPaperController extends Controller
         $quesInfo = $request->validate([
             'exam_id' => 'required',
             'subject_id' => 'required',
-            'code' => 'required|max:60',
             'date_time' => 'required|after:starting_hour',
             'd_hour' => 'sometimes',
             'd_minute' => 'sometimes',
             'mode' => 'required',
             'trade' => 'nullable',
-            'total_mark' => 'required|integer',
-            'pass_mark' => 'required|integer',
+            // 'total_mark' => 'required|integer',
+            // 'pass_mark' => 'required|integer',
         ]);
+        $quesInfo['status'] = 'Pending';
         $quesInfo['user_id'] = auth()->user()->id;
         $quesInfo['set'] = QuesInfo::whereExam_id($request->exam_id)->whereSubject_id($request->subject_id)->count() + 1;
         $questionInfo = QuesInfo::create($quesInfo);
@@ -85,7 +109,7 @@ class GenerateQuestionPaperController extends Controller
         try{
             toast('Success!','success');
             DB::commit();
-            return redirect()->back();
+            return redirect()->route('admin.generateQuestion.show',$questionInfo->id);
         }catch(\Exception $ex){
             return $ex->getMessage();
             toast('Error','error');
@@ -94,9 +118,58 @@ class GenerateQuestionPaperController extends Controller
         }
     }
 
-    public function show($examId)
+    public function addQues(Request $request)
     {
-        $questions = Question::with('options')->whereExam_id($examId)->get();
-        return view('admin.generate_question_paper.show', compact('questions'));
+        foreach($request->question_id as $k => $v){
+            $data = [
+                'ques_info_id' => $request->ques_info_id,
+                'question_id' => $request->question_id[$k],
+                'type' => $request->type,
+            ];
+            QuestionPaper::updateOrCreate($data);
+        }
+        try{
+            toast('Success!','success');
+            DB::commit();
+            return back();
+        }catch(\Exception $ex){
+            return $ex->getMessage();
+            toast('Error','error');
+            DB::rollBack();
+            return redirect()->back();
+        }
+    }
+
+    public function show($quesInfoId)
+    {
+
+        $questionPapers = QuestionPaper::with(['exam','question'])->whereQues_info_id($quesInfoId)->get();
+        $chapters = Chapter::whereSubject_id($questionPapers->first()->question->subject_id)->get();
+        return view('admin.generate_question_paper.show', compact('questionPapers','chapters','quesInfoId'));
+    }
+
+    public function complete(Request $request)
+    {
+        $quesInfo = QuesInfo::find($request->quesInfoId);
+        try{
+            $quesInfo->update(['status'=>'Completed']);
+            toast('Success!','success');
+            return redirect()->route('admin.generateQuestion.showBySubject', Carbon::parse($quesInfo->date_time)->format('Y'));
+        }catch(\Exception $ex){
+            toast('Error','error');
+            return redirect()->back();
+        }
+    }
+
+    public function quesDestroy($id)
+    {
+        try{
+            QuestionPaper::whereQuestion_id($id)->first()->delete();
+            toast('Success!','success');
+            return back();
+        }catch(\Exception $ex){
+            toast('Error','error');
+            return redirect()->back();
+        }
     }
 }

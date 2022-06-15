@@ -45,6 +45,29 @@ if(!function_exists('permissionText')){
     }
 }
 
+if(!function_exists('quesSet')){
+    function quesSet($set){
+        switch($set){
+            case 1;
+                $set = 'A';
+                break;
+            case 2;
+                $set = 'B';
+                break;
+            case 3;
+                $set = 'C';
+                break;
+            case 4;
+                $set = 'D';
+                break;
+            case 5;
+                $set = 'E';
+                break;
+        }
+        return $set;
+    }
+}
+
 if(!function_exists('profileImg')){
     function profileImg($email='', $image=''){
         if ($email == devAdminEmail()){

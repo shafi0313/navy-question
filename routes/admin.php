@@ -109,19 +109,26 @@ Route::middleware(['auth','admin'])->prefix('admin')->name('admin.')->group(func
     });
 
     Route::controller(GenerateQuestionPaperController::class)->prefix('generate-question-paper')->name('generateQuestion.')->group(function(){
-        // Route::get('/', 'index')->name('index');
+        Route::get('/', 'index')->name('index');
         Route::get('/create', 'create')->name('create');
+        Route::post('/addQues', 'addQues')->name('addQues');
         Route::post('/store', 'store')->name('store');
+        Route::post('/complete', 'complete')->name('complete');
         Route::get('/edit/{id}', 'edit')->name('edit');
         Route::post('/update/{id}', 'update')->name('update');
         Route::get('/show/{id}', 'show')->name('show');
+        Route::get('/subject/show/{subject}', 'showBySubject')->name('showBySubject');
+        Route::get('/set/show/{subjectId}/{year}', 'showBySet')->name('showBySet');
         Route::get('/option/destroy/{id}', 'optionDestroy')->name('optionDestroy');
+        Route::get('/question/destroy/{id}', 'quesDestroy')->name('quesDestroy');
         Route::post('/ques-generate', 'quesGenerate')->name('quesGenerate');
         Route::get('/get-question', 'getQuestion')->name('getQuestion');
     });
 
     Route::controller(QuestionPaperController::class)->prefix('question-paper')->name('generatedQues.')->group(function(){
         Route::get('/', 'index')->name('index');
+        Route::get('/subject/show/{subject}', 'showBySubject')->name('showBySubject');
+        Route::get('/set/show/{subjectId}/{year}', 'showBySet')->name('showBySet');
         Route::get('/show/{id}', 'show')->name('show');
     });
 

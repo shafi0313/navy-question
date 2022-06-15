@@ -1,7 +1,7 @@
 @extends('admin.layout.master')
 @section('title', 'Generate Question')
 @section('content')
-@php $m=''; $sm=''; $ssm=''; @endphp
+@php $m='generateQuestion'; $sm=''; $ssm=''; @endphp
 
 <div class="main-panel">
     <div class="content">
@@ -63,7 +63,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6">
+                                    {{-- <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="code">Code <span class="t_r">*</span></label>
                                             <input type="text" name="code" class="form-control" value="{{ old('code') }}" required>
@@ -71,7 +71,7 @@
                                             <div class="alert alert-danger">{{ $errors->first('code') }}</div>
                                         @endif
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="date_time">Date & Time <span class="t_r">*</span></label>
@@ -112,7 +112,7 @@
                                         @endif
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    {{-- <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="total_mark">Total Marks <span class="t_r">*</span></label>
                                             <input type="text" name="total_mark" class="form-control" value="{{ old('total_mark') }}" onInput="this.value = this.value.replace(/[a-zA-z\-*/]/g,'');" required>
@@ -129,7 +129,7 @@
                                             <div class="alert alert-danger">{{ $errors->first('pass_mark') }}</div>
                                         @endif
                                         </div>
-                                    </div>
+                                    </div> --}}
 
 
 

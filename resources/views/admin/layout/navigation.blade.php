@@ -104,7 +104,7 @@
                 </li>
 
                 <li class="nav-item {{ activeNav('admin.generateQuestion.*') }}">
-                    <a href="{{ route('admin.generateQuestion.create') }}">
+                    <a href="{{ route('admin.generateQuestion.index') }}">
                         <i class="fa-solid fa-file-circle-question"></i>
                         <p>Generate Question Paper</p>
                     </a>

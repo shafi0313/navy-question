@@ -36,7 +36,12 @@
                         @foreach ($questionPapers->where('type','Multiple Choice') as $key => $question)
                         <div class="questionArea">
                             <h4 class="question">{{$x++}}. {{ $question->question->ques }}
-                                <span style="float:right">{{ $question->question->mark }}</span>
+                                <span style="float:right">{{ $question->question->mark }}
+                                    @if (!empty($delete))
+                                        <a href="{{route('admin.generateQuestion.quesDestroy',$question->question->id)}}" style="margin-left: 20px" class="text-danger">Delete</a>
+                                    @endif
+                                </span>
+
                             </h4>
                             @foreach ($question->question->options as $option)
                             <div class="col-md-6 option">
@@ -59,7 +64,11 @@
                         @foreach ($questionPapers->where('type','Short Question') as $question)
                         <div class="questionArea">
                             <h4 class="question">{{$x++}}. {{ $question->question->ques }}
-                                <span style="float:right">{{ $question->question->mark }}</span>
+                                <span style="float:right">{{ $question->question->mark }}
+                                    @if (!empty($delete))
+                                        <a href="{{route('admin.generateQuestion.quesDestroy',$question->question->id)}}" style="margin-left: 20px" class="text-danger">Delete</a>
+                                    @endif
+                                </span>
                             </h4>
                         </div>
                         @endforeach
@@ -72,7 +81,11 @@
                         @foreach ($questionPapers->where('type','Long Question') as $question)
                         <div class="questionArea">
                             <h4 class="question">{{$x++}}. {{ $question->ques }}
-                                <span style="float:right">{{ $question->mark }}</span>
+                                <span style="float:right">{{ $question->mark }}
+                                    @if (!empty($delete))
+                                        <a href="{{route('admin.generateQuestion.quesDestroy',$question->question->id)}}" style="margin-left: 20px" class="text-danger">Delete</a>
+                                    @endif
+                                </span>
                             </h4>
                         </div>
                         @endforeach
