@@ -27,7 +27,7 @@ class MarkDistributionController extends Controller
     public function show($subjectId)
     {
         $subject = Subject::find($subjectId);
-        $chapters = Chapter::whereSubject_id($subjectId)->get();
+        $chapters = Chapter::with('markDistribution')->whereSubject_id($subjectId)->get();
         return view('admin.mark_distribution.show', compact('subject','chapters'));
     }
 
@@ -60,8 +60,9 @@ class MarkDistributionController extends Controller
                 'multiple' => $request->multiple[$k],
                 'sort' => $request->sort[$k],
                 'long' => $request->long[$k],
+                'pass_mark' => $request->pass_mark,
             ];
-            MarkDistribution::create($data);
+            MarkDistribution::updateOrCreate(['subject_id'=>$request->subject_id,'chapter_id'=>$request->chapter_id[$k]],$data);
         }
 
         try {

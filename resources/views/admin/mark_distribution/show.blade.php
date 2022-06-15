@@ -1,7 +1,7 @@
 @extends('admin.layout.master')
 @section('title', 'Question')
 @section('content')
-@php $m='question'; $sm=''; $ssm=''; @endphp
+@php $m=''; $sm=''; $ssm=''; @endphp
 
 <div class="main-panel">
     <div class="content">
@@ -20,9 +20,9 @@
                         <div class="card-header">
                             <div class="d-flex align-items-center">
                                 <h4 class="card-title">Mark Distribution Table</h4>
-                                <a href="{{ route('admin.markDistribution.create') }}" class="btn btn-primary btn-round ml-auto text-light" style="min-width: 200px">
+                                {{-- <a href="{{ route('admin.markDistribution.create') }}" class="btn btn-primary btn-round ml-auto text-light" style="min-width: 200px">
                                     <i class="fa fa-plus"></i> Add New
-                                </a>
+                                </a> --}}
                             </div>
                         </div>
                         <form action="{{ route('admin.markDistribution.store') }}" method="POST">
@@ -45,18 +45,32 @@
                                             @foreach ($chapters as $chapter)
                                             <input type="hidden" name="subject_id" value="{{$subject->id}}">
                                             <input type="hidden" name="chapter_id[]" value="{{$chapter->id}}">
+                                            @php
+                                                $multiple = $chapter->markDistribution->multiple??0;
+                                                $sort = $chapter->markDistribution->sort??0;
+                                                $long = $chapter->markDistribution->long??0;
+                                            @endphp
                                             <tr id="calc-{{$chapter->id}}">
                                                 <td class="text-center">{{ $x++ }}</td>
                                                 <td>{{ $chapter->name }}</td>
-                                                <td><input type="text" name="multiple[]" class="form-control"></td>
-                                                <td><input type="text" name="sort[]" class="form-control"></td>
-                                                <td><input type="text" name="long[]" class="form-control"></td>
-                                                <td class="subtotal"></td>
+                                                <td><input type="text" name="multiple[]" class="form-control" value="{{ $multiple }}"></td>
+                                                <td><input type="text" name="sort[]" class="form-control" value="{{ $sort }}"></td>
+                                                <td><input type="text" name="long[]" class="form-control" value="{{ $long }}"></td>
+                                                <td class="subtotal">{{$multiple + $sort +  $long }}</td>
 
                                             </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="pass_mark">Pass Marks <span class="t_r">*</span></label>
+                                        <input type="text" name="pass_mark" class="form-control" value="{{ $chapter->markDistribution->pass_mark??0 }}" onInput="this.value = this.value.replace(/[a-zA-z\-*/]/g,'');" required>
+                                        @if ($errors->has('pass_mark'))
+                                        <div class="alert alert-danger">{{ $errors->first('pass_mark') }}</div>
+                                    @endif
+                                    </div>
                                 </div>
                             </div>
                             <div class="text-center card-action">
@@ -74,7 +88,7 @@
 
 
 
-                        <div role="form" lang="en-US" dir="ltr">
+                        {{-- <div role="form" lang="en-US" dir="ltr">
                             <form action="/test/#" method="post" class="form" novalidate>
                               <table class="table table-responsive table-bordered calculation-table" id="suunto-table">
                                 <thead>
@@ -131,7 +145,7 @@
                               </table>
                               <div class="wpcf7-response-output wpcf7-display-none"></div>
                             </form>
-                          </div>
+                          </div> --}}
                     </div>
                 </div>
             </div>

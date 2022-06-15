@@ -17,15 +17,15 @@
                     <table class="table table-bordered text-left">
                         <tr>
                             <td>Mode of Examination</td>
-                            <td> : {{$questionPapers->first()->quesInfo->mode}}</td>
+                            <td>{{$questionPapers->first()->quesInfo->mode}}</td>
                             <td>Total Marks</td>
-                            <td> : {{$totalMark}}</td>
+                            <td>{{$totalMark}}</td>
                         </tr>
                         <tr>
                             <td>Duration of Examination</td>
-                            <td> : {{$questionPapers->first()->quesInfo->duration}}</td>
+                            <td>{{$questionPapers->first()->quesInfo->d_hour}} : {{$questionPapers->first()->quesInfo->d_minute}} Minutes</td>
                             <td>Pass Marks</td>
-                            <td>: {{$questionPapers->first()->quesInfo->pass_mark}}</td>
+                            <td>{{$passMark}}</td>
                         </tr>
                     </table>
                 </div>

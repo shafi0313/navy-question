@@ -43,11 +43,12 @@ class QuestionPaperController extends Controller
         }
         $questionPapers = QuestionPaper::with(['quesInfo','question'])->whereQues_info_id($quesInfoId)->get();
         $mark = MarkDistribution::whereSubject_id($questionPapers->first()->quesInfo->subject_id);
+        $passMark = $mark->first(['pass_mark'])->pass_mark;
         $totalMark = $mark->sum('multiple') + $mark->sum('sort') + $mark->sum('long');
         if($questionPapers->count() <= 0 ){
             Alert::error('No Data Found');
             return back();
         }
-        return view('admin.question_paper.show', compact('questionPapers','totalMark'));
+        return view('admin.question_paper.show', compact('questionPapers','passMark','totalMark'));
     }
 }

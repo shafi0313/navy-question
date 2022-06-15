@@ -20,9 +20,9 @@
                         <div class="card-header">
                             <div class="d-flex align-items-center">
                                 <h4 class="card-title">Mark Distribution Table</h4>
-                                <a href="{{ route('admin.markDistribution.create') }}" class="btn btn-primary btn-round ml-auto text-light" style="min-width: 200px">
+                                {{-- <a href="{{ route('admin.markDistribution.create') }}" class="btn btn-primary btn-round ml-auto text-light" style="min-width: 200px">
                                     <i class="fa fa-plus"></i> Add New
-                                </a>
+                                </a> --}}
                             </div>
                         </div>
                         <div class="card-body">
@@ -30,24 +30,13 @@
                                 <table id="multi-filter-select" class="display table table-striped table-hover">
                                     <thead class="bg-secondary thw">
                                         <tr>
-                                            <th>SL</th>
-                                            <th>Exam</th>
-                                            <th>Exam Code</th>
-                                            <th>Exam Mode</th>
-                                            <th>Exam Trade</th>
-                                            <th>Exam Date & Time</th>
-                                            <th>Exam Duration</th>
-                                            {{-- <th>Subject</th> --}}
+                                            <th style="width: 100px">SL</th>
+                                            <th>Subject</th>
                                             <th class="no-sort" width="40px">Action</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
                                             <th></th>
                                             <th></th>
                                         </tr>
@@ -57,22 +46,12 @@
                                         @foreach ($subjects as $subject)
                                         <tr>
                                             <td class="text-center">{{ $x++ }}</td>
-                                            {{-- <td>{{ $question->user->name }}</td> --}}
                                             <td>{{ $subject->name }}</td>
-                                            <td>{{ $subject->code }}</td>
-                                            <td>{{ $subject->mode }}</td>
-                                            <td>{{ $subject->trade }}</td>
-                                            <td>{{ examDateTime($subject->date_time) }}</td>
-                                            <td>{{ $subject->duration }}</td>
                                             <td>
                                                 <div class="form-button-action">
                                                     <a href="{{ route('admin.markDistribution.show', $subject->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
                                                         Show
                                                     </a>
-
-                                                    {{-- <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove">
-                                                        <i class="fa fa-times"></i>
-                                                    </button> --}}
                                                 </div>
                                             </td>
                                         </tr>
@@ -84,7 +63,7 @@
 
 
 
-                            <div class="row">
+                            {{-- <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="subject_id">Subject <span class="t_r">*</span></label>
@@ -109,7 +88,7 @@
                                             <div class="alert alert-danger">{{ $errors->first('chapter_id') }}</div>
                                         @endif
                                     </div>
-                                </div>
+                                </div> --}}
                                 {{-- <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="type">Question Type <span class="t_r">*</span></label>
@@ -124,7 +103,7 @@
                                         @endif
                                     </div>
                                 </div> --}}
-                                <div class="col-md-12">
+                                {{-- <div class="col-md-12">
                                     <table class="table table-striped table-bordered table-hover w-100" >
                                         <thead>
                                             <tr>
@@ -135,7 +114,7 @@
                                         </thead>
                                         <tbody class="questionArea" id="questionArea"></tbody>
                                     </table>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>

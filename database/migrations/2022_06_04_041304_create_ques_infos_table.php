@@ -20,8 +20,8 @@ return new class extends Migration
             $table->foreignId('subject_id')->constrained()->cascadeOnDelete();
             $table->tinyInteger('set');
             $table->dateTime('date_time');
-            $table->tinyInteger('total_mark');
-            $table->tinyInteger('pass_mark');
+            // $table->tinyInteger('total_mark');
+            // $table->tinyInteger('pass_mark');
             $table->tinyInteger('d_hour')->default(0);
             $table->tinyInteger('d_minute')->default(0);
             $table->string('mode',80);

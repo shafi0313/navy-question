@@ -9,4 +9,8 @@ class Chapter extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+
+    public function markDistribution(){
+        return $this->hasOne(MarkDistribution::class);
+    }
 }

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('multiple')->default(0);
             $table->integer('sort')->default(0);
             $table->integer('long')->default(0);
+            $table->tinyInteger('pass_mark');
             // $table->enum('type', ["Multiple Choice","Short Question","Long Question"]);
             // $table->integer('mark');
             $table->timestamps();

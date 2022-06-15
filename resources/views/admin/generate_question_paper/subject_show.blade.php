@@ -1,7 +1,7 @@
 @extends('admin.layout.master')
 @section('title', 'Generated Question')
 @section('content')
-@php $m='generatedQues'; $sm=''; $ssm=''; @endphp
+@php $m=''; $sm=''; $ssm=''; @endphp
 
 <div class="main-panel">
     <div class="content">

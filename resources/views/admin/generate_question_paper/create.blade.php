@@ -121,7 +121,8 @@
                                         @endif
                                         </div>
                                     </div>--}}
-                                    <div class="col-md-6">
+
+                                    {{-- <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="pass_mark">Pass Marks <span class="t_r">*</span></label>
                                             <input type="text" name="pass_mark" class="form-control" value="{{ old('pass_mark') }}" onInput="this.value = this.value.replace(/[a-zA-z\-*/]/g,'');" required>
@@ -129,8 +130,7 @@
                                             <div class="alert alert-danger">{{ $errors->first('pass_mark') }}</div>
                                         @endif
                                         </div>
-                                    </div>
-
+                                    </div> --}}
 
 
                                     {{-- <div class="col-md-6">

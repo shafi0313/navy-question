@@ -71,7 +71,7 @@ class GenerateQuestionPaperController extends Controller
             'mode' => 'required',
             'trade' => 'nullable',
             // 'total_mark' => 'required|integer',
-            'pass_mark' => 'required|integer',
+            // 'pass_mark' => 'required|integer',
         ]);
         $quesInfo['status'] = 'Pending';
         $quesInfo['user_id'] = auth()->user()->id;
@@ -137,7 +137,7 @@ class GenerateQuestionPaperController extends Controller
     public function show($quesInfoId)
     {
 
-        $questionPapers = QuestionPaper::with(['exam','question'])->whereQues_info_id($quesInfoId)->get();
+        $questionPapers = QuestionPaper::with(['question'])->whereQues_info_id($quesInfoId)->get();
         $chapters = Chapter::whereSubject_id($questionPapers->first()->question->subject_id)->get();
         return view('admin.generate_question_paper.show', compact('questionPapers','chapters','quesInfoId'));
     }
