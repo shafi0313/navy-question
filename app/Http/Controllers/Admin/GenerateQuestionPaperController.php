@@ -71,8 +71,6 @@ class GenerateQuestionPaperController extends Controller
             'd_minute' => 'sometimes',
             'mode' => 'required',
             'trade' => 'nullable',
-            // 'total_mark' => 'required|integer',
-            // 'pass_mark' => 'required|integer',
         ]);
         $quesInfo['status'] = 'Pending';
         $quesInfo['user_id'] = auth()->user()->id;
