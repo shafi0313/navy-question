@@ -1,8 +1,7 @@
 @extends('admin.layout.master')
 @section('title', 'Question')
 @section('content')
-@php $m='question'; $sm=''; $ssm=''; @endphp
-<link href="//cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+@php $m=''; $sm=''; $ssm=''; @endphp
 <div class="main-panel">
     <div class="content">
         <div class="page-inner">
@@ -53,19 +52,12 @@
                                         <div class="form-group">
                                             <label for="chapter_id">Chapters <span class="t_r">*</span></label>
                                             <select class="form-control" name="chapter_id" id="chapter_id">
-                                                {{-- <option selected value disabled>Select</option>
-                                                @foreach ($subjects as $subject)
-                                                    <option value="{{ $subject->id }}">{{ $subject->name }}</option>
-                                                @endforeach --}}
                                             </select>
                                             @if ($errors->has('chapter_id'))
                                                 <div class="alert alert-danger">{{ $errors->first('chapter_id') }}</div>
                                             @endif
                                         </div>
                                     </div>
-                                    {{-- <div class="col-md-12">
-                                        <hr class="bg-danger">
-                                    </div> --}}
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="type">Question Type <span class="t_r">*</span></label>
@@ -158,11 +150,6 @@
                                 <tbody class="questionArea" id="question"></tbody>
                             </table>
                         </div>
-                        {{-- <div class="col-md-8">
-                            <h3 class="text-primary">Question</h3>
-                            <div class="questionArea" id="questionArea"></div>
-                            <div class="questionArea" id="question"></div>
-                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -173,15 +160,7 @@
 
 @push('custom_scripts')
 <script src="{{ asset('backend/ckeditor/ckeditor.js') }}"></script>
-<script src="//cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 <script>
-    //  $(document).ready(function () {
-    //         $('#ques').summernote({
-    //             height: 450,
-    //         });
-    //     });
-
-
     CKEDITOR.replace('ques')
 </script>
 @include('include.toast');
@@ -226,7 +205,6 @@
                             let url = '{{ route("admin.question.edit", ":id") }}';
                             url = url.replace(':id', id);
                             quesData += '<tr>'
-                            // quesData += '<input type="hidden" name="type" value="'+v.type+'">'
                             quesData += '<td><input type="checkbox" name="question_id[]" value="'+v.id+'">&nbsp;&nbsp; '+v.ques+'</td>'
                             quesData += '<td>'+v.type+'</td>'
                             quesData += '<td>'+v.mark+'</td>'
@@ -321,7 +299,6 @@
         };
     }
 
-
     function serialMaintain() {
         var i = 1;
         var subtotal = gst_amt_subtotal=0;
@@ -330,7 +307,6 @@
             i++;
         });
     };
-
 </script>
 
 

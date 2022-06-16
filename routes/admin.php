@@ -114,7 +114,7 @@ Route::middleware(['auth','admin'])->prefix('admin')->name('admin.')->group(func
         Route::post('/addQues', 'addQues')->name('addQues');
         Route::post('/store', 'store')->name('store');
         Route::post('/complete', 'complete')->name('complete');
-        Route::get('/edit/{id}', 'edit')->name('edit');
+        Route::get('/edit/{id}/{quesInfoId}', 'edit')->name('edit');
         Route::post('/update/{id}', 'update')->name('update');
         Route::get('/show/{id}', 'show')->name('show');
         Route::get('/subject/show/{subject}', 'showBySubject')->name('showBySubject');

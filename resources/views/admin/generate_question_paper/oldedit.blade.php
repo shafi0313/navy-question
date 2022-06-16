@@ -30,11 +30,24 @@
                                 </ul>
                             </div>
                         @endif
-                        <form action="{{ route('admin.generateQuestion.update', $question->id) }}" method="post">
+                        <form action="{{ route('admin.question.update', $question->id) }}" method="post">
                             @csrf
-                            <input type="hidden" name="quesInfoId" value="{{$quesInfoId}}">
                             <div class="card-body">
                                 <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="exam_id">Exam <span class="t_r">*</span></label>
+                                            <select class="form-control" name="exam_id" id="exam_id">
+                                                <option selected value="{{ $question->exam_id }}">{{ $question->exam->name }}</option>
+                                                @foreach ($exams as $exam)
+                                                    <option value="{{ $exam->id }}">{{ $exam->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @if ($errors->has('exam_id'))
+                                                <div class="alert alert-danger">{{ $errors->first('exam_id') }}</div>
+                                            @endif
+                                        </div>
+                                    </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="subject_id">Subject <span class="t_r">*</span></label>
@@ -138,6 +151,31 @@
 
 @push('custom_scripts')
 <script>
+    $('#exam_id').change(function () {
+        // $('#post_bank_account').val($(this).val());
+        // alert($(this).val())
+        $.ajax({
+            url:"{{route('admin.question.getSubject')}}",
+            data:{examId:$(this).val()},
+            method:'get',
+            success:res=>{
+                let opt = '<option disabled selected>- -</option>';
+                if(res.status == 200){
+                $.each(res.subjects,function(i,v){
+                    opt += '<option value="'+v.id+'">'+v.name+'</option>';
+                });
+                $("#subject_id").html(opt);
+                }else{
+                    alert('No subject found')
+                    // toast('error', 'No Codes found')
+                }
+            },
+            error:err=>{
+                alert('No subject found')
+                // toast('error', 'No Codes found')
+            }
+        });
+    });
     $('#subject_id').change(function () {
         $.ajax({
             url:"{{route('admin.question.getChapter')}}",
@@ -152,40 +190,46 @@
                 $("#chapter_id").html(opt);
                 }else{
                     alert('No chapter found')
+                    // toast('error', 'No Codes found')
                 }
             },
             error:err=>{
                 alert('No chapter found')
+                // toast('error', 'No Codes found')
             }
         });
     });
+</script>
+<script>
 
     $("#quesType").change(function(){
+
         const type = $(this).val();
+
         if(type == "Multiple Choice"){
             $(".quesTypeDiv").show();
         }else{
             $(".quesTypeDiv").hide();
         }
     })
-        $(document).ready(function(){
-            var i = 1;
-            $('.addrow').click(function()
-                {i++;
-                    html ='';
-                    html +='<tr id="remove_'+i+'" class="post_item">';
-                    html +='	<input type="hidden" name="option_id[]" value="{{ $option->id??0 }}">';
-                    html +='	<td><input type="text" name="option[]" id="purchase_" class="form-control form-control-sm"/></td>';
-                    html +='	<td style="width: 20px"  class="col-md-2"><span class="btn btn-sm btn-danger" onClick="return remove('+i+')"><i class="fa fa-times" aria-hidden="true"></i></span></td>';
-                    html +='</tr>';
-                    $('#showItem').append(html);
-                });
-        });
-        function remove(id)
-        {
-            $('#remove_'+id).remove();
-            total_price();
-        }
+
+	$(document).ready(function(){
+		var i = 1;
+		$('.addrow').click(function()
+			{i++;
+				html ='';
+				html +='<tr id="remove_'+i+'" class="post_item">';
+	            html +='	<td><input type="text" name="option[]" id="purchase_" class="form-control form-control-sm"/></td>';
+	            html +='	<td style="width: 20px"  class="col-md-2"><span class="btn btn-sm btn-danger" onclick="return remove('+i+')"><i class="fa fa-times" aria-hidden="true"></i></span></td>';
+	            html +='</tr>';
+	            $('#showItem').append(html);
+			});
+	});
+	function remove(id)
+	{
+		$('#remove_'+id).remove();
+		total_price();
+    }
 </script>
 @endpush
 @endsection

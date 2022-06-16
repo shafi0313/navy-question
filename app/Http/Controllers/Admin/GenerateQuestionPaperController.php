@@ -8,6 +8,7 @@ use App\Models\Chapter;
 use App\Models\Subject;
 use App\Models\QuesInfo;
 use App\Models\Question;
+use App\Models\QuesOption;
 use Illuminate\Http\Request;
 use App\Models\QuestionPaper;
 use App\Models\MarkDistribution;
@@ -154,6 +155,66 @@ class GenerateQuestionPaperController extends Controller
             return redirect()->back();
         }
     }
+
+
+    public function edit($id, $quesInfoId)
+    {
+        if ($error = $this->sendPermissionError('edit')) {
+            return $error;
+        }
+        $question = Question::with('options')->find($id);
+        $exams = Exam::all();
+        return view('admin.generate_question_paper.edit', compact('question','exams','quesInfoId'));
+    }
+
+    public function update(Request $request, $quesId)
+    {
+        if ($error = $this->sendPermissionError('edit')) {
+            return $error;
+        }
+        $data = $this->validate($request, [
+            'subject_id' => 'required|integer',
+            'chapter_id' => 'required|integer',
+            'type' => 'required',
+            'mark' => 'required',
+            'ques' => 'required',
+        ]);
+        $data['user_id'] = auth()->user()->id;
+
+        DB::beginTransaction();
+        Question::find($quesId)->update($data);
+
+        if($request->type == "Multiple Choice"){
+            foreach($request->option as $key => $value){
+                $option=[
+                    'question_id' => $quesId,
+                    'option' => $request->option[$key],
+                ];
+                if(!empty(QuesOption::whereId($request->option_id[$key]))){
+                    QuesOption::where('id', $request->option_id[$key])->update($option);
+                }else{
+                    QuesOption::create($option);
+                }
+                // QuesOption::updateOrCreate(['id' => $request->option_id],$option);
+                // $update = QuesOption::where('id', $request->option_id[$key])->update($option);
+                // if(!$update){
+                //     QuesOption::create($option);
+                // }
+            }
+        }
+
+        try{
+            DB::commit();
+            toast('Success!','success');
+            return redirect()->route('admin.generateQuestion.show',$request->quesInfoId);
+        }catch(\Exception $ex){
+            return $ex->getMessage();
+            DB::rollBack();
+            toast('error','Error');
+            return redirect()->back();
+        }
+    }
+
 
     public function quesDestroy($id)
     {
