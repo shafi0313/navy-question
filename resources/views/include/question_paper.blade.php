@@ -10,6 +10,9 @@
                 .questionArea {
                     padding: 0 20px;
                 }
+                .questionArea p{
+                    display: inline-block;
+                }
                 .option{
                     margin-left: 30px;
                 }
@@ -67,7 +70,7 @@
                         <br>
                         <br>
                     @endif
-                    
+
 
                     @if ($questionPapers->where('type','Short Question')->count() > 0)
                         <h4 class="quesType">Short Question</h4>
