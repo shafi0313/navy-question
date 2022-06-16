@@ -67,6 +67,7 @@
                         <br>
                         <br>
                     @endif
+                    
 
                     @if ($questionPapers->where('type','Short Question')->count() > 0)
                         <h4 class="quesType">Short Question</h4>
