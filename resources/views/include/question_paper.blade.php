@@ -38,7 +38,7 @@
                         <h4 class="quesType">Multiple Choice</h4>
                         @foreach ($questionPapers->where('type','Multiple Choice') as $key => $question)
                         <div class="questionArea">
-                            <h4 class="question">{{$x++}}. {{ $question->question->ques }}
+                            <h4 class="question">{{$x++}}. {!! $question->question->ques !!}
                                 <span style="float:right">{{ $question->question->mark }}
                                     @if (!empty($edit))
                                         <a href="{{route('admin.generateQuestion.edit',[$question->question->id,$question->ques_info_id])}}" style="margin-left: 20px" class="text-info">Edit</a>
@@ -47,8 +47,11 @@
                                         <a href="{{route('admin.generateQuestion.quesDestroy',$question->question->id)}}" style="margin-left: 20px" class="text-danger">Delete</a>
                                     @endif
                                 </span>
-
                             </h4>
+                            @isset($question->question->image)
+                            <img src="{{asset('uploads/images/question/'.$question->question->image)}}" alt="">
+                            @endisset
+
                             @foreach ($question->question->options as $option)
                             <div class="col-md-6 option">
                                 <div class="form-check">
