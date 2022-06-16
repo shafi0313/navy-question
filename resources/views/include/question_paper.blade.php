@@ -52,7 +52,7 @@
                                 </span>
                             </h4>
                             @isset($question->question->image)
-                            <img src="{{asset('uploads/images/question/'.$question->question->image)}}" alt="">
+                            <img src="{{asset('uploads/images/question/'.$question->question->image)}}" style="margin-left: 20px"alt="">
                             @endisset
 
                             @foreach ($question->question->options as $option)
