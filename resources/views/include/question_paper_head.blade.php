@@ -23,7 +23,7 @@
                         </tr>
                         <tr>
                             <td>Duration of Examination</td>
-                            <td>{{$questionPapers->first()->quesInfo->d_hour}} : {{$questionPapers->first()->quesInfo->d_minute}} Minutes</td>
+                            <td>{{$questionPapers->first()->quesInfo->d_hour}} Hrs {{$questionPapers->first()->quesInfo->d_minute}} Min</td>
                             <td>Pass Marks</td>
                             <td>{{$passMark}}</td>
                         </tr>

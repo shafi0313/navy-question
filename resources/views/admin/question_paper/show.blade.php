@@ -23,7 +23,7 @@
 @push('custom_scripts')
     <!-- Datatables -->
     @include('include.data_table')
-    {{-- @include('include.printJs') --}}
+    @include('include.printJs')
     <script>
         $(function () {
             $("#checkAll").on("click", function () {

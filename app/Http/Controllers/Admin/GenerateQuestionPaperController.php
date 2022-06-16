@@ -103,7 +103,7 @@ class GenerateQuestionPaperController extends Controller
             $questions = Question::whereSubject_id($request->subject_id)
                                 ->whereChapter_id($v->pluck('chapter_id')[$k])
                                 ->whereType('Short Question')->inRandomOrder()
-                                ->limit($v->sort/3)
+                                ->limit($v->sort/2)
                                 ->get()
                                 ->pluck('id');
 

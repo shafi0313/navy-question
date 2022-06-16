@@ -269,6 +269,7 @@
         $("#mark").val('');
         $("#option").val('');
         $("#image").val('');
+        CKEDITOR.instances.ques.setData('')
     }
 
     function question(){
