@@ -72,13 +72,19 @@
                         <h4 class="quesType">Short Question</h4>
                         @foreach ($questionPapers->where('type','Short Question') as $question)
                         <div class="questionArea">
-                            <h4 class="question">{{$x++}}. {{ $question->question->ques }}
+                            <h4 class="question">{{$x++}}. {!! $question->question->ques !!}
                                 <span style="float:right">{{ $question->question->mark }}
-                                    @if (!empty($delete))
-                                        <a href="{{route('admin.generateQuestion.quesDestroy',$question->question->id)}}" style="margin-left: 20px" class="text-danger">Delete</a>
-                                    @endif
-                                </span>
-                            </h4>
+                                    @if (!empty($edit))
+                                    <a href="{{route('admin.generateQuestion.edit',[$question->question->id,$question->ques_info_id])}}" style="margin-left: 20px" class="text-info">Edit</a>
+                                @endif
+                                @if (!empty($delete))
+                                    <a href="{{route('admin.generateQuestion.quesDestroy',$question->question->id)}}" style="margin-left: 20px" class="text-danger">Delete</a>
+                                @endif
+                            </span>
+                        </h4>
+                        @isset($question->question->image)
+                        <img src="{{asset('uploads/images/question/'.$question->question->image)}}" alt="">
+                        @endisset
                         </div>
                         @endforeach
                         <br>
@@ -89,13 +95,19 @@
                         <h4 class="quesType">Long Question</h4>
                         @foreach ($questionPapers->where('type','Long Question') as $question)
                         <div class="questionArea">
-                            <h4 class="question">{{$x++}}. {{ $question->ques }}
-                                <span style="float:right">{{ $question->mark }}
+                            <h4 class="question">{{$x++}}. {!! $question->question->ques !!}
+                                <span style="float:right">{{ $question->question->mark }}
+                                    @if (!empty($edit))
+                                        <a href="{{route('admin.generateQuestion.edit',[$question->question->id,$question->ques_info_id])}}" style="margin-left: 20px" class="text-info">Edit</a>
+                                    @endif
                                     @if (!empty($delete))
                                         <a href="{{route('admin.generateQuestion.quesDestroy',$question->question->id)}}" style="margin-left: 20px" class="text-danger">Delete</a>
                                     @endif
                                 </span>
                             </h4>
+                            @isset($question->question->image)
+                            <img src="{{asset('uploads/images/question/'.$question->question->image)}}" alt="">
+                            @endisset
                         </div>
                         @endforeach
                     @endif
