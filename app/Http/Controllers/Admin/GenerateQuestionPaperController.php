@@ -99,6 +99,42 @@ class GenerateQuestionPaperController extends Controller
             }
         }
 
+        foreach($quesMarks as $k => $v){
+            $questions = Question::whereSubject_id($request->subject_id)
+                                ->whereChapter_id($v->pluck('chapter_id')[$k])
+                                ->whereType('Short Question')->inRandomOrder()
+                                ->limit($v->sort/3)
+                                ->get()
+                                ->pluck('id');
+
+            foreach($questions as $key => $value){
+                $data=[
+                    'ques_info_id' => $questionInfo->id,
+                    'question_id' => $value,
+                    'type' => 'Short Question',
+                ];
+                QuestionPaper::updateOrCreate($data);
+            }
+        }
+
+        foreach($quesMarks as $k => $v){
+            $questions = Question::whereSubject_id($request->subject_id)
+                                ->whereChapter_id($v->pluck('chapter_id')[$k])
+                                ->whereType('Long Question')->inRandomOrder()
+                                ->limit($v->long/5)
+                                ->get()
+                                ->pluck('id');
+
+            foreach($questions as $key => $value){
+                $data=[
+                    'ques_info_id' => $questionInfo->id,
+                    'question_id' => $value,
+                    'type' => 'Long Question',
+                ];
+                QuestionPaper::updateOrCreate($data);
+            }
+        }
+
         try{
             toast('Success!','success');
             DB::commit();
