@@ -2,7 +2,7 @@
 @section('title', 'Question')
 @section('content')
 @php $m='question'; $sm=''; $ssm=''; @endphp
-
+<link href="//cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 <div class="main-panel">
     <div class="content">
         <div class="page-inner">
@@ -31,7 +31,7 @@
                             </div>
                         @endif
 
-                        <form action="{{ route('admin.question.store') }}" method="POST" id="quesStore">
+                        <form action="{{ route('admin.question.store') }}" method="POST" id="quesStore" enctype="multipart/form-data">
                             @csrf
                             <div class="card-body">
                                 <div class="row">
@@ -84,7 +84,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="mark">Marks <span class="t_r">*</span></label>
-                                            <input name="mark" class="form-control" id="mark" required>
+                                            <input type="text" name="mark" class="form-control" id="mark" required>
                                             @if ($errors->has('mark'))
                                                 <div class="alert alert-danger">{{ $errors->first('mark') }}</div>
                                             @endif
@@ -97,6 +97,15 @@
                                             <textarea name="ques" class="form-control" id="ques" rows="5" required></textarea>
                                             @if ($errors->has('ques'))
                                                 <div class="alert alert-danger">{{ $errors->first('ques') }}</div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="image">Image</label>
+                                            <input type="file" name="image" class="form-control" id="image" >
+                                            @if ($errors->has('image'))
+                                                <div class="alert alert-danger">{{ $errors->first('image') }}</div>
                                             @endif
                                         </div>
                                     </div>
@@ -163,6 +172,18 @@
 </div>
 
 @push('custom_scripts')
+<script src="{{ asset('backend/ckeditor/ckeditor.js') }}"></script>
+<script src="//cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+<script>
+    //  $(document).ready(function () {
+    //         $('#ques').summernote({
+    //             height: 450,
+    //         });
+    //     });
+
+
+    CKEDITOR.replace('ques')
+</script>
 @include('include.toast');
 <script>
     $('.add-item').on('click', function() {
@@ -229,13 +250,18 @@
 
     $('#quesStore').on('submit',function(e){
         e.preventDefault();
-        let data   = $(this).serialize();
+        for ( instance in CKEDITOR.instances ) {
+            CKEDITOR.instances[instance].updateElement();
+        }
+        var formData = new FormData(this);
         let url    = $(this).attr('action');
         let method = $(this).attr('method');
         var request = $.ajax({
             url: url,
             method:method,
-            data: data,
+            data: formData,
+            contentType: false,
+            processData: false,
             success:res=>{
                 toast('success','Success!');
                 clear();
@@ -264,6 +290,7 @@
         $("#ques").val('');
         $("#mark").val('');
         $("#option").val('');
+        $("#image").val('');
     }
 
     function question(){
@@ -300,64 +327,13 @@
         var subtotal = gst_amt_subtotal=0;
         $('.serial').each(function(key, element) {
             $(element).html(i);
-            // var total = $(element).parents('tr').find('input[name="totalamount[]"]').val();
-            // var gst_amt = $(element).parents('tr').find('input[name="gst_amt[]"]').val();
-            // subtotal += + parseFloat(total);
-            // gst_amt_subtotal += + parseFloat(gst_amt);
             i++;
         });
-        // $('.sub-total').html(subtotal.toFixed(2));
-        // $('#total_amount').val(subtotal);
-        // $('#gst_amt_subtotal').val(gst_amt_subtotal);
     };
 
 </script>
 
 
-
-<script>
-    // $('#chapter_id').change(function () {
-    //     $("#questionArea").html('');
-    //     $.ajax({
-    //         url:"{{route('admin.generateQuestion.getQuestion')}}",
-    //         data:{chapterId:$(this).val()},
-    //         method:'get',
-    //         success:res=>{
-    //             if(res.status == 200){
-    //                 var quesData = '';
-    //                 $.each(res.questions,function(i,v){
-    //                     let id = v.id;
-    //                         let url = '{{ route("admin.question.edit", ":id") }}';
-    //                         url = url.replace(':id', id);
-
-    //                         // quesData += '<tr>'
-    //                         // // quesData += '<input type="hidden" name="type" value="'+v.type+'">'
-    //                         // quesData += '<td><input type="checkbox" name="question_id[]" value="'+v.id+'">&nbsp;&nbsp; '+v.ques+'</td>'
-    //                         // quesData += '<td>'+v.type+'</td>'
-    //                         // quesData += '<td>'+v.mark+'</td>'
-    //                         // quesData += '<td>'
-    //                         // quesData +=     '<div class="form-button-action">'
-    //                         // quesData +=         '<a href='+url+' data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">Edit</a>'
-    //                         // quesData +=     '</div>'
-    //                         // quesData += '</td>'
-    //                         // quesData += '</tr>'
-    //                     // quesData += '<h4 class="question">'
-    //                     // quesData += '<input type="hidden" name="exam_id[]" value="'+v.exam_id+'">'
-    //                     // quesData += '<label>&nbsp;&nbsp; </label>'+v.ques+'';
-    //                     // quesData += '<span style="float:right">'+v.mark+'</span>';
-    //                     // quesData += '</h4">';
-    //                 });
-    //                 $("#questionArea").append(quesData);
-    //             }else{
-    //                 alert('No question found')
-    //             }
-    //         },
-    //         error:err=>{
-    //             alert('No question found')
-    //         }
-    //     });
-    // });
-</script>
 <script>
     $('#subject_id').change(function () {
         $.ajax({

@@ -10,6 +10,7 @@ use App\Models\QuesOption;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 
 class QuestionEntryController extends Controller
 {
@@ -84,6 +85,7 @@ class QuestionEntryController extends Controller
 
     public function store(Request $request)
     {
+        // return $request;
         $data = $this->validate($request, [
             'subject_id' => 'required|integer',
             'chapter_id' => 'required|integer',
@@ -91,6 +93,23 @@ class QuestionEntryController extends Controller
             'mark' => 'required',
             'ques' => 'required',
         ]);
+
+        if($request->hasFile('image')){
+            // $files = TextWithSingleImg::wherePage('carPhotoEditing')->whereSec_name('pageHead')->first('image')->before;
+            // $path =  public_path('uploads/images/page/'.$files);
+            // file_exists($files)?unlink($path):'';
+
+            // $path = public_path().'/uploads/images/question';
+            // if (!file_exists($path)) {
+            //     File::makeDirectory($path, 0777, true, true);
+            // }
+            $image = $request->file('image');
+            $imageName = "question_".rand(0, 1000000).'.'.$image->getClientOriginalExtension();
+            $request->image->move('uploads/images/question/', $imageName);
+            $data['image'] = $imageName;
+        }
+
+        // $data['ques'] =$request->ques;
         $data['user_id'] = auth()->user()->id;
         $questionEntry = Question::create($data);
         if($request->type == "Multiple Choice"){
