@@ -52,12 +52,16 @@
                                             <td>{{ examDateTime($exam->created_at) }}</td>
                                             <td>
                                                 <div class="form-button-action">
-                                                    <a href="{{ route('admin.adminUser.edit', $exam->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">
+                                                    <a href="{{ route('admin.exam.edit', $exam->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">
                                                         <i class="fa fa-edit"></i>
                                                     </a>
-                                                    <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove">
-                                                        <i class="fa fa-times"></i>
-                                                    </button>
+                                                    <form action="{{ route('admin.exam.destroy', $exam->id) }}" method="post">
+                                                        @csrf @method('DELETE')
+                                                        <button type="submit" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove" onclick="return confirm('Are you sure')">
+                                                            <i class="fa fa-times"></i>
+                                                        </button>
+                                                    </form>
+
                                                 </div>
                                             </td>
                                         </tr>

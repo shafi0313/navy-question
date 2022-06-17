@@ -41,10 +41,9 @@ class ExamController extends Controller
         try{
             Exam::create($data);
             DB::commit();
-            toast('success','Success');
+            toast('Success!','success');
             return redirect()->route('admin.exam.index');
         }catch(\Exception $ex){
-            return $ex->getMessage();
             DB::rollBack();
             toast('error','Error');
             return redirect()->back();
@@ -56,8 +55,8 @@ class ExamController extends Controller
         if ($error = $this->sendPermissionError('edit')) {
             return $error;
         }
-        $user = User::with('accessPermission')->find($id);
-        return view('admin.exam.edit', compact('user'));
+        $exam = Exam::find($id);
+        return view('admin.exam.edit', compact('exam'));
     }
 
     public function update(Request $request, $id)
@@ -65,73 +64,21 @@ class ExamController extends Controller
         if ($error = $this->sendPermissionError('edit')) {
             return $error;
         }
-        $this->validate($request, [
+
+        $data = $this->validate($request, [
             'name' => 'required|max:100',
-            // 'email' => 'required|email|unique:users,email',
-            'address' => 'required',
-            'd_o_b' => 'required|date',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
-            'password' => ['nullable', 'confirmed', Password::min(6)
-                                                            ->letters()
-                                                            // ->mixedCase()
-                                                            ->numbers()
-                                                            ->symbols()
-                                                            ->uncompromised()],
         ]);
 
+        $data['user_id'] = auth()->user()->id;
         DB::beginTransaction();
-
-        $data = [
-            'name' => $request->name,
-            'designation' => $request->designation,
-            'd_o_b' => $request->d_o_b,
-            'phone' => $request->phone,
-            'address' => $request->address,
-        ];
-
-        if($request->hasFile('image')){
-            $files = User::where('id', $id)->first();
-            $path =  public_path('uploads/images/users/'.$files->image);
-            file_exists($path) ? unlink($path) : false;
-
-            $path = public_path().'/uploads/images/users/';
-            !file_exists($path) ?? File::makeDirectory($path, 0777, true, true);
-
-            $image = $request->file('image');
-            $image_name = "admin_user_".rand(0,1000).'.'.$image->getClientOriginalExtension();
-            $request->image->move('uploads/images/users/',$image_name);
-
-            $data['image'] = $image_name;
-        }
-
-        if($request->permission==0){
-            $data['permission'] = 0;
-        }else{
-            $data['permission'] = 1;
-        }
-
-        if(isset($request->password)){
-            $data['password'] = bcrypt($request->input('password'));
-        }
-
         try{
-            User::find($id)->update($data);
-            if($request->permission){
-                $permission = [
-                    'role_id' =>  $request->permission,
-                    'model_type' => "App\Models\User",
-                    'model_id' =>  $id,
-                ];
-                ModelHasRole::where('model_id',$id)->update($permission) || ModelHasRole::create($permission);
-            }
-
+            Exam::find($id)->update($data);
             DB::commit();
-            toast('success','Success');
-            return redirect()->route('admin.adminUser.index');
+            toast('Success!','success');
+            return redirect()->route('admin.exam.index');
         }catch(\Exception $ex){
-            return $ex->getMessage();
             DB::rollBack();
-            toast('error','Error');
+            toast('Error','error');
             return redirect()->back();
         }
     }
@@ -142,16 +89,13 @@ class ExamController extends Controller
         if ($error = $this->sendPermissionError('delete')) {
             return $error;
         }
-        $user = User::find($id);
-        $path =  public_path('uploads/images/users/'.$user->image);
-        if(file_exists($path) && !is_null($user->image)){
-            unlink($path);
-            $user->delete();
-            toast('Successfully Deleted','success');
+        try{
+            Exam::find($id)->delete();
+            toast('Success!','success');
             return redirect()->back();
-        }else{
-            $user->delete();
-            toast('Successfully Deleted','success');
+        }catch(\Exception $ex){
+            DB::rollBack();
+            toast('Error','error');
             return redirect()->back();
         }
     }
