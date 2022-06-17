@@ -19,7 +19,7 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-items-center">
-                                <h4 class="card-title">Add Row</h4>
+                                <h4 class="card-title">Show Questions</h4>
                                 <a href="{{ route('admin.question.create') }}" class="btn btn-primary btn-round ml-auto text-light" style="min-width: 200px">
                                     <i class="fa fa-plus"></i> Add New
                                 </a>
@@ -116,44 +116,26 @@
                 }
             });
         });
-        $('#quesType').change(function () {
-            $("#questionArea").html('');
-            let chapterId = $('#chapter_id').find(":selected").val();
-            let quesType = $(this).val();
-            $.ajax({
-                url:"{{route('admin.generateQuestion.getQuestion')}}",
-                data:{chapterId:chapterId, quesType:quesType},
-                method:'get',
-                success:res=>{
-                    if(res.status == 200){
-                        let quesData = '';
-                        $.each(res.questions,function(i,v){
-                            let id = v.id;
-                            let url = '{{ route("admin.question.edit", ":id") }}';
-                            url = url.replace(':id', id);
 
-                            quesData += '<tr>'
-                            // quesData += '<input type="hidden" name="type" value="'+v.type+'">'
-                            quesData += '<td><input type="checkbox" name="question_id[]" value="'+v.id+'">&nbsp;&nbsp; '+v.ques+'</td>'
-                            quesData += '<td>'+v.type+'</td>'
-                            quesData += '<td>'+v.mark+'</td>'
-                            quesData += '<td>'
-                            quesData +=     '<div class="form-button-action">'
-                            quesData +=         '<a href='+url+' data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">Edit</a>'
-                            quesData +=     '</div>'
-                            quesData += '</td>'
-                            quesData += '</tr>'
-                        });
-                        $("#questionArea").append(quesData);
-                    }else{
-                        alert('No question found')
-                    }
+        $('#quesType').change(function () {
+            question()
+        });
+        function question(){
+            $.ajax({
+                url:'{{route("admin.question.read")}}',
+                method:'get',
+                data:{
+                    subject_id : $('#subject_id').val(),
+                    chapter_id : $('#chapter_id').val(),
+                    type : $('#quesType').val(),
                 },
-                error:err=>{
-                    alert('No question found')
+                success: function (res) {
+                    if (res.status == 'success') {
+                        $('#questionArea').html(res.html);
+                    }
                 }
             });
-        });
+        }
     </script>
 @endpush
 @endsection

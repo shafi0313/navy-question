@@ -1,7 +1,7 @@
 
 @foreach ($inputs as $input)
 <tr>
-    <td><input type="hidden" name="exam_id[]" value="{{ $input->exam_id }}">&nbsp;&nbsp; {{ $input->ques }}</td>
+    <td><input type="hidden" name="exam_id[]" value="{{ $input->exam_id }}">&nbsp;&nbsp; {!! $input->ques !!}</td>
     <td>{{ $input->type }}</td>
     <td>{{ $input->mark }}</td>
     <td>

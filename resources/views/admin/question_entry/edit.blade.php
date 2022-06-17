@@ -86,7 +86,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="ques">Question <span class="t_r">*</span></label>
-                                            <textarea name="ques" class="form-control" id="ques" rows="5" required>{{ $question->ques }}</textarea>
+                                            <textarea name="ques" class="form-control" id="ques" rows="5" required>{!! $question->ques !!}</textarea>
                                             @if ($errors->has('ques'))
                                                 <div class="alert alert-danger">{{ $errors->first('ques') }}</div>
                                             @endif
@@ -136,6 +136,10 @@
 </div>
 
 @push('custom_scripts')
+<script src="{{ asset('backend/ckeditor/ckeditor.js') }}"></script>
+<script>
+    CKEDITOR.replace('ques')
+</script>
 <script>
     $('#subject_id').change(function () {
         $.ajax({
