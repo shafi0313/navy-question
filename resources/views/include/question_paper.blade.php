@@ -10,8 +10,8 @@
                 .questionArea {
                     padding: 0 20px;
                 }
-                .questionArea p{
-                    display: inline-block;
+                .question p{
+                    display: inline-block !important;
                 }
                 .option{
                     margin-left: 30px;
@@ -24,6 +24,8 @@
                     margin-bottom: 0;
                     padding: 0px;
                 }
+
+
             </style>
             <div class="card-header">
                 <div class="d-flex align-items-center">
@@ -35,6 +37,12 @@
                     @if (!empty($complete))
                     @include('include.question_paper_head')
                     @endif
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p style="float:left">Question</p>
+                            <p style="float:right">Marks</p>
+                        </div>
+                    </div>
 
                     @php $x = 1 @endphp
                     @if($questionPapers->where('type','Multiple Choice')->count() > 0)
