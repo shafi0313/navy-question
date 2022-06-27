@@ -93,6 +93,11 @@
     <!-- Datatables -->
     @include('include.data_table')
     <script>
+        $("#subject_id, #chapter_id").change(function(){
+            $('#quesType').val('')
+            $('#questionArea').html('');
+        })
+        
         $('#subject_id').change(function () {
             $.ajax({
                 url:"{{route('admin.question.getChapter')}}",
