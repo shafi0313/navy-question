@@ -74,7 +74,7 @@ class GenerateQuestionPaperController extends Controller
         ]);
         $quesInfo['status'] = 'Pending';
         $quesInfo['user_id'] = auth()->user()->id;
-        $quesInfo['set'] = QuesInfo::whereExam_id($request->exam_id)->whereSubject_id($request->subject_id)->whereStatus('Pending')->count() + 1;
+        $quesInfo['set'] = QuesInfo::whereExam_id($request->exam_id)->whereSubject_id($request->subject_id)->count() + 1;
         $questionInfo = QuesInfo::create($quesInfo);
 
 
