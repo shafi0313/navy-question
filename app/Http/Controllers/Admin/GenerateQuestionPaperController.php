@@ -173,6 +173,10 @@ class GenerateQuestionPaperController extends Controller
     {
 
         $questionPapers = QuestionPaper::with(['question'])->whereQues_info_id($quesInfoId)->get();
+        if($questionPapers->count() < 1){
+            Alert::info('No Data Found');
+            return back();
+        }
         $chapters = Chapter::whereSubject_id($questionPapers->first()->question->subject_id)->get();
         return view('admin.generate_question_paper.show', compact('questionPapers','chapters','quesInfoId'));
     }
