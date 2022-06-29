@@ -11,7 +11,7 @@ class SubjectController extends Controller
 {
     public function index()
     {
-        if ($error = $this->sendPermissionError('index')) {
+        if ($error = $this->authorize('subject-manage')) {
             return $error;
         }
         $subjects = Subject::with('chapters')->get();
@@ -20,7 +20,7 @@ class SubjectController extends Controller
 
     public function store(Request $request)
     {
-        if ($error = $this->sendPermissionError('create')) {
+        if ($error = $this->authorize('subject-add')) {
             return $error;
         }
         $data = $this->validate($request, [
@@ -44,7 +44,7 @@ class SubjectController extends Controller
 
     public function update(Request $request, $id)
     {
-        if ($error = $this->sendPermissionError('edit')) {
+        if ($error = $this->authorize('subject-edit')) {
             return $error;
         }
         $data = $this->validate($request, [
@@ -69,7 +69,7 @@ class SubjectController extends Controller
 
     public function destroy($id)
     {
-        if ($error = $this->sendPermissionError('delete')) {
+        if ($error = $this->authorize('subject-delete')) {
             return $error;
         }
         try{

@@ -16,7 +16,7 @@ class QuestionEntryController extends Controller
 {
     public function index()
     {
-        if ($error = $this->sendPermissionError('index')) {
+        if ($error = $this->authorize('question-entry-manage')) {
             return $error;
         }
         $questions = Question::all();
@@ -26,6 +26,9 @@ class QuestionEntryController extends Controller
 
     public function create()
     {
+        if ($error = $this->authorize('question-entry-add')) {
+            return $error;
+        }
         if ($error = $this->sendPermissionError('create')) {
             return $error;
         }
@@ -85,6 +88,9 @@ class QuestionEntryController extends Controller
 
     public function store(Request $request)
     {
+        if ($error = $this->authorize('question-entry-add')) {
+            return $error;
+        }
         // return $request;
         $data = $this->validate($request, [
             'subject_id' => 'required|integer',
@@ -126,7 +132,7 @@ class QuestionEntryController extends Controller
 
     public function edit($id)
     {
-        if ($error = $this->sendPermissionError('edit')) {
+        if ($error = $this->authorize('question-entry-edit')) {
             return $error;
         }
         $question = Question::with('options')->find($id);
@@ -136,7 +142,7 @@ class QuestionEntryController extends Controller
 
     public function update(Request $request, $id)
     {
-        if ($error = $this->sendPermissionError('edit')) {
+        if ($error = $this->authorize('question-entry-edit')) {
             return $error;
         }
         $data = $this->validate($request, [
@@ -185,7 +191,7 @@ class QuestionEntryController extends Controller
 
     public function destroy($id)
     {
-        if ($error = $this->sendPermissionError('delete')) {
+        if ($error = $this->authorize('question-entry-delete')) {
             return $error;
         }
         $user = Question::find($id);
@@ -203,7 +209,7 @@ class QuestionEntryController extends Controller
     }
     public function optionDestroy($id)
     {
-        if ($error = $this->sendPermissionError('delete')) {
+        if ($error = $this->authorize('question-entry-delete')) {
             return $error;
         }
         try{

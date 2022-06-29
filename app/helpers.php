@@ -141,4 +141,10 @@ if (!function_exists('openNav')) {
         return $rt ? ' show ' : '';
     }
 }
+if (!function_exists('user')) {
+    function user()
+    {
+        return auth()->user();
+    }
+}
 

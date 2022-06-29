@@ -110,9 +110,8 @@
     <script src="{{ asset('backend/js/atlantis.min.js') }}"></script>
 
 
-    {{-- Atlantis DEMO methods, don't include it in your project! --}}
-    <script src="{{ asset('backend/js/setting-demo.js') }}"></script>
-    <script src="{{ asset('backend/js/demo.js') }}"></script>
+    <script src="{{ asset('backend/js/custom.js') }}"></script>
+    <script src="{{ asset('backend/js/plugins-init.js') }}"></script>
 
     {{-- <script>
         $("form").on('submit', function(e){

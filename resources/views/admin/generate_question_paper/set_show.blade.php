@@ -41,6 +41,7 @@
                                         <tr>
                                             <th>SL</th>
                                             <th>Set</th>
+                                            <th>Status</th>
                                             <th>Exam Date & Time</th>
                                             <th>Exam Duration</th>
                                             <th class="no-sort" width="40px">Action</th>
@@ -63,6 +64,7 @@
                                         <tr>
                                             <td class="text-center">{{ $x++ }}</td>
                                             <td>{{ quesSet( $data->set) }}</td>
+                                            <td>{{ $data->status }}</td>
                                             <td>{{ examDateTime($data->date_time) }}</td>
                                             <td>{{ $data->duration }}</td>
                                             <td>

@@ -13,7 +13,7 @@ class MarkDistributionController extends Controller
 {
     public function index()
     {
-        if ($error = $this->sendPermissionError('index')) {
+        if ($error = $this->authorize('mark-distribution-manage')) {
             return $error;
         }
         $questions = Question::all();
@@ -33,9 +33,10 @@ class MarkDistributionController extends Controller
 
     public function create()
     {
-        if ($error = $this->sendPermissionError('create')) {
+        if ($error = $this->authorize('mark-distribution-add')) {
             return $error;
         }
+
         $questions = Question::all();
         $subjects = Subject::all();
         return view('admin.mark_distribution.create', compact('questions','subjects'));
@@ -43,15 +44,9 @@ class MarkDistributionController extends Controller
 
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'subject_id' => 'required|integer',
-        //     'chapter_id' => 'required|integer',
-        //     // 'type' => 'required',
-        //     // 'mark' => 'required',
-        //     'multiple' => 'nullable',
-        //     'sort' => 'nullable',
-        //     'long' => 'nullable',
-        // ]);
+        if ($error = $this->authorize('mark-distribution-add')) {
+            return $error;
+        }
         foreach($request->chapter_id as $k => $v) {
             $data=[
                 'user_id' => auth()->user()->id,

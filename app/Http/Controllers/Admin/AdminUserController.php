@@ -15,7 +15,7 @@ class AdminUserController extends Controller
 {
     public function index()
     {
-        if ($error = $this->sendPermissionError('index')) {
+        if ($error = $this->authorize('user-manage')) {
             return $error;
         }
         $users = User::whereIn('permission',['0','1'])->get();
@@ -24,6 +24,9 @@ class AdminUserController extends Controller
 
     public function create()
     {
+        if ($error = $this->authorize('user-add')) {
+            return $error;
+        }
         if ($error = $this->sendPermissionError('create')) {
             return $error;
         }
@@ -32,6 +35,9 @@ class AdminUserController extends Controller
 
     public function store(Request $request)
     {
+        if ($error = $this->authorize('user-add')) {
+            return $error;
+        }
         if ($error = $this->sendPermissionError('create')) {
             return $error;
         }
@@ -96,6 +102,9 @@ class AdminUserController extends Controller
 
     public function edit($id)
     {
+        if ($error = $this->authorize('user-edit')) {
+            return $error;
+        }
         if ($error = $this->sendPermissionError('edit')) {
             return $error;
         }
@@ -105,6 +114,9 @@ class AdminUserController extends Controller
 
     public function update(Request $request, $id)
     {
+        if ($error = $this->authorize('user-edit')) {
+            return $error;
+        }
         if ($error = $this->sendPermissionError('edit')) {
             return $error;
         }
@@ -182,6 +194,9 @@ class AdminUserController extends Controller
 
     public function destroy($id)
     {
+        if ($error = $this->authorize('user-delete')) {
+            return $error;
+        }
         if ($error = $this->sendPermissionError('delete')) {
             return $error;
         }

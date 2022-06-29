@@ -2,42 +2,8 @@
 <div class="sidebar"  data-background-color="white">
     <div class="sidebar-wrapper scrollbar scrollbar-inner">
         <div class="sidebar-content">
-
-            {{-- <div class="user">
-                @if ($user->email == devAdminEmail())
-                    @php $profileImg =  asset('uploads/images/users/shafi.jpg') @endphp
-                @elseif($user->images == null)
-                    @php $profileImg =  asset('uploads/images/users/company_logo.jpg') @endphp
-                @else
-                    @php $profileImg =  asset('uploads/images/users/'.$user->image) @endphp
-                @endif
-                <div class="avatar-sm float-left mr-2">
-                    <img src="{{$profileImg}}" alt="..." class="avatar-img rounded-circle">
-                </div>
-
-                <div class="info">
-                    <a data-toggle="collapse" href="#myProfile" aria-expanded="true">
-                        <span>
-                            {{ $user->name }}
-                            <span class="user-level">{{ $user->designation }}</span>
-                            <span class="caret"></span>
-                        </span>
-                    </a>
-                    <div class="clearfix"></div>
-
-                    <div class="collapse {{$m=='myProfile'?'show':''}} in" id="myProfile">
-                        <ul class="nav">
-                            <li class="{{$sm=='profile'?'activeSub':''}}">
-                                <a href="{{ route('admin.myProfile.profile.index') }}">
-                                    <span class="link-collapse">My Profile</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div> --}}
             <ul class="nav nav-primary">
-                <li class="nav-item {{$m=='dashboard'?'active':''}}">
+                <li class="nav-item {{activeNav('admin.dashboard')}}">
                     <a href="{{ route('admin.dashboard') }}">
                         <i class="fas fa-home"></i>
                         <p>Dashboard</p>
@@ -50,15 +16,16 @@
                     </span>
                     <h4 class="text-section">Components</h4>
                 </li>
-                <li class="nav-item {{$m=='admin'?'active submenu':''}}">
+                @can('user-manage')
+                <li class="nav-item {{ activeNav('admin.adminUser.*') }}">
                     <a data-toggle="collapse" href="#base">
                         <i class="fas fa-users-cog"></i>
                         <p>Admin</p>
                         <span class="caret"></span>
                     </a>
-                    <div class="collapse {{$m=='admin'?'show':''}}" id="base">
+                    <div class="collapse {{ openNav(['admin.adminUser.*']) }}" id="base">
                         <ul class="nav nav-collapse">
-                            <li class="{{$sm=='adminUser'?'activeSub':''}}">
+                            <li class="{{ activeSubNav(['admin.adminUser.*']) }}">
                                 <a href="{{ route('admin.adminUser.index') }}">
                                     <span class="sub-item">Admin User</span>
                                 </a>
@@ -66,6 +33,8 @@
                         </ul>
                     </div>
                 </li>
+                @endcan
+
 
                 <li class="nav-item {{ activeNav(['admin.subject.*','admin.exam.*','admin.markDistribution.*']) }}">
                     <a data-toggle="collapse" href="#setup">
@@ -75,67 +44,98 @@
                     </a>
                     <div class="collapse {{ openNav(['admin.subject.*','admin.exam.*','admin.markDistribution.*']) }}" id="setup">
                         <ul class="nav nav-collapse">
+                            @can('subject-manage')
                             <li class="{{ activeSubNav('admin.subject.*') }}">
                                 <a href="{{ route('admin.subject.index') }}">
                                     <span class="sub-item">Subject & Chapter</span>
                                 </a>
                             </li>
+                            @endcan
+                            @can('exam-manage')
                             <li class="{{ activeSubNav('admin.exam.*') }}">
                                 <a href="{{ route('admin.exam.index') }}">
                                     <span class="sub-item">Exam/Course</span>
                                 </a>
                             </li>
+                            @endcan
+                            @can('mark-distribution-manage')
                             <li class="{{ activeSubNav('admin.markDistribution.*') }}">
                                 <a href="{{ route('admin.markDistribution.index') }}">
                                     <span class="sub-item">Mark Distribution</span>
                                 </a>
                             </li>
+                            @endcan
                         </ul>
                     </div>
                 </li>
 
-
-
+                @can('question-entry-manage')
                 <li class="nav-item {{ activeNav('admin.question.*') }}">
                     <a href="{{ route('admin.question.index') }}">
                         <i class="fa-solid fa-circle-question"></i>
                         <p>Question Entry</p>
                     </a>
                 </li>
+                @endcan
 
+                @can('question-generate-manage')
                 <li class="nav-item {{ activeNav('admin.generateQuestion.*') }}">
                     <a href="{{ route('admin.generateQuestion.index') }}">
                         <i class="fa-solid fa-file-circle-question"></i>
                         <p>Generate Question Paper</p>
                     </a>
                 </li>
+                @endcan
 
-                <li class="nav-item {{$m=='generatedQues'?'active':''}}">
+                @can('question-paper-manage')
+                <li class="nav-item {{ activeNav('admin.generatedQues.*') }}">
                     <a href="{{ route('admin.generatedQues.index') }}">
                         <i class="fa-solid fa-clipboard-question"></i>
                         <p>Question Paper</p>
                     </a>
                 </li>
+                @endcan
 
-                <li class="nav-item {{$m=='answerPaper'?'active':''}}">
+                @can('answer-paper-manage')
+                <li class="nav-item {{ activeNav('admin.answerPaper.*') }}">
                     <a href="{{ route('admin.answerPaper.index') }}">
                         <i class="fa-solid fa-file-circle-check"></i>
                         <p>Answer Paper</p>
                     </a>
                 </li>
+                @endcan
 
-                <li class="nav-item {{$m=='backup'?'active':''}}">
-                    <a href="{{ route('admin.backup.password') }}">
-                        <i class="fas fa-database"></i>
-                        <p>App Backup</p>
+                <li class="nav-item {{ activeNav(['admin.role.*','admin.backup.*','admin.visitorInfo.*','admin.permission.*']) }}">
+                    <a data-toggle="collapse" href="#settings">
+                        <i class="fa-solid fa-gears"></i>
+                        <p>Settings</p>
+                        <span class="caret"></span>
                     </a>
-                </li>
-
-                <li class="nav-item {{$m=='visitor'?'active':''}}">
-                    <a href="{{ route('admin.visitorInfo.index') }}">
-                        <i class="fas fa-user-secret"></i>
-                        <p>Visitor Info</p>
-                    </a>
+                    <div class="collapse {{openNav(['admin.role.*','admin.backup.*','admin.visitorInfo.*','admin.permission.*'])}}" id="settings">
+                        <ul class="nav nav-collapse">
+                            @canany('role-manage','permission-manage')
+                            <li class="{{ activeSubNav('admin.role.*','admin.permission.*')}}">
+                                <a href="{{ route('admin.role.index') }}">
+                                    <span class="sub-item">@lang('nav.role-permission')</span>
+                                </a>
+                            </li>
+                            @endcanany
+                            @canany('backup-manage')
+                            <li class="{{ activeSubNav('admin.backup.*')}}">
+                                <a href="{{ route('admin.backup.password') }}">
+                                    <span class="sub-item">App Backup</span>
+                                </a>
+                            </li>
+                            @endcanany
+                            @canany('visitor-manage')
+                            <li class="{{ activeSubNav('admin.visitorInfo.*')}}">
+                                <a href="{{ route('admin.visitorInfo.index') }}">
+                                    <span class="sub-item">Visitor Info</span>
+                                </a>
+                            </li>
+                            @endcanany
+                        </ul>
+                    </div>
                 </li>
 
                 <li class="nav-item">

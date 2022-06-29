@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\BackupController;
 use App\Http\Controllers\Admin\ChapterController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\SubjectController;
+use App\Http\Controllers\Auth\Role\RoleController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AnswerPaperController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\Admin\VisitorInfoController;
 use App\Http\Controllers\Admin\QuestionEntryController;
 use App\Http\Controllers\Admin\QuestionPaperController;
 use App\Http\Controllers\Admin\MarkDistributionController;
+use App\Http\Controllers\Auth\Permission\PermissionController;
 use App\Http\Controllers\Admin\GenerateQuestionPaperController;
 
 Route::controller(AuthController::class)->group(function(){
@@ -45,6 +47,10 @@ Route::middleware(['auth','admin'])->prefix('admin')->name('admin.')->group(func
         Route::get('/delete-selected', 'destroySelected')->name('destroySelected');
         Route::get('/delete-all', 'destroyAll')->name('destroyAll');
     });
+
+    Route::post('role/permission/{role}', [RoleController::class, 'assignPermission'])->name('role.permission');
+    Route::resource('role', RoleController::class);
+    Route::resource('permission', PermissionController::class);
 
 
     // !APP BACKUP

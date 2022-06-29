@@ -12,7 +12,7 @@ class ExamController extends Controller
 {
     public function index()
     {
-        if ($error = $this->sendPermissionError('index')) {
+        if ($error = $this->authorize('exam-manage')) {
             return $error;
         }
         $exams = Exam::all();
@@ -21,7 +21,7 @@ class ExamController extends Controller
 
     public function create()
     {
-        if ($error = $this->sendPermissionError('create')) {
+        if ($error = $this->authorize('exam-add')) {
             return $error;
         }
         $subjects = Subject::all();
@@ -30,7 +30,7 @@ class ExamController extends Controller
 
     public function store(Request $request)
     {
-        if ($error = $this->sendPermissionError('create')) {
+        if ($error = $this->authorize('exam-add')) {
             return $error;
         }
         $data = $this->validate($request, [
@@ -52,7 +52,7 @@ class ExamController extends Controller
 
     public function edit($id)
     {
-        if ($error = $this->sendPermissionError('edit')) {
+        if ($error = $this->authorize('exam-edit')) {
             return $error;
         }
         $exam = Exam::find($id);
@@ -61,7 +61,7 @@ class ExamController extends Controller
 
     public function update(Request $request, $id)
     {
-        if ($error = $this->sendPermissionError('edit')) {
+        if ($error = $this->authorize('exam-edit')) {
             return $error;
         }
 
@@ -86,7 +86,7 @@ class ExamController extends Controller
 
     public function destroy($id)
     {
-        if ($error = $this->sendPermissionError('delete')) {
+        if ($error = $this->authorize('exam-delete')) {
             return $error;
         }
         try{

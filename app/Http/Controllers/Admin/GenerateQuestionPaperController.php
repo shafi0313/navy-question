@@ -20,7 +20,7 @@ class GenerateQuestionPaperController extends Controller
 {
     public function index()
     {
-        if ($error = $this->sendPermissionError('index')) {
+        if ($error = $this->authorize('question-generate-manage')) {
             return $error;
         }
         $datum = QuesInfo::with(['exam'])->select('*',DB::raw('DATE_FORMAT(date_time, "%Y") as date'))->whereStatus('Pending')->get()->groupBy('date');
@@ -43,9 +43,10 @@ class GenerateQuestionPaperController extends Controller
 
     public function create()
     {
-        if ($error = $this->sendPermissionError('create')) {
+        if ($error = $this->authorize('question-generate-add')) {
             return $error;
         }
+
         $subjects = Subject::all();
         $chapters = Chapter::all();
         $exams = Exam::all();
@@ -62,6 +63,9 @@ class GenerateQuestionPaperController extends Controller
 
     public function store(Request $request)
     {
+        if ($error = $this->authorize('question-generate-add')) {
+            return $error;
+        }
         DB::beginTransaction();
         $quesInfo = $request->validate([
             'exam_id' => 'required',
@@ -183,6 +187,9 @@ class GenerateQuestionPaperController extends Controller
 
     public function complete(Request $request)
     {
+        if ($error = $this->authorize('question-generate-generate')) {
+            return $error;
+        }
         $quesInfo = QuesInfo::find($request->quesInfoId);
         try{
             $quesInfo->update(['status'=>'Completed']);
@@ -197,7 +204,7 @@ class GenerateQuestionPaperController extends Controller
 
     public function edit($id, $quesInfoId)
     {
-        if ($error = $this->sendPermissionError('edit')) {
+        if ($error = $this->authorize('question-generate-edit')) {
             return $error;
         }
         $question = Question::with('options')->find($id);
@@ -207,7 +214,7 @@ class GenerateQuestionPaperController extends Controller
 
     public function update(Request $request, $quesId)
     {
-        if ($error = $this->sendPermissionError('edit')) {
+        if ($error = $this->authorize('ques-generate-edit')) {
             return $error;
         }
         $data = $this->validate($request, [
@@ -256,6 +263,9 @@ class GenerateQuestionPaperController extends Controller
 
     public function quesDestroy($id)
     {
+        if ($error = $this->authorize('question-generate-delete')) {
+            return $error;
+        }
         try{
             QuestionPaper::whereQuestion_id($id)->first()->delete();
             toast('Success!','success');

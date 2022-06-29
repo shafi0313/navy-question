@@ -38,12 +38,12 @@
                                             <th>Exam Trade</th>
                                             <th>Exam Date & Time</th>
                                             <th>Exam Duration</th>
-                                            {{-- <th>Subject</th> --}}
                                             <th class="no-sort" width="40px">Action</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
+                                            <th></th>
                                             <th></th>
                                             <th></th>
                                             <th></th>
@@ -61,7 +61,6 @@
                                         @endphp
                                         <tr>
                                             <td class="text-center">{{ $x++ }}</td>
-                                            {{-- <td>{{ $question->user->name }}</td> --}}
                                             <td>{{ $data->exam->name }}</td>
                                             <td>{{ \Carbon\Carbon::parse($data->date_time)->format('Y') }}</td>
                                             <td>{{ $data->code }}</td>

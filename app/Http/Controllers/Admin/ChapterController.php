@@ -20,6 +20,9 @@ class ChapterController extends Controller
 
     public function store(Request $request)
     {
+        if ($error = $this->authorize('subject-add')) {
+            return $error;
+        }
         if ($error = $this->sendPermissionError('create')) {
             return $error;
         }
@@ -45,6 +48,9 @@ class ChapterController extends Controller
 
     public function update(Request $request, $id)
     {
+        if ($error = $this->authorize('subject-edit')) {
+            return $error;
+        }
         if ($error = $this->sendPermissionError('edit')) {
             return $error;
         }

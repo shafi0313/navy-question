@@ -41,6 +41,7 @@
                                         <tr>
                                             <th>SL</th>
                                             <th>Set</th>
+                                            <th>Status</th>
                                             <th>Exam Date & Time</th>
                                             <th>Exam Duration</th>
                                             <th class="no-sort" width="40px">Action</th>
@@ -52,19 +53,18 @@
                                             <th></th>
                                             <th></th>
                                             <th></th>
+                                            <th></th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
                                         @php $x = 1 @endphp
                                         @foreach ($datum as $data)
-                                        @php
-                                            // $data = $dat->first()
-                                        @endphp
                                         <tr>
                                             <td class="text-center">{{ $x++ }}</td>
-                                            <td>{{ quesSet( $data->set) }}</td>
+                                            <td>{{ quesSet($data->set) }}</td>
+                                            <td>{{ $data->status }}</td>
                                             <td>{{ examDateTime($data->date_time) }}</td>
-                                            <td>{{ $data->duration }}</td>
+                                            <td>{{ $data->d_hour }} Hrs {{ $data->d_minute }} Min</td>
                                             <td>
                                                 <div class="form-button-action">
                                                     <a href="{{ route('admin.generatedQues.show',$data->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">

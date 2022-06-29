@@ -15,7 +15,7 @@ class QuestionPaperController extends Controller
 {
     public function index()
     {
-        if ($error = $this->sendPermissionError('index')) {
+        if ($error = $this->authorize('question-paper-manage')) {
             return $error;
         }
         $datum = QuesInfo::with(['exam'])->select('*',DB::raw('DATE_FORMAT(date_time, "%Y") as date'))->whereStatus('Completed')->get()->groupBy('date');

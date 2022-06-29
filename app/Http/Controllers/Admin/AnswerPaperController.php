@@ -10,6 +10,9 @@ class AnswerPaperController extends Controller
 {
     public function index()
     {
+        if ($error = $this->authorize('ans-paper-manage')) {
+            return $error;
+        }
         if ($error = $this->sendPermissionError('index')) {
             return $error;
         }
@@ -19,6 +22,9 @@ class AnswerPaperController extends Controller
 
     public function show($userId, $examId)
     {
+        if ($error = $this->authorize('ans-paper-manage')) {
+            return $error;
+        }
         if ($error = $this->sendPermissionError('show')) {
             return $error;
         }
@@ -28,6 +34,9 @@ class AnswerPaperController extends Controller
 
     public function store(Request $request)
     {
+        if ($error = $this->authorize('ans-paper-add')) {
+            return $error;
+        }
         foreach($request->question_id as $key => $value){
             $data = [
                 // 'question_id' => $request->question_id[$key],
