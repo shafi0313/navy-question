@@ -38,9 +38,7 @@ class QuestionPaperController extends Controller
 
     public function show($quesInfoId)
     {
-        if ($error = $this->sendPermissionError('show')) {
-            return $error;
-        }
+        
         $questionPapers = QuestionPaper::with(['quesInfo','question'])->whereQues_info_id($quesInfoId)->get();
         $mark = MarkDistribution::whereSubject_id($questionPapers->first()->quesInfo->subject_id);
         $passMark = $mark->first(['pass_mark'])->pass_mark;
