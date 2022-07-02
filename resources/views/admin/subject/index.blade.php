@@ -1,7 +1,7 @@
 @extends('admin.layout.master')
-@section('title', 'Subject')
+@section('title', 'Subject and Chapter')
 @section('content')
-@php $m='setup'; $sm='subject'; $ssm=''; @endphp
+@php $m=''; $sm=''; $ssm=''; @endphp
 
 <div class="main-panel">
     <div class="content">
@@ -10,7 +10,7 @@
                 <ul class="breadcrumbs">
                     <li class="nav-home"><a href="{{ route('admin.dashboard') }}"><i class="flaticon-home"></i></a></li>
                     <li class="separator"><i class="flaticon-right-arrow"></i></li>
-                    <li class="nav-item">Subject</li>
+                    <li class="nav-item">Subject and Chapter</li>
                 </ul>
             </div>
 
@@ -19,9 +19,9 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-items-center">
-                                <h4 class="card-title">Add Row</h4>
+                                <h4 class="card-title">Subject and Chapter List</h4>
                                 <button class="btn btn-primary ml-auto" data-toggle="modal" data-target="#subjectModal">
-                                    Add Subject
+                                    Add New Subject
                                   </button>
                             </div>
                         </div>
@@ -31,7 +31,7 @@
                                     <thead class="bg-secondary thw">
                                         <tr>
                                             <th>SL</th>
-                                            <th>Subject Name</th>
+                                            <th>Exam and Subject Name</th>
                                             <th>Created at</th>
                                             <th class="no-sort" width="40px">Action</th>
                                         </tr>
@@ -46,14 +46,14 @@
                                     <tbody>
                                         @php $x = 1 @endphp
                                         @foreach ($subjects as $subject)
-                                        <tr>
+                                        <tr class="bg-primary text-light">
                                             <td >{{ $x++ }}</td>
-                                            <td>{{ $subject->name }}</td>
+                                            <td>{{ $subject->exam->name ?? ''}} => {{ $subject->name }}</td>
                                             <td>{{ bdDate($subject->created_at) }}</td>
                                             <td class="text-right">
                                                 <div class="form-button-action">
                                                     <span class="btn btn-danger btn-sm addChapter" data-toggle="modal" data-target="#addChapter" data-id="{{$subject->id}}" data-subject="{{ $subject->name }}">Add Chapter</span>
-                                                    <span class="btn btn-info btn-sm editSubject" data-toggle="modal" data-target="#editSubject" data-url="{{route('admin.subject.update', $subject->id)}}" data-name="{{$subject->name}}"><i class="fa fa-edit"></i></span>
+                                                    <span class="btn btn-info btn-sm editSubject" data-toggle="modal" data-target="#editSubject" data-url="{{route('admin.subject.update', $subject->id)}}" data-name="{{$subject->name}}" data-exam_id="{{$subject->exam_id}}"><i class="fa fa-edit"></i></span>
                                                     {{-- <form action="" method="POST">
                                                         @csrf
                                                         @method('DELETE')
@@ -108,74 +108,10 @@
  @include('include.footer')
 </div>
 
-<!-- Add Subject-->
-<div class="modal fade" id="subjectModal" tabindex="-1" role="dialog" aria-labelledby="subjectModalLabel"
-aria-hidden="true">
-<div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="subjectModalLabel">Modal title</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <form action="{{ route('admin.subject.store') }}" method="post">
-          @csrf
-            <div class="modal-body">
-                <div class="row">
-                  <div class="col-md-12">
-                      <div class="form-group">
-                          <label for="name">Subject Name<span class="t_r">*</span></label>
-                          <input type="text" name="name" class="form-control" value="{{ old('name') }}" required>
-                          @if ($errors->has('name'))
-                          <div class="alert alert-danger">{{ $errors->first('name') }}</div>
-                          @endif
-                      </div>
-                  </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Save</button>
-            </div>
-        </form>
-    </div>
-</div>
-</div>
+@include('admin.subject.subject_add_modal')
+@include('admin.subject.subject_edit_modal')
 
-<!-- Edit Subject -->
-<div class="modal fade" id="editSubject" tabindex="-1" role="dialog" aria-labelledby="editLabel" aria-hidden="true">
-<div class="modal-dialog" role="document">
-  <form action="" method="POST" autocomplete="off" id="subjectEditForm">
-      @csrf
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title" id="editLabel" style="color:red;">Edit Subject</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-              </button>
-          </div>
-          <div class="modal-body">
-              <div class="row">
-                  <div class="col-md-12">
-                      <div class="form-group">
-                          <label for="name">Subject Name <span class="t_r">*</span></label>
-                          <input type="text" name="name" class="form-control" id="editName" required>
-                          @if ($errors->has('name'))
-                          <div class="alert alert-danger">{{ $errors->first('name') }}</div>
-                          @endif
-                      </div>
-                  </div>
-              </div>
-          </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-success btn-sm">Update</button>
-          </div>
-      </div>
-  </form>
-</div>
-</div>
+
 
 
 
@@ -271,6 +207,7 @@ aria-hidden="true">
         $(".editSubject").on('click', function(){
             $('#subjectEditForm').attr('action',$(this).data('url'));
             $('#editName').val($(this).data('name'));
+            $('#editExamId').val($(this).data('exam_id'));
         });
 
         $(".addChapter").on('click', function(){

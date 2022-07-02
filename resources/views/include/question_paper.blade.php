@@ -30,7 +30,8 @@
             <div class="card-header">
                 <div class="d-flex align-items-center">
                     <h4 class="card-title"></h4>
-                    <button type="button" class="btn btn-success btn-sm ml-auto" id="p" onClick="printDiv('printableArea')"><i class="fas fa-print"></i> Print</button>
+                    <a href="{{route('admin.generatedQues.pdf',$questionPapers->first()->quesInfo->id)}}" class="btn btn-success btn-sm ml-auto" id="p" style="width: 200px"><i class="fas fa-print"></i> pdf</a>
+                    {{-- <button type="button" class="btn btn-success btn-sm ml-auto" id="p" onClick="printDiv('printableArea')"><i class="fas fa-print"></i> Print</button> --}}
                 </div>
             </div>
                 <div class="card-body" id="printableArea">

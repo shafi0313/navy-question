@@ -77,7 +77,7 @@
         <!-- End Sidebar -->
 
         @yield('content')
-
+        <div id="ajax_modal_container"></div>
     </div>
     <!--   Core JS Files   -->
     <script src="{{ asset('backend/js/core/jquery.3.2.1.min.js') }}"></script>
@@ -103,8 +103,9 @@
     <script src="{{ asset('backend/js/plugin/jqvmap/jquery.vmap.min.js') }}"></script>
     <script src="{{ asset('backend/js/plugin/jqvmap/maps/jquery.vmap.world.js') }}"></script> --}}
 
-    <!-- Sweet Alert -->
-    {{-- <script src="{{ asset('backend/js/plugin/sweetalert/sweetalert.min.js') }}"></script> --}}
+    <script src="{{ asset('backend/js/plugin/select2/select2.full.min.js') }}"></script>
+    {{-- <!-- Sweet Alert --> --}}
+    <script src="{{ asset('backend/js/plugin/sweetalert/sweetalert.min.js') }}"></script>
 
     <!-- Atlantis JS -->
     <script src="{{ asset('backend/js/atlantis.min.js') }}"></script>
@@ -112,6 +113,7 @@
 
     <script src="{{ asset('backend/js/custom.js') }}"></script>
     <script src="{{ asset('backend/js/plugins-init.js') }}"></script>
+    <script src="{{ asset('backend/js/sweet-alert.js') }}"></script>
 
     {{-- <script>
         $("form").on('submit', function(e){

@@ -147,4 +147,13 @@ if (!function_exists('user')) {
         return auth()->user();
     }
 }
+if (!function_exists('userCan')) {
+    function userCan($permission)
+    {
+        if (auth()->check() && user()->can($permission)) {
+            return true;
+        }
+        return false;
+    }
+}
 

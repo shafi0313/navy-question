@@ -1,5 +1,5 @@
 @extends('admin.layout.master')
-@section('title', 'Generated Question')
+@section('title', 'Question Paper')
 @section('content')
 @php $m='generatedQues'; $sm=''; $ssm=''; $complete='c' @endphp
 
@@ -10,7 +10,7 @@
                 <ul class="breadcrumbs">
                     <li class="nav-home"><a href="{{ route('admin.dashboard') }}"><i class="flaticon-home"></i></a></li>
                     <li class="separator"><i class="flaticon-right-arrow"></i></li>
-                    <li class="nav-item">Question</li>
+                    <li class="nav-item">Question Paper</li>
                 </ul>
             </div>
 

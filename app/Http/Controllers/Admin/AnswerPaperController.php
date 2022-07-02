@@ -13,9 +13,6 @@ class AnswerPaperController extends Controller
         if ($error = $this->authorize('ans-paper-manage')) {
             return $error;
         }
-        if ($error = $this->sendPermissionError('index')) {
-            return $error;
-        }
         $answerPapers = QuesAns::with(['user','exam','subject'])->get();
         return view('admin.answer_paper.index', compact('answerPapers'));
     }
@@ -23,9 +20,6 @@ class AnswerPaperController extends Controller
     public function show($userId, $examId)
     {
         if ($error = $this->authorize('ans-paper-manage')) {
-            return $error;
-        }
-        if ($error = $this->sendPermissionError('show')) {
             return $error;
         }
         $answerPapers = QuesAns::whereUser_id($userId)->whereExam_id($examId)->get();

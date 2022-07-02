@@ -44,17 +44,17 @@
                     </a>
                     <div class="collapse {{ openNav(['admin.subject.*','admin.exam.*','admin.markDistribution.*']) }}" id="setup">
                         <ul class="nav nav-collapse">
+                            @can('exam-manage')
+                            <li class="{{ activeSubNav('admin.exam.*') }}">
+                                <a href="{{ route('admin.exam.index') }}">
+                                    <span class="sub-item">Exam</span>
+                                </a>
+                            </li>
+                            @endcan
                             @can('subject-manage')
                             <li class="{{ activeSubNav('admin.subject.*') }}">
                                 <a href="{{ route('admin.subject.index') }}">
                                     <span class="sub-item">Subject & Chapter</span>
-                                </a>
-                            </li>
-                            @endcan
-                            @can('exam-manage')
-                            <li class="{{ activeSubNav('admin.exam.*') }}">
-                                <a href="{{ route('admin.exam.index') }}">
-                                    <span class="sub-item">Exam/Course</span>
                                 </a>
                             </li>
                             @endcan
@@ -96,14 +96,14 @@
                 </li>
                 @endcan
 
-                @can('answer-paper-manage')
+                {{-- @can('answer-paper-manage')
                 <li class="nav-item {{ activeNav('admin.answerPaper.*') }}">
                     <a href="{{ route('admin.answerPaper.index') }}">
                         <i class="fa-solid fa-file-circle-check"></i>
                         <p>Answer Paper</p>
                     </a>
                 </li>
-                @endcan
+                @endcan --}}
 
                 <li class="nav-item {{ activeNav(['admin.role.*','admin.backup.*','admin.visitorInfo.*','admin.permission.*']) }}">
                     <a data-toggle="collapse" href="#settings">

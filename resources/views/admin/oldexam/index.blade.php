@@ -1,6 +1,8 @@
 @extends('admin.layout.master')
 @section('title', 'Exam')
 @section('content')
+@php $m='setup'; $sm='exam'; $ssm=''; @endphp
+
 <div class="main-panel">
     <div class="content">
         <div class="page-inner">
@@ -11,36 +13,19 @@
                     <li class="nav-item">Exam</li>
                 </ul>
             </div>
+
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-items-center">
-                                <h4 class="card-title">Exam List</h4>
-                                <a data-toggle="modal" data-target="#exam-add"
-                                    class="btn btn-primary btn-round ml-auto text-light" style="min-width: 200px">
-                                    <i class="fa fa-plus"></i> Add New Exam
+                                <h4 class="card-title">Add Row</h4>
+                                <a href="{{ route('admin.exam.create') }}" class="btn btn-primary btn-round ml-auto text-light" style="min-width: 200px">
+                                    <i class="fa fa-plus"></i> Add New
                                 </a>
                             </div>
                         </div>
-                        <div class="card-body row justify-content-center">
-                            @can('user-delete')
-                            <div class="col-lg-12 mb-1">
-                                <button type="button" class="btn btn-warning mr-2" onclick="ajaxAllDelete(this, 'dt')"
-                                    data-route="{{ route('admin.delete_all', 'Employee') }}" data-bs-placement="top"
-                                    data-bs-toggle="tooltip" data-bs-original-title="@lang('app.soft-delete-alert')"
-                                    title="@lang('app.soft-delete-alert')">
-                                    <i class="fa-solid fa-trash-arrow-up"> </i> @lang('app.delete')
-                                </button>
-                                <button data-route="{{ route('admin.force_delete_all', 'Employee') }}"
-                                    onclick="ajaxAllDelete(this, 'dt')" class='btn btn-danger' data-bs-placement="top"
-                                    data-bs-toggle="tooltip" data-bs-original-title="@lang('app.force-delete-alert')"
-                                    title="@lang('app.force-delete-alert')">
-                                    <i class="fa-solid fa-trash"> </i>@lang("app.permanent-delete")
-                                </button>
-                            </div>
-                            @endcan
-
+                        <div class="card-body">
                             <div class="table-responsive">
                                 <table id="DT" class="table table-striped table-hover">
                                     <thead class="bg-secondary thw">
@@ -63,12 +48,7 @@
         </div>
     </div>
 
-
-
 @push('custom_scripts')
-@can('exam-add')
-    @include('admin.exam.create')
-    @endcan
     <!-- Datatables -->
     @include('include.data_table')
     <script>

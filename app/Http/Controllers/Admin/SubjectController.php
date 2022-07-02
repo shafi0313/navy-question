@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Exam;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,8 +15,9 @@ class SubjectController extends Controller
         if ($error = $this->authorize('subject-manage')) {
             return $error;
         }
+        $exams = Exam::all();
         $subjects = Subject::with('chapters')->get();
-        return view('admin.subject.index', compact('subjects'));
+        return view('admin.subject.index', compact('subjects','exams'));
     }
 
     public function store(Request $request)
@@ -24,6 +26,7 @@ class SubjectController extends Controller
             return $error;
         }
         $data = $this->validate($request, [
+            'exam_id' => 'required|numeric',
             'name' => 'required|max:191',
         ]);
 
@@ -32,10 +35,10 @@ class SubjectController extends Controller
         try{
             Subject::create($data);
             DB::commit();
-            toast('success','Success');
+            toast('Success!','success');
             return redirect()->back();
         }catch(\Exception $ex){
-            return $ex->getMessage();
+            // return $ex->getMessage();
             DB::rollBack();
             toast('error','Error');
             return redirect()->back();
@@ -48,6 +51,7 @@ class SubjectController extends Controller
             return $error;
         }
         $data = $this->validate($request, [
+            'exam_id' => 'required|numeric',
             'name' => 'required|max:191',
         ]);
 

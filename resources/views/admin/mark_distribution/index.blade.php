@@ -31,6 +31,7 @@
                                     <thead class="bg-secondary thw">
                                         <tr>
                                             <th style="width: 100px">SL</th>
+                                            <th>Exam</th>
                                             <th>Subject</th>
                                             <th class="no-sort" width="40px">Action</th>
                                         </tr>
@@ -46,11 +47,12 @@
                                         @foreach ($subjects as $subject)
                                         <tr>
                                             <td class="text-center">{{ $x++ }}</td>
+                                            <td>{{ $subject->exam->name ?? '' }}</td>
                                             <td>{{ $subject->name }}</td>
                                             <td>
                                                 <div class="form-button-action">
                                                     <a href="{{ route('admin.markDistribution.show', $subject->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
-                                                        Show
+                                                        Entry
                                                     </a>
                                                 </div>
                                             </td>

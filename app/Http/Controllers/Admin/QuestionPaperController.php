@@ -10,6 +10,8 @@ use App\Models\MarkDistribution;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use RealRashid\SweetAlert\Facades\Alert;
+use Barryvdh\DomPDF\Facade as PDF;
+use FontLib\Font;
 
 class QuestionPaperController extends Controller
 {
@@ -24,8 +26,7 @@ class QuestionPaperController extends Controller
 
     public function showBySubject($year)
     {
-        // $datum = QuesInfo::with(['exam'])->whereSet($set)->get();
-        $datum = QuesInfo::with(['exam'])->whereYear('date_time',$year)->whereStatus('Completed')->get()->groupBy('subject_id');
+        $datum = QuesInfo::with(['exam'])->whereYear('date_time',$year)->whereStatus('Completed')->get();
         return view('admin.question_paper.subject_show', compact('datum'));
     }
 
@@ -38,7 +39,7 @@ class QuestionPaperController extends Controller
 
     public function show($quesInfoId)
     {
-        
+
         $questionPapers = QuestionPaper::with(['quesInfo','question'])->whereQues_info_id($quesInfoId)->get();
         $mark = MarkDistribution::whereSubject_id($questionPapers->first()->quesInfo->subject_id);
         $passMark = $mark->first(['pass_mark'])->pass_mark;
@@ -48,5 +49,22 @@ class QuestionPaperController extends Controller
             return back();
         }
         return view('admin.question_paper.show', compact('questionPapers','passMark','totalMark'));
+    }
+
+    public function pdf($quesInfoId)
+    {
+
+        $questionPapers = QuestionPaper::with(['quesInfo','question'])->whereQues_info_id($quesInfoId)->get();
+        $mark = MarkDistribution::whereSubject_id($questionPapers->first()->quesInfo->subject_id);
+        $passMark = $mark->first(['pass_mark'])->pass_mark;
+        $totalMark = $mark->sum('multiple') + $mark->sum('sort') + $mark->sum('long');
+        if($questionPapers->count() <= 0 ){
+            Alert::error('No Data Found');
+            return back();
+        }
+        // return view('admin.question_paper.pdf', compact('questionPapers','passMark','totalMark'));
+        $pdf = PDF::loadView('admin.question_paper.pdf', compact('questionPapers','passMark','totalMark'));
+        return $pdf->stream();
+        // return view('admin.question_paper.show', compact('questionPapers','passMark','totalMark'));
     }
 }

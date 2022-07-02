@@ -30,16 +30,29 @@ class GenerateQuestionPaperController extends Controller
     public function showBySubject($year)
     {
         // $datum = QuesInfo::with(['exam'])->whereSet($set)->get();
-        $datum = QuesInfo::with(['exam'])->whereYear('date_time',$year)->whereStatus('Pending')->get()->groupBy('subject_id');
+        $datum = QuesInfo::with(['exam'])->whereYear('date_time',$year)->whereStatus('Pending')->get();
+        // $datum = QuesInfo::with(['exam'])->whereSubject_id($subjectId)->whereStatus('Pending')->whereYear('date_time',$year)->get();
         return view('admin.generate_question_paper.subject_show', compact('datum'));
     }
 
-    public function showBySet($subjectId,$year)
+    public function show($quesInfoId)
     {
-        // $datum = QuesInfo::with(['exam'])->whereSet($set)->get();
-        $datum = QuesInfo::with(['exam'])->whereSubject_id($subjectId)->whereStatus('Pending')->whereYear('date_time',$year)->get();
-        return view('admin.generate_question_paper.set_show', compact('datum'));
+
+        $questionPapers = QuestionPaper::with(['question'])->whereQues_info_id($quesInfoId)->get();
+        if($questionPapers->count() < 1){
+            Alert::info('No Data Found');
+            return back();
+        }
+        $chapters = Chapter::whereSubject_id($questionPapers->first()->question->subject_id)->get();
+        return view('admin.generate_question_paper.show', compact('questionPapers','chapters','quesInfoId'));
     }
+
+    // public function showBySet($subjectId,$year)
+    // {
+    //     // $datum = QuesInfo::with(['exam'])->whereSet($set)->get();
+    //     $datum = QuesInfo::with(['exam'])->whereSubject_id($subjectId)->whereStatus('Pending')->whereYear('date_time',$year)->get();
+    //     return view('admin.generate_question_paper.set_show', compact('datum'));
+    // }
 
     public function create()
     {
@@ -63,12 +76,13 @@ class GenerateQuestionPaperController extends Controller
 
     public function store(Request $request)
     {
+        // return
         if ($error = $this->authorize('question-generate-add')) {
             return $error;
         }
         DB::beginTransaction();
         $quesInfo = $request->validate([
-            'exam_id' => 'required',
+            'exam_id' => 'required|numeric',
             'subject_id' => 'required',
             'date_time' => 'required|after:starting_hour',
             'd_hour' => 'sometimes',
@@ -78,11 +92,14 @@ class GenerateQuestionPaperController extends Controller
         ]);
         $quesInfo['status'] = 'Pending';
         $quesInfo['user_id'] = auth()->user()->id;
-        $quesInfo['set'] = QuesInfo::whereExam_id($request->exam_id)->whereSubject_id($request->subject_id)->count() + 1;
+        $quesInfo['set'] = QuesInfo::whereYear('date_time',now('Y'))->whereExam_id($request->exam_id)->whereSubject_id($request->subject_id)->count() + 1;
         $questionInfo = QuesInfo::create($quesInfo);
 
-
-        $quesMarks = MarkDistribution::whereSubject_id($request->subject_id)->get();
+       $quesMarks = MarkDistribution::whereSubject_id($request->subject_id)->get();
+       if($quesMarks->count() < 1){
+            Alert::info('At first, distribute the subject marks then generate the question');
+            return back();
+       }
         // $multipleQues = $quesMarks->whereType('Multiple Choice');
         // $questions = Question::whereSubject_id($request->subject_id)->whereIn($multipleQues->pluck('chapter_id'))->whereType('Multiple Choice')->inRandomOrder()->limit($multipleQuesMark)->get()->pluck('id');
         foreach($quesMarks as $k => $v){
@@ -173,17 +190,7 @@ class GenerateQuestionPaperController extends Controller
         }
     }
 
-    public function show($quesInfoId)
-    {
 
-        $questionPapers = QuestionPaper::with(['question'])->whereQues_info_id($quesInfoId)->get();
-        if($questionPapers->count() < 1){
-            Alert::info('No Data Found');
-            return back();
-        }
-        $chapters = Chapter::whereSubject_id($questionPapers->first()->question->subject_id)->get();
-        return view('admin.generate_question_paper.show', compact('questionPapers','chapters','quesInfoId'));
-    }
 
     public function complete(Request $request)
     {
@@ -275,4 +282,6 @@ class GenerateQuestionPaperController extends Controller
             return redirect()->back();
         }
     }
+
+
 }

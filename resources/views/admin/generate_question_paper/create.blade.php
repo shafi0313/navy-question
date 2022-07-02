@@ -1,7 +1,7 @@
 @extends('admin.layout.master')
 @section('title', 'Generate Question')
 @section('content')
-@php $m='generateQuestion'; $sm=''; $ssm=''; @endphp
+@php $m=''; $sm=''; $ssm=''; @endphp
 
 <div class="main-panel">
     <div class="content">
@@ -19,7 +19,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <div class="card-title">Add Question</div>
+                            <div class="card-title">Generate Question</div>
                         </div>
                         @if ($errors->any())
                             <div class="alert alert-danger">
@@ -37,7 +37,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="exam_id">Exam <span class="t_r">*</span></label>
-                                            <select class="form-control select2" name="exam_id" id="exam_id">
+                                            <select class="form-control select2" name="exam_id" id="exam_id" required>
                                                 <option selected value disabled>Select</option>
                                                 @foreach ($exams as $exam)
                                                 <option value="{{ $exam->id }}">{{ $exam->name }}</option>
@@ -51,11 +51,11 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="subject_id">Subject <span class="t_r">*</span></label>
-                                            <select class="form-control select2" name="subject_id" id="subject_id">
-                                                <option selected value disabled>Select</option>
+                                            <select class="form-control select2" name="subject_id" id="subject_id" required>
+                                                {{-- <option selected value disabled>Select</option>
                                                 @foreach ($subjects as $subject)
                                                 <option value="{{ $subject->id }}">{{ $subject->name }}</option>
-                                                @endforeach
+                                                @endforeach --}}
                                             </select>
                                             @if ($errors->has('subject_id'))
                                                 <div class="alert alert-danger">{{ $errors->first('subject_id') }}</div>
@@ -84,8 +84,8 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="duration">Duration <span class="t_r">*</span></label><br>
-                                            <input style="width:50%; display: inline-block" type="text" name="d_hour" class="form-control" value="{{ old('d_hour') }}" placeholder="Hour" onInput="this.value = this.value.replace(/[^\d]/g,'');" >
-                                            <input style="width:49%; display: inline-block" type="text" name="d_minute" class="form-control" value="{{ old('d_minute') }}" placeholder="Minute" onInput="this.value = this.value.replace(/[^\d]/g,'');" >
+                                            <input style="width:50%; display: inline-block" type="text" name="d_hour" class="form-control" value="{{ old('d_hour') }}" placeholder="Hour" onInput="this.value = this.value.replace(/[^\d]/g,'');"  required>
+                                            <input style="width:49%; display: inline-block" type="text" name="d_minute" class="form-control" value="{{ old('d_minute') }}" placeholder="Minute" onInput="this.value = this.value.replace(/[^\d]/g,'');" required>
                                             @if ($errors->has('d_hour'))
                                                 <div class="alert alert-danger">{{ $errors->first('d_hour') }}</div>
                                             @endif
@@ -106,7 +106,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="trade">Trade</label>
-                                            <input type="text" name="trade" class="form-control" value="{{ old('trade') }}" required>
+                                            <input type="text" name="trade" class="form-control" value="{{ old('trade') }}">
                                             @if ($errors->has('trade'))
                                             <div class="alert alert-danger">{{ $errors->first('trade') }}</div>
                                         @endif
@@ -199,6 +199,21 @@
 </div>
 @push('custom_scripts')
 <script>
+     $('#exam_id').change(function () {
+        $.ajax({
+            url:'{{route("admin.global.getSubject")}}',
+            method:'get',
+            data:{
+                exam_id : $(this).val(),
+            },
+            success: function (res) {
+                if (res.status == 'success') {
+                    $('#subject_id').html(res.html);
+                }
+            }
+        });
+     })
+
      $('#subject_id').change(function () {
         $.ajax({
             url:"{{route('admin.question.getChapter')}}",
@@ -213,12 +228,32 @@
                 $("#chapter_id").html(opt);
                 }else{
                     alert('No chapter found')
-                    // toast('error', 'No Codes found')
                 }
             },
             error:err=>{
                 alert('No chapter found')
-                // toast('error', 'No Codes found')
+            }
+        });
+    });
+
+     $('#subject_id').change(function () {
+        $.ajax({
+            url:"{{route('admin.question.getChapter')}}",
+            data:{subjectId:$(this).val()},
+            method:'get',
+            success:res=>{
+                let opt = '<option disabled selected>- -</option>';
+                if(res.status == 200){
+                $.each(res.chapters,function(i,v){
+                    opt += '<option value="'+v.id+'">'+v.name+'</option>';
+                });
+                $("#chapter_id").html(opt);
+                }else{
+                    alert('No chapter found')
+                }
+            },
+            error:err=>{
+                alert('No chapter found')
             }
         });
     });

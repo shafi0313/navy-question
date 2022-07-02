@@ -1,7 +1,7 @@
 @extends('admin.layout.master')
-@section('title', 'Generated Question')
+@section('title', 'Question Paper')
 @section('content')
-@php $m='generatedQues'; $sm=''; $ssm=''; @endphp
+@php $m=''; $sm=''; $ssm=''; @endphp
 
 <div class="main-panel">
     <div class="content">
@@ -10,7 +10,7 @@
                 <ul class="breadcrumbs">
                     <li class="nav-home"><a href="{{ route('admin.dashboard') }}"><i class="flaticon-home"></i></a></li>
                     <li class="separator"><i class="flaticon-right-arrow"></i></li>
-                    <li class="nav-item">Generated Question</li>
+                    <li class="nav-item">Question Paper</li>
                 </ul>
             </div>
 
@@ -19,7 +19,7 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-items-center">
-                                {{-- <h4 class="card-title">Add Row</h4> --}}
+                                <h4 class="card-title">Question Paper Exam List</h4>
                                 {{-- <a href="{{ route('admin.question.create') }}" class="btn btn-primary btn-round ml-auto text-light" style="min-width: 200px">
                                     <i class="fa fa-plus"></i> Add New
                                 </a> --}}
@@ -33,7 +33,6 @@
                                             <th>SL</th>
                                             <th>Exam</th>
                                             <th>Year</th>
-                                            <th>Exam Code</th>
                                             <th>Exam Mode</th>
                                             <th>Exam Trade</th>
                                             <th>Exam Date & Time</th>
@@ -43,7 +42,6 @@
                                     </thead>
                                     <tfoot>
                                         <tr>
-                                            <th></th>
                                             <th></th>
                                             <th></th>
                                             <th></th>
@@ -63,11 +61,10 @@
                                             <td class="text-center">{{ $x++ }}</td>
                                             <td>{{ $data->exam->name }}</td>
                                             <td>{{ \Carbon\Carbon::parse($data->date_time)->format('Y') }}</td>
-                                            <td>{{ $data->code }}</td>
                                             <td>{{ $data->mode }}</td>
                                             <td>{{ $data->trade }}</td>
                                             <td>{{ examDateTime($data->date_time) }}</td>
-                                            <td>{{ $data->duration }}</td>
+                                            <td>{{ $data->d_hour }} Hrs {{ $data->d_minute }} Min</td>
                                             <td>
                                                 <div class="form-button-action">
                                                     <a href="{{ route('admin.generatedQues.showBySubject', \Carbon\Carbon::parse($data->date_time)->format('Y')) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">

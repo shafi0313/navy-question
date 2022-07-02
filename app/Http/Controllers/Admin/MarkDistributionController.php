@@ -16,13 +16,9 @@ class MarkDistributionController extends Controller
         if ($error = $this->authorize('mark-distribution-manage')) {
             return $error;
         }
-        $questions = Question::all();
-        $subjects = Subject::all();
-        $subjects = Subject::all();
-        return view('admin.mark_distribution.index', compact('questions','subjects'));
+        $subjects = Subject::with('exam')->get();
+        return view('admin.mark_distribution.index', compact('subjects'));
     }
-
-
 
     public function show($subjectId)
     {

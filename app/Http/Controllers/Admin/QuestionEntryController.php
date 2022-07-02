@@ -29,9 +29,6 @@ class QuestionEntryController extends Controller
         if ($error = $this->authorize('question-entry-add')) {
             return $error;
         }
-        if ($error = $this->sendPermissionError('create')) {
-            return $error;
-        }
         $subjects = Subject::all();
         $chapters = Chapter::all();
         return view('admin.question_entry.create', compact('subjects','chapters'));

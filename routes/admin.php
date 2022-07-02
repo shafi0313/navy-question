@@ -2,9 +2,11 @@
 
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\ExamController;
 use App\Http\Controllers\Admin\BackupController;
+use App\Http\Controllers\Admin\GlobalController;
 use App\Http\Controllers\Admin\ChapterController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\SubjectController;
@@ -48,6 +50,11 @@ Route::middleware(['auth','admin'])->prefix('admin')->name('admin.')->group(func
         Route::get('/delete-all', 'destroyAll')->name('destroyAll');
     });
 
+    // Global Ajax Route
+    Route::delete('delete-all/{model}', [AjaxController::class, 'deleteAll'])->name('delete_all');
+    Route::delete('force-delete-all/{model}', [AjaxController::class, 'forceDeleteAll'])->name('force_delete_all');
+    Route::get('select-2-ajax/{model}', [AjaxController::class, 'select2'])->name('select2');
+
     Route::post('role/permission/{role}', [RoleController::class, 'assignPermission'])->name('role.permission');
     Route::resource('role', RoleController::class);
     Route::resource('permission', PermissionController::class);
@@ -64,6 +71,10 @@ Route::middleware(['auth','admin'])->prefix('admin')->name('admin.')->group(func
         // Route::post('/restore/post','restore'])->name('restore.post');
         Route::post('/download/{name}/{ext}','downloadBackup')->name('download');
         Route::post('/delete/{name}/{ext}','deleteBackup')->name('delete');
+    });
+
+    Route::controller(GlobalController::class)->name('global.')->group(function(){
+        Route::get('/get-subject', 'getSubject')->name('getSubject');
     });
 
     Route::controller(AdminUserController::class)->prefix('admin-user')->name('adminUser.')->group(function(){
@@ -100,6 +111,7 @@ Route::middleware(['auth','admin'])->prefix('admin')->name('admin.')->group(func
         Route::get('/option/destroy/{id}', 'optionDestroy')->name('optionDestroy');
         Route::post('/ques-generate', 'quesGenerate')->name('quesGenerate');
         // Route::get('/get-subject', 'getSubject')->name('getSubject');
+        Route::get('/get-subject', 'getSubject')->name('getSubject');
         Route::get('/get-chapter', 'getChapter')->name('getChapter');
     });
 
@@ -136,6 +148,7 @@ Route::middleware(['auth','admin'])->prefix('admin')->name('admin.')->group(func
         Route::get('/subject/show/{subject}', 'showBySubject')->name('showBySubject');
         Route::get('/set/show/{subjectId}/{year}', 'showBySet')->name('showBySet');
         Route::get('/show/{id}', 'show')->name('show');
+        Route::get('/pdf/download/{id}', 'pdf')->name('pdf');
     });
 
     Route::controller(AnswerPaperController::class)->prefix('answer-paper')->name('answerPaper.')->group(function(){
@@ -144,12 +157,5 @@ Route::middleware(['auth','admin'])->prefix('admin')->name('admin.')->group(func
         Route::post('/store', 'store')->name('store');
     });
 
-    Route::controller(ExamController::class)->prefix('exam')->name('exam.')->group(function(){
-        Route::get('/', 'index')->name('index');
-        Route::get('/create', 'create')->name('create');
-        Route::post('/store', 'store')->name('store');
-        Route::get('/edit/{id}', 'edit')->name('edit');
-        Route::post('/update/{id}', 'update')->name('update');
-        Route::delete('/destroy/{id}', 'destroy')->name('destroy');
-    });
+    Route::resource('/exam', ExamController::class);
 });

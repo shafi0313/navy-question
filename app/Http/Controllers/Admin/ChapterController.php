@@ -23,9 +23,6 @@ class ChapterController extends Controller
         if ($error = $this->authorize('subject-add')) {
             return $error;
         }
-        if ($error = $this->sendPermissionError('create')) {
-            return $error;
-        }
         $data = $this->validate($request, [
             'subject_id' => 'required|numeric',
             'name' => 'required|max:191',
@@ -36,10 +33,10 @@ class ChapterController extends Controller
         try{
             Chapter::create($data);
             DB::commit();
-            toast('success','Success');
+            toast('Success!','success');
             return redirect()->back();
         }catch(\Exception $ex){
-            return $ex->getMessage();
+            // return $ex->getMessage();
             DB::rollBack();
             toast('error','Error');
             return redirect()->back();
@@ -49,9 +46,6 @@ class ChapterController extends Controller
     public function update(Request $request, $id)
     {
         if ($error = $this->authorize('subject-edit')) {
-            return $error;
-        }
-        if ($error = $this->sendPermissionError('edit')) {
             return $error;
         }
         $data = $this->validate($request, [

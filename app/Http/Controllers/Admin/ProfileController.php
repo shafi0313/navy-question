@@ -31,9 +31,7 @@ class ProfileController extends Controller
                                                             ->symbols()
                                                             ->uncompromised()],
         ]);
-
         $password = $request->password;
-
         $user = [
             'name' => $request->name,
             'designation' => $request->designation,
@@ -43,10 +41,6 @@ class ProfileController extends Controller
         if(!empty($password)){
             $user['password'] = $password;
         }
-
-
-
-        // User::whereId(Auth::user()->id)->update($user);
 
         try{
             User::whereId(Auth::user()->id)->update($user);

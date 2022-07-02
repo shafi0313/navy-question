@@ -44,7 +44,7 @@
                                             <th>Subject</th>
                                             <th>Exam Date & Time</th>
                                             <th>Exam Duration</th>
-                                            <th class="no-sort" width="40px">Action</th>
+                                            <th>Show By Set</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
@@ -57,7 +57,7 @@
                                     </tfoot>
                                     <tbody>
                                         @php $x = 1 @endphp
-                                        @foreach ($datum as $dat)
+                                        @foreach ($datum->groupBy('subject_id') as $dat)
                                         @php
                                             $data = $dat->first()
                                         @endphp
@@ -65,12 +65,17 @@
                                             <td class="text-center">{{ $x++ }}</td>
                                             <td>{{ $data->subject->name }}</td>
                                             <td>{{ examDateTime($data->date_time) }}</td>
-                                            <td>{{ $data->duration }}</td>
+                                            <td>{{ $data->d_hour }} Hrs {{ $data->d_minute }} Min</td>
                                             <td>
                                                 <div class="form-button-action">
-                                                    <a href="{{ route('admin.generateQuestion.showBySet',[$data->subject->id,\Carbon\Carbon::parse($data->date_time)->format('Y')]) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
-                                                        Show by Set
+                                                    @foreach ($datum as $data)
+                                                    <a href="{{ route('admin.generateQuestion.show',$data->id) }}" data-toggle="tooltip" title="" class="btn btn-primary btn-sm">
+                                                        {{ quesSet( $data->set) }}
                                                     </a>
+                                                    @endforeach
+                                                    {{-- <a href="{{ route('admin.generateQuestion.showBySet',[$data->subject->id,\Carbon\Carbon::parse($data->date_time)->format('Y')]) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
+                                                        Show by Set
+                                                    </a> --}}
 
                                                     {{-- <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove">
                                                         <i class="fa fa-times"></i>
