@@ -46,7 +46,7 @@
     <div class="wrapper">
         <div class="main-header">
             <!-- Logo Header -->
-            <div class="logo-header" data-background-color="purple">
+            <div class="logo-header" data-background-color="blue2">
                 <a href="{{ route('admin.dashboard') }}" class="logo"> <h4 class="display:4 text-light" style="margin-top: 20px">Navy</h4>
 				</a>
                 {{-- <a href="index.html" class="logo">

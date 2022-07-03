@@ -1,7 +1,7 @@
 @php
     $user = auth()->user();
 @endphp
-<nav class="navbar navbar-header navbar-expand-lg" data-background-color="purple">
+<nav class="navbar navbar-header navbar-expand-lg" data-background-color="blue2">
     <div class="container-fluid">
         {{-- <div class="collapse" id="search-nav">
             <form class="navbar-left navbar-form nav-search mr-md-3">
