@@ -71,7 +71,8 @@
 
                 @can('question-entry-manage')
                 <li class="nav-item {{ activeNav('admin.question.*') }}">
-                    <a href="{{ route('admin.question.index') }}">
+                    <a href="{{ route('admin.question.create') }}">
+                    {{-- <a href="{{ route('admin.question.index') }}"> --}}
                         <i class="fa-solid fa-circle-question"></i>
                         <p>Question Entry</p>
                     </a>
@@ -82,7 +83,7 @@
                 <li class="nav-item {{ activeNav('admin.generateQuestion.*') }}">
                     <a href="{{ route('admin.generateQuestion.index') }}">
                         <i class="fa-solid fa-file-circle-question"></i>
-                        <p>Generate Question Paper</p>
+                        <p>Generate Question</p>
                     </a>
                 </li>
                 @endcan

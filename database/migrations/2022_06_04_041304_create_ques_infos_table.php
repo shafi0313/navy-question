@@ -19,9 +19,8 @@ return new class extends Migration
             $table->foreignId('exam_id')->constrained()->cascadeOnDelete();
             $table->foreignId('subject_id')->constrained()->cascadeOnDelete();
             $table->tinyInteger('set');
-            $table->dateTime('date_time');
-            // $table->tinyInteger('total_mark');
-            // $table->tinyInteger('pass_mark');
+            $table->date('date');
+            $table->time('time')->nullable();
             $table->tinyInteger('d_hour')->default(0);
             $table->tinyInteger('d_minute')->default(0);
             $table->string('mode',80);

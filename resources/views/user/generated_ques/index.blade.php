@@ -56,13 +56,13 @@
                                             {{-- <td>{{ $exam->user->name }}</td> --}}
                                             <td>{{ $exam->name }}</td>
                                             <td>{{ $exam->questionPaper->subject->name }}</td>
-                                            <td>{{ Carbon\Carbon::parse($exam->date_time)->format('d/m/Y g:i A') }}</td>
-                                            {{-- <td>{{ Carbon\Carbon::parse($exam->exam->date_time)->diffForHumans(Carbon\Carbon::now()) }}</td> --}}
+                                            <td>{{ Carbon\Carbon::parse($exam->date)->format('d/m/Y g:i A') }}</td>
+                                            {{-- <td>{{ Carbon\Carbon::parse($exam->exam->date)->diffForHumans(Carbon\Carbon::now()) }}</td> --}}
                                             {{-- <td>
 
                                             </td> --}}
                                             @php
-                                                $init = Carbon\Carbon::parse($exam->date_time)->diffInSeconds(Carbon\Carbon::now());
+                                                $init = Carbon\Carbon::parse($exam->date)->diffInSeconds(Carbon\Carbon::now());
                                                 $day = floor($init / 86400);
                                                 $hours = floor(($init -($day*86400)) / 3600);
                                                 $minutes = floor(($init / 60) % 60);
@@ -117,7 +117,7 @@
     <!-- Datatables -->
     @include('include.data_table')
     <script>
-        if ({{Carbon\Carbon::parse($exam->date_time)}} >= {{Carbon\Carbon::parse(Carbon\Carbon::now())}}) {
+        if ({{Carbon\Carbon::parse($exam->date)}} >= {{Carbon\Carbon::parse(Carbon\Carbon::now())}}) {
             console.log(new Date($.now()))
             $(function () {
                 function getCounterData(obj) {

@@ -55,7 +55,7 @@
                                             <td class="text-center">{{ $x++ }}</td>
                                             <td>{{ $answerPaper->user->name }}</td>
                                             <td>{{ $answerPaper->exam->code }}</td>
-                                            <td>{{ examDateTime($answerPaper->exam->date_time) }}</td>
+                                            <td>{{ examDateTime($answerPaper->exam->date) }}</td>
                                             <td>{{ $answerPaper->exam->time }}</td>
                                             <td>{{ $answerPaper->exam->name }}</td>
                                             <td>{{ $answerPaper->exam->subject->name }}</td>

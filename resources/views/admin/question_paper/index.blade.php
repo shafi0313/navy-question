@@ -32,17 +32,15 @@
                                         <tr>
                                             <th>SL</th>
                                             <th>Exam</th>
-                                            <th>Year</th>
                                             <th>Exam Mode</th>
                                             <th>Exam Trade</th>
                                             <th>Exam Date & Time</th>
                                             <th>Exam Duration</th>
-                                            <th class="no-sort" width="40px">Action</th>
+                                            <th class="no-sort" width="40px">Set</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
-                                            <th></th>
                                             <th></th>
                                             <th></th>
                                             <th></th>
@@ -60,14 +58,13 @@
                                         <tr>
                                             <td class="text-center">{{ $x++ }}</td>
                                             <td>{{ $data->exam->name }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($data->date_time)->format('Y') }}</td>
                                             <td>{{ $data->mode }}</td>
                                             <td>{{ $data->trade }}</td>
-                                            <td>{{ examDateTime($data->date_time) }}</td>
+                                            <td>{{ bdDate($data->date) }} {{ time12($data->time) }}</td>
                                             <td>{{ $data->d_hour }} Hrs {{ $data->d_minute }} Min</td>
                                             <td>
                                                 <div class="form-button-action">
-                                                    <a href="{{ route('admin.generatedQues.showBySubject', \Carbon\Carbon::parse($data->date_time)->format('Y')) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
+                                                    <a href="{{ route('admin.generatedQues.showBySubject', \Carbon\Carbon::parse($data->date)->format('Y')) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
                                                         Show by Subject
                                                     </a>
 

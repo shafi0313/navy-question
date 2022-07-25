@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -16,10 +15,10 @@ return new class extends Migration
         Schema::create('exams', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->string('name',100);
+            $table->string('name', 100);
             // $table->integer('year');
             // $table->string('code',60);
-            // $table->dateTime('date_time');
+            // $table->dateTime('date');
             // $table->tinyInteger('total_mark');
             // $table->tinyInteger('pass_mark');
             // $table->tinyInteger('d_hour')->default(0);

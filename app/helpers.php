@@ -21,6 +21,11 @@ if(!function_exists('examDateTime')){
         return Carbon::parse($date)->format('d/m/Y g:i A');
     }
 }
+if(!function_exists('time12')){
+    function time12($date){
+        return Carbon::parse($date)->format('g:i A');
+    }
+}
 
 if(!function_exists('permissionText')){
     function permissionText($permission){

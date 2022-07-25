@@ -23,34 +23,34 @@ class GenerateQuestionPaperController extends Controller
         if ($error = $this->authorize('question-generate-manage')) {
             return $error;
         }
-        $datum = QuesInfo::with(['exam'])->select('*',DB::raw('DATE_FORMAT(date_time, "%Y") as date'))->whereStatus('Pending')->get()->groupBy('date');
+        $datum = QuesInfo::with(['exam'])->select('*', DB::raw('DATE_FORMAT(date, "%Y") as date'))->whereStatus('Pending')->get()->groupBy('date');
         return view('admin.generate_question_paper.index', compact('datum'));
     }
 
     public function showBySubject($year)
     {
         // $datum = QuesInfo::with(['exam'])->whereSet($set)->get();
-        $datum = QuesInfo::with(['exam'])->whereYear('date_time',$year)->whereStatus('Pending')->get();
-        // $datum = QuesInfo::with(['exam'])->whereSubject_id($subjectId)->whereStatus('Pending')->whereYear('date_time',$year)->get();
+        $datum = QuesInfo::with(['exam'])->whereYear('date', $year)->whereStatus('Pending')->get();
+        // $datum = QuesInfo::with(['exam'])->whereSubject_id($subjectId)->whereStatus('Pending')->whereYear('date',$year)->get();
         return view('admin.generate_question_paper.subject_show', compact('datum'));
     }
 
     public function show($quesInfoId)
     {
-
         $questionPapers = QuestionPaper::with(['question'])->whereQues_info_id($quesInfoId)->get();
-        if($questionPapers->count() < 1){
+        $quesInfo = QuesInfo::find($quesInfoId);
+        if ($questionPapers->count() < 1) {
             Alert::info('No Data Found');
             return back();
         }
         $chapters = Chapter::whereSubject_id($questionPapers->first()->question->subject_id)->get();
-        return view('admin.generate_question_paper.show', compact('questionPapers','chapters','quesInfoId'));
+        return view('admin.generate_question_paper.show', compact('questionPapers', 'chapters', 'quesInfoId', 'quesInfo'));
     }
 
     // public function showBySet($subjectId,$year)
     // {
     //     // $datum = QuesInfo::with(['exam'])->whereSet($set)->get();
-    //     $datum = QuesInfo::with(['exam'])->whereSubject_id($subjectId)->whereStatus('Pending')->whereYear('date_time',$year)->get();
+    //     $datum = QuesInfo::with(['exam'])->whereSubject_id($subjectId)->whereStatus('Pending')->whereYear('date',$year)->get();
     //     return view('admin.generate_question_paper.set_show', compact('datum'));
     // }
 
@@ -63,7 +63,7 @@ class GenerateQuestionPaperController extends Controller
         $subjects = Subject::all();
         $chapters = Chapter::all();
         $exams = Exam::all();
-        return view('admin.generate_question_paper.create', compact('subjects','chapters','exams'));
+        return view('admin.generate_question_paper.create', compact('subjects', 'chapters', 'exams'));
     }
 
     public function getQuestion(Request $request)
@@ -84,7 +84,8 @@ class GenerateQuestionPaperController extends Controller
         $quesInfo = $request->validate([
             'exam_id' => 'required|numeric',
             'subject_id' => 'required',
-            'date_time' => 'required|after:starting_hour',
+            'date' => 'required',
+            'time' => 'nullable',
             'd_hour' => 'sometimes',
             'd_minute' => 'sometimes',
             'mode' => 'required',
@@ -92,17 +93,17 @@ class GenerateQuestionPaperController extends Controller
         ]);
         $quesInfo['status'] = 'Pending';
         $quesInfo['user_id'] = auth()->user()->id;
-        $quesInfo['set'] = QuesInfo::whereYear('date_time',now('Y'))->whereExam_id($request->exam_id)->whereSubject_id($request->subject_id)->count() + 1;
+        $quesInfo['set'] = QuesInfo::whereYear('date', now('Y'))->whereExam_id($request->exam_id)->whereSubject_id($request->subject_id)->count() + 1;
         $questionInfo = QuesInfo::create($quesInfo);
 
-       $quesMarks = MarkDistribution::whereSubject_id($request->subject_id)->get();
-       if($quesMarks->count() < 1){
+        $quesMarks = MarkDistribution::whereSubject_id($request->subject_id)->get();
+        if ($quesMarks->count() < 1) {
             Alert::info('At first, distribute the subject marks then generate the question');
             return back();
-       }
+        }
         // $multipleQues = $quesMarks->whereType('Multiple Choice');
         // $questions = Question::whereSubject_id($request->subject_id)->whereIn($multipleQues->pluck('chapter_id'))->whereType('Multiple Choice')->inRandomOrder()->limit($multipleQuesMark)->get()->pluck('id');
-        foreach($quesMarks as $k => $v){
+        foreach ($quesMarks as $k => $v) {
             $questions = Question::whereSubject_id($request->subject_id)
                                 ->whereChapter_id($v->pluck('chapter_id')[$k])
                                 ->whereType('Multiple Choice')->inRandomOrder()
@@ -110,7 +111,7 @@ class GenerateQuestionPaperController extends Controller
                                 ->get()
                                 ->pluck('id');
 
-            foreach($questions as $key => $value){
+            foreach ($questions as $key => $value) {
                 $data=[
                     'ques_info_id' => $questionInfo->id,
                     'question_id' => $value,
@@ -120,7 +121,7 @@ class GenerateQuestionPaperController extends Controller
             }
         }
 
-        foreach($quesMarks as $k => $v){
+        foreach ($quesMarks as $k => $v) {
             $questions = Question::whereSubject_id($request->subject_id)
                                 ->whereChapter_id($v->pluck('chapter_id')[$k])
                                 ->whereType('Short Question')->inRandomOrder()
@@ -128,7 +129,7 @@ class GenerateQuestionPaperController extends Controller
                                 ->get()
                                 ->pluck('id');
 
-            foreach($questions as $key => $value){
+            foreach ($questions as $key => $value) {
                 $data=[
                     'ques_info_id' => $questionInfo->id,
                     'question_id' => $value,
@@ -138,7 +139,7 @@ class GenerateQuestionPaperController extends Controller
             }
         }
 
-        foreach($quesMarks as $k => $v){
+        foreach ($quesMarks as $k => $v) {
             $questions = Question::whereSubject_id($request->subject_id)
                                 ->whereChapter_id($v->pluck('chapter_id')[$k])
                                 ->whereType('Long Question')->inRandomOrder()
@@ -146,7 +147,7 @@ class GenerateQuestionPaperController extends Controller
                                 ->get()
                                 ->pluck('id');
 
-            foreach($questions as $key => $value){
+            foreach ($questions as $key => $value) {
                 $data=[
                     'ques_info_id' => $questionInfo->id,
                     'question_id' => $value,
@@ -156,13 +157,13 @@ class GenerateQuestionPaperController extends Controller
             }
         }
 
-        try{
-            toast('Success!','success');
+        try {
+            toast('Success!', 'success');
             DB::commit();
-            return redirect()->route('admin.generateQuestion.show',$questionInfo->id);
-        }catch(\Exception $ex){
+            return redirect()->route('admin.generateQuestion.show', $questionInfo->id);
+        } catch (\Exception $ex) {
             return $ex->getMessage();
-            toast('Error','error');
+            toast('Error', 'error');
             DB::rollBack();
             return redirect()->back();
         }
@@ -170,7 +171,7 @@ class GenerateQuestionPaperController extends Controller
 
     public function addQues(Request $request)
     {
-        foreach($request->question_id as $k => $v){
+        foreach ($request->question_id as $k => $v) {
             $data = [
                 'ques_info_id' => $request->ques_info_id,
                 'question_id' => $request->question_id[$k],
@@ -178,13 +179,13 @@ class GenerateQuestionPaperController extends Controller
             ];
             QuestionPaper::updateOrCreate($data);
         }
-        try{
-            toast('Success!','success');
+        try {
+            toast('Success!', 'success');
             DB::commit();
             return back();
-        }catch(\Exception $ex){
+        } catch (\Exception $ex) {
             return $ex->getMessage();
-            toast('Error','error');
+            toast('Error', 'error');
             DB::rollBack();
             return redirect()->back();
         }
@@ -198,12 +199,12 @@ class GenerateQuestionPaperController extends Controller
             return $error;
         }
         $quesInfo = QuesInfo::find($request->quesInfoId);
-        try{
+        try {
             $quesInfo->update(['status'=>'Completed']);
-            toast('Success!','success');
-            return redirect()->route('admin.generateQuestion.showBySubject', Carbon::parse($quesInfo->date_time)->format('Y'));
-        }catch(\Exception $ex){
-            toast('Error','error');
+            toast('Success!', 'success');
+            return redirect()->route('admin.generateQuestion.showBySubject', Carbon::parse($quesInfo->date)->format('Y'));
+        } catch (\Exception $ex) {
+            toast('Error', 'error');
             return redirect()->back();
         }
     }
@@ -216,7 +217,7 @@ class GenerateQuestionPaperController extends Controller
         }
         $question = Question::with('options')->find($id);
         $exams = Exam::all();
-        return view('admin.generate_question_paper.edit', compact('question','exams','quesInfoId'));
+        return view('admin.generate_question_paper.edit', compact('question', 'exams', 'quesInfoId'));
     }
 
     public function update(Request $request, $quesId)
@@ -236,15 +237,15 @@ class GenerateQuestionPaperController extends Controller
         DB::beginTransaction();
         Question::find($quesId)->update($data);
 
-        if($request->type == "Multiple Choice"){
-            foreach($request->option as $key => $value){
+        if ($request->type == "Multiple Choice") {
+            foreach ($request->option as $key => $value) {
                 $option=[
                     'question_id' => $quesId,
                     'option' => $request->option[$key],
                 ];
-                if(!empty(QuesOption::whereId($request->option_id[$key]))){
+                if (!empty(QuesOption::whereId($request->option_id[$key]))) {
                     QuesOption::where('id', $request->option_id[$key])->update($option);
-                }else{
+                } else {
                     QuesOption::create($option);
                 }
                 // QuesOption::updateOrCreate(['id' => $request->option_id],$option);
@@ -255,14 +256,14 @@ class GenerateQuestionPaperController extends Controller
             }
         }
 
-        try{
+        try {
             DB::commit();
-            toast('Success!','success');
-            return redirect()->route('admin.generateQuestion.show',$request->quesInfoId);
-        }catch(\Exception $ex){
+            toast('Success!', 'success');
+            return redirect()->route('admin.generateQuestion.show', $request->quesInfoId);
+        } catch (\Exception $ex) {
             return $ex->getMessage();
             DB::rollBack();
-            toast('error','Error');
+            toast('error', 'Error');
             return redirect()->back();
         }
     }
@@ -273,15 +274,13 @@ class GenerateQuestionPaperController extends Controller
         if ($error = $this->authorize('question-generate-delete')) {
             return $error;
         }
-        try{
+        try {
             QuestionPaper::whereQuestion_id($id)->first()->delete();
-            toast('Success!','success');
+            toast('Success!', 'success');
             return back();
-        }catch(\Exception $ex){
-            toast('Error','error');
+        } catch (\Exception $ex) {
+            toast('Error', 'error');
             return redirect()->back();
         }
     }
-
-
 }

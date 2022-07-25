@@ -30,7 +30,7 @@
                                 @php  $examInfo = $datum->first()->first();  @endphp
                                 <div class="text-center">
                                     <strong style="font-size: 18px">Exam/Course: {{$examInfo->exam->name}}</strong><br>
-                                    <strong>Year: {{ \Carbon\Carbon::parse($examInfo->date_time)->format('Y') }}</strong><br>
+                                    <strong>Year: {{ \Carbon\Carbon::parse($examInfo->date)->format('Y') }}</strong><br>
                                     <strong>Mode: {{ $examInfo->mode }}</strong><br>
                                     <strong>Trade: {{ $examInfo->trade }}</strong><br>
                                 </div>
@@ -64,7 +64,7 @@
                                         <tr>
                                             <td class="text-center">{{ $x++ }}</td>
                                             <td>{{ $data->subject->name }}</td>
-                                            <td>{{ examDateTime($data->date_time) }}</td>
+                                            <td>{{ examDateTime($data->date) }}</td>
                                             <td>{{ $data->d_hour }} Hrs {{ $data->d_minute }} Min</td>
                                             <td>
                                                 <div class="form-button-action">
@@ -73,7 +73,7 @@
                                                         {{ quesSet( $data->set) }}
                                                     </a>
                                                     @endforeach
-                                                    {{-- <a href="{{ route('admin.generateQuestion.showBySet',[$data->subject->id,\Carbon\Carbon::parse($data->date_time)->format('Y')]) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
+                                                    {{-- <a href="{{ route('admin.generateQuestion.showBySet',[$data->subject->id,\Carbon\Carbon::parse($data->date)->format('Y')]) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
                                                         Show by Set
                                                     </a> --}}
 

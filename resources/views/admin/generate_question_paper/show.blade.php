@@ -23,6 +23,12 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <h4>{{ $quesInfo->exam->name}}</h4>
+                                    <h4>{{ $quesInfo->subject->name}}</h4>
+                                    <hr>
+                                </div>
+
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="chapter_id">Chapter <span class="t_r">*</span></label>

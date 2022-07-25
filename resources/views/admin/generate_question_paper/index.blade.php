@@ -19,7 +19,7 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-items-center">
-                                <h4 class="card-title">Generate Question Exam List</h4>
+                                <h4 class="card-title">Draft Question Paper</h4>
                                 <a href="{{ route('admin.generateQuestion.create') }}" class="btn btn-primary btn-round ml-auto text-light" style="min-width: 200px">
                                     <i class="fa fa-plus"></i> Generate New Question
                                 </a>
@@ -59,13 +59,13 @@
                                             <td class="text-center">{{ $x++ }}</td>
                                             {{-- <td>{{ $question->user->name }}</td> --}}
                                             <td>{{ $data->exam->name }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($data->date_time)->format('Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($data->date)->format('Y') }}</td>
                                             <td>{{ $data->mode }}</td>
                                             <td>{{ $data->trade }}</td>
-                                            <td>{{ examDateTime($data->date_time) }}</td>
+                                            <td>{{ examDateTime($data->date) }}</td>
                                             <td>
                                                 <div class="form-button-action">
-                                                    <a href="{{ route('admin.generateQuestion.showBySubject', \Carbon\Carbon::parse($data->date_time)->format('Y')) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
+                                                    <a href="{{ route('admin.generateQuestion.showBySubject', \Carbon\Carbon::parse($data->date)->format('Y')) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
                                                         Show by Subject
                                                     </a>
 

@@ -51,36 +51,32 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="subject_id">Subject <span class="t_r">*</span></label>
-                                            <select class="form-control select2" name="subject_id" id="subject_id" required>
-                                                {{-- <option selected value disabled>Select</option>
-                                                @foreach ($subjects as $subject)
-                                                <option value="{{ $subject->id }}">{{ $subject->name }}</option>
-                                                @endforeach --}}
-                                            </select>
+                                            <select class="form-control select2" name="subject_id" id="subject_id" required></select>
                                             @if ($errors->has('subject_id'))
                                                 <div class="alert alert-danger">{{ $errors->first('subject_id') }}</div>
                                             @endif
                                         </div>
                                     </div>
-
-                                    {{-- <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="code">Code <span class="t_r">*</span></label>
-                                            <input type="text" name="code" class="form-control" value="{{ old('code') }}" required>
-                                            @if ($errors->has('code'))
-                                            <div class="alert alert-danger">{{ $errors->first('code') }}</div>
-                                        @endif
-                                        </div>
-                                    </div> --}}
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="date_time">Date & Time <span class="t_r">*</span></label>
-                                            <input type="datetime-local" name="date_time" class="form-control" value="{{ old('date_time') }}" required>
-                                            @if ($errors->has('date_time'))
-                                            <div class="alert alert-danger">{{ $errors->first('date_time') }}</div>
+                                            <label for="date">Date <span class="t_r">*</span></label>
+                                            <input type="date" name="date" class="form-control" value="{{ old('date') }}" required>
+                                            @if ($errors->has('date'))
+                                            <div class="alert alert-danger">{{ $errors->first('date') }}</div>
                                         @endif
                                         </div>
                                     </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="time">Time <span class="t_r">*</span></label>
+                                            <input type="time" name="time" class="form-control" value="{{ old('time') }}" required>
+                                            @if ($errors->has('time'))
+                                            <div class="alert alert-danger">{{ $errors->first('time') }}</div>
+                                        @endif
+                                        </div>
+                                    </div>
+
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="duration">Duration <span class="t_r">*</span></label><br>

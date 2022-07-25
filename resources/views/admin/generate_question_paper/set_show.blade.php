@@ -30,7 +30,7 @@
                                 @php  $examInfo = $datum->first()->first();  @endphp
                                 <div class="text-center">
                                     <strong style="font-size: 18px">Exam/Course: {{$examInfo->exam->name}}</strong><br>
-                                    <strong>Year: {{ \Carbon\Carbon::parse($examInfo->date_time)->format('Y') }}</strong><br>
+                                    <strong>Year: {{ \Carbon\Carbon::parse($examInfo->date)->format('Y') }}</strong><br>
                                     <strong>Mode: {{ $examInfo->mode }}</strong><br>
                                     <strong>Trade: {{ $examInfo->trade }}</strong><br>
                                 </div>
@@ -65,7 +65,7 @@
                                             <td class="text-center">{{ $x++ }}</td>
                                             <td>{{ quesSet( $data->set) }}</td>
                                             <td>{{ $data->status }}</td>
-                                            <td>{{ examDateTime($data->date_time) }}</td>
+                                            <td>{{ examDateTime($data->date) }}</td>
                                             <td>{{ $data->duration }}</td>
                                             <td>
                                                 <div class="form-button-action">

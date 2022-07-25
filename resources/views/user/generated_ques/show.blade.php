@@ -142,7 +142,7 @@
                             <div class="card-body" id="printableArea">
                                 <div class="text-center">
                                     <h2>Bangladesh Navy</h2>
-                                    <p>{{ $questions->first()->exam->name }} Exam Question Paper-{{ Carbon\Carbon::parse($questions->first()->exam->date_time)->format('Y') }}</p>
+                                    <p>{{ $questions->first()->exam->name }} Exam Question Paper-{{ Carbon\Carbon::parse($questions->first()->exam->date)->format('Y') }}</p>
                                     <p>{{ $questions->first()->question->subject->name }}</p>
                                 </div>
                                 <h4 class="quesType">Multiple Choice</h4>

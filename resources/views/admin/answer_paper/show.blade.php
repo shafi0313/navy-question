@@ -46,7 +46,7 @@
                                 <div class="navy">
                                     <div class="title">
                                         <h2>Bangladesh Navy</h2>
-                                        <p>{{ $answerPapers->first()->exam->name }} Exam Question Paper-{{ Carbon\Carbon::parse($answerPapers->first()->exam->date_time)->format('Y') }}</p>
+                                        <p>{{ $answerPapers->first()->exam->name }} Exam Question Paper-{{ Carbon\Carbon::parse($answerPapers->first()->exam->date)->format('Y') }}</p>
                                         <p>{{ $answerPapers->first()->exam->subject->name }}</p>
                                     </div>
                                     <p><span>Time: {{$answerPapers->first()->exam->time}}</span> <span style="float:right">Total marks: {{$answerPapers->first()->exam->total_mark}}</span> </p>
