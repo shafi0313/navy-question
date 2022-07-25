@@ -18,11 +18,12 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <div class="d-flex align-items-center">
-                                <h4 class="card-title">Draft Question Paper</h4>
-                                <a href="{{ route('admin.generateQuestion.create') }}" class="btn btn-primary btn-round ml-auto text-light" style="min-width: 200px">
+                            <div class="align-items-center">
+                                <a href="{{ route('admin.generateQuestion.create') }}" class="btn btn-primary btn-round text-light" style="min-width: 200px">
                                     <i class="fa fa-plus"></i> Generate New Question
                                 </a>
+                                <h4 class="card-title">Draft Question Paper</h4>
+
                             </div>
                         </div>
                         <div class="card-body">
@@ -36,7 +37,7 @@
                                             <th>Exam Mode</th>
                                             <th>Exam Trade</th>
                                             <th>Exam Date & Time</th>
-                                            <th class="no-sort" width="40px">Action</th>
+                                            <th class="no-sort" width="40px">Subject & Set</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
