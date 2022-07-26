@@ -17,8 +17,11 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
-                        <div class="card-header">
+                        <div class="d-flex card-header">
                             <div class="card-title">Add Question</div>
+                            <a href="{{ route('admin.question.index') }}" class="btn btn-primary btn-round ml-auto text-light" style="min-width: 200px">
+                                <i class="fa fa-plus"></i> Edit Question
+                            </a>
                         </div>
                         @if ($errors->any())
                             <div class="alert alert-danger">
@@ -34,6 +37,20 @@
                             @csrf
                             <div class="card-body">
                                 <div class="row">
+                                    {{-- <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="exam_id">Exam <span class="t_r">*</span></label>
+                                            <select class="form-control" name="exam_id" id="exam_id">
+                                                <option selected value disabled>Select</option>
+                                                @foreach ($exams as $exam)
+                                                    <option value="{{ $exam->id }}">{{ $exam->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @if ($errors->has('exam_id'))
+                                                <div class="alert alert-danger">{{ $errors->first('exam_id') }}</div>
+                                            @endif
+                                        </div>
+                                    </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="subject_id">Subjects <span class="t_r">*</span></label>
@@ -43,6 +60,29 @@
                                                     <option value="{{ $subject->id }}">{{ $subject->name }}</option>
                                                 @endforeach
                                             </select>
+                                            @if ($errors->has('subject_id'))
+                                                <div class="alert alert-danger">{{ $errors->first('subject_id') }}</div>
+                                            @endif
+                                        </div>
+                                    </div> --}}
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="exam_id">Exam <span class="t_r">*</span></label>
+                                            <select class="form-control select2" name="exam_id" id="exam_id" required>
+                                                <option selected value disabled>Select</option>
+                                                @foreach ($exams as $exam)
+                                                <option value="{{ $exam->id }}">{{ $exam->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @if ($errors->has('exam_id'))
+                                                <div class="alert alert-danger">{{ $errors->first('exam_id') }}</div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="subject_id">Subject <span class="t_r">*</span></label>
+                                            <select class="form-control select2" name="subject_id" id="subject_id" required></select>
                                             @if ($errors->has('subject_id'))
                                                 <div class="alert alert-danger">{{ $errors->first('subject_id') }}</div>
                                             @endif
@@ -165,6 +205,45 @@
 </script>
 @include('include.toast');
 <script>
+    $('#exam_id').change(function () {
+        $.ajax({
+            url:'{{route("admin.global.getSubject")}}',
+            method:'get',
+            data:{
+                exam_id : $(this).val(),
+            },
+            success: function (res) {
+                if (res.status == 'success') {
+                    $('#subject_id').html(res.html);
+                }
+            }
+        });
+     })
+
+     $('#subject_id').change(function () {
+        $.ajax({
+            url:"{{route('admin.question.getChapter')}}",
+            data:{subjectId:$(this).val()},
+            method:'get',
+            success:res=>{
+                let opt = '<option disabled selected>- -</option>';
+                if(res.status == 200){
+                $.each(res.chapters,function(i,v){
+                    opt += '<option value="'+v.id+'">'+v.name+'</option>';
+                });
+                $("#chapter_id").html(opt);
+                }else{
+                    alert('No chapter found')
+                }
+            },
+            error:err=>{
+                alert('No chapter found')
+            }
+        });
+    });
+
+
+
     $('.add-item').on('click', function() {
         var option = $('#option').val();
         if (option == '') {

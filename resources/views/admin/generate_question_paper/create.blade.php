@@ -57,6 +57,7 @@
                                             @endif
                                         </div>
                                     </div>
+
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="date">Date <span class="t_r">*</span></label>

@@ -19,7 +19,7 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-items-center">
-                                <h4 class="card-title">Question Paper Exam List</h4>
+                                <h4 class="card-title">Final Question Paper</h4>
                                 {{-- <a href="{{ route('admin.question.create') }}" class="btn btn-primary btn-round ml-auto text-light" style="min-width: 200px">
                                     <i class="fa fa-plus"></i> Add New
                                 </a> --}}
@@ -36,7 +36,7 @@
                                             <th>Exam Trade</th>
                                             <th>Exam Date & Time</th>
                                             <th>Exam Duration</th>
-                                            <th class="no-sort" width="40px">Subject & Set</th>
+                                            <th class="no-sort" width="40px">Subject</th>
                                         </tr>
                                     </thead>
                                     <tfoot>

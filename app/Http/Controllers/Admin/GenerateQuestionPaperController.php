@@ -60,10 +60,10 @@ class GenerateQuestionPaperController extends Controller
             return $error;
         }
 
-        $subjects = Subject::all();
-        $chapters = Chapter::all();
+        // $subjects = Subject::all();
+        // $chapters = Chapter::all();
         $exams = Exam::all();
-        return view('admin.generate_question_paper.create', compact('subjects', 'chapters', 'exams'));
+        return view('admin.generate_question_paper.create', compact('exams'));
     }
 
     public function getQuestion(Request $request)

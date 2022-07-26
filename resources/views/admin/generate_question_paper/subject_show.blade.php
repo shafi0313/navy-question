@@ -44,7 +44,7 @@
                                             <th>Subject</th>
                                             <th>Exam Date & Time</th>
                                             <th>Exam Duration</th>
-                                            <th>Show By Set</th>
+                                            <th class="no-sort">Show By Set</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
@@ -69,7 +69,7 @@
                                             <td>
                                                 <div class="form-button-action">
                                                     @foreach ($datum as $data)
-                                                    <a href="{{ route('admin.generateQuestion.show',$data->id) }}" data-toggle="tooltip" title="" class="btn btn-primary btn-sm">
+                                                    <a href="{{ route('admin.generateQuestion.show',$data->id) }}" data-toggle="tooltip" title="" class="btn btn-primary btn-sm ml-1">
                                                         {{ quesSet( $data->set) }}
                                                     </a>
                                                     @endforeach

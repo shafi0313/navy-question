@@ -19,9 +19,10 @@ class QuestionEntryController extends Controller
         if ($error = $this->authorize('question-entry-manage')) {
             return $error;
         }
+        $exams = Exam::all();
         $questions = Question::all();
         $subjects = Subject::all();
-        return view('admin.question_entry.index', compact('questions','subjects'));
+        return view('admin.question_entry.index', compact('exams','questions','subjects'));
     }
 
     public function create()
@@ -29,9 +30,10 @@ class QuestionEntryController extends Controller
         if ($error = $this->authorize('question-entry-add')) {
             return $error;
         }
+        $exams = Exam::all();
         $subjects = Subject::all();
         $chapters = Chapter::all();
-        return view('admin.question_entry.create', compact('subjects','chapters'));
+        return view('admin.question_entry.create', compact('exams','subjects','chapters'));
     }
 
     public function read(Request $request)
@@ -90,6 +92,7 @@ class QuestionEntryController extends Controller
         }
         // return $request;
         $data = $this->validate($request, [
+            'exam_id' => 'required|integer',
             'subject_id' => 'required|integer',
             'chapter_id' => 'required|integer',
             'type' => 'required',
@@ -143,6 +146,7 @@ class QuestionEntryController extends Controller
             return $error;
         }
         $data = $this->validate($request, [
+            'exam_id' => 'required|integer',
             'subject_id' => 'required|integer',
             'chapter_id' => 'required|integer',
             'type' => 'required',

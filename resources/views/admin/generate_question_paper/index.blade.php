@@ -37,7 +37,7 @@
                                             <th>Exam Mode</th>
                                             <th>Exam Trade</th>
                                             <th>Exam Date & Time</th>
-                                            <th class="no-sort" width="40px">Subject & Set</th>
+                                            <th class="no-sort" width="40px">Subject</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
