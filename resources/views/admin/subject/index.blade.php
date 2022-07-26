@@ -81,15 +81,14 @@
                                             <td>{{ bdDate($subject->created_at) }}</td>
                                             <td class="text-right">
                                                 <div class="form-button-action">
-                                                    {{-- <span class="btn btn-danger btn-sm addChapter" data-toggle="modal" data-target="#addChapter" data-id="{{$subject->id}}" data-subject="{{ $subject->name }}">Add Chapter</span>
-                                                    <span class="btn btn-info btn-sm editSubject" data-toggle="modal" data-target="#editSubject" data-url="{{route('admin.subject.update', $subject->id)}}" data-name="{{$subject->name}}"><i class="fa fa-edit"></i></span> --}}
-                                                    {{-- <form action="" method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
+                                                    {{-- <span class="btn btn-danger btn-sm addChapter" data-toggle="modal" data-target="#addChapter" data-id="{{$subject->id}}" data-subject="{{ $subject->name }}">Add Chapter</span> --}}
+                                                    <span class="btn btn-info btn-sm editChapter" data-toggle="modal" data-target="#editChapter" data-url="{{route('admin.chapter.update', $chapter->id)}}" data-name="{{$chapter->name}}"><i class="fa fa-edit"></i></span>
+                                                    <form action="{{ route('admin.chapter.destroy', $chapter->id) }}" method="POST">
+                                                        @csrf @method('DELETE')
                                                         <button type="submit" title="Delete" class="btn btn-link btn-danger" data-original-title="Remove" onclick="return confirm('Are you sure?')">
                                                             <i class="fa fa-times"></i>
                                                         </button>
-                                                    </form> --}}
+                                                    </form>
                                                 </div>
                                             </td>
                                         </tr>
@@ -157,14 +156,14 @@
 </div>
 </div>
 
-<!-- Option Edit -->
-{{-- <div class="modal fade" id="optionEdit" tabindex="-1" role="dialog" aria-labelledby="editLabel" aria-hidden="true">
-<div class="modal-dialog" role="document">
-  <form action="" method="POST" autocomplete="off" id="optionEditForm">
+<!-- Edit Chapter -->
+<div class="modal fade" id="editChapter" tabindex="-1" role="dialog" aria-labelledby="editLabel" aria-hidden="true">
+<div class="modal-dialog modal-lg" role="document">
+  <form action="" method="POST" autocomplete="off" id="editChapterForm">
       @csrf
        <div class="modal-content">
           <div class="modal-header">
-              <h5 class="modal-title" id="editLabel" style="color:red;">Edit Question</h5>
+              <h5 class="modal-title" id="editLabel" style="color:red;">Edit Chapter</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
               </button>
@@ -173,19 +172,10 @@
               <div class="row">
                   <div class="col-md-10">
                       <div class="form-group">
-                          <label for="option">Option <span class="t_r">*</span></label>
-                          <input type="text" name="option" class="form-control" id="editOption" required>
-                          @if ($errors->has('option'))
-                          <div class="alert alert-danger">{{ $errors->first('option') }}</div>
-                          @endif
-                      </div>
-                  </div>
-                  <div class="col-md-2">
-                      <div class="form-group">
-                          <label for="correct">Correct <span class="t_r">*</span></label>
-                          <input type="checkbox" name="correct"  class="form-control" id="editCorrect">
-                          @if ($errors->has('correct'))
-                          <div class="alert alert-danger">{{ $errors->first('correct') }}</div>
+                          <label for="name">Chapter <span class="t_r">*</span></label>
+                          <input type="text" name="name" class="form-control" id="editChapterName" required>
+                          @if ($errors->has('name'))
+                          <div class="alert alert-danger">{{ $errors->first('name') }}</div>
                           @endif
                       </div>
                   </div>
@@ -198,7 +188,7 @@
       </div>
   </form>
 </div>
-</div> --}}
+</div>
 
 @push('custom_scripts')
     <!-- Datatables -->
@@ -215,17 +205,10 @@
             $('#subjectName').val($(this).data('subject'));
         });
 
-        $(".optionEdit").on('click', function(){
-        $('#optionEditForm').attr('action',$(this).data('url'));
-        $('#editOption').val($(this).data('option'));
-        $('#editCorrect').val($(this).data('correct'));
-        // console.log($(this).data('correct'))
-        if($(this).data('correct') == 1){
-            $('#editCorrect').prop("checked", true);
-        }else{
-            $('#editCorrect').prop("checked", false);
-        }
-    });
+        $(".editChapter").on('click', function(){
+            $('#editChapterForm').attr('action',$(this).data('url'));
+            $('#editChapterName').val($(this).data('name'));
+        });
 
     </script>
 @endpush

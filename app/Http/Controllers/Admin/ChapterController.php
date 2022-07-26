@@ -45,7 +45,7 @@ class ChapterController extends Controller
 
     public function update(Request $request, $id)
     {
-        if ($error = $this->authorize('subject-edit')) {
+        if ($error = $this->authorize('chapter-edit')) {
             return $error;
         }
         $data = $this->validate($request, [
@@ -70,7 +70,7 @@ class ChapterController extends Controller
 
     public function destroy($id)
     {
-        if ($error = $this->sendPermissionError('delete')) {
+        if ($error = $this->authorize('chapter-delete')) {
             return $error;
         }
         try{

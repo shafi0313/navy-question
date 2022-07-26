@@ -98,6 +98,7 @@ Route::middleware(['auth','admin'])->prefix('admin')->name('admin.')->group(func
         Route::get('/', 'index')->name('index');
         Route::post('/store', 'store')->name('store');
         Route::post('/update/{id}', 'update')->name('update');
+        Route::delete('/destroy/{id}', 'destroy')->name('destroy');
 
     });
     Route::controller(QuestionEntryController::class)->prefix('question')->name('question.')->group(function(){
