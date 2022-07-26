@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\ExamController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\BackupController;
 use App\Http\Controllers\Admin\GlobalController;
 use App\Http\Controllers\Admin\ChapterController;
@@ -77,11 +78,12 @@ Route::middleware(['auth','admin'])->prefix('admin')->name('admin.')->group(func
         Route::get('/get-subject', 'getSubject')->name('getSubject');
     });
 
-    Route::controller(AdminUserController::class)->prefix('admin-user')->name('adminUser.')->group(function(){
+    Route::controller(UserController::class)->prefix('user')->name('user.')->group(function(){
         Route::get('/', 'index')->name('index');
         Route::get('/create', 'create')->name('create');
         Route::post('/store', 'store')->name('store');
         Route::get('/edit/{id}', 'edit')->name('edit');
+        Route::delete('/destroy/{id}', 'destroy')->name('destroy');
     });
 
     Route::controller(ProfileController::class)->prefix('my-profile')->group(function(){

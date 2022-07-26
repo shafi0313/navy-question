@@ -18,7 +18,7 @@
                 <div class="col-md-12">
                     <form action="{{ route('admin.generateQuestion.addQues') }}" method="POST" id="">
                         @csrf
-                        <input type="hidden" name="subject_id" value="{{$questionPapers->first()->question->subject_id}}" id="subject_id">
+                        <input type="hidden" name="subject_id" value="{{$questionPapers->first()->question->subject_id}}">
                         <input type="hidden" name="ques_info_id" value="{{$questionPapers->first()->ques_info_id}}" id="ques_info_id">
                     <div class="card">
                         <div class="card-body">
@@ -29,7 +29,7 @@
                                     <hr>
                                 </div>
 
-                                <div class="col-md-6">
+                                {{-- <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="chapter_id">Chapter <span class="t_r">*</span></label>
                                         <select class="form-control select2" name="chapter_id" id="chapter_id">
@@ -40,6 +40,29 @@
                                         </select>
                                         @if ($errors->has('chapter_id'))
                                             <div class="alert alert-danger">{{ $errors->first('chapter_id') }}</div>
+                                        @endif
+                                    </div>
+                                </div> --}}
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exam_id">Exam <span class="t_r">*</span></label>
+                                        <select class="form-control select2" name="exam_id" id="exam_id" required>
+                                            <option selected value disabled>Select</option>
+                                            @foreach ($exams as $exam)
+                                            <option value="{{ $exam->id }}">{{ $exam->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @if ($errors->has('exam_id'))
+                                            <div class="alert alert-danger">{{ $errors->first('exam_id') }}</div>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="subject_id">Subject <span class="t_r">*</span></label>
+                                        <select class="form-control select2" name="subject_id" id="subject_id" required></select>
+                                        @if ($errors->has('subject_id'))
+                                            <div class="alert alert-danger">{{ $errors->first('subject_id') }}</div>
                                         @endif
                                     </div>
                                 </div>
@@ -102,6 +125,43 @@
     <!-- Datatables -->
     @include('include.data_table')
     <script>
+        $('#exam_id').change(function () {
+        $.ajax({
+            url:'{{route("admin.global.getSubject")}}',
+            method:'get',
+            data:{
+                exam_id : $(this).val(),
+            },
+            success: function (res) {
+                if (res.status == 'success') {
+                    $('#subject_id').html(res.html);
+                }
+            }
+        });
+     })
+
+     $('#subject_id').change(function () {
+        $.ajax({
+            url:"{{route('admin.question.getChapter')}}",
+            data:{subjectId:$(this).val()},
+            method:'get',
+            success:res=>{
+                let opt = '<option disabled selected>- -</option>';
+                if(res.status == 200){
+                $.each(res.chapters,function(i,v){
+                    opt += '<option value="'+v.id+'">'+v.name+'</option>';
+                });
+                $("#chapter_id").html(opt);
+                }else{
+                    alert('No chapter found')
+                }
+            },
+            error:err=>{
+                alert('No chapter found')
+            }
+        });
+    });
+
         $('#quesType').change(function () {
             $("#questionArea").html('');
             let chapterId = $('#chapter_id').find(":selected").val();

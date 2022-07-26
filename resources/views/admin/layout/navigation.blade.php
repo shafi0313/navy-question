@@ -17,17 +17,17 @@
                     <h4 class="text-section">Components</h4>
                 </li>
                 @can('user-manage')
-                <li class="nav-item {{ activeNav('admin.adminUser.*') }}">
+                <li class="nav-item {{ activeNav('admin.user.*') }}">
                     <a data-toggle="collapse" href="#base">
                         <i class="fas fa-users-cog"></i>
                         <p>Admin</p>
                         <span class="caret"></span>
                     </a>
-                    <div class="collapse {{ openNav(['admin.adminUser.*']) }}" id="base">
+                    <div class="collapse {{ openNav(['admin.user.*']) }}" id="base">
                         <ul class="nav nav-collapse">
-                            <li class="{{ activeSubNav(['admin.adminUser.*']) }}">
-                                <a href="{{ route('admin.adminUser.index') }}">
-                                    <span class="sub-item">Admin User</span>
+                            <li class="{{ activeSubNav(['admin.user.*']) }}">
+                                <a href="{{ route('admin.user.index') }}">
+                                    <span class="sub-item">User</span>
                                 </a>
                             </li>
                         </ul>

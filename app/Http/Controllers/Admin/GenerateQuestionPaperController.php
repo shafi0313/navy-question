@@ -43,8 +43,9 @@ class GenerateQuestionPaperController extends Controller
             Alert::info('No Data Found');
             return back();
         }
+        $exams = Exam::all();
         $chapters = Chapter::whereSubject_id($questionPapers->first()->question->subject_id)->get();
-        return view('admin.generate_question_paper.show', compact('questionPapers', 'chapters', 'quesInfoId', 'quesInfo'));
+        return view('admin.generate_question_paper.show', compact('exams','questionPapers', 'chapters', 'quesInfoId', 'quesInfo'));
     }
 
     // public function showBySet($subjectId,$year)
