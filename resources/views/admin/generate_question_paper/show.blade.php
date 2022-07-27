@@ -56,12 +56,8 @@
 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="chapter_id">Chapter <span class="t_r">*</span></label>
+                                        <label for="chapter_id">Chapters <span class="t_r">*</span></label>
                                         <select class="form-control select2" name="chapter_id" id="chapter_id">
-                                            <option selected value disabled>Select</option>
-                                            @foreach ($chapters as $chapter)
-                                            <option value="{{ $chapter->id }}">{{ $chapter->name }}</option>
-                                            @endforeach
                                         </select>
                                         @if ($errors->has('chapter_id'))
                                             <div class="alert alert-danger">{{ $errors->first('chapter_id') }}</div>
@@ -163,8 +159,7 @@
             }
         });
     });
-
-        $('#quesType').change(function () {
+    $('#quesType').change(function () {
             $("#questionArea").html('');
             let chapterId = $('#chapter_id').find(":selected").val();
             let quesType = $(this).val();
@@ -174,23 +169,7 @@
                 method:'get',
                 success:res=>{
                     if(res.status == 200){
-                        let quesData = '';
-                        $.each(res.questions,function(i,v){
-                            let id = v.id;
-                            let url = '{{ route("admin.question.edit", ":id") }}';
-                            url = url.replace(':id', id);
-                            quesData += '<tr>'
-                            quesData += '<td><input type="checkbox" name="question_id[]" value="'+v.id+'">&nbsp;&nbsp; '+v.ques+'</td>'
-                            quesData += '<td>'+v.type+'</td>'
-                            quesData += '<td>'+v.mark+'</td>'
-                            quesData += '<td>'
-                            quesData +=     '<div class="form-button-action">'
-                            quesData +=         '<a href='+url+' data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">Edit</a>'
-                            quesData +=     '</div>'
-                            quesData += '</td>'
-                            quesData += '</tr>'
-                        });
-                        $("#questionArea").append(quesData);
+                        question()
                     }else{
                         alert('No question found')
                     }
@@ -200,6 +179,34 @@
                 }
             });
         });
+
+
+
+    function clear() {
+        $("#questionArea").html('');
+        $("#ques").val('');
+        $("#mark").val('');
+        $("#option").val('');
+        $("#image").val('');
+        CKEDITOR.instances.ques.setData('')
+    }
+
+    function question(){
+        $.ajax({
+            url:'{{route("admin.question.read")}}',
+            method:'get',
+            data:{
+                subject_id : $('#subject_id').val(),
+                chapter_id : $('#chapter_id').val(),
+                type : $('#quesType').val(),
+            },
+            success: function (res) {
+                if (res.status == 'success') {
+                    $('#question').html(res.html);
+                }
+            }
+        });
+    }
     </script>
 @endpush
 @endsection
