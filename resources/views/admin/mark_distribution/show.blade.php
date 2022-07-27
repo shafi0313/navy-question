@@ -57,7 +57,6 @@
                                                 <td><input type="text" name="sort[]" class="form-control" value="{{ $sort }}"></td>
                                                 <td><input type="text" name="long[]" class="form-control" value="{{ $long }}"></td>
                                                 <td class="subtotal">{{$multiple + $sort +  $long }}</td>
-
                                             </tr>
                                             @endforeach
                                         </tbody>

@@ -112,7 +112,7 @@ class GenerateQuestionPaperController extends Controller
             $questions = Question::whereExam_id($request->exam_id)
                                 ->whereSubject_id($request->subject_id)
                                 // ->whereChapter_id($v->pluck('chapter_id')[$k])
-                                ->whereChapter_id([$v->chapter_id])
+                                ->whereIn('chapter_id', [$v->chapter_id])
                                 ->whereType('Multiple Choice')->inRandomOrder()
                                 ->limit($v->multiple)
                                 ->get()
@@ -129,17 +129,9 @@ class GenerateQuestionPaperController extends Controller
         }
 
         foreach ($quesMarks as $k => $v) {
-            // return$v->chapter_id;
-            // return$questions = Question::
-            //                     whereSubject_id($request->subject_id)
-            //                     ->whereChapter_id([$v->chapter_id][$k])
-            //                     ->whereType('Short Question')->inRandomOrder()
-            //                     ->limit($v->sort/2)
-            //                     ->get();
-            //                     // ->pluck('id');
-            $questions = Question::whereExam_id($request->exam_id)
+             $questions = Question::whereExam_id($request->exam_id)
                                 ->whereSubject_id($request->subject_id)
-                                ->whereChapter_id([$v->chapter_id])
+                                ->whereIn('chapter_id', [$v->chapter_id])
                                 ->whereType('Short Question')->inRandomOrder()
                                 ->limit($v->sort/2)
                                 ->get()
@@ -159,7 +151,7 @@ class GenerateQuestionPaperController extends Controller
             $questions = Question::whereExam_id($request->exam_id)
                                 ->whereSubject_id($request->subject_id)
                                 // ->whereChapter_id($v->pluck('chapter_id')[$k])
-                                ->whereChapter_id([$v->chapter_id])
+                                ->whereIn('chapter_id', [$v->chapter_id])
                                 ->whereType('Long Question')->inRandomOrder()
                                 ->limit($v->long/5)
                                 ->get()

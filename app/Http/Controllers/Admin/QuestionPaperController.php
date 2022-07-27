@@ -21,7 +21,7 @@ class QuestionPaperController extends Controller
             return $error;
         }
         // $datum = QuesInfo::with(['exam'])->select('*', DB::raw('DATE_FORMAT(date, "%Y") as date'))->whereStatus('Completed')->get()->groupBy('date');
-        $datum = QuesInfo::with(['exam'])->whereStatus('Pending')->get()->groupBy('exam_id');
+        $datum = QuesInfo::with(['exam'])->whereStatus('Completed')->get()->groupBy('exam_id');
         return view('admin.question_paper.index', compact('datum'));
     }
 
