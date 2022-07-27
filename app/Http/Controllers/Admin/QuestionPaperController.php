@@ -20,7 +20,8 @@ class QuestionPaperController extends Controller
         if ($error = $this->authorize('question-paper-manage')) {
             return $error;
         }
-        $datum = QuesInfo::with(['exam'])->select('*', DB::raw('DATE_FORMAT(date, "%Y") as date'))->whereStatus('Completed')->get()->groupBy('date');
+        // $datum = QuesInfo::with(['exam'])->select('*', DB::raw('DATE_FORMAT(date, "%Y") as date'))->whereStatus('Completed')->get()->groupBy('date');
+        $datum = QuesInfo::with(['exam'])->whereStatus('Pending')->get()->groupBy('exam_id');
         return view('admin.question_paper.index', compact('datum'));
     }
 

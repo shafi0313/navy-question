@@ -33,7 +33,7 @@
                                         <tr>
                                             <th>SL</th>
                                             <th>Exam</th>
-                                            <th>Year</th>
+                                            {{-- <th>Year</th> --}}
                                             <th>Exam Mode</th>
                                             <th>Exam Trade</th>
                                             <th>Exam Date & Time</th>
@@ -60,7 +60,7 @@
                                             <td class="text-center">{{ $x++ }}</td>
                                             {{-- <td>{{ $question->user->name }}</td> --}}
                                             <td>{{ $data->exam->name }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($data->date)->format('Y') }}</td>
+                                            {{-- <td>{{ \Carbon\Carbon::parse($data->date)->format('Y') }}</td> --}}
                                             <td>{{ $data->mode }}</td>
                                             <td>{{ $data->trade }}</td>
                                             <td>{{ examDateTime($data->date) }}</td>

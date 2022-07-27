@@ -23,7 +23,8 @@ class GenerateQuestionPaperController extends Controller
         if ($error = $this->authorize('question-generate-manage')) {
             return $error;
         }
-        $datum = QuesInfo::with(['exam'])->select('*', DB::raw('DATE_FORMAT(date, "%Y") as date'))->whereStatus('Pending')->get()->groupBy('date');
+        // $datum = QuesInfo::with(['exam'])->select('*', DB::raw('DATE_FORMAT(date, "%Y") as date'))->whereStatus('Pending')->get()->groupBy('date');
+        $datum = QuesInfo::with(['exam'])->whereStatus('Pending')->get()->groupBy('exam_id');
         return view('admin.generate_question_paper.index', compact('datum'));
     }
 
