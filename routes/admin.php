@@ -113,6 +113,7 @@ Route::middleware(['auth','admin'])->prefix('admin')->name('admin.')->group(func
         Route::get('/show/{id}', 'show')->name('show');
         Route::get('/option/destroy/{id}', 'optionDestroy')->name('optionDestroy');
         Route::post('/ques-generate', 'quesGenerate')->name('quesGenerate');
+        Route::post('/newOptionAdd', 'newOptionAdd')->name('newOptionAdd');
         // Route::get('/get-subject', 'getSubject')->name('getSubject');
         Route::get('/get-subject', 'getSubject')->name('getSubject');
         Route::get('/get-chapter', 'getChapter')->name('getChapter');

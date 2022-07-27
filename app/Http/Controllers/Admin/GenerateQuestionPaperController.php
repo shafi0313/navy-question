@@ -175,7 +175,7 @@ class GenerateQuestionPaperController extends Controller
             return $ex->getMessage();
             toast('Error', 'error');
             DB::rollBack();
-            return redirect()->back();
+            return back();
         }
     }
 

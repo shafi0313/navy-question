@@ -189,6 +189,29 @@ class QuestionEntryController extends Controller
         }
     }
 
+    public function newOptionAdd(Request $request)
+    {
+        if ($error = $this->authorize('question-entry-edit')) {
+            return $error;
+        }
+        $data = $this->validate($request, [
+            'question_id' => 'required|integer',
+            'option' => 'required',
+        ]);
+        DB::beginTransaction();
+        try{
+            QuesOption::create($data);
+            DB::commit();
+            toast('Success!','success');
+            return redirect()->back();
+        }catch(\Exception $ex){
+            return $ex->getMessage();
+            DB::rollBack();
+            toast('Error','error');
+            return back();
+        }
+    }
+
 
     public function destroy($id)
     {

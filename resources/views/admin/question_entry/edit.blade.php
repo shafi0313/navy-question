@@ -123,7 +123,9 @@
                                             <tr>
                                                 <th>Option</th>
                                                 <th style="width: 100px;text-align:center;">
-                                                    <span class="btn btn-info btn-sm" style="padding: 4px 13px"><i class="fas fa-mouse"></i></span>
+                                                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#newOptionAdd">
+                                                        Add
+                                                    </button>
                                                 </th>
                                             </tr>
                                             @foreach ($question->options as $option)
@@ -131,7 +133,7 @@
                                                 <input type="hidden" name="option_id[]" class="form-control" value="{{ $option->id }}" />
                                                 <td><input type="text" name="option[]"  id="option" class="form-control" value="{{ $option->option }}" /></td>
                                                 <td class="text-center">
-                                                    <span class="btn btn-sm btn-success addrow"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                                    {{-- <span class="btn btn-sm btn-success addrow"><i class="fa fa-plus" aria-hidden="true"></i></span> --}}
                                                     <a href="{{ route('admin.question.optionDestroy', $option->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove" onclick="return confirm('Are you sure')">
                                                         <i class="fa fa-times"></i>
                                                     </a>
@@ -159,6 +161,39 @@
     </div>
     @include('include.footer')
 </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="newOptionAdd" tabindex="-1" role="dialog" aria-labelledby="newOptionAddLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="newOptionAddLabel">Add New Option</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{{ route('admin.question.newOptionAdd') }}" method="POST">
+            @csrf
+            <input type="hidden" name="question_id" value="{{ $question->id }}">
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="option">Option <span class="t_r">*</span></label>
+                        <input name="option" class="form-control" required>
+                        @if ($errors->has('option'))
+                            <div class="alert alert-danger">{{ $errors->first('option') }}</div>
+                        @endif
+                    </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
 @push('custom_scripts')
 <script src="{{ asset('backend/ckeditor/ckeditor.js') }}"></script>
