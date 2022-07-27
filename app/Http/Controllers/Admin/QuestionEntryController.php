@@ -219,14 +219,17 @@ class QuestionEntryController extends Controller
             return $error;
         }
         $user = Question::find($id);
+        QuesOption::whereQuestion_id($id)->delete();
         $path =  public_path('uploads/images/users/'.$user->image);
         if(file_exists($path) && !is_null($user->image)){
             unlink($path);
             $user->delete();
+            QuesOption::whereQuestion_id($id)->delete();
             toast('Successfully Deleted','success');
             return redirect()->back();
         }else{
             $user->delete();
+            QuesOption::whereQuestion_id($id)->delete();
             toast('Successfully Deleted','success');
             return redirect()->back();
         }
