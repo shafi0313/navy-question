@@ -78,11 +78,9 @@ class GenerateQuestionPaperController extends Controller
 
     public function store(Request $request)
     {
-        // return
         if ($error = $this->authorize('question-generate-add')) {
             return $error;
         }
-        DB::beginTransaction();
         $quesInfo = $request->validate([
             'exam_id' => 'required|numeric',
             'subject_id' => 'required',
@@ -96,9 +94,8 @@ class GenerateQuestionPaperController extends Controller
         $quesInfo['status'] = 'Pending';
         $quesInfo['user_id'] = auth()->user()->id;
         $quesInfo['set'] = QuesInfo::whereYear('date', now('Y'))->whereExam_id($request->exam_id)->whereSubject_id($request->subject_id)->count() + 1;
+        DB::beginTransaction();
         $questionInfo = QuesInfo::create($quesInfo);
-
-        // return $request->subject_id;
 
         $quesMarks = MarkDistribution::whereSubject_id($request->subject_id)->get();
         if ($quesMarks->count() < 1) {
@@ -111,39 +108,42 @@ class GenerateQuestionPaperController extends Controller
         foreach ($quesMarks as $k => $v) {
             $questions = Question::whereExam_id($request->exam_id)
                                 ->whereSubject_id($request->subject_id)
-                                // ->whereChapter_id($v->pluck('chapter_id')[$k])
-                                ->whereIn('chapter_id', [$v->chapter_id])
-                                ->whereType('Multiple Choice')->inRandomOrder()
-                                ->limit($v->multiple)
-                                ->get()
-                                ->pluck('id');
-
+                                ->where('chapter_id', $v->chapter_id)
+                                ->whereType('Multiple Choice')
+                                ->inRandomOrder()
+                                ->get();
+            $i=0;
             foreach ($questions as $key => $value) {
-                $data=[
-                    'ques_info_id' => $questionInfo->id,
-                    'question_id' => $value,
-                    'type' => 'Multiple Choice',
-                ];
-                QuestionPaper::updateOrCreate($data);
+                if($i < $v->sort ){
+                    $data=[
+                        'ques_info_id' => $questionInfo->id,
+                        'question_id' => $value->id,
+                        'type' => 'Multiple Choice',
+                    ];
+                    QuestionPaper::updateOrCreate($data);
+                    $i += $value->mark;
+                }
             }
         }
 
         foreach ($quesMarks as $k => $v) {
-             $questions = Question::whereExam_id($request->exam_id)
+            $questions = Question::whereExam_id($request->exam_id)
                                 ->whereSubject_id($request->subject_id)
-                                ->whereIn('chapter_id', [$v->chapter_id])
-                                ->whereType('Short Question')->inRandomOrder()
-                                ->limit($v->sort/2)
-                                ->get()
-                                ->pluck('id');
-
+                                ->where('chapter_id', $v->chapter_id)
+                                ->whereType('Short Question')
+                                ->inRandomOrder()
+                                ->get();
+            $i=0;
             foreach ($questions as $key => $value) {
-                $data=[
-                    'ques_info_id' => $questionInfo->id,
-                    'question_id' => $value,
-                    'type' => 'Short Question',
-                ];
-                QuestionPaper::updateOrCreate($data);
+                if($i < $v->sort ){
+                    $data=[
+                        'ques_info_id' => $questionInfo->id,
+                        'question_id' => $value->id,
+                        'type' => 'Short Question',
+                    ];
+                    QuestionPaper::updateOrCreate($data);
+                    $i += $value->mark;
+                }
             }
         }
 
@@ -151,19 +151,22 @@ class GenerateQuestionPaperController extends Controller
             $questions = Question::whereExam_id($request->exam_id)
                                 ->whereSubject_id($request->subject_id)
                                 // ->whereChapter_id($v->pluck('chapter_id')[$k])
-                                ->whereIn('chapter_id', [$v->chapter_id])
-                                ->whereType('Long Question')->inRandomOrder()
-                                ->limit($v->long/5)
-                                ->get()
-                                ->pluck('id');
+                                ->where('chapter_id', $v->chapter_id)
+                                ->whereType('Long Question')
+                                ->inRandomOrder()
+                                ->get();
 
+            $i=0;
             foreach ($questions as $key => $value) {
-                $data=[
-                    'ques_info_id' => $questionInfo->id,
-                    'question_id' => $value,
-                    'type' => 'Long Question',
-                ];
-                QuestionPaper::updateOrCreate($data);
+                if($i < $v->sort ){
+                    $data=[
+                        'ques_info_id' => $questionInfo->id,
+                        'question_id' => $value->id,
+                        'type' => 'Long Question',
+                    ];
+                    QuestionPaper::updateOrCreate($data);
+                    $i += $value->mark;
+                }
             }
         }
 

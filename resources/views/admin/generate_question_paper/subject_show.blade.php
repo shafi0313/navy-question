@@ -74,6 +74,12 @@
                                                     <a href="{{ route('admin.generateQuestion.show',$data->id) }}" data-toggle="tooltip" title="" class="btn btn-primary btn-sm ml-1">
                                                         {{ quesSet( $data->set) }}
                                                     </a>
+                                                    <form action="{{ route('admin.generatedQues.destroy', $data->id) }}" method="post">
+                                                        @csrf @method('DELETE')
+                                                        <button type="submit" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove" onclick="return confirm('Are you sure?')">
+                                                            <i class="fa fa-times"></i>
+                                                        </button>
+                                                    </form>
                                                     @endforeach
                                                     {{-- <a href="{{ route('admin.generateQuestion.showBySet',[$data->subject->id,\Carbon\Carbon::parse($data->date)->format('Y')]) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
                                                         Show by Set

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Exam;
+use App\Models\Chapter;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -78,6 +79,7 @@ class SubjectController extends Controller
         }
         try{
             Subject::find($id)->delete();
+            Chapter::whereSubject_id($id)->delete();
             toast('Success!','success');
             return redirect()->back();
         }catch(\Exception $ex){

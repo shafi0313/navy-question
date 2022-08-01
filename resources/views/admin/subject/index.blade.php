@@ -54,13 +54,12 @@
                                                 <div class="form-button-action">
                                                     <span class="btn btn-danger btn-sm addChapter" data-toggle="modal" data-target="#addChapter" data-id="{{$subject->id}}" data-subject="{{ $subject->name }}">Add Chapter</span>
                                                     <span class="btn btn-info btn-sm editSubject" data-toggle="modal" data-target="#editSubject" data-url="{{route('admin.subject.update', $subject->id)}}" data-name="{{$subject->name}}" data-exam_id="{{$subject->exam_id}}"><i class="fa fa-edit"></i></span>
-                                                    {{-- <form action="" method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
+                                                    <form action="{{ route('admin.subject.destroy', $subject->id) }}" method="POST">
+                                                        @csrf @method('DELETE')
                                                         <button type="submit" title="Delete" class="btn btn-link btn-danger" data-original-title="Remove" onclick="return confirm('Are you sure?')">
                                                             <i class="fa fa-times"></i>
                                                         </button>
-                                                    </form> --}}
+                                                    </form>
                                                 </div>
                                             </td>
                                         </tr>

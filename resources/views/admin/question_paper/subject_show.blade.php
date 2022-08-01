@@ -72,6 +72,12 @@
                                                     <a href="{{ route('admin.generatedQues.show',$data->id) }}" data-toggle="tooltip" title="" class="btn btn-primary btn-sm">
                                                         {{ quesSet( $data->set) }}
                                                     </a>
+                                                    <form action="{{ route('admin.generatedQues.destroy', $data->id) }}" method="post">
+                                                        @csrf @method('DELETE')
+                                                        <button type="submit" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove" onclick="return confirm('Are you sure?')">
+                                                            <i class="fa fa-times"></i>
+                                                        </button>
+                                                    </form>
                                                     @endforeach
 
                                                     {{-- <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove">

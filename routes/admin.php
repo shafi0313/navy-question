@@ -12,7 +12,6 @@ use App\Http\Controllers\Admin\ChapterController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Auth\Role\RoleController;
-use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AnswerPaperController;
 use App\Http\Controllers\Admin\VisitorInfoController;
@@ -95,6 +94,7 @@ Route::middleware(['auth','admin'])->prefix('admin')->name('admin.')->group(func
         Route::get('/', 'index')->name('index');
         Route::post('/store', 'store')->name('store');
         Route::post('/update/{id}', 'update')->name('update');
+        Route::delete('/destroy/{id}', 'destroy')->name('destroy');
     });
     Route::controller(ChapterController::class)->prefix('chapter')->name('chapter.')->group(function(){
         Route::get('/', 'index')->name('index');
@@ -153,6 +153,7 @@ Route::middleware(['auth','admin'])->prefix('admin')->name('admin.')->group(func
         Route::get('/subject/show/{subject}', 'showBySubject')->name('showBySubject');
         Route::get('/set/show/{subjectId}/{year}', 'showBySet')->name('showBySet');
         Route::get('/show/{id}', 'show')->name('show');
+        Route::delete('/destroy/{id}', 'destroy')->name('destroy');
         Route::get('/pdf/download/{id}', 'pdf')->name('pdf');
     });
 
