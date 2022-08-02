@@ -23,7 +23,7 @@ class MarkDistributionController extends Controller
     public function show($subjectId)
     {
         $subject = Subject::find($subjectId);
-        $chapters = Chapter::with('markDistribution')->whereSubject_id($subjectId)->get();
+        $chapters = Chapter::with(['markDistribution'])->withCount('question')->whereSubject_id($subjectId)->get();
         return view('admin.mark_distribution.show', compact('subject','chapters'));
     }
 

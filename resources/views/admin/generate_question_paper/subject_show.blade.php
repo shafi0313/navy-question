@@ -41,7 +41,6 @@
                                     <thead class="bg-secondary thw">
                                         <tr>
                                             <th>SL</th>
-                                            {{-- <th>Exam</th> --}}
                                             <th>Subject</th>
                                             <th>Exam Date & Time</th>
                                             <th>Exam Duration</th>
@@ -63,7 +62,6 @@
                                         @endphp
                                         <tr>
                                             <td class="text-center">{{ $x++ }}</td>
-                                            {{-- <td>{{ $data->exam->name }}</td> --}}
                                             <td>{{ $data->subject->name }}</td>
                                             <td>{{ examDateTime($data->date) }}</td>
                                             <td>{{ $data->d_hour }} Hrs {{ $data->d_minute }} Min</td>
@@ -80,13 +78,6 @@
                                                         </button>
                                                     </form>
                                                     @endforeach
-                                                    {{-- <a href="{{ route('admin.generateQuestion.showBySet',[$data->subject->id,\Carbon\Carbon::parse($data->date)->format('Y')]) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
-                                                        Show by Set
-                                                    </a> --}}
-
-                                                    {{-- <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove">
-                                                        <i class="fa fa-times"></i>
-                                                    </button> --}}
                                                 </div>
                                             </td>
                                         </tr>

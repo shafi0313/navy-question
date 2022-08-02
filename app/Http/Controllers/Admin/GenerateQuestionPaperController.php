@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use Carbon\Carbon;
 use App\Models\Exam;
 use App\Models\Chapter;
-use App\Models\Subject;
 use App\Models\QuesInfo;
 use App\Models\Question;
 use App\Models\QuesOption;

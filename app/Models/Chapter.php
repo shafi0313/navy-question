@@ -13,4 +13,7 @@ class Chapter extends Model
     public function markDistribution(){
         return $this->hasOne(MarkDistribution::class);
     }
+    public function question(){
+        return $this->hasMany(Question::class, 'chapter_id', 'id');
+    }
 }

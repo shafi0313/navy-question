@@ -68,10 +68,6 @@
                                                     {{-- <a href="{{ route('admin.generatedQues.showBySubject', \Carbon\Carbon::parse($data->date)->format('Y')) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show"> --}}
                                                         Show by Subject
                                                     </a>
-
-                                                    {{-- <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove">
-                                                        <i class="fa fa-times"></i>
-                                                    </button> --}}
                                                 </div>
                                             </td>
                                         </tr>

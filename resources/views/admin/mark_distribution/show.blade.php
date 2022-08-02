@@ -25,19 +25,40 @@
                                 </a> --}}
                             </div>
                         </div>
+                        <style>
+                            input[type=text] {
+                                width: 100%;
+                                border: 1px solid rgb(192, 191, 191);
+                                border-radius: 3px;
+                                padding: 0rem .5rem;
+                            }
+                        </style>
                         <form action="{{ route('admin.markDistribution.store') }}" method="POST">
                             @csrf
                             <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h2 class="text-center">{{ $subject->name }}</h2>
+                                    </div>
+                                </div>
                                 <div class="table-responsive">
-                                    <table class="display table table-striped table-hover calculation-table" id="suunto-table">
-                                        <thead class="bg-secondary thw">
+                                    <table class="display table table-bordered table-hover calculation-table" id="suunto-table">
+                                        <thead class="bg-secondary thw text-center">
+                                            <tr class="text-center">
+                                                <th rowspan="2">SL</th>
+                                                <th rowspan="2">Chapter</th>
+                                                <th colspan="2">Multiple Choice</th>
+                                                <th colspan="2">Sort Question</th>
+                                                <th colspan="2">Long Question</th>
+                                                <th rowspan="2">Total Mark</th>
+                                            </tr>
                                             <tr>
-                                                <th>SL</th>
-                                                <th>Chapter</th>
-                                                <th>multiple_choice</th>
-                                                <th>Sort Question</th>
-                                                <th>long_question</th>
-                                                <th>Total Mark</th>
+                                                <th>No Of Question</th>
+                                                <th>Mark</th>
+                                                <th>No Of Question</th>
+                                                <th>Mark</th>
+                                                <th>No Of Question</th>
+                                                <th>Mark</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -50,11 +71,14 @@
                                                 $sort = $chapter->markDistribution->sort??0;
                                                 $long = $chapter->markDistribution->long??0;
                                             @endphp
-                                            <tr id="calc-{{$chapter->id}}">
+                                            <tr id="calc-{{$chapter->id}}" class="text-center">
                                                 <td class="text-center">{{ $x++ }}</td>
-                                                <td>{{ $chapter->name }}</td>
-                                                <td><input type="text" name="multiple[]" class="sum{{$k}}" id="" value="{{ $multiple }}"></td>
+                                                <td class="text-left">{{ $chapter->name }}</td>
+                                                <td>{{ $chapter->question->where('type','multiple_choice')->count() }}</td>
+                                                <td><input type="text" name="multiple[]" class="sum{{$k}}" value="{{ $multiple }}"></td>
+                                                <td>{{ $chapter->question->where('type','short_question')->count() }}</td>
                                                 <td><input type="text" name="sort[]" class="sum{{$k}}" value="{{ $sort }}"></td>
+                                                <td>{{ $chapter->question->where('type','long_question')->count() }}</td>
                                                 <td><input type="text" name="long[]" class="sum{{$k}}" value="{{ $long }}"></td>
                                                 <td >{{$multiple + $sort +  $long }}</td>
                                             </tr>
