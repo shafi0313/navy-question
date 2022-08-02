@@ -33,11 +33,11 @@
                                         <tr>
                                             <th>SL</th>
                                             <th>Exam</th>
-                                            {{-- <th>Year</th> --}}
                                             <th>Exam Mode</th>
                                             <th>Exam Trade</th>
                                             <th>Exam Date & Time</th>
                                             <th class="no-sort" width="40px">Subject</th>
+                                            <th class="no-sort" width="40px">Delete</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
@@ -57,9 +57,7 @@
                                         @endphp
                                         <tr>
                                             <td class="text-center">{{ $x++ }}</td>
-                                            {{-- <td>{{ $question->user->name }}</td> --}}
                                             <td>{{ $data->exam->name }}</td>
-                                            {{-- <td>{{ \Carbon\Carbon::parse($data->date)->format('Y') }}</td> --}}
                                             <td>{{ $data->mode }}</td>
                                             <td>{{ $data->trade }}</td>
                                             <td>{{ examDateTime($data->date) }}</td>
@@ -68,10 +66,16 @@
                                                     <a href="{{ route('admin.generateQuestion.showBySubject', \Carbon\Carbon::parse($data->date)->format('Y')) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
                                                         Show by Subject
                                                     </a>
-
-                                                    {{-- <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove">
-                                                        <i class="fa fa-times"></i>
-                                                    </button> --}}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-button-action">
+                                                    <form action="{{ route('admin.generateQuestion.quesInfoQuesDestroy', $data->exam->id) }}" method="post">
+                                                        @csrf @method('DELETE')
+                                                        <button type="submit" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove" onclick="return confirm('In this action delete all draft question of this exam. Are you sure?')">
+                                                            <i class="fa fa-times"></i>
+                                                        </button>
+                                                    </form>
                                                 </div>
                                             </td>
                                         </tr>

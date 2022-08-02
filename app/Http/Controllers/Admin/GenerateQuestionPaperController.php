@@ -102,7 +102,7 @@ class GenerateQuestionPaperController extends Controller
                                 ->get();
             $i=0;
             foreach ($questions as $key => $value) {
-                if ($i < $v->sort) {
+                if ($i < $v->multiple) {
                     $data=[
                         'ques_info_id' => $questionInfo->id,
                         'question_id' => $value->id,
@@ -121,16 +121,16 @@ class GenerateQuestionPaperController extends Controller
                                 ->whereType('short_question')
                                 ->inRandomOrder()
                                 ->get();
-            $i=0;
+            $j=0;
             foreach ($questions as $key => $value) {
-                if ($i < $v->sort) {
+                if ($j < $v->sort) {
                     $data=[
                         'ques_info_id' => $questionInfo->id,
                         'question_id' => $value->id,
                         'type' => 'short_question',
                     ];
                     QuestionPaper::updateOrCreate($data);
-                    $i += $value->mark;
+                    $j += $value->mark;
                 }
             }
         }
@@ -144,16 +144,16 @@ class GenerateQuestionPaperController extends Controller
                                 ->inRandomOrder()
                                 ->get();
 
-            $i=0;
+            $k=0;
             foreach ($questions as $key => $value) {
-                if ($i < $v->sort) {
+                if ($k < $v->long) {
                     $data=[
                         'ques_info_id' => $questionInfo->id,
                         'question_id' => $value->id,
                         'type' => 'long_question',
                     ];
                     QuestionPaper::updateOrCreate($data);
-                    $i += $value->mark;
+                    $k += $value->mark;
                 }
             }
         }
@@ -273,6 +273,23 @@ class GenerateQuestionPaperController extends Controller
             toast('Success!', 'success');
             return back();
         } catch (\Exception $ex) {
+            toast('Error', 'error');
+            return redirect()->back();
+        }
+    }
+
+    public function quesInfoQuesDestroy($id)
+    {
+        if ($error = $this->authorize('question-generate-delete')) {
+            return $error;
+        }
+        try {
+            QuesInfo::whereExam_id($id)->whereStatus('Pending')->delete();
+            // QuestionPaper::whereQuestion_id($id)->delete();
+            toast('Success!', 'success');
+            return back();
+        } catch (\Exception $ex) {
+            // return $ex->getMessage();
             toast('Error', 'error');
             return redirect()->back();
         }
