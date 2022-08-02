@@ -80,9 +80,9 @@
 
 
 @php $x = 1 @endphp
-@if($questionPapers->where('type','Multiple Choice')->count() > 0)
+@if($questionPapers->where('type','multiple_choice')->count() > 0)
     <h4 class="quesType">Multiple Choice</h4>
-    @foreach ($questionPapers->where('type','Multiple Choice') as $key => $question)
+    @foreach ($questionPapers->where('type','multiple_choice') as $key => $question)
         <table style="width: 100%">
             <tr>
                 <td class="sl">{{$x++}}. </td>
@@ -110,9 +110,9 @@
 @endif
 
 
-@if ($questionPapers->where('type','Short Question')->count() > 0)
+@if ($questionPapers->where('type','short_question')->count() > 0)
     <h4 class="quesType">Short Question</h4>
-    @foreach ($questionPapers->where('type','Short Question') as $question)
+    @foreach ($questionPapers->where('type','short_question') as $question)
         <table style="width: 100%">
             <tr>
                 <td class="sl">{{$x++}}. </td>
@@ -127,9 +127,9 @@
     <br>
 @endif
 
-@if ($questionPapers->where('type','Long Question')->count() > 0)
+@if ($questionPapers->where('type','long_question')->count() > 0)
 <h4 class="quesType">Long Question</h4>
-@foreach ($questionPapers->where('type','Short Question') as $question)
+@foreach ($questionPapers->where('type','short_question') as $question)
 <table style="width: 100%">
     <tr>
         <td class="sl">{{$x++}}. </td>

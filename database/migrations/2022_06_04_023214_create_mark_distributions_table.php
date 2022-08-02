@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     /**
      * Run the migrations.
      *
@@ -22,7 +21,7 @@ return new class extends Migration
             $table->integer('sort')->default(0);
             $table->integer('long')->default(0);
             $table->tinyInteger('pass_mark');
-            // $table->enum('type', ["Multiple Choice","Short Question","Long Question"]);
+            // $table->enum('type', ["multiple_choice","short_question","long_question"]);
             // $table->integer('mark');
             $table->timestamps();
         });

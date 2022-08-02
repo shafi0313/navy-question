@@ -33,8 +33,8 @@
                         <form action="{{ route('admin.question.quesGenerate') }}" method="POST">
                             @csrf
                             <div class="card-body">
-                                <h4 class="quesType">Multiple Choice</h4>
-                                @foreach ($questions->where('type','Multiple Choice') as $key => $question)
+                                <h4 class="quesType">multiple_choice</h4>
+                                @foreach ($questions->where('type','multiple_choice') as $key => $question)
                                 <div class="questionArea">
                                     <h4 class="question">
                                         <input type="hidden" name="exam_id[]" value="{{$question->exam_id}}">
@@ -59,8 +59,8 @@
                                 @endforeach
                                 <br>
                                 <br>
-                                <h4 class="quesType">Short Question</h4>
-                                @foreach ($questions->where('type','Short Question') as $question)
+                                <h4 class="quesType">short_question</h4>
+                                @foreach ($questions->where('type','short_question') as $question)
                                 <div class="questionArea">
                                     <h4 class="question">
                                         <input type="hidden" name="exam_id[]" value="{{$question->exam_id}}">
@@ -75,8 +75,8 @@
                                 @endforeach
                                 <br>
                                 <br>
-                                <h4 class="quesType">Long Question</h4>
-                                @foreach ($questions->where('type','Long Question') as $question)
+                                <h4 class="quesType">long_question</h4>
+                                @foreach ($questions->where('type','long_question') as $question)
                                 <div class="questionArea">
                                     <h4 class="question">
                                         <input type="hidden" name="exam_id[]" value="{{$question->exam_id}}">

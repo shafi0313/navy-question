@@ -34,9 +34,9 @@
                                             <tr>
                                                 <th>SL</th>
                                                 <th>Chapter</th>
-                                                <th>Multiple Choice</th>
+                                                <th>multiple_choice</th>
                                                 <th>Sort Question</th>
-                                                <th>Long Question</th>
+                                                <th>long_question</th>
                                                 <th>Total Mark</th>
                                             </tr>
                                         </thead>

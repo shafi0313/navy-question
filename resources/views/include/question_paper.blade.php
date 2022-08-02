@@ -38,13 +38,6 @@
                     @if (!empty($complete))
                     @include('include.question_paper_head')
                     @endif
-                    {{-- <div class="row">
-                        <div class="col-md-12">
-                            <p style="float:left">Question</p>
-                            <p style="float:right">Marks</p>
-                            <p style="float:right">Action</p>
-                        </div>
-                    </div> --}}
                     <div class="row">
                         @php $i = 0; @endphp
                         @foreach ($questionPapers as $item)
@@ -52,11 +45,10 @@
                         @endforeach
                         <h2 style="margin-left: 13px; font-weight: bold">Total Mark: {{ $i }}</h2>
                     </div>
-
                     @php $x = 1 @endphp
-                    @if($questionPapers->where('type','Multiple Choice')->count() > 0)
+                    @if($questionPapers->where('type','multiple_choice')->count() > 0)
                         <h4 class="quesType">Multiple Choice</h4>
-                        @foreach ($questionPapers->where('type','Multiple Choice') as $key => $question)
+                        @foreach ($questionPapers->where('type','multiple_choice') as $key => $question)
                         <div class="questionArea">
                             <h4 class="question">{{$x++}}. {!! $question->question->ques !!}
                                 <span style="float:right">{{ $question->question->mark }}
@@ -87,11 +79,9 @@
                         <br>
                         <br>
                     @endif
-
-
-                    @if ($questionPapers->where('type','Short Question')->count() > 0)
+                    @if ($questionPapers->where('type','short_question')->count() > 0)
                         <h4 class="quesType">Short Question</h4>
-                        @foreach ($questionPapers->where('type','Short Question') as $question)
+                        @foreach ($questionPapers->where('type','short_question') as $question)
                         <div class="questionArea">
                             <h4 class="question">{{$x++}}. {!! $question->question->ques !!}
                                 <span style="float:right">{{ $question->question->mark }}
@@ -111,10 +101,9 @@
                         <br>
                         <br>
                     @endif
-
-                    @if ($questionPapers->where('type','Long Question')->count() > 0)
+                    @if ($questionPapers->where('type','long_question')->count() > 0)
                         <h4 class="quesType">Long Question</h4>
-                        @foreach ($questionPapers->where('type','Long Question') as $question)
+                        @foreach ($questionPapers->where('type','long_question') as $question)
                         <div class="questionArea">
                             <h4 class="question">{{$x++}}. {!! $question->question->ques !!}
                                 <span style="float:right">{{ $question->question->mark }}

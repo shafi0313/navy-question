@@ -96,9 +96,9 @@
                                         <label for="type">Question Type <span class="t_r">*</span></label>
                                         <select class="form-control" name="type" id="quesType" required>
                                             <option selected value disabled>Select</option>
-                                            <option value="Multiple Choice">Multiple Choice</option>
-                                            <option value="Short Question">Short Question</option>
-                                            <option value="Long Question">Long Question</option>
+                                            <option value="multiple_choice">Multiple Choice</option>
+                                            <option value="short_question">Short Question</option>
+                                            <option value="long_question">Long Question</option>
                                         </select>
                                         @if ($errors->has('type'))
                                             <div class="alert alert-danger">{{ $errors->first('type') }}</div>

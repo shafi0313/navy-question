@@ -63,9 +63,9 @@
                                         <div class="form-group">
                                             <label for="type">Question Type <span class="t_r">*</span></label>
                                             <select class="form-control" name="type" id="quesType" required>
-                                                <option value="Multiple Choice" {{$question->type == 'Multiple Choice' ? 'selected' : ''}}>Multiple Choice</option>
-                                                <option value="Short Question" {{$question->type == 'Short Question' ? 'selected' : ''}}>Short Question</option>
-                                                <option value="Long Question" {{$question->type == 'Long Question' ? 'selected' : ''}}>Long Question</option>
+                                                <option value="multiple_choice" {{$question->type == 'multiple_choice' ? 'selected' : ''}}>multiple_choice</option>
+                                                <option value="short_question" {{$question->type == 'short_question' ? 'selected' : ''}}>short_question</option>
+                                                <option value="long_question" {{$question->type == 'long_question' ? 'selected' : ''}}>long_question</option>
                                             </select>
                                             @if ($errors->has('type'))
                                                 <div class="alert alert-danger">{{ $errors->first('type') }}</div>
@@ -92,7 +92,7 @@
                                             @endif
                                         </div>
                                     </div>
-                                    @if ($question->type == 'Multiple Choice')
+                                    @if ($question->type == 'multiple_choice')
                                     <div class="col-md-6 quesTypeDiv">
                                         <table class="table table-bordered">
                                             <tr>
@@ -161,7 +161,7 @@
 
     $("#quesType").change(function(){
         const type = $(this).val();
-        if(type == "Multiple Choice"){
+        if(type == "multiple_choice"){
             $(".quesTypeDiv").show();
         }else{
             $(".quesTypeDiv").hide();

@@ -48,9 +48,9 @@
                             <div class="card-body" id="printableArea">
                                 @include('include.question_paper_head')
                                 @php $x = 1 @endphp
-                                @if($questionPapers->where('type','Multiple Choice')->count() > 0)
-                                    <h4 class="quesType">Multiple Choice</h4>
-                                    @foreach ($questionPapers->where('type','Multiple Choice') as $key => $question)
+                                @if($questionPapers->where('type','multiple_choice')->count() > 0)
+                                    <h4 class="quesType">multiple_choice</h4>
+                                    @foreach ($questionPapers->where('type','multiple_choice') as $key => $question)
                                     <div class="questionArea">
                                         <h4 class="question">{{$x++}}. {{ $question->question->ques }}
                                             <span style="float:right">{{ $question->question->mark }}</span>
@@ -71,9 +71,9 @@
                                     <br>
                                 @endif
 
-                                @if ($questionPapers->where('type','Short Question')->count() > 0)
-                                    <h4 class="quesType">Short Question</h4>
-                                    @foreach ($questionPapers->where('type','Short Question') as $question)
+                                @if ($questionPapers->where('type','short_question')->count() > 0)
+                                    <h4 class="quesType">short_question</h4>
+                                    @foreach ($questionPapers->where('type','short_question') as $question)
                                     <div class="questionArea">
                                         <h4 class="question">{{$x++}}. {{ $question->question->ques }}
                                             <span style="float:right">{{ $question->question->mark }}</span>
@@ -89,9 +89,9 @@
                                     <br>
                                 @endif
 
-                                @if ($questionPapers->where('type','Long Question')->count() > 0)
-                                    <h4 class="quesType">Long Question</h4>
-                                    @foreach ($questionPapers->where('type','Long Question') as $question)
+                                @if ($questionPapers->where('type','long_question')->count() > 0)
+                                    <h4 class="quesType">long_question</h4>
+                                    @foreach ($questionPapers->where('type','long_question') as $question)
                                     <div class="questionArea">
                                         <h4 class="question">{{$x++}}. {{ $question->ques }}
                                             <span style="float:right">{{ $question->mark }}</span>
@@ -145,9 +145,9 @@
                                     <p>{{ $questions->first()->exam->name }} Exam Question Paper-{{ Carbon\Carbon::parse($questions->first()->exam->date)->format('Y') }}</p>
                                     <p>{{ $questions->first()->question->subject->name }}</p>
                                 </div>
-                                <h4 class="quesType">Multiple Choice</h4>
+                                <h4 class="quesType">multiple_choice</h4>
                                 @php $x = 1; @endphp
-                                @foreach ($questions->where('type','Multiple Choice') as $key => $question)
+                                @foreach ($questions->where('type','multiple_choice') as $key => $question)
                                 <input type="hidden" name="exam_id" value="{{ $question->exam_id }}">
                                 <input type="hidden" name="question_id[]" value="{{ $question->id }}">
                                 <div class="questionArea">
@@ -168,8 +168,8 @@
                                 @endforeach
                                 <br>
                                 <br>
-                                <h4 class="quesType">Short Question</h4>
-                                @foreach ($questions->where('type','Short Question') as $question)
+                                <h4 class="quesType">short_question</h4>
+                                @foreach ($questions->where('type','short_question') as $question)
                                 <input type="hidden" name="question_id[]" value="{{ $question->id }}">
                                 <input type="hidden" name="ans[]" value="{{ $question->ques }}">
                                 <div class="questionArea">
@@ -181,8 +181,8 @@
                                 @endforeach
                                 <br>
                                 <br>
-                                <h4 class="quesType">Long Question</h4>
-                                @foreach ($questions->where('type','Long Question') as $question)
+                                <h4 class="quesType">long_question</h4>
+                                @foreach ($questions->where('type','long_question') as $question)
                                 <input type="hidden" name="question_id[]" value="{{ $question->id }}">
                                 <input type="hidden" name="ans[]" value="{{ $question->ques }}">
                                 <div class="questionArea">

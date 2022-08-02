@@ -22,7 +22,7 @@ class QuestionEntryController extends Controller
         $exams = Exam::all();
         $questions = Question::all();
         $subjects = Subject::all();
-        return view('admin.question_entry.index', compact('exams','questions','subjects'));
+        return view('admin.question_entry.index', compact('exams', 'questions', 'subjects'));
     }
 
     public function create()
@@ -33,7 +33,7 @@ class QuestionEntryController extends Controller
         $exams = Exam::all();
         $subjects = Subject::all();
         $chapters = Chapter::all();
-        return view('admin.question_entry.create', compact('exams','subjects','chapters'));
+        return view('admin.question_entry.create', compact('exams', 'subjects', 'chapters'));
     }
 
     public function read(Request $request)
@@ -63,7 +63,7 @@ class QuestionEntryController extends Controller
     //     DB::beginTransaction();
     //     $question = Question::create($data);
 
-    //     if($request->type == "Multiple Choice"){
+    //     if($request->type == "multiple_choice"){
     //         foreach($request->option as $key => $value){
     //             $option=[
     //                 'question_id' => $question->id,
@@ -100,7 +100,7 @@ class QuestionEntryController extends Controller
             'ques' => 'required',
         ]);
 
-        if($request->hasFile('image')){
+        if ($request->hasFile('image')) {
             // $files = TextWithSingleImg::wherePage('carPhotoEditing')->whereSec_name('pageHead')->first('image')->before;
             // $path =  public_path('uploads/images/page/'.$files);
             // file_exists($files)?unlink($path):'';
@@ -118,8 +118,8 @@ class QuestionEntryController extends Controller
         // $data['ques'] =$request->ques;
         $data['user_id'] = auth()->user()->id;
         $questionEntry = Question::create($data);
-        if($request->type == "Multiple Choice"){
-            foreach($request->option as $key => $value){
+        if ($request->type == "multiple_choice") {
+            foreach ($request->option as $key => $value) {
                 $option=[
                     'question_id' => $questionEntry->id,
                     'option' => $request->option[$key],
@@ -137,7 +137,7 @@ class QuestionEntryController extends Controller
         }
         $question = Question::with('options')->find($id);
         $exams = Exam::all();
-        return view('admin.question_entry.edit', compact('question','exams'));
+        return view('admin.question_entry.edit', compact('question', 'exams'));
     }
 
     public function update(Request $request, $id)
@@ -158,15 +158,15 @@ class QuestionEntryController extends Controller
         DB::beginTransaction();
         Question::find($id)->update($data);
 
-        if($request->type == "Multiple Choice"){
-            foreach($request->option as $key => $value){
+        if ($request->type == "multiple_choice") {
+            foreach ($request->option as $key => $value) {
                 $option=[
                     'question_id' => $id,
                     'option' => $request->option[$key],
                 ];
-                if(!empty(QuesOption::whereId($request->option_id[$key]))){
+                if (!empty(QuesOption::whereId($request->option_id[$key]))) {
                     QuesOption::where('id', $request->option_id[$key])->update($option);
-                }else{
+                } else {
                     QuesOption::create($option);
                 }
                 // QuesOption::updateOrCreate(['id' => $request->option_id],$option);
@@ -177,14 +177,14 @@ class QuestionEntryController extends Controller
             }
         }
 
-        try{
+        try {
             DB::commit();
-            toast('Success!','success');
+            toast('Success!', 'success');
             return redirect()->back();
-        }catch(\Exception $ex){
+        } catch (\Exception $ex) {
             return $ex->getMessage();
             DB::rollBack();
-            toast('error','Error');
+            toast('error', 'Error');
             return redirect()->back();
         }
     }
@@ -199,15 +199,15 @@ class QuestionEntryController extends Controller
             'option' => 'required',
         ]);
         DB::beginTransaction();
-        try{
+        try {
             QuesOption::create($data);
             DB::commit();
-            toast('Success!','success');
+            toast('Success!', 'success');
             return redirect()->back();
-        }catch(\Exception $ex){
+        } catch (\Exception $ex) {
             return $ex->getMessage();
             DB::rollBack();
-            toast('Error','error');
+            toast('Error', 'error');
             return back();
         }
     }
@@ -221,16 +221,16 @@ class QuestionEntryController extends Controller
         $user = Question::find($id);
         QuesOption::whereQuestion_id($id)->delete();
         $path =  public_path('uploads/images/users/'.$user->image);
-        if(file_exists($path) && !is_null($user->image)){
+        if (file_exists($path) && !is_null($user->image)) {
             unlink($path);
             $user->delete();
             QuesOption::whereQuestion_id($id)->delete();
-            toast('Successfully Deleted','success');
+            toast('Successfully Deleted', 'success');
             return redirect()->back();
-        }else{
+        } else {
             $user->delete();
             QuesOption::whereQuestion_id($id)->delete();
-            toast('Successfully Deleted','success');
+            toast('Successfully Deleted', 'success');
             return redirect()->back();
         }
     }
@@ -239,12 +239,12 @@ class QuestionEntryController extends Controller
         if ($error = $this->authorize('question-entry-delete')) {
             return $error;
         }
-        try{
+        try {
             QuesOption::find($id)->delete();
-            toast('Success!','success');
+            toast('Success!', 'success');
             return back();
-        }catch(\Exception $e){
-            toast('Failed!','error');
+        } catch (\Exception $e) {
+            toast('Failed!', 'error');
             return back();
         }
     }
@@ -257,4 +257,3 @@ class QuestionEntryController extends Controller
         }
     }
 }
-
