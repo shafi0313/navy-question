@@ -41,7 +41,7 @@
                                     <thead class="bg-secondary thw">
                                         <tr>
                                             <th>SL</th>
-                                            <th>Exam</th>
+                                            {{-- <th>Exam</th> --}}
                                             <th>Subject</th>
                                             <th>Exam Date & Time</th>
                                             <th>Exam Duration</th>
@@ -50,7 +50,6 @@
                                     </thead>
                                     <tfoot>
                                         <tr>
-                                            <th></th>
                                             <th></th>
                                             <th></th>
                                             <th></th>
@@ -64,7 +63,7 @@
                                         @endphp
                                         <tr>
                                             <td class="text-center">{{ $x++ }}</td>
-                                            <td>{{ $data->exam->name }}</td>
+                                            {{-- <td>{{ $data->exam->name }}</td> --}}
                                             <td>{{ $data->subject->name }}</td>
                                             <td>{{ examDateTime($data->date) }}</td>
                                             <td>{{ $data->d_hour }} Hrs {{ $data->d_minute }} Min</td>

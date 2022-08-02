@@ -64,7 +64,8 @@
                                             <td>{{ $data->d_hour }} Hrs {{ $data->d_minute }} Min</td>
                                             <td>
                                                 <div class="form-button-action">
-                                                    <a href="{{ route('admin.generatedQues.showBySubject', \Carbon\Carbon::parse($data->date)->format('Y')) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
+                                                    <a href="{{ route('admin.generatedQues.showBySubject', $data->exam->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
+                                                    {{-- <a href="{{ route('admin.generatedQues.showBySubject', \Carbon\Carbon::parse($data->date)->format('Y')) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show"> --}}
                                                         Show by Subject
                                                     </a>
 

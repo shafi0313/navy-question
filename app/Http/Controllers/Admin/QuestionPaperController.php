@@ -25,9 +25,9 @@ class QuestionPaperController extends Controller
         return view('admin.question_paper.index', compact('datum'));
     }
 
-    public function showBySubject($year)
+    public function showBySubject($examId)
     {
-        $datum = QuesInfo::with(['exam'])->whereYear('date', $year)->whereStatus('Completed')->get();
+        $datum = QuesInfo::with(['exam'])->whereExam_id($examId)->whereStatus('Completed')->get();
         return view('admin.question_paper.subject_show', compact('datum'));
     }
 

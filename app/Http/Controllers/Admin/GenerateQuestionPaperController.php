@@ -28,10 +28,10 @@ class GenerateQuestionPaperController extends Controller
         return view('admin.generate_question_paper.index', compact('datum'));
     }
 
-    public function showBySubject($year)
+    public function showBySubject($examId)
     {
         // $datum = QuesInfo::with(['exam'])->whereSet($set)->get();
-        $datum = QuesInfo::with(['exam'])->whereYear('date', $year)->whereStatus('Pending')->get();
+        $datum = QuesInfo::with(['exam'])->whereExam_id($examId)->whereStatus('Pending')->get();
         // $datum = QuesInfo::with(['exam'])->whereSubject_id($subjectId)->whereStatus('Pending')->whereYear('date',$year)->get();
         return view('admin.generate_question_paper.subject_show', compact('datum'));
     }

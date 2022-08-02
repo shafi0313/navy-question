@@ -64,9 +64,9 @@
                                         <div class="form-group">
                                             <label for="type">Question Type <span class="t_r">*</span></label>
                                             <select class="form-control" name="type" id="quesType" required>
-                                                <option value="multiple_choice" {{$question->type == 'multiple_choice' ? 'selected' : ''}}>multiple_choice</option>
-                                                <option value="short_question" {{$question->type == 'short_question' ? 'selected' : ''}}>short_question</option>
-                                                <option value="long_question" {{$question->type == 'long_question' ? 'selected' : ''}}>long_question</option>
+                                                <option value="multiple_choice" {{$question->type == 'multiple_choice' ? 'selected' : ''}}>Multiple Choice</option>
+                                                <option value="short_question" {{$question->type == 'short_question' ? 'selected' : ''}}>Short Question</option>
+                                                <option value="long_question" {{$question->type == 'long_question' ? 'selected' : ''}}>Long Question</option>
                                             </select>
                                             @if ($errors->has('type'))
                                                 <div class="alert alert-danger">{{ $errors->first('type') }}</div>
@@ -124,7 +124,7 @@
                                 </div>
                             </div>
                             <div class="text-center card-action">
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="submit" class="btn btn-primary">Update</button>
                                 <button type="reset" class="btn btn-danger">Cancel</button>
                             </div>
                         </form>

@@ -63,7 +63,7 @@
                                             <td>{{ examDateTime($data->date) }}</td>
                                             <td>
                                                 <div class="form-button-action">
-                                                    <a href="{{ route('admin.generateQuestion.showBySubject', \Carbon\Carbon::parse($data->date)->format('Y')) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
+                                                    <a href="{{ route('admin.generateQuestion.showBySubject', $data->exam->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
                                                         Show by Subject
                                                     </a>
                                                 </div>
