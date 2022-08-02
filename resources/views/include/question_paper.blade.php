@@ -38,11 +38,19 @@
                     @if (!empty($complete))
                     @include('include.question_paper_head')
                     @endif
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col-md-12">
                             <p style="float:left">Question</p>
                             <p style="float:right">Marks</p>
+                            <p style="float:right">Action</p>
                         </div>
+                    </div> --}}
+                    <div class="row">
+                        @php $i = 0; @endphp
+                        @foreach ($questionPapers as $item)
+                        @php $i += $item->question->mark; @endphp
+                        @endforeach
+                        <h2 style="margin-left: 13px; font-weight: bold">Total Mark: {{ $i }}</h2>
                     </div>
 
                     @php $x = 1 @endphp
