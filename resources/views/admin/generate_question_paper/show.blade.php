@@ -117,7 +117,11 @@
     </div>
  @include('include.footer')
 </div>
-
+<style>
+    .ptag p {
+        display: inline-block;
+    }
+</style>
 @push('custom_scripts')
     <!-- Datatables -->
     @include('include.data_table')
@@ -158,7 +162,9 @@
             }
         });
     });
-    $('#quesType').change(function () {
+
+
+        $('#quesType').change(function () {
             $("#questionArea").html('');
             let chapterId = $('#chapter_id').find(":selected").val();
             let quesType = $(this).val();
@@ -168,7 +174,24 @@
                 method:'get',
                 success:res=>{
                     if(res.status == 200){
-                        question()
+                        let quesData = '';
+                        $.each(res.questions,function(i,v){
+                            let str = v.type;
+                            let id = v.id;
+                            let url = '{{ route("admin.question.edit", ":id") }}';
+                            url = url.replace(':id', id);
+                            quesData += '<tr>'
+                            quesData += '<td class="ptag"><input type="checkbox" name="question_id[]" value="'+v.id+'">&nbsp;&nbsp; '+v.ques+'</td>'
+                            quesData += '<td>'+ str.replace(/_/g, ' ')+ '</td>'
+                            quesData += '<td>'+v.mark+'</td>'
+                            quesData += '<td>'
+                            quesData +=     '<div class="form-button-action">'
+                            quesData +=         '<a href='+url+' data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">Edit</a>'
+                            quesData +=     '</div>'
+                            quesData += '</td>'
+                            quesData += '</tr>'
+                        });
+                        $("#questionArea").append(quesData);
                     }else{
                         alert('No question found')
                     }
@@ -181,31 +204,54 @@
 
 
 
-    function clear() {
-        $("#questionArea").html('');
-        $("#ques").val('');
-        $("#mark").val('');
-        $("#option").val('');
-        $("#image").val('');
-        CKEDITOR.instances.ques.setData('')
-    }
+    // $('#quesType').change(function () {
+    //         $("#questionArea").html('');
+    //         let chapterId = $('#chapter_id').find(":selected").val();
+    //         let quesType = $(this).val();
+    //         $.ajax({
+    //             url:"{{route('admin.generateQuestion.getQuestion')}}",
+    //             data:{chapterId:chapterId, quesType:quesType},
+    //             method:'get',
+    //             success:res=>{
+    //                 if(res.status == 200){
+    //                     question()
+    //                 }else{
+    //                     alert('No question found')
+    //                 }
+    //             },
+    //             error:err=>{
+    //                 alert('No question found')
+    //             }
+    //         });
+    //     });
 
-    function question(){
-        $.ajax({
-            url:'{{route("admin.question.read")}}',
-            method:'get',
-            data:{
-                subject_id : $('#subject_id').val(),
-                chapter_id : $('#chapter_id').val(),
-                type : $('#quesType').val(),
-            },
-            success: function (res) {
-                if (res.status == 'success') {
-                    $('#question').html(res.html);
-                }
-            }
-        });
-    }
+
+
+    // function clear() {
+    //     $("#questionArea").html('');
+    //     $("#ques").val('');
+    //     $("#mark").val('');
+    //     $("#option").val('');
+    //     $("#image").val('');
+    //     CKEDITOR.instances.ques.setData('')
+    // }
+
+    // function question(){
+    //     $.ajax({
+    //         url:'{{route("admin.question.read")}}',
+    //         method:'get',
+    //         data:{
+    //             subject_id : $('#subject_id').val(),
+    //             chapter_id : $('#chapter_id').val(),
+    //             type : $('#quesType').val(),
+    //         },
+    //         success: function (res) {
+    //             if (res.status == 'success') {
+    //                 $('#question').html(res.html);
+    //             }
+    //         }
+    //     });
+    // }
     </script>
 @endpush
 @endsection
