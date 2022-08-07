@@ -29,7 +29,6 @@
                                     <hr>
                                 </div>
 
-
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exam_id">Exam <span class="t_r">*</span></label>
