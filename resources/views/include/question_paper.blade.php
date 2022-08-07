@@ -30,7 +30,7 @@
             <div class="card-header">
                 <div class="d-flex align-items-center">
                     <h4 class="card-title"></h4>
-                    <a href="{{route('admin.generatedQues.pdf',$questionPapers->first()->quesInfo->id)}}" class="btn btn-success btn-sm ml-auto" id="p" style="width: 200px"><i class="fas fa-print"></i> pdf</a>
+                    <a href="{{route('admin.generatedQues.pdf',$questionPapers->first()->quesInfo->id)}}" class="btn btn-success btn-sm ml-auto" id="p" style="width: 200px" target="_blank"><i class="fas fa-print"></i> PDF</a>
                     {{-- <button type="button" class="btn btn-success btn-sm ml-auto" id="p" onClick="printDiv('printableArea')"><i class="fas fa-print"></i> Print</button> --}}
                 </div>
             </div>
@@ -89,7 +89,7 @@
                                     <a href="{{route('admin.generateQuestion.edit',[$question->question->id,$question->ques_info_id])}}" style="margin-left: 20px" class="text-info">Edit</a>
                                 @endif
                                 @if (!empty($delete))
-                                    <a href="{{route('admin.generateQuestion.quesDestroy',$question->question->id)}}" style="margin-left: 20px" class="text-danger">Delete</a>
+                                    <a href="{{route('admin.generateQuestion.quesDestroy',$question->question->id)}}" style="margin-left: 20px" class="text-danger" onclick="return confirm('Are you sure')">Delete</a>
                                 @endif
                             </span>
                         </h4>

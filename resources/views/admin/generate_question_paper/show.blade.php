@@ -29,7 +29,7 @@
                                     <hr>
                                 </div>
 
-                                <div class="col-md-6">
+                                {{-- <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exam_id">Exam <span class="t_r">*</span></label>
                                         <select class="form-control select2" name="exam_id" id="exam_id" required>
@@ -51,12 +51,16 @@
                                             <div class="alert alert-danger">{{ $errors->first('subject_id') }}</div>
                                         @endif
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="chapter_id">Chapters <span class="t_r">*</span></label>
                                         <select class="form-control select2" name="chapter_id" id="chapter_id">
+                                            <option selected value disabled>Select</option>
+                                            @foreach ($chapters as $chapter)
+                                            <option value="{{ $chapter->id }}">{{ $chapter->name }}</option>
+                                            @endforeach
                                         </select>
                                         @if ($errors->has('chapter_id'))
                                             <div class="alert alert-danger">{{ $errors->first('chapter_id') }}</div>
@@ -67,7 +71,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="type">Question Type <span class="t_r">*</span></label>
-                                        <select class="form-control" name="type" id="quesType" required>
+                                        <select class="form-control select2" name="type" id="quesType" required>
                                             <option selected value disabled>Select</option>
                                             <option value="multiple_choice">Multiple Choice</option>
                                             <option value="short_question">Short Question</option>

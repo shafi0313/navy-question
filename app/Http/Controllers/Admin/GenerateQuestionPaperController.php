@@ -171,6 +171,10 @@ class GenerateQuestionPaperController extends Controller
 
     public function addQues(Request $request)
     {
+        if(QuestionPaper::whereQues_info_id($request->ques_info_id)->whereIn('question_id',[$request->question_id])->count() > 0){
+            Alert::info('These questions already exist in this question paper');
+            return back();
+        }
         foreach ($request->question_id as $k => $v) {
             $data = [
                 'ques_info_id' => $request->ques_info_id,
