@@ -71,8 +71,8 @@
 
                 @can('question-entry-manage')
                 <li class="nav-item {{ activeNav('admin.question.*') }}">
-                    <a href="{{ route('admin.question.create') }}">
-                    {{-- <a href="{{ route('admin.question.index') }}"> --}}
+                    {{-- <a href="{{ route('admin.question.create') }}"> --}}
+                    <a href="{{ route('admin.question.index') }}">
                         <i class="fa-solid fa-circle-question"></i>
                         <p>Question Entry</p>
                     </a>
