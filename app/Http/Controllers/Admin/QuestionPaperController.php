@@ -40,15 +40,21 @@ class QuestionPaperController extends Controller
 
     public function show($quesInfoId)
     {
-        $questionPapers = QuestionPaper::with(['quesInfo','question'])->whereQues_info_id($quesInfoId)->get();
-        $mark = MarkDistribution::whereSubject_id($questionPapers->first()->quesInfo->subject_id);
+        $chapters = QuestionPaper::with(['quesInfo'])
+                            ->join('questions','questions.id', '=', 'question_papers.question_id')
+                            ->whereQues_info_id($quesInfoId)
+                            ->get()
+                            ->groupBy('chapter_id');
+
+        // return$chapters = QuestionPaper::with(['quesInfo','question'])->whereQues_info_id($quesInfoId)->get();
+        $mark = MarkDistribution::whereSubject_id($chapters->first()->first()->quesInfo->subject_id);
         $passMark = $mark->first(['pass_mark'])->pass_mark;
         $totalMark = $mark->sum('multiple') + $mark->sum('sort') + $mark->sum('long');
-        if ($questionPapers->count() <= 0) {
+        if ($chapters->count() <= 0) {
             Alert::error('No Data Found');
             return back();
         }
-        return view('admin.question_paper.show', compact('questionPapers', 'passMark', 'totalMark'));
+        return view('admin.question_paper.show', compact('chapters', 'passMark', 'totalMark'));
     }
 
     public function pdf($quesInfoId)
