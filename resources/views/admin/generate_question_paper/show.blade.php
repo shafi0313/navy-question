@@ -18,8 +18,8 @@
                 <div class="col-md-12">
                     <form action="{{ route('admin.generateQuestion.addQues') }}" method="POST" id="">
                         @csrf
-                        <input type="hidden" name="subject_id" value="{{$questionPapers->first()->question->subject_id}}">
-                        <input type="hidden" name="ques_info_id" value="{{$questionPapers->first()->ques_info_id}}" id="ques_info_id">
+                        <input type="hidden" name="subject_id" value="{{$chapters->first()->first()->question->subject_id}}">
+                        <input type="hidden" name="ques_info_id" value="{{$chapters->first()->first()->ques_info_id}}" id="ques_info_id">
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
@@ -58,8 +58,8 @@
                                         <label for="chapter_id">Chapters <span class="t_r">*</span></label>
                                         <select class="form-control select2" name="chapter_id" id="chapter_id">
                                             <option selected value disabled>Select</option>
-                                            @foreach ($chapters as $chapter)
-                                            <option value="{{ $chapter->id }}">{{ $chapter->name }}</option>
+                                            @foreach ($mainChapters as $mainChapter)
+                                            <option value="{{ $mainChapter->id }}">{{ $mainChapter->name }}</option>
                                             @endforeach
                                         </select>
                                         @if ($errors->has('chapter_id'))

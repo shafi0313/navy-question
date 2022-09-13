@@ -30,7 +30,7 @@
             <div class="card-header">
                 <div class="d-flex align-items-center">
                     <h4 class="card-title"></h4>
-                    {{-- <a href="{{route('admin.generatedQues.pdf',$questionPapers->first()->quesInfo->id)}}" class="btn btn-success btn-sm ml-auto" id="p" style="width: 200px" target="_blank"><i class="fas fa-print"></i> PDF</a> --}}
+                    <a href="{{route('admin.generatedQues.pdf',$chapters->first()->first()->quesInfo->id)}}" class="btn btn-success btn-sm ml-auto" id="p" style="width: 200px" target="_blank"><i class="fas fa-print"></i> PDF</a>
                     {{-- <button type="button" class="btn btn-success btn-sm ml-auto" id="p" onClick="printDiv('printableArea')"><i class="fas fa-print"></i> Print</button> --}}
                 </div>
             </div>
@@ -39,21 +39,19 @@
                     @include('include.question_paper_head')
                     @endif
                     <div class="row">
-                        @php $i = 0; @endphp
-                        @foreach ($chapters as $item)
-                        @foreach ($item as $item2)
-                        @php $i += $item2->mark; @endphp
+                        @php $totalMark = 0; @endphp
+                        @foreach ($chapters as $marks)
+                            @foreach ($marks as $mark)
+                                @php $totalMark += $mark->mark; @endphp
+                            @endforeach
                         @endforeach
-                        @endforeach
-                        <h2 style="margin-left: 13px; font-weight: bold">Total Mark: {{ $i }}</h2>
+                        <h2 style="margin-left: 13px; font-weight: bold">Total Mark: {{ $totalMark }}</h2>
                     </div>
 
                     @php $x = 1 @endphp
-                    {{-- @if($questionPapers->where('type','multiple_choice')->count() > 0) --}}
-                        {{-- <p>{{$questionPapers->first()->question->chapter->name}}</p> --}}
-                        @foreach ($chapters as $chapter => $questions)
-                        <h3>{{$questions->first()->question->chapter->name}}</h3>
-                            @foreach ($questions as $question)
+                    @foreach ($chapters as $chapter => $questions)
+                    <h3>{{$questions->first()->question->chapter->name}}</h3>
+                        @foreach ($questions as $question)
                             <div class="questionArea">
                                 <h4 class="question">{{$x++}}. {!! $question->ques !!}
                                     <span style="float:right">{{ $question->mark }}
@@ -69,9 +67,8 @@
                                 <img src="{{asset('uploads/images/question/'.$question->question->image)}}" style="margin-left: 30px"alt="">
                                 @endisset
                             </div>
-                            @endforeach
-
-                            {{-- @foreach ($question->question->options as $option)
+                            @if ($question->options->count() > 0)
+                            @foreach ($question->options as $option)
                             <div class="col-md-6 option">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="{{$option->id}}" id="exampleRadios{{$option->id}}">
@@ -80,10 +77,10 @@
                                     </label>
                                 </div>
                             </div>
-                            @endforeach --}}
-
+                            @endforeach
+                            @endif
                         @endforeach
-
+                    @endforeach
                 </div>
         </div>
     </div>

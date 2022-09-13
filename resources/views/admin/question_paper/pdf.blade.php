@@ -42,25 +42,32 @@
     .sl {
         width: 22px
     }
+    .chapter {
+        margin: 5px 0;
+    }
+    p {
+        padding: 0;
+        margin: 0;
+    }
 </style>
 
 <div class="navy">
     <div class="title">
         <h4>CONFIDENTIAL</h4>
         <h4>EXAM IN CONFIDENCE</h4>
-        <h4>PROGRAM EXAM FOR THE RANK OF {{$questionPapers->first()->quesInfo->name}}</h4>
-        <h4>TRADE: {{$questionPapers->first()->quesInfo->trade}}</h4>
-        <h4>SUBJECT: {{ $questionPapers->first()->question->subject->name }}</h4>
+        <h4>PROGRAM EXAM FOR THE RANK OF {{$chapters->first()->first()->quesInfo->name}}</h4>
+        <h4>TRADE: {{$chapters->first()->first()->quesInfo->trade}}</h4>
+        <h4>SUBJECT: {{ $chapters->first()->first()->question->subject->name }}</h4>
         <table>
             <tr>
                 <td>Mode of Examination</td>
-                <td>{{$questionPapers->first()->quesInfo->mode}}</td>
+                <td>{{$chapters->first()->first()->quesInfo->mode}}</td>
                 <td>Total Marks</td>
                 <td>{{$totalMark}}</td>
             </tr>
             <tr>
                 <td>Duration of Examination</td>
-                <td>{{$questionPapers->first()->quesInfo->d_hour}} Hrs {{$questionPapers->first()->quesInfo->d_minute}}
+                <td>{{$chapters->first()->first()->quesInfo->d_hour}} Hrs {{$chapters->first()->first()->quesInfo->d_minute}}
                     Min</td>
                 <td>Pass Marks</td>
                 <td>{{$passMark}}</td>
@@ -70,7 +77,6 @@
 </div>
 <br>
 
-
 <table>
     <tr>
         <td>Question</td>
@@ -78,75 +84,42 @@
     </tr>
 </table>
 
-
 @php $x = 1 @endphp
-@if($questionPapers->where('type','multiple_choice')->count() > 0)
-    <h4 class="quesType">Multiple Choice</h4>
-    @foreach ($questionPapers->where('type','multiple_choice') as $key => $question)
-        <table style="width: 100%">
-            <tr>
-                <td class="sl">{{$x++}}. </td>
-                <td style="text-align:left;">{!! $question->question->ques !!}</td>
-                <td style="text-align:right">{{ $question->question->mark }}</td>
-            </tr>
-        </table>
-        @isset($question->question->image)
-            <img src="{{asset('uploads/images/question/'.$question->question->image)}}" alt="">
-        @endisset
-
-        @foreach ($question->question->options as $option)
-            <div class="col-md-6 option">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="{{$option->id}}" id="exampleRadios{{$option->id}}">
-                    <label class="form-check-label" for="exampleRadios{{$option->id}}" id="exampleRadios{{$option->id}}">
-                        {{ $option->option }}
-                    </label>
-                </div>
+        @foreach ($chapters as $chapter => $questions)
+        <h4 class="chapter">{{$questions->first()->question->chapter->name}}</h4>
+            @foreach ($questions as $question)
+            <table style="width: 100%">
+                <tr>
+                    <td class="sl">{{$x++}}. </td>
+                    <td style="text-align:left;">{!! $question->question->ques !!}</td>
+                    <td style="text-align:right">{{ $question->question->mark }}</td>
+                </tr>
+            </table>
+            @isset($question->image)
+                <img src="{{asset('uploads/images/question/'.$question->question->image)}}" alt="">
+            @endisset
+            @if ($question->options->count() > 0)
+                @foreach ($question->options as $option)
+                    <div class="col-md-6 option">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="{{$option->id}}" id="exampleRadios{{$option->id}}">
+                            <label class="form-check-label" for="exampleRadios{{$option->id}}" id="exampleRadios{{$option->id}}">
+                                {{ $option->option }}
+                            </label>
+                        </div>
+                    </div>
+                @endforeach
+            @endif
             </div>
         @endforeach
-        </div>
     @endforeach
     <br>
-@endif
 
 
-@if ($questionPapers->where('type','short_question')->count() > 0)
-    <h4 class="quesType">Short Question</h4>
-    @foreach ($questionPapers->where('type','short_question') as $question)
-        <table style="width: 100%">
-            <tr>
-                <td class="sl">{{$x++}}. </td>
-                <td style="text-align:left;">{!! $question->question->ques !!}</td>
-                <td style="text-align:right">{{ $question->question->mark }}</td>
-            </tr>
-        </table>
-        @isset($question->question->image)
-            <img src="{{asset('uploads/images/question/'.$question->question->image)}}" alt="">
-        @endisset
-    @endforeach
-    <br>
-@endif
-
-@if ($questionPapers->where('type','long_question')->count() > 0)
-<h4 class="quesType">Long Question</h4>
-@foreach ($questionPapers->where('type','short_question') as $question)
-<table style="width: 100%">
-    <tr>
-        <td class="sl">{{$x++}}. </td>
-        <td style="text-align:left;">{!! $question->question->ques !!}</td>
-        <td style="text-align:right">{{ $question->question->mark }}</td>
-    </tr>
-</table>
-@isset($question->question->image)
-<img src="{{asset('uploads/images/question/'.$question->question->image)}}" alt="">
-@endisset
-@endforeach
-<br>
-@endif
 <style>
     footer {
         position: fixed;
-        bottom: -45px;
+        bottom: -20px;
         left: 0px;
         right: 0px;
         text-align: center;
@@ -158,12 +131,12 @@
 </footer>
 <script type="text/php">
     if (isset($pdf)) {
-        $text = "page {PAGE_NUM} / {PAGE_COUNT}";
+        $text = "Page {PAGE_NUM} / {PAGE_COUNT}";
         $size = 8;
         $font = $fontMetrics->getFont("Verdana");
         $width = $fontMetrics->get_text_width($text, $font, $size) / 2;
         $x = ($pdf->get_width() - $width) / 2 + 20;
-        $y = $pdf->get_height() - 40;
+        $y = $pdf->get_height() - 50;
         $pdf->page_text($x, $y, $text, $font, $size);
     }
 </script>

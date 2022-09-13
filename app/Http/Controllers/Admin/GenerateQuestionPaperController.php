@@ -37,15 +37,20 @@ class GenerateQuestionPaperController extends Controller
 
     public function show($quesInfoId)
     {
-        $questionPapers = QuestionPaper::with(['question'])->whereQues_info_id($quesInfoId)->get();
+        // $questionPapers = QuestionPaper::with(['question'])->whereQues_info_id($quesInfoId)->get();
+        $chapters = QuestionPaper::with(['quesInfo','options'])
+                            ->join('questions','questions.id', '=', 'question_papers.question_id')
+                            ->whereQues_info_id($quesInfoId)
+                            ->get()
+                            ->groupBy('chapter_id');
         $quesInfo = QuesInfo::find($quesInfoId);
-        if ($questionPapers->count() < 1) {
+        if ($chapters->count() < 1) {
             Alert::info('No Data Found');
             return back();
         }
         $exams = Exam::all();
-        $chapters = Chapter::whereSubject_id($questionPapers->first()->question->subject_id)->get();
-        return view('admin.generate_question_paper.show', compact('exams', 'questionPapers', 'chapters', 'quesInfoId', 'quesInfo'));
+        $mainChapters = Chapter::whereSubject_id($chapters->first()->first()->question->subject_id)->get();
+        return view('admin.generate_question_paper.show', compact('exams', 'mainChapters', 'chapters', 'quesInfoId', 'quesInfo'));
     }
 
     public function create()
@@ -84,14 +89,18 @@ class GenerateQuestionPaperController extends Controller
         $quesInfo['user_id'] = auth()->user()->id;
         $quesInfo['set'] = QuesInfo::whereYear('date', now('Y'))->whereExam_id($request->exam_id)->whereSubject_id($request->subject_id)->count() + 1;
         DB::beginTransaction();
-        $questionInfo = QuesInfo::create($quesInfo);
-
         $quesMarks = MarkDistribution::whereSubject_id($request->subject_id)->get();
+        // Mark Distribution Check
         if ($quesMarks->count() < 1) {
             Alert::info('At first, distribute the subject marks then generate the question');
             return back();
         }
-
+        // Question Count Check
+        if(Question::whereExam_id($request->exam_id)->whereSubject_id($request->subject_id)->whereIn('chapter_id', $quesMarks->pluck('chapter_id'))->get()->count() < 1) {
+            Alert::info('No Data Found');
+            return back();
+        }
+        $questionInfo = QuesInfo::create($quesInfo);
         foreach ($quesMarks as $k => $v) {
             $questions = Question::whereExam_id($request->exam_id)
                                 ->whereSubject_id($request->subject_id)
@@ -137,7 +146,6 @@ class GenerateQuestionPaperController extends Controller
         foreach ($quesMarks as $k => $v) {
             $questions = Question::whereExam_id($request->exam_id)
                                 ->whereSubject_id($request->subject_id)
-                                // ->whereChapter_id($v->pluck('chapter_id')[$k])
                                 ->where('chapter_id', $v->chapter_id)
                                 ->whereType('long_question')
                                 ->inRandomOrder()
