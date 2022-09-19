@@ -130,6 +130,10 @@
     <!-- Datatables -->
     @include('include.data_table')
     <script>
+        $('#chapter_id').change(function () {
+            $("#quesType").val(null).trigger('change');
+        });
+
         $('#exam_id').change(function () {
         $.ajax({
             url:'{{route("admin.global.getSubject")}}',

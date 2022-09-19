@@ -179,7 +179,7 @@ class GenerateQuestionPaperController extends Controller
 
     public function addQues(Request $request)
     {
-        if(QuestionPaper::whereQues_info_id($request->ques_info_id)->whereIn('question_id',[$request->question_id])->count() > 0){
+        if(QuestionPaper::whereQues_info_id($request->ques_info_id)->whereIn('question_id',$request->question_id)->count() > 0){
             Alert::info('These questions already exist in this question paper');
             return back();
         }
@@ -274,13 +274,13 @@ class GenerateQuestionPaperController extends Controller
     }
 
 
-    public function quesDestroy($id)
+    public function quesDestroy($quesId, $quesInfoId)
     {
         if ($error = $this->authorize('question-generate-delete')) {
             return $error;
         }
         try {
-            QuestionPaper::whereQuestion_id($id)->first()->delete();
+            QuestionPaper::whereQues_info_id($quesInfoId)->whereQuestion_id($quesId)->first()->delete();
             toast('Success!', 'success');
             return back();
         } catch (\Exception $ex) {
@@ -296,7 +296,6 @@ class GenerateQuestionPaperController extends Controller
         }
         try {
             QuesInfo::whereExam_id($id)->whereStatus('Pending')->delete();
-            // QuestionPaper::whereQuestion_id($id)->delete();
             toast('Success!', 'success');
             return back();
         } catch (\Exception $ex) {

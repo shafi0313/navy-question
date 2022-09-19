@@ -59,7 +59,7 @@
                                             <a href="{{route('admin.generateQuestion.edit',[$question->id,$question->ques_info_id])}}" style="margin-left: 20px" class="text-info">Edit</a>
                                         @endif
                                         @if (!empty($delete))
-                                            <a href="{{route('admin.generateQuestion.quesDestroy',$question->id)}}" style="margin-left: 20px" class="text-danger">Delete</a>
+                                            <a href="{{route('admin.generateQuestion.quesDestroy',[$question->id,$question->ques_info_id])}}" style="margin-left: 20px" class="text-danger">Delete</a>
                                         @endif
                                     </span>
                                 </h4>
