@@ -59,7 +59,7 @@
     <div class="title">
         <h4>CONFIDENTIAL</h4>
         <h4 style="margin-bottom: 10px">EXAM IN CONFIDENCE</h4>
-        <h4 class="exam_title">PROGRAM EXAM FOR THE RANK OF {{$chapters->first()->first()->quesInfo->name}}</h4>
+        <h4 class="exam_title">PROGRAM EXAM FOR THE RANK OF {{$chapters->first()->first()->quesInfo->exam->name}}</h4>
         <h4 class="exam_title">TRADE: {{$chapters->first()->first()->quesInfo->trade}}</h4>
         <h4 style="margin-bottom: 15px" class="exam_title">SUBJECT: {{ $chapters->first()->first()->question->subject->name }}</h4>
         <table>

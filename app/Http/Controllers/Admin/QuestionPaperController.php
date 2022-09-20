@@ -59,7 +59,7 @@ class QuestionPaperController extends Controller
 
     public function pdf($quesInfoId)
     {
-        $chapters = QuestionPaper::with(['quesInfo','options'])
+        $chapters = QuestionPaper::with(['quesInfo','quesInfo.exam','options'])
                             ->join('questions','questions.id', '=', 'question_papers.question_id')
                             ->whereQues_info_id($quesInfoId)
                             ->get()
@@ -75,7 +75,7 @@ class QuestionPaperController extends Controller
         }
         // return view('admin.question_paper.pdf', compact('chapters','passMark','totalMark'));
         $pdf = PDF::loadView('admin.question_paper.pdf', compact('chapters', 'passMark', 'totalMark'));
-        return $pdf->download('Question paper.pdf');
+        return $pdf->download($chapters->first()->first()->quesInfo->exam->name .' - '. $chapters->first()->first()->question->subject->name .' - '. date('d-M-Y') .'.pdf');
         // return view('admin.question_paper.show', compact('questionPapers','passMark','totalMark'));
     }
     public function destroy($id)
