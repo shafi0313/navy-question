@@ -75,7 +75,7 @@ class QuestionPaperController extends Controller
         }
         // return view('admin.question_paper.pdf', compact('chapters','passMark','totalMark'));
         $pdf = PDF::loadView('admin.question_paper.pdf', compact('chapters', 'passMark', 'totalMark'));
-        return $pdf->download($chapters->first()->first()->quesInfo->exam->name .' - '. $chapters->first()->first()->question->subject->name .' - '. date('d-M-Y') .'.pdf');
+        return $pdf->download($chapters->first()->first()->quesInfo->exam->name .' - '. $chapters->first()->first()->question->subject->name .' - '. date('d-M-Y') .'_.pdf');
         // return view('admin.question_paper.show', compact('questionPapers','passMark','totalMark'));
     }
     public function destroy($id)
