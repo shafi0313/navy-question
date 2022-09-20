@@ -52,6 +52,7 @@
                     @foreach ($chapters as $chapter => $questions)
                     <h3>{{$questions->first()->question->chapter->name}}</h3>
                         @foreach ($questions as $question)
+                        <input type="hidden" name="ques_id" class="ques_id" value="{{$question->id}}">
                             <div class="questionArea">
                                 <h4 class="question">{{$x++}}. {!! $question->ques !!}
                                     <span style="float:right">{{ $question->mark }}

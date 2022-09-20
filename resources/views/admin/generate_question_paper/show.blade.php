@@ -71,7 +71,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="type">Question Type <span class="t_r">*</span></label>
-                                        <select class="form-control select2" name="type" id="quesType" required>
+                                        <select class="form-control select2 type" name="type" id="quesType" required>
                                             <option selected value disabled>Select</option>
                                             <option value="multiple_choice">Multiple Choice</option>
                                             <option value="short_question">Short Question</option>
@@ -135,50 +135,58 @@
         });
 
         $('#exam_id').change(function () {
-        $.ajax({
-            url:'{{route("admin.global.getSubject")}}',
-            method:'get',
-            data:{
-                exam_id : $(this).val(),
-            },
-            success: function (res) {
-                if (res.status == 'success') {
-                    $('#subject_id').html(res.html);
+            $.ajax({
+                url:'{{route("admin.global.getSubject")}}',
+                method:'get',
+                data:{
+                    exam_id : $(this).val(),
+                },
+                success: function (res) {
+                    if (res.status == 'success') {
+                        $('#subject_id').html(res.html);
+                    }
                 }
-            }
+            });
         });
-     })
 
-     $('#subject_id').change(function () {
-        $.ajax({
-            url:"{{route('admin.question.getChapter')}}",
-            data:{subjectId:$(this).val()},
-            method:'get',
-            success:res=>{
-                let opt = '<option disabled selected>- -</option>';
-                if(res.status == 200){
-                $.each(res.chapters,function(i,v){
-                    opt += '<option value="'+v.id+'">'+v.name+'</option>';
-                });
-                $("#chapter_id").html(opt);
-                }else{
+        $('#subject_id').change(function () {
+            $.ajax({
+                url:"{{route('admin.question.getChapter')}}",
+                data:{subjectId:$(this).val()},
+                method:'get',
+                success:res=>{
+                    let opt = '<option disabled selected>- -</option>';
+                    if(res.status == 200){
+                    $.each(res.chapters,function(i,v){
+                        opt += '<option value="'+v.id+'">'+v.name+'</option>';
+                    });
+                    $("#chapter_id").html(opt);
+                    }else{
+                        alert('No chapter found')
+                    }
+                },
+                error:err=>{
                     alert('No chapter found')
                 }
-            },
-            error:err=>{
-                alert('No chapter found')
-            }
+            });
         });
-    });
 
 
         $('#quesType').change(function () {
             $("#questionArea").html('');
             let chapterId = $('#chapter_id').find(":selected").val();
+            let quesId =  [];
+            $("input[name='ques_id']").each(function(){
+                quesId.push(this.value);
+            });
             let quesType = $(this).val();
             $.ajax({
                 url:"{{route('admin.generateQuestion.getQuestion')}}",
-                data:{chapterId:chapterId, quesType:quesType},
+                data:{
+                    chapterId:chapterId,
+                    quesType:quesType,
+                    quesId:quesId,
+                },
                 method:'get',
                 success:res=>{
                     if(res.status == 200){
@@ -199,6 +207,9 @@
                             quesData += '</td>'
                             quesData += '</tr>'
                         });
+                        // if(quesData==''){
+                        //     alert('fd')
+                        // }
                         $("#questionArea").append(quesData);
                     }else{
                         alert('No question found')
@@ -209,57 +220,6 @@
                 }
             });
         });
-
-
-
-    // $('#quesType').change(function () {
-    //         $("#questionArea").html('');
-    //         let chapterId = $('#chapter_id').find(":selected").val();
-    //         let quesType = $(this).val();
-    //         $.ajax({
-    //             url:"{{route('admin.generateQuestion.getQuestion')}}",
-    //             data:{chapterId:chapterId, quesType:quesType},
-    //             method:'get',
-    //             success:res=>{
-    //                 if(res.status == 200){
-    //                     question()
-    //                 }else{
-    //                     alert('No question found')
-    //                 }
-    //             },
-    //             error:err=>{
-    //                 alert('No question found')
-    //             }
-    //         });
-    //     });
-
-
-
-    // function clear() {
-    //     $("#questionArea").html('');
-    //     $("#ques").val('');
-    //     $("#mark").val('');
-    //     $("#option").val('');
-    //     $("#image").val('');
-    //     CKEDITOR.instances.ques.setData('')
-    // }
-
-    // function question(){
-    //     $.ajax({
-    //         url:'{{route("admin.question.read")}}',
-    //         method:'get',
-    //         data:{
-    //             subject_id : $('#subject_id').val(),
-    //             chapter_id : $('#chapter_id').val(),
-    //             type : $('#quesType').val(),
-    //         },
-    //         success: function (res) {
-    //             if (res.status == 'success') {
-    //                 $('#question').html(res.html);
-    //             }
-    //         }
-    //     });
-    // }
     </script>
 @endpush
 @endsection
