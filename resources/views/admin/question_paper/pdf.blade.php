@@ -87,6 +87,23 @@
         <td style="text-align: right">Marks</td>
     </tr>
 </table>
+<style>
+    footer {
+        position: fixed;
+        bottom: -20px;
+        left: 0px;
+        right: 0px;
+        text-align: center;
+        font-size: 12px;
+
+        width: 100%;
+        z-index: 1;
+    }
+</style>
+
+<footer>
+    <p style="display: block; width: 100%;">EXAM IN CONFIDENCE <br>CONFIDENTIAL</p>
+</footer>
 
 @php $x = 1 @endphp
         @foreach ($chapters as $chapter => $questions)
@@ -120,19 +137,7 @@
     <br>
 
 
-<style>
-    footer {
-        position: fixed;
-        bottom: -20px;
-        left: 0px;
-        right: 0px;
-        text-align: center;
-        font-size: 12px
-    }
-</style>
-<footer>
-    <p>EXAM IN CONFIDENCE <br>CONFIDENTIAL</p>
-</footer>
+
 <script type="text/php">
     if (isset($pdf)) {
         $text = "Page {PAGE_NUM} / {PAGE_COUNT}";
