@@ -117,6 +117,7 @@ Route::middleware(['auth','admin'])->prefix('admin')->name('admin.')->group(func
         // Route::get('/get-subject', 'getSubject')->name('getSubject');
         Route::get('/get-subject', 'getSubject')->name('getSubject');
         Route::get('/get-chapter', 'getChapter')->name('getChapter');
+        Route::get('/get-question', 'getQuestion')->name('getQuestion');
     });
 
     Route::controller(MarkDistributionController::class)->prefix('mark-distribution')->name('markDistribution.')->group(function(){

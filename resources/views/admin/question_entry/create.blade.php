@@ -273,7 +273,7 @@
             let chapterId = $('#chapter_id').find(":selected").val();
             let quesType = $(this).val();
             $.ajax({
-                url:"{{route('admin.generateQuestion.getQuestion')}}",
+                url:"{{route('admin.question.getQuestion')}}",
                 data:{chapterId:chapterId, quesType:quesType},
                 method:'get',
                 success:res=>{
@@ -297,11 +297,11 @@
                         // });
                         // $("#questionArea").append(quesData);
                     }else{
-                        alert('No question found')
+                        // alert('No question found')
                     }
                 },
                 error:err=>{
-                    alert('No question found')
+                    // alert('No question found')
                 }
             });
         });
