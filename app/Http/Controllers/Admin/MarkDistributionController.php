@@ -61,7 +61,7 @@ class MarkDistributionController extends Controller
             toast('Success!', 'success');
             return redirect()->route('admin.markDistribution.index');
         } catch (\Exception $ex) {
-            return $ex->getMessage();
+            // return $ex->getMessage();
             toast('Error', 'error');
             // return back();
         }

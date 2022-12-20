@@ -18,12 +18,11 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <div class="align-items-center">
-                                <a href="{{ route('admin.generateQuestion.create') }}" class="btn btn-primary btn-round text-light" style="min-width: 200px">
+                            <div class="d-flex align-items-center">
+                                <h4 class="card-title">Draft Question Paper</h4>
+                                <a href="{{ route('admin.generateQuestion.create') }}" class="btn btn-primary btn-round text-light ml-auto" style="min-width: 200px">
                                     <i class="fa fa-plus"></i> Generate New Question
                                 </a>
-                                <h4 class="card-title">Draft Question Paper</h4>
-
                             </div>
                         </div>
                         <div class="card-body">

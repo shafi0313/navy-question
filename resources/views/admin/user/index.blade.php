@@ -19,12 +19,12 @@
                                 <h4 class="card-title">Add Row</h4>
                                 <a data-toggle="modal" data-target="#user-add"
                                     class="btn btn-primary btn-round ml-auto text-light" style="min-width: 200px">
-                                    <i class="fa fa-plus"></i> Add New
+                                    <i class="fa fa-plus"></i> Add New User
                                 </a>
                             </div>
                         </div>
                         <div class="card-body row justify-content-center">
-                            @can('user-delete')
+                            {{-- @can('user-delete')
                             <div class="col-lg-12 mb-1">
                                 <button type="button" class="btn btn-warning mr-2" onclick="ajaxAllDelete(this, 'dt')"
                                     data-route="{{ route('admin.delete_all', 'User') }}" data-bs-placement="top"
@@ -39,15 +39,15 @@
                                     <i class="fa-solid fa-trash"> </i>@lang("app.permanent-delete")
                                 </button>
                             </div>
-                            @endcan
+                            @endcan --}}
 
                             <div class="table-responsive">
                                 <table id="userDT" class="table table-striped table-hover">
                                     <thead class="bg-secondary thw">
                                         <tr>
-                                            <td style="width:40px">
+                                            {{-- <td style="width:40px">
                                                 <input type="checkbox" id="checkAll"> ID
-                                            </td>
+                                            </td> --}}
                                             <th>SL</th>
                                             <th>Name</th>
                                             {{-- <th>Permission</th> --}}
@@ -87,12 +87,12 @@
                 scrollY: 400,
                 ajax: "{{ route('admin.user.index') }}",
                 columns: [
-                    {
-                        data: 'check',
-                        name: 'check',
-                        orderable: false,
-                        searchable: false
-                    },
+                    // {
+                    //     data: 'check',
+                    //     name: 'check',
+                    //     orderable: false,
+                    //     searchable: false
+                    // },
                     {
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',

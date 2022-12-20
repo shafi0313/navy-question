@@ -21,12 +21,15 @@
                             <div class="d-flex align-items-center">
                                 <h4 class="card-title">Show Questions</h4>
                                 <a href="{{ route('admin.question.create') }}" class="btn btn-primary btn-round ml-auto text-light" style="min-width: 200px">
-                                    <i class="fa fa-plus"></i> Add New
+                                    <i class="fa fa-plus"></i> Add New Question
                                 </a>
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="row">
+                                <div class="col-md-12">
+                                    <h2 class="alert alert-primary text-center">Select the fields below to edit or delete the question</h2>
+                                </div>
                                 {{-- <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="subject_id">Subject <span class="t_r">*</span></label>
@@ -92,6 +95,7 @@
                                     <table class="table table-striped table-bordered table-hover w-100" >
                                         <thead>
                                             <tr>
+                                                <th>SN</th>
                                                 <th>Question</th>
                                                 <th>Type</th>
                                                 <th>Marks</th>

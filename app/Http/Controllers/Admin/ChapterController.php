@@ -36,7 +36,7 @@ class ChapterController extends Controller
             toast('Success!','success');
             return redirect()->back();
         }catch(\Exception $ex){
-            // return $ex->getMessage();
+            // // return $ex->getMessage();
             DB::rollBack();
             toast('Eerror','error');
             return redirect()->back();
@@ -60,7 +60,7 @@ class ChapterController extends Controller
             toast('Success','success');
             return redirect()->back();
         }catch(\Exception $ex){
-            return $ex->getMessage();
+            // return $ex->getMessage();
             DB::rollBack();
             toast('Error','error');
             return redirect()->back();

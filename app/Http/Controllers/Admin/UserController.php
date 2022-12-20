@@ -24,12 +24,9 @@ class UserController extends Controller
             $users = User::all();
             return DataTables::of($users)
                 ->addIndexColumn()
-                ->addColumn('check', function ($row) {
-                    return '<input type="checkbox" name="select[]" onclick="checkcheckbox()" id="check_'.$row->id.'" class="check" value="'.$row->id.'">';
-                })
-                ->addColumn('created_at', function ($row) {
-                    return $row->created_at->diffForHumans();
-                })
+                // ->addColumn('created_at', function ($row) {
+                //     return $row->created_at->diffForHumans();
+                // })
                 ->addColumn('age', function ($row) {
                     return ageWithDays($row->d_o_b);
                 })

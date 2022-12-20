@@ -47,7 +47,7 @@ class ProfileController extends Controller
             toast('success','Success');
             return back();
         }catch(\Exception $ex){
-            return $ex->getMessage();
+            // return $ex->getMessage();
             toast('error','Error');
             // return back();
         }

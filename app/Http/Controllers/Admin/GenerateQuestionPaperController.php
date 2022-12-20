@@ -171,7 +171,7 @@ class GenerateQuestionPaperController extends Controller
             DB::commit();
             return redirect()->route('admin.generateQuestion.show', $questionInfo->id);
         } catch (\Exception $ex) {
-            return $ex->getMessage();
+            // return $ex->getMessage();
             toast('Error', 'error');
             DB::rollBack();
             return back();
@@ -197,7 +197,7 @@ class GenerateQuestionPaperController extends Controller
             DB::commit();
             return back();
         } catch (\Exception $ex) {
-            return $ex->getMessage();
+            // return $ex->getMessage();
             toast('Error', 'error');
             DB::rollBack();
             return redirect()->back();
@@ -267,7 +267,7 @@ class GenerateQuestionPaperController extends Controller
             toast('Success!', 'success');
             return redirect()->route('admin.generateQuestion.show', $request->quesInfoId);
         } catch (\Exception $ex) {
-            return $ex->getMessage();
+            // return $ex->getMessage();
             DB::rollBack();
             toast('error', 'Error');
             return redirect()->back();
@@ -300,7 +300,7 @@ class GenerateQuestionPaperController extends Controller
             toast('Success!', 'success');
             return back();
         } catch (\Exception $ex) {
-            // return $ex->getMessage();
+            // // return $ex->getMessage();
             toast('Error', 'error');
             return redirect()->back();
         }

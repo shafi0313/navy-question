@@ -86,7 +86,7 @@ class QuestionEntryController extends Controller
     //         toast('success','Success');
     //         return redirect()->back();
     //     }catch(\Exception $ex){
-    //         return $ex->getMessage();
+    //         // return $ex->getMessage();
     //         DB::rollBack();
     //         toast('error','Error');
     //         return redirect()->back();
@@ -190,7 +190,7 @@ class QuestionEntryController extends Controller
             toast('Success!', 'success');
             return redirect()->back();
         } catch (\Exception $ex) {
-            return $ex->getMessage();
+            // return $ex->getMessage();
             DB::rollBack();
             toast('error', 'Error');
             return redirect()->back();
@@ -213,7 +213,7 @@ class QuestionEntryController extends Controller
             toast('Success!', 'success');
             return redirect()->back();
         } catch (\Exception $ex) {
-            return $ex->getMessage();
+            // return $ex->getMessage();
             DB::rollBack();
             toast('Error', 'error');
             return back();
