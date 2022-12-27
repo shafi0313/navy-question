@@ -109,15 +109,24 @@
                                         @endif
                                         </div>
                                     </div>
-                                    {{-- <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="total_mark">Total Marks <span class="t_r">*</span></label>
-                                            <input type="text" name="total_mark" class="form-control" value="{{ old('total_mark') }}" onInput="this.value = this.value.replace(/[a-zA-z\-*/]/g,'');" required>
-                                            @if ($errors->has('total_mark'))
-                                            <div class="alert alert-danger">{{ $errors->first('total_mark') }}</div>
+                                            <label for="note">Note</label>
+                                            <input type="text" name="note" class="form-control" value="(Note: Attention is hereby drawn to NR Appendix LVI)">
+                                            @if ($errors->has('note'))
+                                            <div class="alert alert-danger">{{ $errors->first('note') }}</div>
                                         @endif
                                         </div>
-                                    </div>--}}
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="option_note">Question Option Note</label>
+                                            <input type="text" name="option_note" class="form-control" value="(Answer all the question)">
+                                            @if ($errors->has('option_note'))
+                                            <div class="alert alert-danger">{{ $errors->first('option_note') }}</div>
+                                        @endif
+                                        </div>
+                                    </div>
 
                                     {{-- <div class="col-md-6">
                                         <div class="form-group">

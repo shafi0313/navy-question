@@ -77,14 +77,16 @@ class GenerateQuestionPaperController extends Controller
             return $error;
         }
         $quesInfo = $request->validate([
-            'exam_id' => 'required|numeric',
-            'subject_id' => 'required',
-            'date' => 'required',
-            'time' => 'nullable',
-            'd_hour' => 'sometimes',
-            'd_minute' => 'sometimes',
-            'mode' => 'required',
-            'trade' => 'nullable',
+            'exam_id'     => 'required|numeric',
+            'subject_id'  => 'required|numeric',
+            'date'        => 'required|date',
+            'time'        => 'nullable',
+            'd_hour'      => 'sometimes',
+            'd_minute'    => 'sometimes',
+            'mode'        => 'required',
+            'trade'       => 'nullable',
+            'note'        => 'nullable',
+            'option_note' => 'nullable',
         ]);
         $quesInfo['status'] = 'Pending';
         $quesInfo['user_id'] = auth()->user()->id;
@@ -114,8 +116,8 @@ class GenerateQuestionPaperController extends Controller
                 if ($i < $v->multiple) {
                     $data=[
                         'ques_info_id' => $questionInfo->id,
-                        'question_id' => $value->id,
-                        'type' => 'multiple_choice',
+                        'question_id'  => $value->id,
+                        'type'         => 'multiple_choice',
                     ];
                     QuestionPaper::updateOrCreate($data);
                     $i += $value->mark;
@@ -135,8 +137,8 @@ class GenerateQuestionPaperController extends Controller
                 if ($j < $v->sort) {
                     $data=[
                         'ques_info_id' => $questionInfo->id,
-                        'question_id' => $value->id,
-                        'type' => 'short_question',
+                        'question_id'  => $value->id,
+                        'type'         => 'short_question',
                     ];
                     QuestionPaper::updateOrCreate($data);
                     $j += $value->mark;
@@ -157,8 +159,8 @@ class GenerateQuestionPaperController extends Controller
                 if ($k < $v->long) {
                     $data=[
                         'ques_info_id' => $questionInfo->id,
-                        'question_id' => $value->id,
-                        'type' => 'long_question',
+                        'question_id'  => $value->id,
+                        'type'         => 'long_question',
                     ];
                     QuestionPaper::updateOrCreate($data);
                     $k += $value->mark;
@@ -187,8 +189,8 @@ class GenerateQuestionPaperController extends Controller
         foreach ($request->question_id as $k => $v) {
             $data = [
                 'ques_info_id' => $request->ques_info_id,
-                'question_id' => $request->question_id[$k],
-                'type' => $request->type,
+                'question_id'  => $request->question_id[$k],
+                'type'         => $request->type,
             ];
             QuestionPaper::updateOrCreate($data);
         }
@@ -239,9 +241,9 @@ class GenerateQuestionPaperController extends Controller
         $data = $this->validate($request, [
             'subject_id' => 'required|integer',
             'chapter_id' => 'required|integer',
-            'type' => 'required',
-            'mark' => 'required',
-            'ques' => 'required',
+            'type'       => 'required',
+            'mark'       => 'required',
+            'ques'       => 'required',
         ]);
         $data['user_id'] = auth()->user()->id;
 
