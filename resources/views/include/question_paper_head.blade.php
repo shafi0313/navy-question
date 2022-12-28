@@ -15,7 +15,7 @@
     <div class="title">
         <p>CONFIDENTIAL</p>
         <p style="margin-bottom: 10px">EXAM IN CONFIDENCE</p>
-        <h4 class="exam_title" style="font-weight:400">PROMOTION QUALITY TEST FOR
+        <h4 class="exam_title">
             {{ $chapters->first()->first()->quesInfo->exam->name }} -
             {{ \Carbon\Carbon::parse($chapters->first()->first()->quesInfo->date)->format('F Y') }}</h4>
         <h4 class="exam_title">TRADE: {{ $chapters->first()->first()->quesInfo->trade }}</h4>

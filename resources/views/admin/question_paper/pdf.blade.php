@@ -67,7 +67,8 @@
     }
 
     @page {
-        margin-bottom: 100px
+        margin-bottom: 100px;
+        margin-top: 60px;
     }
 
     footer {
@@ -80,13 +81,24 @@
         width: 100%;
         z-index: 1;
     }
+    header {
+        position: fixed;
+        top: -30px;
+        /* height: 50px; */
+        text-align: center;
+        font-size: 12px;
+        width: 100%;
+        z-index: 1;
+    }
 </style>
 
+
 <div class="navy">
+
     <div class="title">
-        <p>CONFIDENTIAL</p>
-        <p style="margin-bottom: 10px">EXAM IN CONFIDENCE</p>
-        <h4 class="exam_title" style="font-weight:400">PROMOTION QUALITY TEST FOR
+        {{-- <p>CONFIDENTIAL</p>
+        <p style="margin-bottom: 10px">EXAM IN CONFIDENCE</p> --}}
+        <h4 class="exam_title">
             {{ $chapters->first()->first()->quesInfo->exam->name }} -
             {{ \Carbon\Carbon::parse($chapters->first()->first()->quesInfo->date)->format('F Y') }}</h4>
         <h4 class="exam_title">TRADE: {{ $chapters->first()->first()->quesInfo->trade }}</h4>
@@ -119,7 +131,9 @@
         <td style="text-align: right">Marks</td>
     </tr>
 </table>
-
+<header>
+    <p style="display: block; width: 100%;">EXAM IN CONFIDENCE <br>CONFIDENTIAL</p>
+</header>
 <footer>
     <p style="display: block; width: 100%;">EXAM IN CONFIDENCE <br>CONFIDENTIAL</p>
 </footer>
