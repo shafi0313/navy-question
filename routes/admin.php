@@ -21,6 +21,7 @@ use App\Http\Controllers\Auth\Permission\PermissionController;
 use App\Http\Controllers\Admin\GenerateQuestionPaperController;
 
 Route::controller(AuthController::class)->group(function(){
+    Route::get('/', 'login')->name('login');
     Route::get('/login', 'login')->name('login');
     // Route::get('/register', 'register'])->name('register');
     // Route::post('/register-store', 'registerStore'])->name('registerStore');

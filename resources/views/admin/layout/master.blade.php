@@ -8,9 +8,9 @@
     <title>@yield('title') | {{config('app.name')}}</title>
     <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <link rel="icon" href="../assets/img/icon.ico" type="image/x-icon" />
+    <link rel="icon" href="{{ asset('uploads/images/icons/navy_fav.png') }}" type="image/x-icon" />
 
-    <!-- Fonts and icons -->
+    {{-- <!-- Fonts and icons --> --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="{{ asset('backend/js/plugin/webfont/webfont.min.js') }}"></script>
     <script>
@@ -31,15 +31,11 @@
     </script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-
-    <!-- CSS Files -->
+    {{-- <!-- CSS Files --> --}}
     <link rel="stylesheet" href="{{ asset('backend/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/css/atlantis.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/css/custom.css') }}">
-
-    <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link rel="stylesheet" href="{{ asset('backend/css/demo.css') }}">
 </head>
 
 <body data-background-color="bg1">
@@ -47,11 +43,8 @@
         <div class="main-header">
             <!-- Logo Header -->
             <div class="logo-header" data-background-color="blue2">
-                <a href="{{ route('admin.dashboard') }}" class="logo"> <h4 class="display:4 text-light" style="margin-top: 20px">Navy</h4>
+                <a href="{{ route('admin.dashboard') }}" class="logo"> <h4 class="display:4 text-light" style="margin-top: 20px"><span title="Bangladesh Navy">BN</span> Question Bank</h4>
 				</a>
-                {{-- <a href="index.html" class="logo">
-                    <img src="{{ asset('backend/img/logo.svg') }}" alt="navbar brand" class="navbar-brand">
-                </a> --}}
                 <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse"
                     data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon">

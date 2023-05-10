@@ -89,7 +89,7 @@
                                 <div class="col col-stats">
                                     <div class="numbers">
                                         <p class="card-category">Total Question</p>
-                                        <h4 class="card-title">{{ $multipleQuesCount }}</h4>
+                                        <h4 class="card-title">{{ $quesCount }}</h4>
                                     </div>
                                 </div>
                             </div>

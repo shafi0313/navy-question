@@ -13,13 +13,13 @@ class DashboardController extends Controller
 {
     public function dashboard()
     {
-        $examCount = Exam::count();
-        $subjectCount = Subject::count();
-        $chapterCount = Chapter::count();
-        $quesCount = Question::count();
-        $multipleQuesCount = Question::whereType('multiple_choice')->count();
-        $shortQuesCount = Question::whereType('short_question')->count();
-        $longQuesCount = Question::whereType('long_question')->count();
-        return view('admin.dashboard', compact('examCount','subjectCount','chapterCount','quesCount','multipleQuesCount','shortQuesCount','longQuesCount'));
+        $data['examCount']         = Exam::count();
+        $data['subjectCount']      = Subject::count();
+        $data['chapterCount']      = Chapter::count();
+        $data['quesCount']         = Question::count();
+        $data['multipleQuesCount'] = Question::whereType('multiple_choice')->count();
+        $data['shortQuesCount']    = Question::whereType('short_question')->count();
+        $data['longQuesCount']     = Question::whereType('long_question')->count();
+        return view('admin.dashboard', $data);
     }
 }

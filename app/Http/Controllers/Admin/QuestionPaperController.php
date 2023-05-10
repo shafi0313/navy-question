@@ -20,7 +20,6 @@ class QuestionPaperController extends Controller
         if ($error = $this->authorize('question-paper-manage')) {
             return $error;
         }
-        // $datum = QuesInfo::with(['exam'])->select('*', DB::raw('DATE_FORMAT(date, "%Y") as date'))->whereStatus('Completed')->get()->groupBy('date');
         $datum = QuesInfo::with(['exam'])->whereStatus('Completed')->get()->groupBy('exam_id');
         return view('admin.question_paper.index', compact('datum'));
     }
@@ -33,7 +32,6 @@ class QuestionPaperController extends Controller
 
     public function showBySet($subjectId, $year)
     {
-        // $datum = QuesInfo::with(['exam'])->whereSet($set)->get();
         $datum = QuesInfo::with(['exam'])->whereSubject_id($subjectId)->whereStatus('Completed')->whereYear('date', $year)->get();
         return view('admin.question_paper.set_show', compact('datum'));
     }
@@ -64,7 +62,6 @@ class QuestionPaperController extends Controller
                             ->get()
                             ->groupBy('chapter_id');
 
-        // return$chapters = QuestionPaper::with(['quesInfo','question'])->whereQues_info_id($quesInfoId)->get();
         $mark = MarkDistribution::whereSubject_id($chapters->first()->first()->quesInfo->subject_id);
         $passMark = $mark->first(['pass_mark'])->pass_mark;
         $totalMark = $mark->sum('multiple') + $mark->sum('sort') + $mark->sum('long');

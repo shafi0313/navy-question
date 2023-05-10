@@ -216,14 +216,14 @@
                 <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"
                     aria-expanded="false">
                     <div class="avatar-sm">
-                        <img src="{{ profileImg($user->email, $user->image) }}" alt="..." class="avatar-img rounded-circle">
+                        <img src="{{ asset('uploads/images/icons/navy.jpg') }}" alt="..." class="avatar-img rounded-circle">
                     </div>
                 </a>
                 <ul class="dropdown-menu dropdown-user animated fadeIn">
                     <div class="dropdown-user-scroll scrollbar-outer">
                         <li>
                             <div class="user-box">
-                                <div class="avatar-lg"><img src="{{ profileImg($user->email, $user->image) }}"
+                                <div class="avatar-lg"><img src="{{ asset('uploads/images/icons/navy.jpg') }}"
                                         alt="image profile" class="avatar-img rounded"></div>
                                 <div class="u-text">
                                     <h4>{{ $user->name }}</h4>
