@@ -16,8 +16,8 @@ class SubjectController extends Controller
         if ($error = $this->authorize('subject-manage')) {
             return $error;
         }
-        $exams = Exam::all();
-        $subjects = Subject::with('chapters')->get();
+        $exams    = Exam::all();
+        $subjects = Subject::with('chapters','exam')->get();
         return view('admin.subject.index', compact('subjects','exams'));
     }
 
@@ -28,7 +28,8 @@ class SubjectController extends Controller
         }
         $data = $this->validate($request, [
             'exam_id' => 'required|numeric',
-            'name' => 'required|max:191',
+            'name'    => 'required|string|max:191',
+            'trade'   => 'required|string|max:191',
         ]);
 
         DB::beginTransaction();
@@ -37,13 +38,12 @@ class SubjectController extends Controller
             Subject::create($data);
             DB::commit();
             toast('Success!','success');
-            return redirect()->back();
         }catch(\Exception $ex){
             // // return $ex->getMessage();
             DB::rollBack();
-            toast('error','Error');
-            return redirect()->back();
+            toast('error','Error');            
         }
+        return back();
     }
 
     public function update(Request $request, $id)
@@ -53,7 +53,8 @@ class SubjectController extends Controller
         }
         $data = $this->validate($request, [
             'exam_id' => 'required|numeric',
-            'name' => 'required|max:191',
+            'name'    => 'required|string|max:191',
+            'trade'   => 'required|string|max:191',
         ]);
 
         DB::beginTransaction();
@@ -62,13 +63,12 @@ class SubjectController extends Controller
             Subject::find($id)->update($data);
             DB::commit();
             toast('success','Success');
-            return redirect()->back();
         }catch(\Exception $ex){
             // return $ex->getMessage();
             DB::rollBack();
-            toast('error','Error');
-            return redirect()->back();
+            toast('error','Error');            
         }
+        return back();
     }
 
 
@@ -81,10 +81,9 @@ class SubjectController extends Controller
             Subject::find($id)->delete();
             Chapter::whereSubject_id($id)->delete();
             toast('Success!','success');
-            return redirect()->back();
         }catch(\Exception $ex){
-            toast('Failed','error');
-            return redirect()->back();
+            toast('Failed','error');            
         }
+        return back();
     }
 }

@@ -21,7 +21,7 @@
                             <div class="d-flex align-items-center">
                                 {{-- <h4 class="card-title">Add Row</h4> --}}
                                 <a href="{{ route('admin.generateQuestion.create') }}" class="btn btn-primary btn-round ml-auto text-light" style="min-width: 200px">
-                                    <i class="fa fa-plus"></i> Add New
+                                    {!! $faPlusBit !!} Add New Question
                                 </a>
                             </div>
                         </div>
@@ -29,10 +29,10 @@
                             @if ($datum->count() > 0)
                                 @php  $examInfo = $datum->first()->first();  @endphp
                                 <div class="text-center">
-                                    <strong style="font-size: 18px">Exam/Course: {{$examInfo->exam->name}}</strong><br>
-                                    <strong>Year: {{ \Carbon\Carbon::parse($examInfo->date)->format('Y') }}</strong><br>
+                                    <span style="font-size: 18px">Exam/Course: <b>{{$examInfo->exam->name}}</b></span>
+                                    {{-- <strong>Year: {{ \Carbon\Carbon::parse($examInfo->date)->format('Y') }}</strong><br>
                                     <strong>Mode: {{ $examInfo->mode }}</strong><br>
-                                    <strong>Trade: {{ $examInfo->trade }}</strong><br>
+                                    <strong>Trade: {{ $examInfo->trade }}</strong><br> --}}
                                 </div>
                             @endif
 
@@ -42,6 +42,8 @@
                                         <tr>
                                             <th>SL</th>
                                             <th>Subject</th>
+                                            <th>Trade</th>
+                                            <th>Mode</th>
                                             <th>Exam Date & Time</th>
                                             <th>Exam Duration</th>
                                             <th>Show By Set</th>
@@ -49,6 +51,7 @@
                                     </thead>
                                     <tfoot>
                                         <tr>
+                                            <th></th>
                                             <th></th>
                                             <th></th>
                                             <th></th>
@@ -64,8 +67,10 @@
                                         <tr>
                                             <td class="text-center">{{ $x++ }}</td>
                                             <td>{{ $data->subject->name }}</td>
+                                            <td>{{ $data->subject->trade }}</td>
+                                            <td>{{ $data->mode }}</td>
                                             <td>{{ examDateTime($data->date) }}</td>
-                                            <td>{{ $data->duration }}</td>
+                                            <td>{{ $data->d_hour }} Hrs {{ $data->d_minute }} Min</td>
                                             <td>
                                                 <div class="form-button-action">
                                                     @foreach ($datum as $data)

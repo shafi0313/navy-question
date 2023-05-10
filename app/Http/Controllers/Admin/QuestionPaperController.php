@@ -40,13 +40,12 @@ class QuestionPaperController extends Controller
 
     public function show($quesInfoId)
     {
-        $chapters = QuestionPaper::with(['quesInfo','options'])
+        $chapters = QuestionPaper::with(['quesInfo','options','subject','question.chapter'])
                             ->join('questions','questions.id', '=', 'question_papers.question_id')
                             ->whereQues_info_id($quesInfoId)
                             ->get()
                             ->groupBy('chapter_id');
 
-        // return$chapters = QuestionPaper::with(['quesInfo','question'])->whereQues_info_id($quesInfoId)->get();
         $mark = MarkDistribution::whereSubject_id($chapters->first()->first()->quesInfo->subject_id);
         $passMark = $mark->first(['pass_mark'])->pass_mark;
         $totalMark = $mark->sum('multiple') + $mark->sum('sort') + $mark->sum('long');
@@ -59,7 +58,7 @@ class QuestionPaperController extends Controller
 
     public function pdf($quesInfoId)
     {
-        $chapters = QuestionPaper::with(['quesInfo','quesInfo.exam','options'])
+        $chapters = QuestionPaper::with(['quesInfo','quesInfo.exam','options','question.chapter'])
                             ->join('questions','questions.id', '=', 'question_papers.question_id')
                             ->whereQues_info_id($quesInfoId)
                             ->get()

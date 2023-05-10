@@ -32,18 +32,12 @@
                                         <tr>
                                             <th>SL</th>
                                             <th>Exam</th>
-                                            <th>Exam Mode</th>
-                                            <th>Exam Trade</th>
-                                            <th>Exam Date & Time</th>
                                             <th class="no-sort" width="40px">Subject</th>
                                             <th class="no-sort" width="40px">Delete</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
                                             <th></th>
                                             <th></th>
                                         </tr>
@@ -57,9 +51,6 @@
                                         <tr>
                                             <td class="text-center">{{ $x++ }}</td>
                                             <td>{{ $data->exam->name }}</td>
-                                            <td>{{ $data->mode }}</td>
-                                            <td>{{ $data->trade }}</td>
-                                            <td>{{ examDateTime($data->date) }}</td>
                                             <td>
                                                 <div class="form-button-action">
                                                     <a href="{{ route('admin.generateQuestion.showBySubject', $data->exam->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">

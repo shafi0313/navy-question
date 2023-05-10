@@ -20,7 +20,7 @@
                         <div class="d-flex card-header">
                             <div class="card-title">Add Question</div>
                             <a href="{{ route('admin.question.index') }}" class="btn btn-primary btn-round ml-auto text-light" style="min-width: 200px">
-                                <i class="fa fa-plus"></i> Edit Question
+                                <i class="fa-solid fa-pen-to-square fa-beat fa-lg"></i> Edit Question
                             </a>
                         </div>
                         @if ($errors->any())
@@ -37,34 +37,6 @@
                             @csrf
                             <div class="card-body">
                                 <div class="row">
-                                    {{-- <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="exam_id">Exam <span class="t_r">*</span></label>
-                                            <select class="form-control" name="exam_id" id="exam_id">
-                                                <option selected value disabled>Select</option>
-                                                @foreach ($exams as $exam)
-                                                    <option value="{{ $exam->id }}">{{ $exam->name }}</option>
-                                                @endforeach
-                                            </select>
-                                            @if ($errors->has('exam_id'))
-                                                <div class="alert alert-danger">{{ $errors->first('exam_id') }}</div>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="subject_id">Subjects <span class="t_r">*</span></label>
-                                            <select class="form-control" name="subject_id" id="subject_id">
-                                                <option selected value disabled>Select</option>
-                                                @foreach ($subjects as $subject)
-                                                    <option value="{{ $subject->id }}">{{ $subject->name }}</option>
-                                                @endforeach
-                                            </select>
-                                            @if ($errors->has('subject_id'))
-                                                <div class="alert alert-danger">{{ $errors->first('subject_id') }}</div>
-                                            @endif
-                                        </div>
-                                    </div> --}}
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="exam_id">Exam <span class="t_r">*</span></label>
@@ -81,7 +53,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="subject_id">Subject <span class="t_r">*</span></label>
+                                            <label for="subject_id">Subject & Trade <span class="t_r">*</span></label>
                                             <select class="form-control select2" name="subject_id" id="subject_id" required></select>
                                             @if ($errors->has('subject_id'))
                                                 <div class="alert alert-danger">{{ $errors->first('subject_id') }}</div>

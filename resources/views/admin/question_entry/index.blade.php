@@ -21,29 +21,18 @@
                             <div class="d-flex align-items-center">
                                 <h4 class="card-title">Show Questions</h4>
                                 <a href="{{ route('admin.question.create') }}" class="btn btn-primary btn-round ml-auto text-light" style="min-width: 200px">
-                                    <i class="fa fa-plus"></i> Add New Question
+                                    <i class="fa-solid fa-plus fa-beat fa-lg"></i> Add New Question
                                 </a>
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <h2 class="alert alert-primary text-center">Select the fields below to edit or delete the question</h2>
+                                    <h2 class="alert alert-info text-center" title="প্রশ্ন সম্পাদনা বা মুছে ফেলার জন্য নীচের ক্ষেত্রগুলি নির্বাচন করুন">
+                                        <i class="fa-solid fa-circle-info fa-beat text-info"></i> 
+                                        Select the below fields to edit or delete question
+                                    </h2>
                                 </div>
-                                {{-- <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="subject_id">Subject <span class="t_r">*</span></label>
-                                        <select class="form-control select2" name="subject_id" id="subject_id">
-                                            <option selected value disabled>Select</option>
-                                            @foreach ($subjects as $subject)
-                                            <option value="{{ $subject->id }}">{{ $subject->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        @if ($errors->has('subject_id'))
-                                            <div class="alert alert-danger">{{ $errors->first('subject_id') }}</div>
-                                        @endif
-                                    </div>
-                                </div> --}}
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exam_id">Exam <span class="t_r">*</span></label>
@@ -60,7 +49,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="subject_id">Subject <span class="t_r">*</span></label>
+                                        <label for="subject_id">Subject & Trade <span class="t_r">*</span></label>
                                         <select class="form-control select2" name="subject_id" id="subject_id" required></select>
                                         @if ($errors->has('subject_id'))
                                             <div class="alert alert-danger">{{ $errors->first('subject_id') }}</div>

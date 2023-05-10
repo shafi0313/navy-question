@@ -29,10 +29,13 @@
                             @if ($datum->count() > 0)
                                 @php  $examInfo = $datum->first()->first();  @endphp
                                 <div class="text-center">
-                                    <strong style="font-size: 18px">Exam/Course: {{$examInfo->exam->name}}</strong><br>
-                                    <strong>Year: {{ \Carbon\Carbon::parse($examInfo->date)->format('Y') }}</strong><br>
-                                    <strong>Mode: {{ $examInfo->mode }}</strong><br>
-                                    <strong>Trade: {{ $examInfo->trade }}</strong><br>
+                                    <span style="font-size: 18px">
+                                        Exam/Course: <b>{{$examInfo->exam->name}}</b>
+                                    </span>
+                                    
+                                    {{-- <strong>Year: {{ \Carbon\Carbon::parse($examInfo->date)->format('Y') }}</strong><br> --}}
+                                    {{-- <strong>Mode: {{ $examInfo->mode }}</strong><br>
+                                    <strong>Trade: {{ $examInfo->trade }}</strong><br> --}}
                                 </div>
                             @endif
 
@@ -42,6 +45,8 @@
                                         <tr>
                                             <th>SL</th>
                                             <th>Subject</th>
+                                            <th>Trade</th>
+                                            <th>Mode</th>
                                             <th>Exam Date & Time</th>
                                             <th>Exam Duration</th>
                                             <th class="no-sort">Show By Set</th>
@@ -52,28 +57,31 @@
                                             <th></th>
                                             <th></th>
                                             <th></th>
+                                            <th></th>
+                                            <th></th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        @php $x = 1 @endphp
                                         @foreach ($datum->groupBy('subject_id') as $dat)
                                         @php
                                             $data = $dat->first()
                                         @endphp
                                         <tr>
-                                            <td class="text-center">{{ $x++ }}</td>
+                                            <td class="text-center">{{ @$x += 1 }}</td>
                                             <td>{{ $data->subject->name }}</td>
+                                            <td>{{ $data->subject->trade }}</td>
+                                            <td>{{ $data->mode }}</td>
                                             <td>{{ examDateTime($data->date) }}</td>
                                             <td>{{ $data->d_hour }} Hrs {{ $data->d_minute }} Min</td>
                                             <td>
                                                 <div class="form-button-action">
                                                     @foreach ($datum as $data)
-                                                    <a href="{{ route('admin.generateQuestion.show',$data->id) }}" data-toggle="tooltip" title="" class="btn btn-primary btn-sm ml-1">
+                                                    <a href="{{ route('admin.generateQuestion.show',$data->id) }}" data-toggle="tooltip" title="Question Set" class="btn btn-primary btn-sm ml-1">
                                                         {{ quesSet( $data->set) }}
                                                     </a>
                                                     <form action="{{ route('admin.generatedQues.destroy', $data->id) }}" method="post">
                                                         @csrf @method('DELETE')
-                                                        <button type="submit" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove" onclick="return confirm('Are you sure?')">
+                                                        <button type="submit" data-toggle="tooltip" title="" class="btn btn-sm ml-1 btn-danger" data-original-title="Delete" onclick="return confirm('Are you sure?')">
                                                             <i class="fa fa-times"></i>
                                                         </button>
                                                     </form>

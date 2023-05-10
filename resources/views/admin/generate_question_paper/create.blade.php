@@ -50,7 +50,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="subject_id">Subject <span class="t_r">*</span></label>
+                                            <label for="subject_id">Subject & Trade <span class="t_r">*</span></label>
                                             <select class="form-control select2" name="subject_id" id="subject_id" required></select>
                                             @if ($errors->has('subject_id'))
                                                 <div class="alert alert-danger">{{ $errors->first('subject_id') }}</div>
@@ -61,7 +61,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="date">Date <span class="t_r">*</span></label>
-                                            <input type="date" name="date" class="form-control" value="{{ old('date') }}" required>
+                                            <input type="date" name="date" class="form-control" value="{{ old('date', date('d-m-Y')) }}" required>
                                             @if ($errors->has('date'))
                                             <div class="alert alert-danger">{{ $errors->first('date') }}</div>
                                         @endif
@@ -71,7 +71,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="time">Time <span class="t_r">*</span></label>
-                                            <input type="time" name="time" class="form-control" value="{{ old('time') }}" required>
+                                            <input type="time" name="time" class="form-control" value="{{ old('time',date("h.i A")) }}" required>
                                             @if ($errors->has('time'))
                                             <div class="alert alert-danger">{{ $errors->first('time') }}</div>
                                         @endif
@@ -97,15 +97,6 @@
                                             <input type="text" name="mode" class="form-control" value="{{ old('mode') }}" required>
                                             @if ($errors->has('mode'))
                                             <div class="alert alert-danger">{{ $errors->first('mode') }}</div>
-                                        @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="trade">Trade</label>
-                                            <input type="text" name="trade" class="form-control" value="{{ old('trade') }}">
-                                            @if ($errors->has('trade'))
-                                            <div class="alert alert-danger">{{ $errors->first('trade') }}</div>
                                         @endif
                                         </div>
                                     </div>

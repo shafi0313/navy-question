@@ -36,6 +36,15 @@ aria-hidden="true">
                           @endif
                       </div>
                   </div>
+                  <div class="col-md-12">
+                      <div class="form-group">
+                          <label for="trade">Trade <span class="t_r">*</span></label>
+                          <input type="text" name="trade" class="form-control" value="{{ old('trade') }}" required>
+                          @if ($errors->has('trade'))
+                          <div class="alert alert-danger">{{ $errors->first('trade') }}</div>
+                          @endif
+                      </div>
+                  </div>
                 </div>
             </div>
             <div class="modal-footer">

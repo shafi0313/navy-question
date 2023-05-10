@@ -1,7 +1,6 @@
 @extends('admin.layout.master')
 @section('title', 'Subject and Chapter')
 @section('content')
-@php $m=''; $sm=''; $ssm=''; @endphp
 
 <div class="main-panel">
     <div class="content">
@@ -31,7 +30,7 @@
                                     <thead class="bg-secondary thw">
                                         <tr>
                                             <th>SL</th>
-                                            <th>Exam and Subject Name</th>
+                                            <th>Exam, Subject & Trade Name</th>
                                             <th>Created at</th>
                                             <th class="no-sort" width="40px">Action</th>
                                         </tr>
@@ -48,12 +47,12 @@
                                         @foreach ($subjects as $subject)
                                         <tr class="bg-primary text-light">
                                             <td >{{ $x++ }}</td>
-                                            <td>{{ $subject->exam->name ?? ''}} => {{ $subject->name }}</td>
+                                            <td>{{ $subject->exam->name ?? ''}} - {{ $subject->name }} - {{ $subject->trade }}</td>
                                             <td>{{ bdDate($subject->created_at) }}</td>
                                             <td class="text-right">
                                                 <div class="form-button-action">
                                                     <span class="btn btn-danger btn-sm addChapter" data-toggle="modal" data-target="#addChapter" data-id="{{$subject->id}}" data-subject="{{ $subject->name }}">Add Chapter</span>
-                                                    <span class="btn btn-info btn-sm editSubject" data-toggle="modal" data-target="#editSubject" data-url="{{route('admin.subject.update', $subject->id)}}" data-name="{{$subject->name}}" data-exam_id="{{$subject->exam_id}}"><i class="fa fa-edit"></i></span>
+                                                    <span class="btn btn-info btn-sm editSubject" data-toggle="modal" data-target="#editSubject" data-url="{{route('admin.subject.update', $subject->id)}}" data-name="{{$subject->name}}" data-exam_id="{{$subject->exam_id}}" data-trade="{{$subject->trade}}"><i class="fa fa-edit"></i></span>
                                                     <form action="{{ route('admin.subject.destroy', $subject->id) }}" method="POST">
                                                         @csrf @method('DELETE')
                                                         <button type="submit" title="Delete" class="btn btn-link btn-danger" data-original-title="Remove" onclick="return confirm('Are you sure?')">
@@ -108,10 +107,6 @@
 
 @include('admin.subject.subject_add_modal')
 @include('admin.subject.subject_edit_modal')
-
-
-
-
 
 <!-- Add Chapter -->
 <div class="modal fade" id="addChapter" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -196,7 +191,14 @@
         $(".editSubject").on('click', function(){
             $('#subjectEditForm').attr('action',$(this).data('url'));
             $('#editName').val($(this).data('name'));
+            $('#editTrade').val($(this).data('trade'));
             $('#editExamId').val($(this).data('exam_id'));
+            $("#exam option").each(function(){
+                console.log($('.editSubject').data('exam_id'));
+                if($(this).val() == $('.editSubject').data('exam_id')){
+                    $(this).prop("selected", true);
+                }
+            });
         });
 
         $(".addChapter").on('click', function(){

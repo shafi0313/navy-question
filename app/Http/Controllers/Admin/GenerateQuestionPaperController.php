@@ -23,22 +23,19 @@ class GenerateQuestionPaperController extends Controller
             return $error;
         }
         // $datum = QuesInfo::with(['exam'])->select('*', DB::raw('DATE_FORMAT(date, "%Y") as date'))->whereStatus('Pending')->get()->groupBy('date');
-        $datum = QuesInfo::with(['exam'])->whereStatus('Pending')->get()->groupBy('exam_id');
+        $datum = QuesInfo::with(['exam','subject'])->whereStatus('Pending')->get()->groupBy('exam_id');
         return view('admin.generate_question_paper.index', compact('datum'));
     }
 
     public function showBySubject($examId)
     {
-        // $datum = QuesInfo::with(['exam'])->whereSet($set)->get();
-        $datum = QuesInfo::with(['exam'])->whereExam_id($examId)->whereStatus('Pending')->get();
-        // $datum = QuesInfo::with(['exam'])->whereSubject_id($subjectId)->whereStatus('Pending')->whereYear('date',$year)->get();
+        $datum = QuesInfo::with(['exam','subject'])->whereExam_id($examId)->whereStatus('Pending')->get();
         return view('admin.generate_question_paper.subject_show', compact('datum'));
     }
 
     public function show($quesInfoId)
     {
-        // $questionPapers = QuestionPaper::with(['question'])->whereQues_info_id($quesInfoId)->get();
-        $chapters = QuestionPaper::with(['quesInfo','options'])
+        $chapters = QuestionPaper::with(['quesInfo','options','question.chapter'])
                             ->join('questions','questions.id', '=', 'question_papers.question_id')
                             ->whereQues_info_id($quesInfoId)
                             ->get()

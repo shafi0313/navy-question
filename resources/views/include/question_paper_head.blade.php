@@ -18,7 +18,7 @@
         <h4 class="exam_title">
             {{ $chapters->first()->first()->quesInfo->exam->name }} -
             {{ \Carbon\Carbon::parse($chapters->first()->first()->quesInfo->date)->format('F Y') }}</h4>
-        <h4 class="exam_title">TRADE: {{ $chapters->first()->first()->quesInfo->trade }}</h4>
+        <h4 class="exam_title">TRADE: {{ $chapters->first()->first()->subject->trade }}</h4>
         <h4 style="margin-bottom: 15px" class="exam_title">SUBJECT:
             {{ $chapters->first()->first()->question->subject->name }}</h4>
         <table class="table table-bordered text-left">
