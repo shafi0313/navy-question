@@ -132,7 +132,7 @@
     </tr>
 </table>
 <header>
-    <p style="display: block; width: 100%;">EXAM IN CONFIDENCE <br>CONFIDENTIAL</p>
+    <p style="display: block; width: 100%;">CONFIDENTIAL <br>EXAM IN CONFIDENCE </p>
 </header>
 <footer>
     <p style="display: block; width: 100%;">EXAM IN CONFIDENCE <br>CONFIDENTIAL</p>
