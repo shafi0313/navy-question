@@ -14,6 +14,7 @@ use App\Models\MarkDistribution;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Http\Requests\StoreQuesInfoRequest;
 
 class GenerateQuestionPaperController extends Controller
 {
@@ -68,26 +69,15 @@ class GenerateQuestionPaperController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request, StoreQuesInfoRequest $quesInfoRequest)
     {
         if ($error = $this->authorize('question-generate-add')) {
             return $error;
         }
-        $quesInfo = $request->validate([
-            'exam_id'     => 'required|numeric',
-            'subject_id'  => 'required|numeric',
-            'date'        => 'required|date',
-            'time'        => 'nullable',
-            'd_hour'      => 'sometimes',
-            'd_minute'    => 'sometimes',
-            'mode'        => 'required',
-            'trade'       => 'nullable',
-            'note'        => 'nullable',
-            'option_note' => 'nullable',
-        ]);
+        $quesInfo = $quesInfoRequest->validated();
         $quesInfo['status'] = 'Pending';
         $quesInfo['user_id'] = auth()->user()->id;
-        $quesInfo['set'] = QuesInfo::whereYear('date', now('Y'))->whereExam_id($request->exam_id)->whereSubject_id($request->subject_id)->count() + 1;
+        $quesInfo['set'] = QuesInfo::whereYear('date', now('Y'))->whereExam_id($quesInfoRequest->exam_id)->whereSubjectId($quesInfoRequest->subject_id)->count() + 1;
         DB::beginTransaction();
         $quesMarks = MarkDistribution::whereSubject_id($request->subject_id)->get();
         // Mark Distribution Check
@@ -96,7 +86,7 @@ class GenerateQuestionPaperController extends Controller
             return back();
         }
         // Question Count Check
-        if (Question::whereExam_id($request->exam_id)->whereSubject_id($request->subject_id)->whereIn('chapter_id', $quesMarks->pluck('chapter_id'))->get()->count() < 1) {
+        if (Question::whereExamId($request->exam_id)->whereSubjectId($request->subject_id)->whereIn('chapter_id', $quesMarks->pluck('chapter_id'))->get()->count() < 1) {
             Alert::info('No Data Found');
             return back();
         }
