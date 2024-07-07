@@ -49,15 +49,6 @@
                                             <th>Show By Set</th>
                                         </tr>
                                     </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                        </tr>
-                                    </tfoot>
                                     <tbody>
                                         @php $x = 1 @endphp
                                         @foreach ($datum->groupBy('subject_id') as $dat)
