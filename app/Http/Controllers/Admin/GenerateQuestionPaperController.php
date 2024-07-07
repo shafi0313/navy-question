@@ -23,23 +23,23 @@ class GenerateQuestionPaperController extends Controller
             return $error;
         }
         // $datum = QuesInfo::with(['exam'])->select('*', DB::raw('DATE_FORMAT(date, "%Y") as date'))->whereStatus('Pending')->get()->groupBy('date');
-        $datum = QuesInfo::with(['exam','subject'])->whereStatus('Pending')->get()->groupBy('exam_id');
+        $datum = QuesInfo::with(['exam', 'subject'])->whereStatus('Pending')->get()->groupBy('exam_id');
         return view('admin.generate_question_paper.index', compact('datum'));
     }
 
     public function showBySubject($examId)
     {
-        $datum = QuesInfo::with(['exam','subject'])->whereExam_id($examId)->whereStatus('Pending')->get();
+        $datum = QuesInfo::with(['exam', 'subject'])->whereExam_id($examId)->whereStatus('Pending')->get();
         return view('admin.generate_question_paper.subject_show', compact('datum'));
     }
 
     public function show($quesInfoId)
     {
-        $chapters = QuestionPaper::with(['quesInfo','options','question.chapter'])
-                            ->join('questions','questions.id', '=', 'question_papers.question_id')
-                            ->whereQues_info_id($quesInfoId)
-                            ->get()
-                            ->groupBy('chapter_id');
+        $chapters = QuestionPaper::with(['quesInfo', 'options', 'question.chapter'])
+            ->join('questions', 'questions.id', '=', 'question_papers.question_id')
+            ->whereQues_info_id($quesInfoId)
+            ->get()
+            ->groupBy('chapter_id');
         $quesInfo = QuesInfo::find($quesInfoId);
         if ($chapters->count() < 1) {
             Alert::info('No Data Found');
@@ -63,8 +63,8 @@ class GenerateQuestionPaperController extends Controller
     {
         if ($request->ajax()) {
             // $questions = Question::whereChapter_id($request->chapterId)->whereType($request->quesType)->get();
-            $questions = Question::whereNotIn('id',$request->quesId)->whereChapter_id($request->chapterId)->whereType($request->quesType)->get();
-            return response()->json(['questions'=>$questions,'status'=>200]);
+            $questions = Question::whereNotIn('id', $request->quesId)->whereChapter_id($request->chapterId)->whereType($request->quesType)->get();
+            return response()->json(['questions' => $questions, 'status' => 200]);
         }
     }
 
@@ -96,22 +96,22 @@ class GenerateQuestionPaperController extends Controller
             return back();
         }
         // Question Count Check
-        if(Question::whereExam_id($request->exam_id)->whereSubject_id($request->subject_id)->whereIn('chapter_id', $quesMarks->pluck('chapter_id'))->get()->count() < 1) {
+        if (Question::whereExam_id($request->exam_id)->whereSubject_id($request->subject_id)->whereIn('chapter_id', $quesMarks->pluck('chapter_id'))->get()->count() < 1) {
             Alert::info('No Data Found');
             return back();
         }
         $questionInfo = QuesInfo::create($quesInfo);
         foreach ($quesMarks as $k => $v) {
             $questions = Question::whereExam_id($request->exam_id)
-                                ->whereSubject_id($request->subject_id)
-                                ->where('chapter_id', $v->chapter_id)
-                                ->whereType('multiple_choice')
-                                ->inRandomOrder()
-                                ->get();
-            $i=0;
+                ->whereSubject_id($request->subject_id)
+                ->where('chapter_id', $v->chapter_id)
+                ->whereType('multiple_choice')
+                ->inRandomOrder()
+                ->get();
+            $i = 0;
             foreach ($questions as $key => $value) {
                 if ($i < $v->multiple) {
-                    $data=[
+                    $data = [
                         'ques_info_id' => $questionInfo->id,
                         'question_id'  => $value->id,
                         'type'         => 'multiple_choice',
@@ -124,15 +124,15 @@ class GenerateQuestionPaperController extends Controller
 
         foreach ($quesMarks as $k => $v) {
             $questions = Question::whereExam_id($request->exam_id)
-                                ->whereSubject_id($request->subject_id)
-                                ->where('chapter_id', $v->chapter_id)
-                                ->whereType('short_question')
-                                ->inRandomOrder()
-                                ->get();
-            $j=0;
+                ->whereSubject_id($request->subject_id)
+                ->where('chapter_id', $v->chapter_id)
+                ->whereType('short_question')
+                ->inRandomOrder()
+                ->get();
+            $j = 0;
             foreach ($questions as $key => $value) {
                 if ($j < $v->sort) {
-                    $data=[
+                    $data = [
                         'ques_info_id' => $questionInfo->id,
                         'question_id'  => $value->id,
                         'type'         => 'short_question',
@@ -145,16 +145,16 @@ class GenerateQuestionPaperController extends Controller
 
         foreach ($quesMarks as $k => $v) {
             $questions = Question::whereExam_id($request->exam_id)
-                                ->whereSubject_id($request->subject_id)
-                                ->where('chapter_id', $v->chapter_id)
-                                ->whereType('long_question')
-                                ->inRandomOrder()
-                                ->get();
+                ->whereSubject_id($request->subject_id)
+                ->where('chapter_id', $v->chapter_id)
+                ->whereType('long_question')
+                ->inRandomOrder()
+                ->get();
 
-            $k=0;
+            $k = 0;
             foreach ($questions as $key => $value) {
                 if ($k < $v->long) {
-                    $data=[
+                    $data = [
                         'ques_info_id' => $questionInfo->id,
                         'question_id'  => $value->id,
                         'type'         => 'long_question',
@@ -179,7 +179,7 @@ class GenerateQuestionPaperController extends Controller
 
     public function addQues(Request $request)
     {
-        if(QuestionPaper::whereQues_info_id($request->ques_info_id)->whereIn('question_id',$request->question_id)->count() > 0){
+        if (QuestionPaper::whereQues_info_id($request->ques_info_id)->whereIn('question_id', $request->question_id)->count() > 0) {
             Alert::info('These questions already exist in this question paper');
             return back();
         }
@@ -210,7 +210,7 @@ class GenerateQuestionPaperController extends Controller
         }
         $quesInfo = QuesInfo::find($request->quesInfoId);
         try {
-            $quesInfo->update(['status'=>'Completed']);
+            $quesInfo->update(['status' => 'Completed']);
             toast('Success!', 'success');
             return redirect()->route('admin.generateQuestion.showBySubject', Carbon::parse($quesInfo->date)->format('Y'));
         } catch (\Exception $ex) {
@@ -249,7 +249,7 @@ class GenerateQuestionPaperController extends Controller
 
         if ($request->type == "multiple_choice") {
             foreach ($request->option as $key => $value) {
-                $option=[
+                $option = [
                     'question_id' => $quesId,
                     'option' => $request->option[$key],
                 ];
