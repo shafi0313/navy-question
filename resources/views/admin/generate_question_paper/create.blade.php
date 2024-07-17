@@ -34,7 +34,7 @@
                                     </ul>
                                 </div>
                             @endif
-                            <form action="{{ route('admin.generateQuestion.store') }}" method="post">
+                            <form action="{{ route('admin.generate_question.store') }}" method="post">
                                 @csrf
                                 <div class="card-body">
                                     <div class="row">
@@ -282,7 +282,7 @@
                 let chapterId = $('#chapter_id').find(":selected").val();
                 let quesType = $(this).val();
                 $.ajax({
-                    url: "{{ route('admin.generateQuestion.getQuestion') }}",
+                    url: "{{ route('admin.generate_question.getQuestion') }}",
                     data: {
                         chapterId: chapterId,
                         quesType: quesType

@@ -19,6 +19,7 @@ return new class () extends Migration {
             // $table->foreignId('subject_id')->constrained()->cascadeOnDelete();
             $table->foreignId('ques_info_id')->constrained()->cascadeOnDelete();
             $table->foreignId('question_id')->constrained()->cascadeOnDelete();
+            $table->tinyInteger('set');
             $table->enum('type', ["multiple_choice","short_question","long_question"]);
 
 

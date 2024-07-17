@@ -57,21 +57,21 @@
 
 
                 @foreach ($quesInfos as $set => $quesInfoGroup)
-                @php $x = 1 @endphp
+                    @php $x = 1 @endphp
                     <h2 class="mt-5">Set: {{ $set }}</h2>
                     @foreach ($quesInfoGroup as $quesInfo)
                         @foreach ($quesInfo->questionPapers as $question)
                             <h3><u>{{ $question->question->chapter->name }}</u></h3>
                             <input type="hidden" name="ques_id" class="ques_id" value="{{ $question->id }}">
                             <div class="questionArea">
-                                <h4 class="question">{{$x++}}. {!! $question->ques !!}
+                                <h4 class="question">{{ $x++ }}. {!! $question->ques !!}
                                     <span style="float:right">{{ $question->mark }}
                                         @if (!empty($edit))
-                                            <a href="{{ route('admin.generateQuestion.edit', [$question->id, $question->ques_info_id]) }}"
+                                            <a href="{{ route('admin.generate_question.edit', [$question->id, $question->ques_info_id]) }}"
                                                 style="margin-left: 20px" class="text-info">Edit</a>
                                         @endif
                                         @if (!empty($delete))
-                                            <a href="{{ route('admin.generateQuestion.quesDestroy', [$question->id, $question->ques_info_id]) }}"
+                                            <a href="{{ route('admin.generate_question.quesDestroy', [$question->id, $question->ques_info_id]) }}"
                                                 style="margin-left: 20px" class="text-danger">Delete</a>
                                         @endif
                                     </span>

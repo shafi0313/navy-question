@@ -22,7 +22,7 @@
 
                 {{-- <div class="row justify-content-center">
                     <div class="col-md-12">
-                        <form action="{{ route('admin.generateQuestion.addQues') }}" method="POST" id="">
+                        <form action="{{ route('admin.generate_question.addQues') }}" method="POST" id="">
                             @csrf
                             <input type="hidden" name="subject_id"
                                 value="{{ $chapters->first()->first()->question->subject_id }}">
@@ -94,7 +94,7 @@
                     </div>
                 </div> --}}
 
-                <form action="{{ route('admin.generateQuestion.complete') }}" method="POST">
+                <form action="{{ route('admin.generate_question.complete') }}" method="POST">
                     @csrf
                     {{-- <input type="hidden" name="quesInfoId" value="{{ $quesInfoId }}"> --}}
                     @include('include.question_paper')
@@ -169,7 +169,7 @@
                 });
                 let quesType = $(this).val();
                 $.ajax({
-                    url: "{{ route('admin.generateQuestion.getQuestion') }}",
+                    url: "{{ route('admin.generate_question.getQuestion') }}",
                     data: {
                         chapterId: chapterId,
                         quesType: quesType,

@@ -16,13 +16,15 @@
                     <ul class="breadcrumbs">
                         <li class="nav-home"><a href="{{ route('admin.dashboard') }}"><i class="flaticon-home"></i></a></li>
                         <li class="separator"><i class="flaticon-right-arrow"></i></li>
+                        <li class="nav-home"><a href="{{ route('admin.generate_question.index') }}">Generate Question</a></li>
+                        <li class="separator"><i class="flaticon-right-arrow"></i></li>
                         <li class="nav-item">Question</li>
                     </ul>
                 </div>
 
                 <div class="row justify-content-center">
                     <div class="col-md-12">
-                        <form action="{{ route('admin.generateQuestion.addQues') }}" method="POST" id="">
+                        <form action="{{ route('admin.generate_question.addQues') }}" method="POST" id="">
                             @csrf
                             <input type="hidden" name="subject_id"
                                 value="{{ $chapters->first()->first()->question->subject_id }}">
@@ -94,14 +96,14 @@
                     </div>
                 </div>
 
-                <form action="{{ route('admin.generateQuestion.complete') }}" method="POST">
+                {{-- <form action="{{ route('admin.generate_question.complete') }}" method="POST">
                     @csrf
-                    <input type="hidden" name="quesInfoId" value="{{ $quesInfoId }}">
+                    <input type="hidden" name="quesInfoId" value="{{ $quesInfoId }}"> --}}
                     @include('include.question_paper')
-                    <div class="col-md-12 text-center card-action">
+                    {{-- <div class="col-md-12 text-center card-action">
                         <button type="submit" class="btn btn-primary">Generate Question</button>
-                    </div>
-                </form>
+                    </div> --}}
+                {{-- </form> --}}
 
             </div>
         </div>
@@ -169,7 +171,7 @@
                 });
                 let quesType = $(this).val();
                 $.ajax({
-                    url: "{{ route('admin.generateQuestion.getQuestion') }}",
+                    url: "{{ route('admin.generate_question.getQuestion') }}",
                     data: {
                         chapterId: chapterId,
                         quesType: quesType,

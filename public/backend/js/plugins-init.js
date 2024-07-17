@@ -76,7 +76,7 @@ function changeStatus(arg) {
             if (willDelete) {
                 $.ajax({
                     url: status.data('route'),
-                    type: 'post',
+                    type: 'PATCH',
                     data: {
                         status: status.data('value'),
                     },
