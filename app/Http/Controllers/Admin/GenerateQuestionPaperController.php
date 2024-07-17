@@ -63,7 +63,8 @@ class GenerateQuestionPaperController extends Controller
             $quesInfo = $quesInfoRequest->validated();
             $quesInfo['status'] = 'Pending';
             $quesInfo['user_id'] = auth()->user()->id;
-            $quesInfo['set'] = QuesInfo::whereYear('date', now('Y'))->whereExamId($quesInfoRequest->exam_id)->whereSubjectId($quesInfoRequest->subject_id)->count() + 1;
+            $quesInfo['set'] = $time;
+            // $quesInfo['set'] = QuesInfo::whereYear('date', now('Y'))->whereExamId($quesInfoRequest->exam_id)->whereSubjectId($quesInfoRequest->subject_id)->count() + 1;
             $quesMarks = MarkDistribution::whereSubject_id($quesInfoRequest->subject_id)->get();
             // Mark Distribution Check
             if ($quesMarks->count() < 1) {
@@ -78,7 +79,6 @@ class GenerateQuestionPaperController extends Controller
 
             $questionInfo = QuesInfo::create($quesInfo);
             $questionInfoIds[] = $questionInfo->id;
-
 
             foreach ($quesMarks as $k => $v) {
                 $questions = Question::whereExam_id($quesInfoRequest->exam_id)
