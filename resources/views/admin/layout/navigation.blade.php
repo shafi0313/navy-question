@@ -90,8 +90,8 @@
                 @endcan
 
                 @can('question-paper-manage')
-                    <li class="nav-item {{ activeNav('admin.generatedQues.*') }}">
-                        <a href="{{ route('admin.generatedQues.index') }}">
+                    <li class="nav-item {{ activeNav('admin.generated_question.*') }}">
+                        <a href="{{ route('admin.generated_question.index') }}">
                             <i class="fa-solid fa-clipboard-question"></i>
                             <p>Question Paper</p>
                         </a>

@@ -78,7 +78,7 @@
                                                                     {{ quesSet($data->set) }}
                                                                 </a>
                                                                 <form
-                                                                    action="{{ route('admin.generatedQues.destroy', $data->id) }}"
+                                                                    action="{{ route('admin.generated_question.destroy', $data->id) }}"
                                                                     method="post">
                                                                     @csrf @method('DELETE')
                                                                     <button type="submit" data-toggle="tooltip"

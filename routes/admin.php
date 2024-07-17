@@ -148,13 +148,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::get('/get-question', 'getQuestion')->name('getQuestion');
     });
 
-    Route::controller(QuestionPaperController::class)->prefix('question-paper')->name('generatedQues.')->group(function () {
+    Route::controller(QuestionPaperController::class)->prefix('question-paper')->name('generated_question.')->group(function () {
         Route::get('/', 'index')->name('index');
-        Route::get('/subject/show/{subject}', 'showBySubject')->name('showBySubject');
-        Route::get('/set/show/{subjectId}/{year}', 'showBySet')->name('showBySet');
-        Route::get('/show/{id}', 'show')->name('show');
+        // Route::get('/subject/show/{subject}', 'showBySubject')->name('showBySubject');
+        // Route::get('/set/show/{subjectId}/{year}', 'showBySet')->name('showBySet');
+        Route::get('/show/{quesInfo}/{set}/{type}', 'show')->name('show');
         Route::delete('/destroy/{id}', 'destroy')->name('destroy');
-        Route::get('/pdf/download/{id}', 'pdf')->name('pdf');
+        // Route::get('/pdf/download/{quesInfo}/{set}', 'pdf')->name('pdf');
     });
 
     Route::controller(AnswerPaperController::class)->prefix('answer-paper')->name('answerPaper.')->group(function () {

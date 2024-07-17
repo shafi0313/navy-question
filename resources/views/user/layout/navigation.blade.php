@@ -1,5 +1,5 @@
 @php $user = auth()->user(); @endphp
-<div class="sidebar"  data-background-color="white">
+<div class="sidebar" data-background-color="white">
     <div class="sidebar-wrapper scrollbar scrollbar-inner">
         <div class="sidebar-content">
             {{-- <div class="user">
@@ -36,7 +36,7 @@
                 </div>
             </div> --}}
             <ul class="nav nav-primary">
-                <li class="nav-item {{$m=='dashboard'?'active':''}}">
+                <li class="nav-item {{ $m == 'dashboard' ? 'active' : '' }}">
                     <a href="{{ route('user.dashboard') }}">
                         <i class="fas fa-home"></i>
                         <p>Dashboard</p>
@@ -50,8 +50,8 @@
                     <h4 class="text-section">Components</h4>
                 </li>
 
-                <li class="nav-item {{$m=='generatedQues'?'active':''}}">
-                    <a href="{{ route('user.generatedQues.index') }}">
+                <li class="nav-item {{ $m == 'generatedQues' ? 'active' : '' }}">
+                    <a href="{{ route('user.generated_question.index') }}">
                         <i class="fa-solid fa-book-atlas"></i>
                         <p>Exam & Question</p>
                     </a>

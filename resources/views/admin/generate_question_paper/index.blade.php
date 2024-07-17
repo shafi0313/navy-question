@@ -38,61 +38,6 @@
                                         <tbody>
                                         </tbody>
                                     </table>
-
-
-
-
-
-
-
-
-
-
-
-                                    {{-- <table id="multi-filter-select" class="display table table-striped table-hover">
-                                        <thead class="bg-secondary thw">
-                                            <tr>
-                                                <th>SL</th>
-                                                <th>Exam</th>
-                                                <th class="no-sort" width="40px">Subject</th>
-                                                <th class="no-sort" width="40px">Delete</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @php $x = 1 @endphp
-                                            @foreach ($datum as $data)
-                                                <tr>
-                                                    <td class="text-center">{{ $x++ }}</td>
-                                                    <td>{{ $data->exam->name }}</td>
-                                                    <td>
-                                                        <div class="form-button-action">
-                                                            <a href="{{ route('admin.generate_question.showBySubject', $data->id) }}"
-                                                                data-toggle="tooltip" title=""
-                                                                class="btn btn-link btn-primary btn-lg"
-                                                                data-original-title="Show">
-                                                                Show by Subject
-                                                            </a>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-button-action">
-                                                            <form
-                                                                action="{{ route('admin.generate_question.quesInfoQuesDestroy', $data->exam->id) }}"
-                                                                method="post">
-                                                                @csrf @method('DELETE')
-                                                                <button type="submit" data-toggle="tooltip" title=""
-                                                                    class="btn btn-link btn-danger"
-                                                                    data-original-title="Remove"
-                                                                    onclick="return confirm('In this action delete all draft question of this exam. Are you sure?')">
-                                                                    <i class="fa fa-times"></i>
-                                                                </button>
-                                                            </form>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table> --}}
                                 </div>
                             </div>
                         </div>

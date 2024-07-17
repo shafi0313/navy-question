@@ -35,7 +35,7 @@
             <div class="card-header">
                 <div class="d-flex align-items-center">
                     <h4 class="card-title"></h4>
-                    <a href="{{ route('admin.generatedQues.pdf', $chapters->first()->first()->quesInfo->id) }}"
+                    <a href="{{ route('admin.generated_question.show', [$chapters->first()->first()->quesInfo->id, $chapters->first()->first()->set, 'pdf']) }}"
                         class="btn btn-success ml-auto" id="p" style="width: 250px" target="_blank"><i
                             class="fas fa-print"></i> PDF Download</a>
                 </div>
@@ -45,24 +45,19 @@
                     @include('include.question_paper_head')
                 @endif
                 <div class="row">
-                    @php $totalMark = 0; @endphp
-                    @foreach ($chapters as $marks)
-                        @foreach ($marks as $mark)
-                            @php $totalMark += $mark->mark; @endphp
-                        @endforeach
-                    @endforeach
                     <h2 style="margin-left: auto; font-weight: bold; padding-right: 25px">Total Mark:
-                        {{ $totalMark }}</h2>
+                        {{ $totalQuesMark }}</h2>
                 </div>
 
-                @php $x = 1 @endphp
-                @foreach ($chapters as $chapter => $questions)
-                    <h3><u>{{ $questions->first()->question->chapter->name }}</u></h3>
+                @php $x = 1; @endphp
+
+                @foreach ($chapters as $chapterName => $questions)
+                    <h3><u>{{ $chapterName }}</u></h3>
                     @foreach ($questions as $question)
                         <input type="hidden" name="ques_id" class="ques_id" value="{{ $question->id }}">
                         <div class="questionArea">
-                            <h4 class="question">{{ $x++ }}. {!! $question->ques !!}
-                                <span style="float:right">{{ $question->mark }}
+                            <h4 class="question">{{ $x++ }}. {!! $question->question->ques !!}
+                                <span style="float:right">{{ $question->question->mark }}
                                     @if (!empty($edit))
                                         <a href="{{ route('admin.generate_question.edit', [$question->id, $question->ques_info_id]) }}"
                                             style="margin-left: 20px" class="text-info">Edit</a>
@@ -73,19 +68,18 @@
                                     @endif
                                 </span>
                             </h4>
-                            @isset($question->image)
+                            @if (isset($question->question->image))
                                 <img src="{{ asset('uploads/images/question/' . $question->question->image) }}"
-                                    style="margin-left: 30px"alt="">
-                            @endisset
+                                    style="margin-left: 30px" alt="">
+                            @endif
                         </div>
-                        @if ($question->options->count() > 0)
+                        @if ($question->options->isNotEmpty())
                             @foreach ($question->options as $option)
                                 <div class="col-md-6 option">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" value="{{ $option->id }}"
                                             id="exampleRadios{{ $option->id }}">
-                                        <label class="form-check-label" for="exampleRadios{{ $option->id }}"
-                                            id="exampleRadios{{ $option->id }}">
+                                        <label class="form-check-label" for="exampleRadios{{ $option->id }}">
                                             {{ $option->option }}
                                         </label>
                                     </div>

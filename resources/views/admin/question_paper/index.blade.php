@@ -27,39 +27,10 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="multi-filter-select" class="display table table-striped table-hover">
-                                    <thead class="bg-secondary thw">
-                                        <tr>
-                                            <th>SL</th>
-                                            <th>Exam</th>
-                                            <th class="no-sort" width="40px">Subject</th>
-                                        </tr>
+                                <table id="data_table" class="table table-bordered table-striped table-hover mb-0 w-100">
+                                    <thead>
                                     </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th></th>
-                                            <th></th>
-                                        </tr>
-                                    </tfoot>
                                     <tbody>
-                                        @php $x = 1 @endphp
-                                        @foreach ($datum as $dat)
-                                        @php
-                                            $data = $dat->first()
-                                        @endphp
-                                        <tr>
-                                            <td class="text-center">{{ $x++ }}</td>
-                                            <td>{{ $data->exam->name }}</td>
-                                            <td>
-                                                <div class="form-button-action">
-                                                    <a href="{{ route('admin.generatedQues.showBySubject', $data->exam->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show">
-                                                    {{-- <a href="{{ route('admin.generatedQues.showBySubject', \Carbon\Carbon::parse($data->date)->format('Y')) }}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Show"> --}}
-                                                        Show by Subject
-                                                    </a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -75,6 +46,92 @@
 @push('custom_scripts')
     <!-- Datatables -->
     @include('include.data_table')
+    <script>
+        $(function() {
+            $('#data_table').DataTable({
+                processing: true,
+                serverSide: true,
+                deferRender: true,
+                ordering: true,
+                // responsive: true,
+                scrollX: true,
+                scrollY: 400,
+                ajax: "{{ route('admin.generated_question.index') }}",
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        title: 'SL',
+                        className: "text-center",
+                        width: "60px",
+                        searchable: false,
+                        orderable: false,
+                    },
+                    {
+                        data: 'exam.name',
+                        name: 'exam.name',
+                        title: 'Exam'
+                    },
+                    {
+                        data: 'subject.name',
+                        name: 'subject.name',
+                        title: 'Subject'
+                    },
+                    {
+                        data: 'date',
+                        name: 'date',
+                        title: 'Date'
+                    },
+                    {
+                        data: 'time',
+                        name: 'time',
+                        title: 'Time'
+                    },
+                    {
+                        data: 'duration',
+                        name: 'duration',
+                        title: 'duration'
+                    },
+                    {
+                        data: 'mode',
+                        name: 'mode',
+                        title: 'Mode'
+                    },
+                    // {
+                    //     data: 'status',
+                    //     name: 'status',
+                    //     title: 'Status'
+                    // },
+                    // {
+                    //     data: 'generate',
+                    //     name: 'generate',
+                    //     title: 'Generate'
+                    // },
+                    {
+                        data: 'set',
+                        name: 'set',
+                        title: 'Set',
+                        className: "text-center",
+                        width: "60px",
+                        orderable: false,
+                        searchable: false,
+                    },
+                    // {
+                    //     data: 'action',
+                    //     name: 'action',
+                    //     title: 'Action',
+                    //     className: "text-center",
+                    //     width: "60px",
+                    //     orderable: false,
+                    //     searchable: false,
+                    // },
+                ],
+                // fixedColumns: false,
+                scroller: {
+                    loadingIndicator: true
+                }
+            });
+        });
+    </script>
 @endpush
 @endsection
 
