@@ -34,23 +34,6 @@ class GenerateQuestionPaperController extends Controller
         return view('admin.generate_question_paper.subject_show', compact('datum'));
     }
 
-    public function show($quesInfoId)
-    {
-        $chapters = QuestionPaper::with(['quesInfo', 'options', 'question.chapter'])
-            ->join('questions', 'questions.id', '=', 'question_papers.question_id')
-            ->whereQues_info_id($quesInfoId)
-            ->get()
-            ->groupBy('chapter_id');
-        $quesInfo = QuesInfo::find($quesInfoId);
-        if ($chapters->count() < 1) {
-            Alert::info('No Data Found');
-            return back();
-        }
-        $exams = Exam::all();
-        $mainChapters = Chapter::whereSubject_id($chapters->first()->first()->question->subject_id)->get();
-        return view('admin.generate_question_paper.show', compact('exams', 'mainChapters', 'chapters', 'quesInfoId', 'quesInfo'));
-    }
-
     public function create()
     {
         if ($error = $this->authorize('question-generate-add')) {
@@ -74,6 +57,8 @@ class GenerateQuestionPaperController extends Controller
             return $error;
         }
         DB::beginTransaction();
+
+        $questionInfoIds = [];
         for ($time = 1; $time <= 5; $time++) {
             $quesInfo = $quesInfoRequest->validated();
             $quesInfo['status'] = 'Pending';
@@ -92,6 +77,8 @@ class GenerateQuestionPaperController extends Controller
             }
 
             $questionInfo = QuesInfo::create($quesInfo);
+            $questionInfoIds[] = $questionInfo->id;
+
 
             foreach ($quesMarks as $k => $v) {
                 $questions = Question::whereExam_id($quesInfoRequest->exam_id)
@@ -161,13 +148,36 @@ class GenerateQuestionPaperController extends Controller
         try {
             toast('Success!', 'success');
             DB::commit();
-            return redirect()->route('admin.generateQuestion.show', $questionInfo->id);
+            $questionInfoIdsString = implode(',', $questionInfoIds);
+            return redirect()->route('admin.generateQuestion.show', ['ids' => $questionInfoIdsString]);
         } catch (\Exception $ex) {
-            // return $ex->getMessage();
+            return $ex->getMessage();
             toast('Error', 'error');
             DB::rollBack();
             return back();
         }
+    }
+
+    public function show($quesInfoIds)
+    {
+        $chapters = QuestionPaper::with(['quesInfo', 'options', 'question.chapter'])
+            ->join('questions', 'questions.id', '=', 'question_papers.question_id')
+            ->whereQues_info_id($quesInfoIds)
+            ->get()
+            ->groupBy('chapter_id');
+
+            $questionInfoIds = explode(',', $quesInfoIds);
+            $quesInfos = QuesInfo::with(['questionPapers','questionPapers.options','questionPapers.question', 'questionPapers.question.chapter'])
+            ->whereIn('id',$questionInfoIds)
+            ->get()->groupBy('set');
+
+        if ($chapters->count() < 1) {
+            Alert::info('No Data Found');
+            return back();
+        }
+        $exams = Exam::all();
+        $mainChapters = Chapter::whereSubject_id($chapters->first()->first()->question->subject_id)->get();
+        return view('admin.generate_question_paper.show', compact('exams', 'mainChapters', 'chapters', 'quesInfoIds', 'quesInfos'));
     }
 
     public function addQues(Request $request)

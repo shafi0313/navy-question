@@ -41,10 +41,10 @@
                 </div>
             </div>
             <div class="card-body" id="printableArea">
-                @if (!empty($complete))
+                {{-- @if (!empty($complete))
                     @include('include.question_paper_head')
-                @endif
-                <div class="row">
+                @endif --}}
+                {{-- <div class="row">
                     @php $totalMark = 0; @endphp
                     @foreach ($chapters as $marks)
                         @foreach ($marks as $mark)
@@ -53,47 +53,53 @@
                     @endforeach
                     <h2 style="margin-left: auto; font-weight: bold; padding-right: 25px">Total Mark:
                         {{ $totalMark }}</h2>
-                </div>
+                </div> --}}
 
+
+                @foreach ($quesInfos as $set => $quesInfoGroup)
                 @php $x = 1 @endphp
-                @foreach ($chapters as $chapter => $questions)
-                    <h3><u>{{ $questions->first()->question->chapter->name }}</u></h3>
-                    @foreach ($questions as $question)
-                        <input type="hidden" name="ques_id" class="ques_id" value="{{ $question->id }}">
-                        <div class="questionArea">
-                            <h4 class="question">{{ $x++ }}. {!! $question->ques !!}
-                                <span style="float:right">{{ $question->mark }}
-                                    @if (!empty($edit))
-                                        <a href="{{ route('admin.generateQuestion.edit', [$question->id, $question->ques_info_id]) }}"
-                                            style="margin-left: 20px" class="text-info">Edit</a>
-                                    @endif
-                                    @if (!empty($delete))
-                                        <a href="{{ route('admin.generateQuestion.quesDestroy', [$question->id, $question->ques_info_id]) }}"
-                                            style="margin-left: 20px" class="text-danger">Delete</a>
-                                    @endif
-                                </span>
-                            </h4>
-                            @isset($question->image)
-                                <img src="{{ asset('uploads/images/question/' . $question->question->image) }}"
-                                    style="margin-left: 30px"alt="">
-                            @endisset
-                        </div>
-                        @if ($question->options->count() > 0)
-                            @foreach ($question->options as $option)
-                                <div class="col-md-6 option">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="{{ $option->id }}"
-                                            id="exampleRadios{{ $option->id }}">
-                                        <label class="form-check-label" for="exampleRadios{{ $option->id }}"
-                                            id="exampleRadios{{ $option->id }}">
-                                            {{ $option->option }}
-                                        </label>
+                    <h2 class="mt-5">Set: {{ $set }}</h2>
+                    @foreach ($quesInfoGroup as $quesInfo)
+                        @foreach ($quesInfo->questionPapers as $question)
+                            <h3><u>{{ $question->question->chapter->name }}</u></h3>
+                            <input type="hidden" name="ques_id" class="ques_id" value="{{ $question->id }}">
+                            <div class="questionArea">
+                                <h4 class="question">{{$x++}}. {!! $question->ques !!}
+                                    <span style="float:right">{{ $question->mark }}
+                                        @if (!empty($edit))
+                                            <a href="{{ route('admin.generateQuestion.edit', [$question->id, $question->ques_info_id]) }}"
+                                                style="margin-left: 20px" class="text-info">Edit</a>
+                                        @endif
+                                        @if (!empty($delete))
+                                            <a href="{{ route('admin.generateQuestion.quesDestroy', [$question->id, $question->ques_info_id]) }}"
+                                                style="margin-left: 20px" class="text-danger">Delete</a>
+                                        @endif
+                                    </span>
+                                </h4>
+                                @isset($question->image)
+                                    <img src="{{ asset('uploads/images/question/' . $question->question->image) }}"
+                                        style="margin-left: 30px" alt="">
+                                @endisset
+                            </div>
+                            @if ($question->options->count() > 0)
+                                @foreach ($question->options as $option)
+                                    <div class="col-md-6 option">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="{{ $option->id }}"
+                                                id="exampleRadios{{ $option->id }}">
+                                            <label class="form-check-label" for="exampleRadios{{ $option->id }}"
+                                                id="exampleRadios{{ $option->id }}">
+                                                {{ $option->option }}
+                                            </label>
+                                        </div>
                                     </div>
-                                </div>
-                            @endforeach
-                        @endif
+                                @endforeach
+                            @endif
+                        @endforeach
                     @endforeach
                 @endforeach
+
+
             </div>
         </div>
     </div>

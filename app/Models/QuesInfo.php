@@ -16,4 +16,8 @@ class QuesInfo extends Model
     public function subject(){
         return $this->belongsTo(Subject::class);
     }
+
+    public function questionPapers(){
+        return $this->hasMany(QuestionPaper::class);
+    }
 }

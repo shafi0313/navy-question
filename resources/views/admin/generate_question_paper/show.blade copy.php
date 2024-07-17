@@ -20,7 +20,7 @@
                     </ul>
                 </div>
 
-                {{-- <div class="row justify-content-center">
+                <div class="row justify-content-center">
                     <div class="col-md-12">
                         <form action="{{ route('admin.generateQuestion.addQues') }}" method="POST" id="">
                             @csrf
@@ -92,11 +92,11 @@
                             </div>
                         </form>
                     </div>
-                </div> --}}
+                </div>
 
                 <form action="{{ route('admin.generateQuestion.complete') }}" method="POST">
                     @csrf
-                    {{-- <input type="hidden" name="quesInfoId" value="{{ $quesInfoId }}"> --}}
+                    <input type="hidden" name="quesInfoId" value="{{ $quesInfoId }}">
                     @include('include.question_paper')
                     <div class="col-md-12 text-center card-action">
                         <button type="submit" class="btn btn-primary">Generate Question</button>

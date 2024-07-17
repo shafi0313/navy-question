@@ -140,7 +140,7 @@ Route::middleware(['auth','admin'])->prefix('admin')->name('admin.')->group(func
         Route::post('/complete', 'complete')->name('complete');
         Route::get('/edit/{id}/{quesInfoId}', 'edit')->name('edit');
         Route::post('/update/{id}', 'update')->name('update');
-        Route::get('/show/{id}', 'show')->name('show');
+        Route::get('/show/{ids}', 'show')->name('show');
         Route::get('/subject/show/{subject}', 'showBySubject')->name('showBySubject');
         Route::get('/set/show/{subjectId}/{year}', 'showBySet')->name('showBySet');
         Route::get('/option/destroy/{id}', 'optionDestroy')->name('optionDestroy');
