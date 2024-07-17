@@ -180,6 +180,23 @@ class GenerateQuestionPaperController extends Controller
         return view('admin.generate_question_paper.show', compact('exams', 'mainChapters', 'chapters', 'quesInfoIds', 'quesInfos'));
     }
 
+
+    // public function show($quesInfoId)
+    // {
+    //     $chapters = QuestionPaper::with(['quesInfo', 'options', 'question.chapter'])
+    //         ->join('questions', 'questions.id', '=', 'question_papers.question_id')
+    //         ->whereQues_info_id($quesInfoId)
+    //         ->get()
+    //         ->groupBy('chapter_id');
+    //     $quesInfo = QuesInfo::find($quesInfoId);
+    //     if ($chapters->count() < 1) {
+    //         Alert::info('No Data Found');
+    //         return back();
+    //     }
+    //     $exams = Exam::all();
+    //     $mainChapters = Chapter::whereSubject_id($chapters->first()->first()->question->subject_id)->get();
+    //     return view('admin.generate_question_paper.show', compact('exams', 'mainChapters', 'chapters', 'quesInfoId', 'quesInfo'));
+    // }
     public function addQues(Request $request)
     {
         if (QuestionPaper::whereQues_info_id($request->ques_info_id)->whereIn('question_id', $request->question_id)->count() > 0) {
