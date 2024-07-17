@@ -50,7 +50,7 @@ return [
             'port' => 465,
             'encryption' => 'ssl',
             'username' => 'no-reply@shafi95.com',
-            'password' =>'QyRDNl)o~7d!',
+            'password' => 'QyRDNl)o~7d!',
             'timeout' => null,
             'auth_mode' => null,
         ],

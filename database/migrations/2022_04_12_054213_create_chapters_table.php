@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('chapters', function (Blueprint $table) {
             $table->id();
             $table->foreignId('subject_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->string('name',191);
+            $table->string('name', 191);
             $table->timestamps();
         });
     }

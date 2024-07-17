@@ -2,22 +2,20 @@
 
 namespace App\Http\Controllers\Admin;
 
-use PDF;
-use FontLib\Font;
-use Carbon\Carbon;
-use App\Models\QuesInfo;
-use Illuminate\Http\Request;
-use App\Models\QuestionPaper;
-use App\Models\MarkDistribution;
-use App\Traits\QuestionPaperTrait;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\MarkDistribution;
+use App\Models\QuesInfo;
+use App\Models\QuestionPaper;
+use App\Traits\QuestionPaperTrait;
+use Illuminate\Http\Request;
+use PDF;
 use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\Facades\DataTables;
 
 class QuestionPaperController extends Controller
 {
     use QuestionPaperTrait;
+
     public function index(Request $request)
     {
         if ($error = $this->authorize('question-paper-manage')) {
@@ -37,7 +35,7 @@ class QuestionPaperController extends Controller
                     return time12($row->time);
                 })
                 ->addColumn('duration', function ($row) {
-                    return $row->d_hour . ':' . $row->d_minute . ' Minute';
+                    return $row->d_hour.':'.$row->d_minute.' Minute';
                 })
                 // ->addColumn('content', function ($row) {
                 //     return '<textarea class="form-control">'.strip_tags($row->content).'</textarea>';
@@ -55,8 +53,9 @@ class QuestionPaperController extends Controller
                         $colorIndex = ($i - 1) % count($badgeColors);
                         $colorClass = $badgeColors[$colorIndex];
 
-                        $btn .= '<a href="' . route('admin.generated_question.show', [$row->id, $i, 'show']) . '" class="badge ' . htmlspecialchars($colorClass) . ' mb-1">Set ' . quesSet($i) . '</a>';
+                        $btn .= '<a href="'.route('admin.generated_question.show', [$row->id, $i, 'show']).'" class="badge '.htmlspecialchars($colorClass).' mb-1">Set '.quesSet($i).'</a>';
                     }
+
                     return $btn;
                 })
                 // ->addColumn('generate', function ($row) {
@@ -76,6 +75,7 @@ class QuestionPaperController extends Controller
                 ->rawColumns(['set', 'generate', 'action'])
                 ->make(true);
         }
+
         return view('admin.question_paper.index');
     }
 
@@ -95,12 +95,13 @@ class QuestionPaperController extends Controller
     {
         $data = $this->questionPaperShow($quesInfoId, $set, $type);
 
-        if($type == 'show'){
+        if ($type == 'show') {
             return view('admin.question_paper.show', $data);
-        }elseif($type == 'pdf'){
+        } elseif ($type == 'pdf') {
             // return view('admin.question_paper.pdf', $data);
             $pdf = PDF::loadView('admin.question_paper.pdf', $data);
-            return $pdf->download($data['quesInfo']->exam->name . ' - ' . $data['quesInfo']->subject->name . ' - ' . date('h:i:sa d-M-Y') . '.pdf');
+
+            return $pdf->download($data['quesInfo']->exam->name.' - '.$data['quesInfo']->subject->name.' - '.date('h:i:sa d-M-Y').'.pdf');
         }
     }
 
@@ -133,9 +134,11 @@ class QuestionPaperController extends Controller
             QuesInfo::find($id)->delete();
             QuestionPaper::whereQues_info_id($id)->delete();
             toast('Success!', 'success');
+
             return back();
         } catch (\Exception $ex) {
             toast('Error', 'error');
+
             return redirect()->back();
         }
     }

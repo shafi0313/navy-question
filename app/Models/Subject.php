@@ -8,12 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Subject extends Model
 {
     use HasFactory;
+
     protected $guarded = ['id'];
 
-    public function exam(){
+    public function exam()
+    {
         return $this->belongsTo(Exam::class);
     }
-    public function chapters(){
+
+    public function chapters()
+    {
         return $this->hasMany(Chapter::class, 'subject_id');
     }
 }

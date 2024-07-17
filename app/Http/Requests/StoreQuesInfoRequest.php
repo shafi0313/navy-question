@@ -33,7 +33,7 @@ class StoreQuesInfoRequest extends FormRequest
             'trade' => ['nullable', 'string', 'min:1', 'max:191'],
             'status' => ['nullable', 'string', 'in:Pending,Created,Started,Completed'],
             'note' => ['nullable', 'string', 'min:1', 'max:255'],
-            'option_note' => ['nullable', 'string', 'min:1', 'max:255']
+            'option_note' => ['nullable', 'string', 'min:1', 'max:255'],
         ];
     }
 }

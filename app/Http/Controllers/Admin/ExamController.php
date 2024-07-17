@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Exam;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 
 class ExamController extends Controller
@@ -18,6 +18,7 @@ class ExamController extends Controller
         }
         if ($request->ajax()) {
             $exams = Exam::query();
+
             return DataTables::of($exams)
                 ->addIndexColumn()
                 ->addColumn('check', function ($row) {
@@ -29,16 +30,18 @@ class ExamController extends Controller
                 ->addColumn('action', function ($row) {
                     $btn = '';
                     if (userCan('exam-edit')) {
-                        $btn .= view('button', ['type' => 'ajax-edit', 'route' => route('admin.exam.edit', $row->id) , 'row' => $row]);
+                        $btn .= view('button', ['type' => 'ajax-edit', 'route' => route('admin.exam.edit', $row->id), 'row' => $row]);
                     }
                     if (userCan('exam-delete')) {
                         $btn .= view('button', ['type' => 'ajax-delete', 'route' => route('admin.exam.destroy', $row->id), 'row' => $row, 'src' => 'dt']);
                     }
+
                     return $btn;
                 })
                 ->rawColumns(['check', 'action', 'created_at'])
                 ->make(true);
         }
+
         return view('admin.exam.index');
     }
 
@@ -64,18 +67,19 @@ class ExamController extends Controller
         try {
             Exam::create($data);
             DB::commit();
-            return response()->json(['message'=> 'Data Successfully Inserted'], 200);
+
+            return response()->json(['message' => 'Data Successfully Inserted'], 200);
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['message'=>__('app.oops')], 500);
+
+            return response()->json(['message' => __('app.oops')], 500);
             // return response()->json(['message'=>$e->getMessage()], 500);
         }
     }
 
-     /**
+    /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Exam  $exam
      * @return \Illuminate\Http\Response
      */
     public function edit(Request $request, Exam $exam)
@@ -85,8 +89,10 @@ class ExamController extends Controller
         // }
         if ($request->ajax()) {
             $modal = view('admin.exam.edit')->with('exam', $exam)->render();
+
             return response()->json(['modal' => $modal], 200);
         }
+
         return abort(500);
     }
 
@@ -104,14 +110,15 @@ class ExamController extends Controller
         try {
             $exam->update($data);
             DB::commit();
-            return response()->json(['message'=> 'Data Successfully Inserted'], 200);
+
+            return response()->json(['message' => 'Data Successfully Inserted'], 200);
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['message'=>__('app.oops')], 500);
+
+            return response()->json(['message' => __('app.oops')], 500);
             // return response()->json(['message'=>$e->getMessage()], 500);
         }
     }
-
 
     public function destroy(Exam $exam)
     {
@@ -120,9 +127,10 @@ class ExamController extends Controller
         }
         try {
             $exam->delete();
-            return response()->json(['message'=> 'ClassRoom Deleted Successfully'], 200);
+
+            return response()->json(['message' => 'ClassRoom Deleted Successfully'], 200);
         } catch (\Exception $e) {
-            return response()->json(['message'=>__('app.oops')], 500);
+            return response()->json(['message' => __('app.oops')], 500);
             // return response()->json(['message'=>$e->getMessage()], 500);
         }
     }

@@ -23,11 +23,11 @@ return new class extends Migration
             $table->time('time')->nullable();
             $table->tinyInteger('d_hour')->default(0);
             $table->tinyInteger('d_minute')->default(0);
-            $table->string('mode',191);
-            $table->string('trade',191)->nullable();
-            $table->enum('status',['Pending', 'Created', 'Started', 'Completed'])->nullable();
-            $table->string('note',255)->nullable();
-            $table->string('option_note',255)->nullable();
+            $table->string('mode', 191);
+            $table->string('trade', 191)->nullable();
+            $table->enum('status', ['Pending', 'Created', 'Started', 'Completed'])->nullable();
+            $table->string('note', 255)->nullable();
+            $table->string('option_note', 255)->nullable();
             $table->timestamps();
         });
     }

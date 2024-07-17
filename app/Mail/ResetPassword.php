@@ -4,9 +4,8 @@ namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Queue\SerializesModels;
 
 class ResetPassword extends Mailable
 {
@@ -18,6 +17,7 @@ class ResetPassword extends Mailable
      * @return void
      */
     public $forgetData;
+
     public function __construct($forgetData)
     {
         $this->forgetData = $forgetData;
@@ -33,11 +33,11 @@ class ResetPassword extends Mailable
         return $this->subject('Reset Password')
             ->html(
                 (new MailMessage)
-                ->mailer('noReply')
-                ->line('Click the Reset Password button to set a new password')
-                ->action('Reset Password', route('resetPassword', $this->forgetData->token))
-                ->line('Thank you for using our application!')
-                ->render()
+                    ->mailer('noReply')
+                    ->line('Click the Reset Password button to set a new password')
+                    ->action('Reset Password', route('resetPassword', $this->forgetData->token))
+                    ->line('Thank you for using our application!')
+                    ->render()
             );
     }
 }

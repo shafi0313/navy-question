@@ -8,23 +8,31 @@ use Illuminate\Database\Eloquent\Model;
 class Question extends Model
 {
     use HasFactory;
+
     protected $guarded = ['id'];
 
-
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class, 'user_id');
     }
-    public function subject(){
+
+    public function subject()
+    {
         return $this->belongsTo(Subject::class, 'subject_id');
     }
-    public function chapter(){
+
+    public function chapter()
+    {
         return $this->belongsTo(Chapter::class, 'chapter_id');
     }
-    public function options(){
+
+    public function options()
+    {
         return $this->hasMany(QuesOption::class, 'question_id');
     }
 
-    public function enroll(){
+    public function enroll()
+    {
         return $this->belongsTo(Enroll::class, 'exam_id');
     }
 }

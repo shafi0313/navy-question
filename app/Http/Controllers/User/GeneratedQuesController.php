@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\User;
 
-use Carbon\Carbon;
-use App\Models\Exam;
-use App\Models\Enroll;
-use App\Models\QuesAns;
-use App\Models\Question;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Enroll;
+use App\Models\Exam;
+use App\Models\QuesAns;
 use App\Models\QuestionPaper;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class GeneratedQuesController extends Controller
@@ -17,6 +16,7 @@ class GeneratedQuesController extends Controller
     public function index()
     {
         $exams = Exam::with(['questionPaper'])->get();
+
         return view('user.generated_ques.index', compact('exams'));
     }
 
@@ -26,14 +26,17 @@ class GeneratedQuesController extends Controller
         if (Carbon::parse($exam->date) <= Carbon::now()) {
         } else {
             Alert::info('The exam did not start');
+
             return back();
         }
         if ($exam->ans) {
             Alert::info('You have completed the exam');
+
             return back();
         }
         $questions = QuestionPaper::with(['options'])->whereExam_id($examId)->get();
         $questionPapers = QuestionPaper::with(['options'])->whereExam_id($examId)->get();
+
         return view('user.generated_ques.show', compact('questions', 'questionPapers'));
     }
 
@@ -42,10 +45,12 @@ class GeneratedQuesController extends Controller
         try {
             Enroll::create(['user_id' => auth()->user()->id, 'exam_id' => $request->exam_id]);
             Alert::success('Success');
+
             return back();
         } catch (\Exception $e) {
             return $e->getMessage();
             Alert::error('Failed');
+
             return back();
         }
     }
@@ -63,6 +68,7 @@ class GeneratedQuesController extends Controller
         }
         try {
             Alert::success('Success');
+
             return redirect()->route('user.dashboard');
         } catch (\Exception $e) {
             return $e->getMessage();

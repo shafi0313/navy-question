@@ -25,18 +25,18 @@ class UserUpdateRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:100'],
-            'email' => ['nullable', 'email',' unique:users','email'],
+            'email' => ['nullable', 'email', ' unique:users', 'email'],
             'phone' => ['required'],
             'address' => ['required', 'string'],
             'd_o_b' => ['required', 'date'],
-            'image' => ['nullable', 'image',' mimes:jpeg,png,jpg,svg', 'max:2048'],
+            'image' => ['nullable', 'image', ' mimes:jpeg,png,jpg,svg', 'max:2048'],
             // 'password' => ['required', 'confirmed', Password::min(6)
-                                                            // ->letters()
-                                                            // ->mixedCase()
-                                                            // ->numbers()
-                                                            // ->symbols()
-                                                            // ->uncompromised()
-                                                        // ],
+            // ->letters()
+            // ->mixedCase()
+            // ->numbers()
+            // ->symbols()
+            // ->uncompromised()
+            // ],
         ];
     }
 }

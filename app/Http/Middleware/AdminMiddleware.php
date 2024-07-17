@@ -12,19 +12,19 @@ class AdminMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::user()->permission == 1){
+        if (Auth::user()->permission == 1) {
             return $next($request);
-        }else{
+        } else {
             Session::flush();
             Auth::logout();
+
             return redirect()->route('login');
         }
+
         return $next($request);
     }
 }

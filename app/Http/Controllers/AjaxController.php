@@ -7,16 +7,15 @@ use Illuminate\Http\Request;
 
 class AjaxController extends Controller
 {
-
     public function deleteAll(Request $request, $model)
     {
         if ($request->ajax()) {
             try {
                 $dir = "App\Models\\";
-                app($dir . $model)->whereIn('id', $request->ids)->each(function ($arg) use ($model) {
+                app($dir.$model)->whereIn('id', $request->ids)->each(function ($arg) {
                     if ($arg->image) {
                         $path = public_path($arg->image);
-                        if (file_exists($path) && !is_dir($path)) {
+                        if (file_exists($path) && ! is_dir($path)) {
                             unlink($path);
                         }
                     }
@@ -27,23 +26,26 @@ class AjaxController extends Controller
                     //     ->causedBy(user())
                     //     ->log($model . ' Was Soft Deleted');
                 });
+
                 return response()->json(['message' => 'Soft Deleted Successfully'], 200);
             } catch (\Exception $e) {
                 return response()->json(['message' => __('app.oops')], 200);
                 // return $e->getMessage();
             }
         }
+
         return abort(500);
     }
+
     public function forceDeleteAll(Request $request, $model)
     {
         if ($request->ajax()) {
             try {
                 $dir = "App\Models\\";
-                app($dir . $model)->whereIn('id', $request->ids)->each(function ($arg) use ($model) {
+                app($dir.$model)->whereIn('id', $request->ids)->each(function ($arg) {
                     if ($arg->image) {
                         $path = public_path($arg->image);
-                        if (file_exists($path) && !is_dir($path)) {
+                        if (file_exists($path) && ! is_dir($path)) {
                             unlink($path);
                         }
                     }
@@ -54,14 +56,17 @@ class AjaxController extends Controller
                     //     ->causedBy(user())
                     //     ->log($model . ' Was Deleted');
                 });
+
                 return response()->json(['message' => 'Deleted Successfully'], 200);
             } catch (\Exception $e) {
                 return response()->json(['message' => __('app.oops')], 200);
                 // return $e->getMessage();
             }
         }
+
         return abort(500);
     }
+
     public function select2(Request $request, $model)
     {
         if ($request->ajax()) {
@@ -73,12 +78,14 @@ class AjaxController extends Controller
                         $formatted_array[] = ['id' => $arr->id, 'text' => $arr->year];
                     }
                 }
+
                 return response()->json($formatted_array, 200);
             } catch (\Exception $e) {
                 return response()->json(['id' => 0, 'text' => 'No record found!'], 500);
                 // return $e->getMessage();
             }
         }
+
         return abort(500);
     }
 }

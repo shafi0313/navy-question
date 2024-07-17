@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Exam;
+use App\Http\Controllers\Controller;
 use App\Models\Chapter;
-use App\Models\Subject;
-use App\Models\Question;
+use App\Models\Exam;
 use App\Models\QuesOption;
+use App\Models\Question;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 
 class QuestionEntryController extends Controller
@@ -22,6 +22,7 @@ class QuestionEntryController extends Controller
         $exams = Exam::all();
         $questions = Question::all();
         $subjects = Subject::all();
+
         return view('admin.question_entry.index', compact('exams', 'questions', 'subjects'));
     }
 
@@ -33,6 +34,7 @@ class QuestionEntryController extends Controller
         $exams = Exam::all();
         $subjects = Subject::all();
         $chapters = Chapter::all();
+
         return view('admin.question_entry.create', compact('exams', 'subjects', 'chapters'));
     }
 
@@ -40,6 +42,7 @@ class QuestionEntryController extends Controller
     {
         $inputs = Question::whereSubject_id($request->subject_id)->whereChapter_id($request->chapter_id)->whereType($request->type)->get();
         $questions = view('admin.question_entry.ajax', ['inputs' => $inputs])->render();
+
         return response()->json(['status' => 'success', 'html' => $questions, 'questions']);
     }
 
@@ -47,7 +50,8 @@ class QuestionEntryController extends Controller
     {
         if ($request->ajax()) {
             $questions = Question::whereChapter_id($request->chapterId)->whereType($request->quesType)->get();
-            return response()->json(['questions'=>$questions,'status'=>200]);
+
+            return response()->json(['questions' => $questions, 'status' => 200]);
         }
     }
 
@@ -118,7 +122,7 @@ class QuestionEntryController extends Controller
             //     File::makeDirectory($path, 0777, true, true);
             // }
             $image = $request->file('image');
-            $imageName = "question_".rand(0, 1000000).'.'.$image->getClientOriginalExtension();
+            $imageName = 'question_'.rand(0, 1000000).'.'.$image->getClientOriginalExtension();
             $request->image->move('uploads/images/question/', $imageName);
             $data['image'] = $imageName;
         }
@@ -126,15 +130,16 @@ class QuestionEntryController extends Controller
         // $data['ques'] =$request->ques;
         $data['user_id'] = auth()->user()->id;
         $questionEntry = Question::create($data);
-        if ($request->type == "multiple_choice") {
+        if ($request->type == 'multiple_choice') {
             foreach ($request->option as $key => $value) {
-                $option=[
+                $option = [
                     'question_id' => $questionEntry->id,
                     'option' => $request->option[$key],
                 ];
                 QuesOption::create($option);
             }
         }
+
         return response()->json($questionEntry, 200);
     }
 
@@ -145,6 +150,7 @@ class QuestionEntryController extends Controller
         }
         $question = Question::with('options')->find($id);
         $exams = Exam::all();
+
         return view('admin.question_entry.edit', compact('question', 'exams'));
     }
 
@@ -166,13 +172,13 @@ class QuestionEntryController extends Controller
         DB::beginTransaction();
         Question::find($id)->update($data);
 
-        if ($request->type == "multiple_choice") {
+        if ($request->type == 'multiple_choice') {
             foreach ($request->option as $key => $value) {
-                $option=[
+                $option = [
                     'question_id' => $id,
                     'option' => $request->option[$key],
                 ];
-                if (!empty(QuesOption::whereId($request->option_id[$key]))) {
+                if (! empty(QuesOption::whereId($request->option_id[$key]))) {
                     QuesOption::where('id', $request->option_id[$key])->update($option);
                 } else {
                     QuesOption::create($option);
@@ -188,11 +194,13 @@ class QuestionEntryController extends Controller
         try {
             DB::commit();
             toast('Success!', 'success');
+
             return redirect()->back();
         } catch (\Exception $ex) {
             // return $ex->getMessage();
             DB::rollBack();
             toast('error', 'Error');
+
             return redirect()->back();
         }
     }
@@ -211,15 +219,16 @@ class QuestionEntryController extends Controller
             QuesOption::create($data);
             DB::commit();
             toast('Success!', 'success');
+
             return redirect()->back();
         } catch (\Exception $ex) {
             // return $ex->getMessage();
             DB::rollBack();
             toast('Error', 'error');
+
             return back();
         }
     }
-
 
     public function destroy($id)
     {
@@ -228,20 +237,23 @@ class QuestionEntryController extends Controller
         }
         $user = Question::find($id);
         QuesOption::whereQuestion_id($id)->delete();
-        $path =  public_path('uploads/images/users/'.$user->image);
-        if (file_exists($path) && !is_null($user->image)) {
+        $path = public_path('uploads/images/users/'.$user->image);
+        if (file_exists($path) && ! is_null($user->image)) {
             unlink($path);
             $user->delete();
             QuesOption::whereQuestion_id($id)->delete();
             toast('Successfully Deleted', 'success');
+
             return redirect()->back();
         } else {
             $user->delete();
             QuesOption::whereQuestion_id($id)->delete();
             toast('Successfully Deleted', 'success');
+
             return redirect()->back();
         }
     }
+
     public function optionDestroy($id)
     {
         if ($error = $this->authorize('question-entry-delete')) {
@@ -250,9 +262,11 @@ class QuestionEntryController extends Controller
         try {
             QuesOption::find($id)->delete();
             toast('Success!', 'success');
+
             return back();
         } catch (\Exception $e) {
             toast('Failed!', 'error');
+
             return back();
         }
     }
@@ -261,7 +275,8 @@ class QuestionEntryController extends Controller
     {
         if ($request->ajax()) {
             $chapters = Chapter::whereSubject_id($request->subjectId)->get();
-            return response()->json(['chapters'=>$chapters,'status'=>200]);
+
+            return response()->json(['chapters' => $chapters, 'status' => 200]);
         }
     }
 }

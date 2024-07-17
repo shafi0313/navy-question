@@ -1,10 +1,10 @@
 <?php
+
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\RoleToPermission;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class RolesAndPermissionsSeeder extends Seeder
 {
@@ -20,11 +20,11 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // create permissions
         $pers = [
-            'dashboard'=>[
+            'dashboard' => [
                 'access-dashboard',
                 'dashboard-manage',
             ],
-            'user'=>[
+            'user' => [
                 'user-manage',
                 'user-add',
                 'user-edit',
@@ -32,95 +32,94 @@ class RolesAndPermissionsSeeder extends Seeder
                 'user-impersonate',
                 'user-access-dashboard',
             ],
-            'activity'=>[
+            'activity' => [
                 'activity-manage',
                 'activity-add',
                 'activity-edit',
-                'activity-delete'
+                'activity-delete',
             ],
-            'permission'=>[
+            'permission' => [
                 'permission-manage',
                 'permission-add',
                 'permission-edit',
                 'permission-delete',
-                'permission-change'
+                'permission-change',
             ],
-            'role'=>[
+            'role' => [
                 'role-manage',
                 'role-add',
                 'role-edit',
                 'role-delete',
-                'role-change'
+                'role-change',
             ],
-            'backup'=>[
+            'backup' => [
                 'backup-manage',
-                'backup-delete'
+                'backup-delete',
             ],
-            'visitor'=>[
+            'visitor' => [
                 'visitor-manage',
-                'visitor-delete'
+                'visitor-delete',
             ],
-            'setting'=>[
+            'setting' => [
                 'setting-manage',
                 'language-manage',
             ],
-            'subject'=>[
+            'subject' => [
                 'subject-manage',
                 'subject-add',
                 'subject-edit',
-                'subject-delete'
+                'subject-delete',
             ],
-            'exam'=>[
+            'exam' => [
                 'exam-manage',
                 'exam-add',
                 'exam-edit',
-                'exam-delete'
+                'exam-delete',
             ],
-            'mark-distribution'=>[
+            'mark-distribution' => [
                 'mark-distribution-manage',
                 'mark-distribution-add',
                 'mark-distribution-edit',
-                'mark-distribution-delete'
+                'mark-distribution-delete',
             ],
-            'question-entry'=>[
+            'question-entry' => [
                 'question-entry-manage',
                 'question-entry-add',
                 'question-entry-edit',
-                'question-entry-delete'
+                'question-entry-delete',
             ],
-            'question-generate'=>[
+            'question-generate' => [
                 'question-generate-manage',
                 'question-generate-add',
                 'question-generate-edit',
                 'question-generate-delete',
-                'question-generate-generate'
+                'question-generate-generate',
             ],
-            'answer-paper'=>[
+            'answer-paper' => [
                 'answer-paper-manage',
                 'answer-paper-edit',
-                'answer-paper-delete'
+                'answer-paper-delete',
             ],
-            'question-paper'=>[
+            'question-paper' => [
                 'question-paper-manage',
                 'question-paper-add',
                 'question-paper-edit',
-                'question-paper-delete'
+                'question-paper-delete',
             ],
         ];
         foreach ($pers as $per => $val) {
             foreach ($val as $name) {
                 Permission::create([
-                    'module'        => $per,
-                    'name'          => $name,
-                    'removable'     => 0,
+                    'module' => $per,
+                    'name' => $name,
+                    'removable' => 0,
                 ]);
             }
         }
 
-
         // $superadmin = Role::create(['name' => 'superadmin','removable'=> 0]);
-        $admin      = Role::create(['name' => 'admin','removable'=> 0]);
+        $admin = Role::create(['name' => 'admin', 'removable' => 0]);
         $admin->givePermissionTo(Permission::all());
-        $teacher    = Role::create(['name' => 'user','removable'=> 0]);
+        $teacher = Role::create(['name' => 'user', 'removable' => 0]);
     }
 }

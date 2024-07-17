@@ -4,10 +4,8 @@ namespace App\Http\Controllers\Auth\Role;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use UxWeb\SweetAlert\SweetAlert;
-use Auth;
+use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
@@ -32,6 +30,7 @@ class RoleController extends Controller
             return $error;
         }
         $roles = Role::with('users')->get();
+
         return view('roles.index')->with('roles', $roles);
     }
 
@@ -45,13 +44,13 @@ class RoleController extends Controller
         if ($error = $this->authorize('role-create')) {
             return $error;
         }
+
         return view('roles.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -65,19 +64,20 @@ class RoleController extends Controller
         $this->validate($request, [
             'name' => 'required|min:4|max:20|regex:/^[a-zA-Z0-9\-_\.]+$/|unique:roles,name',
         ], [
-          'regex' => 'Invalid Entry! Only letters,underscores,hypens and numbers are allowed',
+            'regex' => 'Invalid Entry! Only letters,underscores,hypens and numbers are allowed',
         ]);
 
         $role = Role::create([
-            'name' => str_replace(' ', '-', strtolower($request->name))
+            'name' => str_replace(' ', '-', strtolower($request->name)),
         ]);
 
         // Logging activity for created role
         activity()
             ->performedOn($role)
-            ->withProperties(['name'=>$role->name,'by'=>user()->username])
+            ->withProperties(['name' => $role->name, 'by' => user()->username])
             ->causedBy(user())
             ->log('Role was created');
+
         return redirect()->back()->with('success', 'Role Created Successfully');
     }
 
@@ -94,15 +94,16 @@ class RoleController extends Controller
         if ($role->id == 1) {
             return redirect()->back()->withErrors('Supper Admin permissions can not be assigned.');
         }
-        $roles          = Role::where('id', '!=', 1)->get(['id','name']);
-        $perms          = $role->permissions()->pluck('name')->toArray();
+        $roles = Role::where('id', '!=', 1)->get(['id', 'name']);
+        $perms = $role->permissions()->pluck('name')->toArray();
         $allpermissions = Permission::pluck('name')->toArray();
-        $permissions    = [];
+        $permissions = [];
         foreach ($allpermissions as $permission) {
             $permissions[$permission] = in_array($permission, $perms) ? 1 : 0;
         }
+
         // return $permissions;
-        return view('roles.show', compact(['role','permissions','roles']));
+        return view('roles.show', compact(['role', 'permissions', 'roles']));
     }
 
     /**
@@ -127,13 +128,15 @@ class RoleController extends Controller
         // Logging activity for created role
         activity()
             ->performedOn($role)
-            ->withProperties(['name'=>$role->name,'by'=>user()->username])
+            ->withProperties(['name' => $role->name, 'by' => user()->username])
             ->causedBy(user())
-            ->log('Permission was assigned to Role '. $role->name);
+            ->log('Permission was assigned to Role '.$role->name);
 
         $role->syncPermissions($request->permissions);
+
         return redirect()->back()->with('success', 'Permissions assigned to Role successfully');
     }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -146,15 +149,16 @@ class RoleController extends Controller
         }
         if ($request->ajax()) {
             $modal = view('roles.edit')->with('role', $role)->render();
-            return response()->json(['modal'=> $modal], 200);
+
+            return response()->json(['modal' => $modal], 200);
         }
+
         return abort(500);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Role $role)
@@ -167,9 +171,9 @@ class RoleController extends Controller
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         $this->validate($request, [
-            'name' => 'required|regex:/^[a-zA-Z0-9\-_\.]+$/|min:3|max:20|unique:roles,name,'.$role->id
+            'name' => 'required|regex:/^[a-zA-Z0-9\-_\.]+$/|min:3|max:20|unique:roles,name,'.$role->id,
         ], [
-          'regex' => 'Invalid Entry! Only letters,underscores,hypens and numbers are allowed',
+            'regex' => 'Invalid Entry! Only letters,underscores,hypens and numbers are allowed',
         ]);
 
         $role->name = str_replace(' ', '-', strtolower($request->name));
@@ -178,7 +182,7 @@ class RoleController extends Controller
         // Logging activity for created role
         activity()
             ->performedOn($role)
-            ->withProperties(['name'=>$role->name,'by'=>user()->username])
+            ->withProperties(['name' => $role->name, 'by' => user()->username])
             ->causedBy(user())
             ->log('Role was updated');
 
@@ -199,19 +203,20 @@ class RoleController extends Controller
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         //Default role cannot be deleted
-        if (!$role->removable) {
+        if (! $role->removable) {
             return redirect()->back()->withErrors('This role cannot be deleted');
         }
 
         // Logging activity for created role
         activity()
             ->performedOn($role)
-            ->withProperties(['name'=>$role->name,'by'=>user()->username])
+            ->withProperties(['name' => $role->name, 'by' => user()->username])
             ->causedBy(user())
             ->log('Role was deleted');
 
         $role->revokePermissionTo($role->permissions()->get());
         $role->delete();
-        return response()->json(['message'=> 'Role Deleted Successfully'], 200);
+
+        return response()->json(['message' => 'Role Deleted Successfully'], 200);
     }
 }

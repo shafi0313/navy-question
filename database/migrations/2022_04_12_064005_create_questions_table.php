@@ -4,7 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class () extends Migration {
+return new class() extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -17,7 +18,7 @@ return new class () extends Migration {
             $table->foreignId('user_id')->comment('Admin')->constrained()->cascadeOnDelete();
             $table->foreignId('subject_id')->constrained()->cascadeOnDelete();
             $table->foreignId('chapter_id')->constrained()->cascadeOnDelete();
-            $table->enum('type', ["multiple_choice","short_question","long_question"]);
+            $table->enum('type', ['multiple_choice', 'short_question', 'long_question']);
             $table->string('ques', 500);
             $table->integer('mark');
             // $table->boolean('selected')->default(0);

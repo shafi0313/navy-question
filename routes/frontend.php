@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\User;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,4 +10,3 @@ use App\Models\User;
 | contains the "web" middleware group. Now create something great!
 |
 */
-

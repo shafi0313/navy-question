@@ -8,5 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class MarkDistribution extends Model
 {
     use HasFactory;
+
     protected $guarded = ['id'];
 }

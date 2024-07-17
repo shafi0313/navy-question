@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Layout;
+use App\Http\Controllers\Controller;
 use App\Models\VisitorInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class VisitorInfoController extends Controller
@@ -15,6 +13,7 @@ class VisitorInfoController extends Controller
     public function index()
     {
         $visitors = VisitorInfo::all();
+
         return view('admin.visitor_info.index', compact('visitors'));
     }
 
@@ -26,8 +25,10 @@ class VisitorInfoController extends Controller
         } catch (\Exception $e) {
             Alert::error('Oops server error');
         }
+
         return back();
     }
+
     public function destroyAll()
     {
         try {
@@ -36,6 +37,7 @@ class VisitorInfoController extends Controller
         } catch (\Exception $e) {
             Alert::error('Oops server error');
         }
+
         return back();
     }
 }

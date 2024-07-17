@@ -2,9 +2,9 @@
 
 namespace App\Traits;
 
+use App\Models\MarkDistribution;
 use App\Models\QuesInfo;
 use App\Models\QuestionPaper;
-use App\Models\MarkDistribution;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -16,7 +16,7 @@ trait QuestionPaperTrait
         $data['chapters'] = QuestionPaper::with([
             'question:id,chapter_id,type,ques,image,mark',
             'question.chapter:id,name',
-            'options'
+            'options',
         ])
             ->whereQuesInfoId($quesInfoId)
             ->whereSet($set)
@@ -39,8 +39,10 @@ trait QuestionPaperTrait
         $data['totalMark'] = $marks->total_mark ?? 0;
         if ($data['chapters']->count() <= 0) {
             Alert::error('No Data Found');
+
             return back();
         }
+
         return $data;
     }
 }

@@ -8,7 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class ModelHasRole extends Model
 {
     use HasFactory;
+
     protected $guarded = [];
+
     const CREATED_AT = null;
+
     const UPDATED_AT = null;
 }

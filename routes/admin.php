@@ -1,24 +1,24 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AjaxController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Admin\ExamController;
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\BackupController;
-use App\Http\Controllers\Admin\GlobalController;
-use App\Http\Controllers\Admin\ChapterController;
-use App\Http\Controllers\Admin\ProfileController;
-use App\Http\Controllers\Admin\SubjectController;
-use App\Http\Controllers\Auth\Role\RoleController;
-use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AnswerPaperController;
-use App\Http\Controllers\Admin\VisitorInfoController;
+use App\Http\Controllers\Admin\BackupController;
+use App\Http\Controllers\Admin\ChapterController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ExamController;
+use App\Http\Controllers\Admin\GenerateQuestionPaperController;
+use App\Http\Controllers\Admin\GlobalController;
+use App\Http\Controllers\Admin\MarkDistributionController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\QuestionEntryController;
 use App\Http\Controllers\Admin\QuestionPaperController;
-use App\Http\Controllers\Admin\MarkDistributionController;
+use App\Http\Controllers\Admin\SubjectController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\VisitorInfoController;
+use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\Auth\Permission\PermissionController;
-use App\Http\Controllers\Admin\GenerateQuestionPaperController;
+use App\Http\Controllers\Auth\Role\RoleController;
+use App\Http\Controllers\AuthController;
+use Illuminate\Support\Facades\Route;
 
 Route::controller(AuthController::class)->group(function () {
     Route::get('/', 'login')->name('login');
@@ -40,7 +40,6 @@ Route::controller(AuthController::class)->group(function () {
     Route::get('/logout', 'logout')->name('logout');
 });
 
-
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
 
@@ -58,7 +57,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('role/permission/{role}', [RoleController::class, 'assignPermission'])->name('role.permission');
     Route::resource('role', RoleController::class);
     Route::resource('permission', PermissionController::class);
-
 
     // !APP BACKUP
     Route::controller(BackupController::class)->prefix('app-backup')->name('backup.')->group(function () {

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Exam;
+use App\Http\Controllers\Controller;
 use App\Models\Chapter;
+use App\Models\Exam;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 
 class SubjectController extends Controller
 {
@@ -16,9 +16,10 @@ class SubjectController extends Controller
         if ($error = $this->authorize('subject-manage')) {
             return $error;
         }
-        $exams    = Exam::all();
-        $subjects = Subject::with('chapters','exam')->get();
-        return view('admin.subject.index', compact('subjects','exams'));
+        $exams = Exam::all();
+        $subjects = Subject::with('chapters', 'exam')->get();
+
+        return view('admin.subject.index', compact('subjects', 'exams'));
     }
 
     public function store(Request $request)
@@ -28,21 +29,22 @@ class SubjectController extends Controller
         }
         $data = $this->validate($request, [
             'exam_id' => 'required|numeric',
-            'name'    => 'required|string|max:191',
-            'trade'   => 'required|string|max:191',
+            'name' => 'required|string|max:191',
+            'trade' => 'required|string|max:191',
         ]);
 
         DB::beginTransaction();
 
-        try{
+        try {
             Subject::create($data);
             DB::commit();
-            toast('Success!','success');
-        }catch(\Exception $ex){
+            toast('Success!', 'success');
+        } catch (\Exception $ex) {
             // // return $ex->getMessage();
             DB::rollBack();
-            toast('error','Error');            
+            toast('error', 'Error');
         }
+
         return back();
     }
 
@@ -53,37 +55,38 @@ class SubjectController extends Controller
         }
         $data = $this->validate($request, [
             'exam_id' => 'required|numeric',
-            'name'    => 'required|string|max:191',
-            'trade'   => 'required|string|max:191',
+            'name' => 'required|string|max:191',
+            'trade' => 'required|string|max:191',
         ]);
 
         DB::beginTransaction();
 
-        try{
+        try {
             Subject::find($id)->update($data);
             DB::commit();
-            toast('success','Success');
-        }catch(\Exception $ex){
+            toast('success', 'Success');
+        } catch (\Exception $ex) {
             // return $ex->getMessage();
             DB::rollBack();
-            toast('error','Error');            
+            toast('error', 'Error');
         }
+
         return back();
     }
-
 
     public function destroy($id)
     {
         if ($error = $this->authorize('subject-delete')) {
             return $error;
         }
-        try{
+        try {
             Subject::find($id)->delete();
             Chapter::whereSubject_id($id)->delete();
-            toast('Success!','success');
-        }catch(\Exception $ex){
-            toast('Failed','error');            
+            toast('Success!', 'success');
+        } catch (\Exception $ex) {
+            toast('Failed', 'error');
         }
+
         return back();
     }
 }

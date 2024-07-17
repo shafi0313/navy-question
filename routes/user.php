@@ -1,10 +1,7 @@
 <?php
 
-use App\Models\User;
-use App\Http\Controllers\User\GeneratedQuesController;
 use App\Http\Controllers\User\DashboardController;
-
-
+use App\Http\Controllers\User\GeneratedQuesController;
 
 Route::middleware(['auth', 'user'])->prefix('user')->name('user.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Chapter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 
 class ChapterController extends Controller
 {
@@ -30,15 +30,17 @@ class ChapterController extends Controller
 
         DB::beginTransaction();
 
-        try{
+        try {
             Chapter::create($data);
             DB::commit();
-            toast('Success!','success');
+            toast('Success!', 'success');
+
             return redirect()->back();
-        }catch(\Exception $ex){
+        } catch (\Exception $ex) {
             // // return $ex->getMessage();
             DB::rollBack();
-            toast('Eerror','error');
+            toast('Eerror', 'error');
+
             return redirect()->back();
         }
     }
@@ -54,31 +56,34 @@ class ChapterController extends Controller
 
         DB::beginTransaction();
 
-        try{
+        try {
             Chapter::find($id)->update($data);
             DB::commit();
-            toast('Success','success');
+            toast('Success', 'success');
+
             return redirect()->back();
-        }catch(\Exception $ex){
+        } catch (\Exception $ex) {
             // return $ex->getMessage();
             DB::rollBack();
-            toast('Error','error');
+            toast('Error', 'error');
+
             return redirect()->back();
         }
     }
-
 
     public function destroy($id)
     {
         if ($error = $this->authorize('chapter-delete')) {
             return $error;
         }
-        try{
+        try {
             Chapter::find($id)->delete();
-            toast('Success!','success');
+            toast('Success!', 'success');
+
             return redirect()->back();
-        }catch(\Exception $ex){
-            toast('Failed','error');
+        } catch (\Exception $ex) {
+            toast('Failed', 'error');
+
             return redirect()->back();
         }
     }

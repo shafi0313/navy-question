@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Validation\Rules\Password;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
 
 class UserStoreRequest extends FormRequest
 {
@@ -26,18 +26,18 @@ class UserStoreRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:100'],
-            'email' => ['required', 'email',' unique:users','email'],
+            'email' => ['required', 'email', ' unique:users', 'email'],
             'phone' => ['required'],
             'address' => ['required', 'string'],
             'd_o_b' => ['required', 'date'],
-            'image' => ['nullable', 'image',' mimes:jpeg,png,jpg,svg', 'max:2048'],
-            'password' => ['required', 'confirmed', Password::min(6)
-                                                            // ->letters()
-                                                            // ->mixedCase()
-                                                            // ->numbers()
-                                                            // ->symbols()
-                                                            // ->uncompromised()
-                                                        ],
+            'image' => ['nullable', 'image', ' mimes:jpeg,png,jpg,svg', 'max:2048'],
+            'password' => ['required', 'confirmed', Password::min(6),
+                // ->letters()
+                // ->mixedCase()
+                // ->numbers()
+                // ->symbols()
+                // ->uncompromised()
+            ],
         ];
     }
 }
