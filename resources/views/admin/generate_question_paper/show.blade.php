@@ -27,9 +27,9 @@
                         <form action="{{ route('admin.generate_question.addQues') }}" method="POST" id="">
                             @csrf
                             <input type="hidden" name="subject_id"
-                                value="{{ $chapters->first()->first()->question->subject_id }}">
+                                value="{{ $quesInfo->subject->subject_id }}">
                             <input type="hidden" name="ques_info_id"
-                                value="{{ $chapters->first()->first()->ques_info_id }}" id="ques_info_id">
+                                value="{{ $quesInfo->ques_info_id }}" id="ques_info_id">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="row">

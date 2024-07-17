@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use PDF;
 use FontLib\Font;
 use Carbon\Carbon;
 use App\Models\QuesInfo;
 use Illuminate\Http\Request;
 use App\Models\QuestionPaper;
 use App\Models\MarkDistribution;
-use PDF;
+use App\Traits\QuestionPaperTrait;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -16,6 +17,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class QuestionPaperController extends Controller
 {
+    use QuestionPaperTrait;
     public function index(Request $request)
     {
         if ($error = $this->authorize('question-paper-manage')) {
@@ -91,35 +93,8 @@ class QuestionPaperController extends Controller
 
     public function show($quesInfoId, $set, $type)
     {
-        $data['quesInfo'] = QuesInfo::with(['exam:id,name', 'subject:id,name'])->find($quesInfoId);
-        $data['chapters'] = QuestionPaper::with([
-            'question:id,chapter_id,type,ques,image,mark',
-            'question.chapter:id,name',
-            'options'
-        ])
-            ->whereQuesInfoId($quesInfoId)
-            ->whereSet($set)
-            ->get()
-            ->groupBy('question.chapter.name');
+        $data = $this->questionPaperShow($quesInfoId, $set, $type);
 
-        $quesMarks = $data['chapters']->map(function ($questions) {
-            return $questions->sum(function ($questionPaper) {
-                return $questionPaper->question->mark;
-            });
-        })->values();
-        $data['totalQuesMark'] = $quesMarks->sum();
-
-        $marks = MarkDistribution::where('subject_id', $data['quesInfo']->subject->id)
-            ->select('pass_mark', DB::raw('SUM(`multiple` + `sort` + `long`) as total_mark'))
-            ->groupBy('pass_mark')
-            ->first();
-
-        $data['passMark'] = $marks->pass_mark ?? 0;
-        $data['totalMark'] = $marks->total_mark ?? 0;
-        if ($data['chapters']->count() <= 0) {
-            Alert::error('No Data Found');
-            return back();
-        }
         if($type == 'show'){
             return view('admin.question_paper.show', $data);
         }elseif($type == 'pdf'){

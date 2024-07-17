@@ -140,7 +140,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         // Route::post('/complete', 'complete')->name('complete');
         Route::get('/edit/{id}/{quesInfoId}', 'edit')->name('edit');
         Route::post('/update/{id}', 'update')->name('update');
-        Route::get('/show/{quesInfo}/{set}', 'show')->name('show');
+        Route::get('/show/{quesInfo}/{set}/{type}', 'show')->name('show');
         Route::get('/option/destroy/{id}', 'optionDestroy')->name('optionDestroy');
         Route::get('/question/destroy/{quesId}/{quesInfoId}', 'quesDestroy')->name('quesDestroy');
         Route::delete('/quesInfoQuesDestroy/{id}', 'quesInfoQuesDestroy')->name('quesInfoQuesDestroy');

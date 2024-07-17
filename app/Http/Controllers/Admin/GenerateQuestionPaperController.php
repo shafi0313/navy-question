@@ -11,6 +11,7 @@ use App\Models\QuesOption;
 use Illuminate\Http\Request;
 use App\Models\QuestionPaper;
 use App\Models\MarkDistribution;
+use App\Traits\QuestionPaperTrait;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -19,6 +20,7 @@ use App\Http\Requests\StoreQuesInfoRequest;
 
 class GenerateQuestionPaperController extends Controller
 {
+    use QuestionPaperTrait;
     public function index(Request $request)
     {
         if ($error = $this->authorize('question-generate-manage')) {
@@ -57,7 +59,7 @@ class GenerateQuestionPaperController extends Controller
                         $colorIndex = ($i - 1) % count($badgeColors);
                         $colorClass = $badgeColors[$colorIndex];
 
-                        $btn .= '<a href="' . route('admin.generate_question.show', [$row->id, $i]) . '" class="badge ' . htmlspecialchars($colorClass) . ' mb-1">Set ' . quesSet($i) . '</a>';
+                        $btn .= '<a href="' . route('admin.generate_question.show', [$row->id, $i, 'show']) . '" class="badge ' . htmlspecialchars($colorClass) . ' mb-1">Set ' . quesSet($i) . '</a>';
                     }
                     return $btn;
                 })
@@ -212,45 +214,14 @@ class GenerateQuestionPaperController extends Controller
         }
     }
 
-    // public function show($quesInfoIds)
-    // {
-    //     $chapters = QuestionPaper::with(['quesInfo', 'options', 'question.chapter'])
-    //         ->join('questions', 'questions.id', '=', 'question_papers.question_id')
-    //         ->whereQues_info_id($quesInfoIds)
-    //         ->get()
-    //         ->groupBy('chapter_id');
-
-    //         $questionInfoIds = explode(',', $quesInfoIds);
-    //         $quesInfos = QuesInfo::with(['questionPapers','questionPapers.options','questionPapers.question', 'questionPapers.question.chapter'])
-    //         ->whereIn('id',$questionInfoIds)
-    //         ->get()->groupBy('set');
-
-    //     if ($chapters->count() < 1) {
-    //         Alert::info('No Data Found');
-    //         return back();
-    //     }
-    //     $exams = Exam::all();
-    //     $mainChapters = Chapter::whereSubject_id($chapters->first()->first()->question->subject_id)->get();
-    //     return view('admin.generate_question_paper.show', compact('exams', 'mainChapters', 'chapters', 'quesInfoIds', 'quesInfos'));
-    // }
-
-
-    public function show($quesInfoId, $set)
+    public function show($quesInfoId, $set, $type)
     {
-        $chapters = QuestionPaper::with(['quesInfo', 'options', 'question.chapter'])
-            ->join('questions', 'questions.id', '=', 'question_papers.question_id')
-            ->whereQuesInfoId($quesInfoId)
-            ->whereSet($set)
-            ->get()
-            ->groupBy('chapter_id');
-        $quesInfo = QuesInfo::find($quesInfoId);
-        if ($chapters->count() < 1) {
-            Alert::info('No Data Found');
-            return back();
+        $data = $this->questionPaperShow($quesInfoId, $set, $type);
+        $data['mainChapters'] = Chapter::whereSubjectId($data['quesInfo']->subject->id)->get();
+
+        if($type == 'show'){
+            return view('admin.generate_question_paper.show', $data);
         }
-        $exams = Exam::all();
-        $mainChapters = Chapter::whereSubject_id($chapters->first()->first()->question->subject_id)->get();
-        return view('admin.generate_question_paper.show', compact('exams', 'mainChapters', 'chapters', 'quesInfoId', 'quesInfo'));
     }
 
     public function status(QuesInfo $quesInfo)
@@ -290,21 +261,21 @@ class GenerateQuestionPaperController extends Controller
         }
     }
 
-    public function complete(Request $request)
-    {
-        if ($error = $this->authorize('question-generate-generate')) {
-            return $error;
-        }
-        $quesInfo = QuesInfo::find($request->quesInfoId);
-        try {
-            $quesInfo->update(['status' => 'Completed']);
-            toast('Success!', 'success');
-            return redirect()->route('admin.generate_question.showBySubject', Carbon::parse($quesInfo->date)->format('Y'));
-        } catch (\Exception $ex) {
-            toast('Error', 'error');
-            return redirect()->back();
-        }
-    }
+    // public function complete(Request $request)
+    // {
+    //     if ($error = $this->authorize('question-generate-generate')) {
+    //         return $error;
+    //     }
+    //     $quesInfo = QuesInfo::find($request->quesInfoId);
+    //     try {
+    //         $quesInfo->update(['status' => 'Completed']);
+    //         toast('Success!', 'success');
+    //         return redirect()->route('admin.generate_question.showBySubject', Carbon::parse($quesInfo->date)->format('Y'));
+    //     } catch (\Exception $ex) {
+    //         toast('Error', 'error');
+    //         return redirect()->back();
+    //     }
+    // }
 
 
     public function edit($id, $quesInfoId)

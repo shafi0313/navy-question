@@ -81,6 +81,7 @@
         width: 100%;
         z-index: 1;
     }
+
     header {
         position: fixed;
         top: -30px;
@@ -95,7 +96,11 @@
 
 <div class="navy">
     <div class="title">
+
         <h4 class="exam_title">
+            @if ($quesInfo->status == 'Pending')
+                 <h2>Draft Question Paper</h2>
+            @endif
             {{ $quesInfo->exam->name }} -
             {{ \Carbon\Carbon::parse($quesInfo->date)->format('F Y') }}
         </h4>

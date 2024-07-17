@@ -35,7 +35,7 @@
             <div class="card-header">
                 <div class="d-flex align-items-center">
                     <h4 class="card-title"></h4>
-                    <a href="{{ route('admin.generated_question.show', [$chapters->first()->first()->quesInfo->id, $chapters->first()->first()->set, 'pdf']) }}"
+                    <a href="{{ route('admin.generated_question.show', [$quesInfo->id, $chapters->first()->first()->set, 'pdf']) }}"
                         class="btn btn-success ml-auto" id="p" style="width: 250px" target="_blank"><i
                             class="fas fa-print"></i> PDF Download</a>
                 </div>
