@@ -19,11 +19,7 @@ class QuestionEntryController extends Controller
         if ($error = $this->authorize('question-entry-manage')) {
             return $error;
         }
-        $exams = Exam::all();
-        $questions = Question::all();
-        $subjects = Subject::all();
-
-        return view('admin.question_entry.index', compact('exams', 'questions', 'subjects'));
+        return view('admin.question_entry.index');
     }
 
     public function create()
@@ -40,10 +36,16 @@ class QuestionEntryController extends Controller
 
     public function read(Request $request)
     {
-        $inputs = Question::whereSubject_id($request->subject_id)->whereChapter_id($request->chapter_id)->whereType($request->type)->get();
-        $questions = view('admin.question_entry.ajax', ['inputs' => $inputs])->render();
-
-        return response()->json(['status' => 'success', 'html' => $questions, 'questions']);
+        $inputs = Question::whereSubjectId($request->subject_id)
+            ->whereChapterId($request->chapter_id)
+            ->whereType($request->type)
+            ->get();
+        if ($inputs->count() > 0) {
+            $questions = view('admin.question_entry.ajax', ['inputs' => $inputs])->render();
+            return response()->json(['status' => 'success', 'html' => $questions, 'questions']);
+        }else{
+            return response()->json(['status' => 'no', 'message' => 'No data found']);
+        }
     }
 
     public function getQuestion(Request $request)
@@ -122,7 +124,7 @@ class QuestionEntryController extends Controller
             //     File::makeDirectory($path, 0777, true, true);
             // }
             $image = $request->file('image');
-            $imageName = 'question_'.rand(0, 1000000).'.'.$image->getClientOriginalExtension();
+            $imageName = 'question_' . rand(0, 1000000) . '.' . $image->getClientOriginalExtension();
             $request->image->move('uploads/images/question/', $imageName);
             $data['image'] = $imageName;
         }
@@ -178,7 +180,7 @@ class QuestionEntryController extends Controller
                     'question_id' => $id,
                     'option' => $request->option[$key],
                 ];
-                if (! empty(QuesOption::whereId($request->option_id[$key]))) {
+                if (!empty(QuesOption::whereId($request->option_id[$key]))) {
                     QuesOption::where('id', $request->option_id[$key])->update($option);
                 } else {
                     QuesOption::create($option);
@@ -237,8 +239,8 @@ class QuestionEntryController extends Controller
         }
         $user = Question::find($id);
         QuesOption::whereQuestion_id($id)->delete();
-        $path = public_path('uploads/images/users/'.$user->image);
-        if (file_exists($path) && ! is_null($user->image)) {
+        $path = public_path('uploads/images/users/' . $user->image);
+        if (file_exists($path) && !is_null($user->image)) {
             unlink($path);
             $user->delete();
             QuesOption::whereQuestion_id($id)->delete();

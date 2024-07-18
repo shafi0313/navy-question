@@ -14,7 +14,7 @@ use App\Http\Controllers\Admin\QuestionPaperController;
 use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\VisitorInfoController;
-use App\Http\Controllers\AjaxController;
+use App\Http\Controllers\Admin\AjaxController;
 use App\Http\Controllers\Auth\Permission\PermissionController;
 use App\Http\Controllers\Auth\Role\RoleController;
 use App\Http\Controllers\AuthController;
@@ -50,9 +50,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     });
 
     // Global Ajax Route
-    Route::delete('delete-all/{model}', [AjaxController::class, 'deleteAll'])->name('delete_all');
-    Route::delete('force-delete-all/{model}', [AjaxController::class, 'forceDeleteAll'])->name('force_delete_all');
-    Route::get('select-2-ajax/{model}', [AjaxController::class, 'select2'])->name('select2');
+    Route::get('select-2-ajax', [AjaxController::class, 'select2'])->name('select2');
+    Route::post('response', [AjaxController::class, 'response'])->name('ajax');
 
     Route::post('role/permission/{role}', [RoleController::class, 'assignPermission'])->name('role.permission');
     Route::resource('role', RoleController::class);

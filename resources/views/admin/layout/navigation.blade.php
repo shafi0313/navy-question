@@ -71,21 +71,62 @@
                 </li>
 
                 @can('question-entry-manage')
-                    <li class="nav-item {{ activeNav('admin.question.*') }}">
-                        {{-- <a href="{{ route('admin.question.create') }}"> --}}
+                    {{-- <li class="nav-item {{ activeNav('admin.question.*') }}">
                         <a href="{{ route('admin.question.index') }}">
                             <i class="fa-solid fa-circle-question"></i>
                             <p>Question Entry</p>
                         </a>
+                    </li> --}}
+                    <li class="nav-item {{ activeNav('admin.question.*') }}">
+                        <a data-toggle="collapse" href="#questionMenu">
+                            <i class="fas fa-users-cog"></i>
+                            <p>Question</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse {{ openNav(['admin.question.*']) }}" id="questionMenu">
+                            <ul class="nav nav-collapse">
+                                <li class="{{ activeSubNav(['admin.question.index','admin.question.edit']) }}">
+                                    <a href="{{ route('admin.question.index') }}">
+                                        <span class="sub-item">Manage</span>
+                                    </a>
+                                </li>
+                                <li class="{{ activeSubNav(['admin.question.create']) }}">
+                                    <a href="{{ route('admin.question.create') }}">
+                                        <span class="sub-item">Entry</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                 @endcan
 
                 @can('question-generate-manage')
-                    <li class="nav-item {{ activeNav('admin.generate_question.*') }}">
+                    {{-- <li class="nav-item {{ activeNav('admin.generate_question.*') }}">
                         <a href="{{ route('admin.generate_question.index') }}">
                             <i class="fa-solid fa-file-circle-question"></i>
                             <p>Generate Question</p>
                         </a>
+                    </li> --}}
+                    <li class="nav-item {{ activeNav('admin.generate_question.*') }}">
+                        <a data-toggle="collapse" href="#generateQuestion">
+                            <i class="fas fa-users-cog"></i>
+                            <p>Generate Question</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse {{ openNav(['admin.generate_question.*']) }}" id="generateQuestion">
+                            <ul class="nav nav-collapse">
+                                <li class="{{ activeSubNav(['admin.generate_question.index','admin.generate_question.edit','admin.generate_question.show']) }}">
+                                    <a href="{{ route('admin.generate_question.index') }}">
+                                        <span class="sub-item">Manage Question</span>
+                                    </a>
+                                </li>
+                                <li class="{{ activeSubNav(['admin.generate_question.create']) }}">
+                                    <a href="{{ route('admin.generate_question.create') }}">
+                                        <span class="sub-item">Generate Question</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                 @endcan
 

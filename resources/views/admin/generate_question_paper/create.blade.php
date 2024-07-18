@@ -41,11 +41,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="exam_id">Exam <span class="t_r">*</span></label>
-                                                <select class="form-control select2" name="exam_id" id="exam_id" required>
-                                                    <option selected value disabled>Select</option>
-                                                    @foreach ($exams as $exam)
-                                                        <option value="{{ $exam->id }}">{{ $exam->name }}</option>
-                                                    @endforeach
+                                                <select class="form-control" name="exam_id" id="exam_id" required>
                                                 </select>
                                                 @if ($errors->has('exam_id'))
                                                     <div class="alert alert-danger">{{ $errors->first('exam_id') }}</div>
@@ -136,68 +132,6 @@
                                                 @endif
                                             </div>
                                         </div>
-
-                                        {{-- <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="pass_mark">Pass Marks <span class="t_r">*</span></label>
-                                            <input type="text" name="pass_mark" class="form-control" value="{{ old('pass_mark') }}" onInput="this.value = this.value.replace(/[a-zA-z\-*/]/g,'');" required>
-                                            @if ($errors->has('pass_mark'))
-                                            <div class="alert alert-danger">{{ $errors->first('pass_mark') }}</div>
-                                        @endif
-                                        </div>
-                                    </div> --}}
-
-
-                                        {{-- <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="chapter_id">Chapter <span class="t_r">*</span></label>
-                                            <select class="form-control select2" name="chapter_id" id="chapter_id">
-                                            </select>
-                                            @if ($errors->has('chapter_id'))
-                                                <div class="alert alert-danger">{{ $errors->first('chapter_id') }}</div>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="type">Question Type <span class="t_r">*</span></label>
-                                            <select class="form-control" name="type" id="quesType" required>
-                                                <option selected value disabled>Select</option>
-                                                <option value="multiple_choice">Multiple Choice</option>
-                                                <option value="short_question">Short Question</option>
-                                                <option value="long_question">Long Question</option>
-                                            </select>
-                                            @if ($errors->has('type'))
-                                                <div class="alert alert-danger">{{ $errors->first('type') }}</div>
-                                            @endif
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-12">
-                                        <hr class="bg-danger">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="type">Question Generate by Percentage</label>
-                                            <input type="text" name="percentage" class="form-control">
-                                            @if ($errors->has('type'))
-                                                <div class="alert alert-danger">{{ $errors->first('type') }}</div>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <table class="table table-striped table-bordered table-hover w-100" >
-                                            <thead>
-                                                <tr>
-                                                    <th>Question</th>
-                                                    <th>Type</th>
-                                                    <th>Marks</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="questionArea" id="questionArea"></tbody>
-                                        </table>
-                                    </div> --}}
-
                                     </div>
                                 </div>
                                 <div class="text-center card-action">
@@ -214,105 +148,139 @@
     </div>
     @push('custom_scripts')
         <script>
-            $('#exam_id').change(function() {
-                $.ajax({
-                    url: '{{ route('admin.global.getSubject') }}',
-                    method: 'get',
-                    data: {
-                        exam_id: $(this).val(),
-                    },
-                    success: function(res) {
-                        if (res.status == 'success') {
-                            $('#subject_id').html(res.html);
+            $(document).ready(function() {
+                $('#exam_id').select2({
+                    width: '100%',
+                    placeholder: 'Select...',
+                    allowClear: true,
+                    ajax: {
+                        url: window.location.origin + '/admin/select-2-ajax',
+                        dataType: 'json',
+                        delay: 250,
+                        cache: true,
+                        data: function(params) {
+                            return {
+                                q: $.trim(params.term),
+                                type: 'getExam',
+                            };
+                        },
+                        processResults: function(data) {
+                            return {
+                                results: data
+                            };
+                        }
+                    }
+                });
+                $('#subject_id').select2({
+                    width: '100%',
+                    placeholder: 'Select Exam First...',
+                    allowClear: true,
+                    ajax: {
+                        url: window.location.origin + '/admin/select-2-ajax',
+                        dataType: 'json',
+                        delay: 250,
+                        cache: true,
+                        data: function(params) {
+                            let examId = $('#exam_id').find(":selected").val();
+                            return {
+                                q: $.trim(params.term),
+                                type: 'getSubjectByExam',
+                                exam_id: examId
+                            };
+                        },
+                        processResults: function(data) {
+                            return {
+                                results: data
+                            };
                         }
                     }
                 });
             })
 
-            $('#subject_id').change(function() {
-                $.ajax({
-                    url: "{{ route('admin.question.getChapter') }}",
-                    data: {
-                        subjectId: $(this).val()
-                    },
-                    method: 'get',
-                    success: res => {
-                        let opt = '<option disabled selected>- -</option>';
-                        if (res.status == 200) {
-                            $.each(res.chapters, function(i, v) {
-                                opt += '<option value="' + v.id + '">' + v.name + '</option>';
-                            });
-                            $("#chapter_id").html(opt);
-                        } else {
-                            alert('No chapter found')
-                        }
-                    },
-                    error: err => {
-                        alert('No chapter found')
-                    }
-                });
-            });
+            // $('#subject_id').change(function() {
+            //     $.ajax({
+            //         url: "{{ route('admin.question.getChapter') }}",
+            //         data: {
+            //             subjectId: $(this).val()
+            //         },
+            //         method: 'get',
+            //         success: res => {
+            //             let opt = '<option disabled selected>- -</option>';
+            //             if (res.status == 200) {
+            //                 $.each(res.chapters, function(i, v) {
+            //                     opt += '<option value="' + v.id + '">' + v.name + '</option>';
+            //                 });
+            //                 $("#chapter_id").html(opt);
+            //             } else {
+            //                 alert('No chapter found')
+            //             }
+            //         },
+            //         error: err => {
+            //             alert('No chapter found')
+            //         }
+            //     });
+            // });
 
-            $('#subject_id').change(function() {
-                $.ajax({
-                    url: "{{ route('admin.question.getChapter') }}",
-                    data: {
-                        subjectId: $(this).val()
-                    },
-                    method: 'get',
-                    success: res => {
-                        let opt = '<option disabled selected>- -</option>';
-                        if (res.status == 200) {
-                            $.each(res.chapters, function(i, v) {
-                                opt += '<option value="' + v.id + '">' + v.name + '</option>';
-                            });
-                            $("#chapter_id").html(opt);
-                        } else {
-                            alert('No chapter found')
-                        }
-                    },
-                    error: err => {
-                        alert('No chapter found')
-                    }
-                });
-            });
+            // $('#subject_id').change(function() {
+            //     $.ajax({
+            //         url: "{{ route('admin.question.getChapter') }}",
+            //         data: {
+            //             subjectId: $(this).val()
+            //         },
+            //         method: 'get',
+            //         success: res => {
+            //             let opt = '<option disabled selected>- -</option>';
+            //             if (res.status == 200) {
+            //                 $.each(res.chapters, function(i, v) {
+            //                     opt += '<option value="' + v.id + '">' + v.name + '</option>';
+            //                 });
+            //                 $("#chapter_id").html(opt);
+            //             } else {
+            //                 alert('No chapter found')
+            //             }
+            //         },
+            //         error: err => {
+            //             alert('No chapter found')
+            //         }
+            //     });
+            // });
 
-            $('#quesType').change(function() {
-                $("#questionArea").html('');
-                let chapterId = $('#chapter_id').find(":selected").val();
-                let quesType = $(this).val();
-                $.ajax({
-                    url: "{{ route('admin.generate_question.getQuestion') }}",
-                    data: {
-                        chapterId: chapterId,
-                        quesType: quesType
-                    },
-                    method: 'get',
-                    success: res => {
-                        if (res.status == 200) {
-                            var quesData = '';
-                            $.each(res.questions, function(i, v) {
-                                quesData += '<tr>'
-                                // quesData += '<input type="hidden" name="type" value="'+v.type+'">'
-                                quesData +=
-                                    '<td><input type="checkbox" name="question_id[]" value="' + v
-                                    .id + '">&nbsp;&nbsp; ' + v.ques + '</td>'
-                                quesData += '<td>' + v.type + '</td>'
-                                quesData += '<td>' + v.mark + '</td>'
-                                quesData += '</tr>'
-                            });
-                            $("#questionArea").append(quesData);
-                        } else {
-                            alert('No question found')
-                        }
-                    },
-                    error: err => {
-                        alert('No question found')
-                    }
-                });
-            });
+            // $('#quesType').change(function() {
+            //     $("#questionArea").html('');
+            //     let chapterId = $('#chapter_id').find(":selected").val();
+            //     let quesType = $(this).val();
+            //     $.ajax({
+            //         url: "{{ route('admin.generate_question.getQuestion') }}",
+            //         data: {
+            //             chapterId: chapterId,
+            //             quesType: quesType
+            //         },
+            //         method: 'get',
+            //         success: res => {
+            //             if (res.status == 200) {
+            //                 var quesData = '';
+            //                 $.each(res.questions, function(i, v) {
+            //                     quesData += '<tr>'
+            //                     // quesData += '<input type="hidden" name="type" value="'+v.type+'">'
+            //                     quesData +=
+            //                         '<td><input type="checkbox" name="question_id[]" value="' + v
+            //                         .id + '">&nbsp;&nbsp; ' + v.ques + '</td>'
+            //                     quesData += '<td>' + v.type + '</td>'
+            //                     quesData += '<td>' + v.mark + '</td>'
+            //                     quesData += '</tr>'
+            //                 });
+            //                 $("#questionArea").append(quesData);
+            //             } else {
+            //                 alert('No question found')
+            //             }
+            //         },
+            //         error: err => {
+            //             alert('No question found')
+            //         }
+            //     });
+            // });
         </script>
-        <script>
+        {{-- <script>
             $("#quesType").change(function() {
                 const type = $(this).val();
                 if (type == "multiple_choice") {
@@ -342,6 +310,6 @@
                 $('#remove_' + id).remove();
                 total_price();
             }
-        </script>
+        </script> --}}
     @endpush
 @endsection

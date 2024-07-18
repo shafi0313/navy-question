@@ -90,9 +90,7 @@ class GenerateQuestionPaperController extends Controller
         if ($error = $this->authorize('question-generate-add')) {
             return $error;
         }
-        $exams = Exam::all();
-
-        return view('admin.generate_question_paper.create', compact('exams'));
+        return view('admin.generate_question_paper.create');
     }
 
     public function getQuestion(Request $request)
