@@ -26,29 +26,29 @@
                     <div class="col-md-12">
                         <form action="{{ route('admin.generate_question.addQues') }}" method="POST" id="">
                             @csrf
-                            <input type="hidden" name="subject_id"
-                                value="{{ $quesInfo->subject->subject_id }}">
+                            {{-- <input type="hidden" name="subject_id"
+                                value="{{ $questionInfo->subject->subject_id }}">
                             <input type="hidden" name="ques_info_id"
-                                value="{{ $quesInfo->ques_info_id }}" id="ques_info_id">
+                                value="{{ $questionInfo->ques_info_id }}" id="ques_info_id"> --}}
                             <div class="card">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-12 text-center">
-                                            <h4>Exam/Course: <b>{{ $quesInfo->exam->name }}</b></h4>
-                                            <h4>Subject: <b>{{ $quesInfo->subject->name }}</b></h4>
-                                            <h4>Trade: <b>{{ $quesInfo->subject->trade }}</b></h4>
+                                            {{-- <h4>Exam/Course: <b>{{ $questionInfo->exam->name }}</b></h4>
+                                            <h4>Subject: <b>{{ $questionInfo->subject->name }}</b></h4>
+                                            <h4>Trade: <b>{{ $questionInfo->subject->trade }}</b></h4> --}}
                                             <hr>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="chapter_id">Chapters <span class="t_r">*</span></label>
-                                                <select class="form-control select2" name="chapter_id" id="chapter_id">
+                                                {{-- <select class="form-control select2" name="chapter_id" id="chapter_id">
                                                     <option selected value disabled>Select</option>
                                                     @foreach ($mainChapters as $mainChapter)
                                                         <option value="{{ $mainChapter->id }}">{{ $mainChapter->name }}
                                                         </option>
                                                     @endforeach
-                                                </select>
+                                                </select> --}}
                                                 @if ($errors->has('chapter_id'))
                                                     <div class="alert alert-danger">{{ $errors->first('chapter_id') }}</div>
                                                 @endif
@@ -98,7 +98,7 @@
 
                 {{-- <form action="{{ route('admin.generate_question.complete') }}" method="POST">
                     @csrf
-                    <input type="hidden" name="quesInfoId" value="{{ $quesInfoId }}"> --}}
+                    <input type="hidden" name="quesInfoId" value="{{ $questionInfoId }}"> --}}
                     @include('include.question_paper')
                     {{-- <div class="col-md-12 text-center card-action">
                         <button type="submit" class="btn btn-primary">Generate Question</button>

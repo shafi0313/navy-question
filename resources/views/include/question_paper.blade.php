@@ -35,7 +35,7 @@
             <div class="card-header">
                 <div class="d-flex align-items-center">
                     <h4 class="card-title"></h4>
-                    <a href="{{ route('admin.generated_question.show', [$quesInfo->id, $chapters->first()->first()->set, 'pdf']) }}"
+                    <a href="{{ route('admin.generated_question.show', [$questionInfo->id, 1, 'pdf']) }}"
                         class="btn btn-success ml-auto" id="p" style="width: 250px" target="_blank"><i
                             class="fas fa-print"></i> PDF Download</a>
                 </div>
@@ -46,12 +46,70 @@
                 @endif
                 <div class="row">
                     <h2 style="margin-left: auto; font-weight: bold; padding-right: 25px">Total Mark:
-                        {{ $totalQuesMark }}</h2>
+                        {{-- {{ $totalQuesMark }}</h2> --}}
                 </div>
+                <style>
+                    .subject {
+                        display: flex;
+                        justify-content: space-between;
+                        margin-bottom: 20px;
+                    }
+                </style>
 
-                @php $x = 1; @endphp
 
-                @foreach ($chapters as $chapterName => $questions)
+                @foreach ($questionSubjectInfos as $questionSubjectInfo)
+                {{-- @if (!empty($complete)) --}}
+                    @include('include.question_paper_head')
+                {{-- @endif --}}
+                {{-- <div class="row">
+                    <h2 style="margin-left: auto; font-weight: bold; padding-right: 25px">Total Mark:
+                        {{ $totalQuesMark }}</h2>
+                </div> --}}
+                    @php $x = 1; @endphp
+                    <div class="subject">
+                        <h3>বিষয়: {{ $questionSubjectInfo->subject->name }}</h3>
+                        <h3>পূর্ণমান: 20</h3>
+                    </div>
+                    @foreach ($questionSubjectInfo->questionPapers as $questionPaper)
+                        <div class="questionArea">
+                            <h4 class="question">
+                                {{ $x++ }}.
+                                {!! $questionPaper->question->ques !!}
+                                <span style="float:right">{{ $questionPaper->question->mark }}
+                                    {{-- @if (!empty($edit))
+                                    <a href="{{ route('admin.generate_question.edit', [$questionPaper->id, $questionPaper->question_info_id]) }}"
+                                        style="margin-left: 20px" class="text-info">Edit</a>
+                                @endif
+                                @if (!empty($delete))
+                                    <a href="{{ route('admin.generate_question.quesDestroy', [$questionPaper->id, $questionPaper->question_info_id]) }}"
+                                        style="margin-left: 20px" class="text-danger">Delete</a>
+                                @endif --}}
+                                </span>
+                            </h4>
+                            @if (isset($questionPaper->question->image))
+                                <img src="{{ asset('uploads/images/question/' . $questionPaper->question->image) }}"
+                                    style="margin-left: 30px" alt="">
+                            @endif
+                        </div>
+                        @if ($questionPaper->options)
+                            @foreach ($questionPaper->options as $option)
+                                <div class="col-md-6 option">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="{{ $option->id }}"
+                                            id="exampleRadios{{ $option->id }}">
+                                        <label class="form-check-label" for="exampleRadios{{ $option->id }}">
+                                            {{ $option->option }}
+                                        </label>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
+                    @endforeach
+                @endforeach
+
+
+
+                {{-- @foreach ($chapters as $chapterName => $questions)
                     <h3><u>{{ $chapterName }}</u></h3>
                     @foreach ($questions as $question)
                         <input type="hidden" name="ques_id" class="ques_id" value="{{ $question->id }}">
@@ -59,11 +117,11 @@
                             <h4 class="question">{{ $x++ }}. {!! $question->question->ques !!}
                                 <span style="float:right">{{ $question->question->mark }}
                                     @if (!empty($edit))
-                                        <a href="{{ route('admin.generate_question.edit', [$question->id, $question->ques_info_id]) }}"
+                                        <a href="{{ route('admin.generate_question.edit', [$question->id, $question->question_info_id]) }}"
                                             style="margin-left: 20px" class="text-info">Edit</a>
                                     @endif
                                     @if (!empty($delete))
-                                        <a href="{{ route('admin.generate_question.quesDestroy', [$question->id, $question->ques_info_id]) }}"
+                                        <a href="{{ route('admin.generate_question.quesDestroy', [$question->id, $question->question_info_id]) }}"
                                             style="margin-left: 20px" class="text-danger">Delete</a>
                                     @endif
                                 </span>
@@ -87,7 +145,7 @@
                             @endforeach
                         @endif
                     @endforeach
-                @endforeach
+                @endforeach --}}
             </div>
         </div>
     </div>

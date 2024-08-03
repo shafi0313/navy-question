@@ -2,20 +2,22 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreQuesInfoRequest;
-use App\Models\Chapter;
 use App\Models\Exam;
-use App\Models\MarkDistribution;
+use App\Models\Chapter;
+use App\Models\Subject;
 use App\Models\QuesInfo;
-use App\Models\QuesOption;
 use App\Models\Question;
-use App\Models\QuestionPaper;
-use App\Traits\QuestionPaperTrait;
+use App\Models\QuesOption;
+use App\Models\QuestionInfo;
 use Illuminate\Http\Request;
+use App\Models\QuestionPaper;
+use App\Models\MarkDistribution;
+use App\Traits\QuestionPaperTrait;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\Facades\DataTables;
+use App\Models\QuestionSubjectInfo;
 
 class GenerateQuestionPaperController extends Controller
 {
@@ -28,7 +30,7 @@ class GenerateQuestionPaperController extends Controller
         }
 
         if ($request->ajax()) {
-            $queInfos = QuesInfo::with(['exam:id,name', 'subject:id,name'])
+            $queInfos = QuestionInfo::with(['exam:id,name', 'questionSubjectInfo'])
                 ->whereStatus('Pending')
                 ->latest();
 
@@ -37,15 +39,9 @@ class GenerateQuestionPaperController extends Controller
                 ->addColumn('date', function ($row) {
                     return bdDate($row->date);
                 })
-                ->addColumn('time', function ($row) {
-                    return time12($row->time);
-                })
                 ->addColumn('duration', function ($row) {
-                    return $row->d_hour.':'.$row->d_minute.' Minute';
+                    return $row->d_hour . ':' . $row->d_minute . ' Minute';
                 })
-                // ->addColumn('content', function ($row) {
-                //     return '<textarea class="form-control">'.strip_tags($row->content).'</textarea>';
-                // })
                 ->addColumn('set', function ($row) {
                     $badgeColors = [
                         'badge-primary',
@@ -59,13 +55,13 @@ class GenerateQuestionPaperController extends Controller
                         $colorIndex = ($i - 1) % count($badgeColors);
                         $colorClass = $badgeColors[$colorIndex];
 
-                        $btn .= '<a href="'.route('admin.generate_question.show', [$row->id, $i, 'show']).'" class="badge '.htmlspecialchars($colorClass).' mb-1">Set '.quesSet($i).'</a>';
+                        $btn .= '<a href="' . route('admin.generate_question.show', [$row->id, $i, 'show']) . '" class="badge ' . htmlspecialchars($colorClass) . ' mb-1">Set ' . quesSet($i) . '</a>';
                     }
 
                     return $btn;
                 })
                 ->addColumn('generate', function ($row) {
-                    return '<a data-route="'.route('admin.generate_question.status', $row->id).'" class="btn btn-primary text-light btn-sm" onclick="changeStatus(this)">Generate</a>';
+                    return '<a data-route="' . route('admin.generate_question.status', $row->id) . '" class="btn btn-primary text-light btn-sm" onclick="changeStatus(this)">Generate</a>';
                 })
                 ->addColumn('action', function ($row) {
                     $btn = '';
@@ -102,105 +98,175 @@ class GenerateQuestionPaperController extends Controller
         }
     }
 
-    public function store(Request $request, StoreQuesInfoRequest $quesInfoRequest)
+    public function store(Request $request)
     {
         if ($error = $this->authorize('question-generate-add')) {
             return $error;
         }
         DB::beginTransaction();
 
-        $questionInfoIds = [];
-        $quesInfo = $quesInfoRequest->validated();
-        $quesInfo['status'] = 'Pending';
-        $quesInfo['user_id'] = auth()->user()->id;
-        // $quesInfo['set'] = $time;
-        // $quesInfo['set'] = QuesInfo::whereYear('date', now('Y'))->whereExamId($quesInfoRequest->exam_id)->whereSubjectId($quesInfoRequest->subject_id)->count() + 1;
-        $quesMarks = MarkDistribution::whereSubject_id($quesInfoRequest->subject_id)->get();
-        // Mark Distribution Check
-        if ($quesMarks->count() < 1) {
-            Alert::info('At first, distribute the subject marks then generate the question');
+        $questionInfo = QuestionInfo::create([
+            'exam_id' => $request->exam_id,
+            'date' => $request->date,
+            'd_hour' => $request->d_hour,
+            'd_minute' => $request->d_minute,
+            'status' => 'Pending',
+        ]);
 
-            return back();
-        }
-        // Question Count Check
-        if (Question::whereExamId($quesInfoRequest->exam_id)->whereSubjectId($quesInfoRequest->subject_id)->whereIn('chapter_id', $quesMarks->pluck('chapter_id'))->get()->count() < 1) {
-            Alert::info('No Data Found');
-
-            return back();
-        }
-        $questionInfo = QuesInfo::create($quesInfo);
-
-        for ($time = 1; $time <= 5; $time++) {
-
-            $questionInfoIds[] = $questionInfo->id;
-
-            foreach ($quesMarks as $k => $v) {
-                $questions = Question::whereExam_id($quesInfoRequest->exam_id)
-                    ->whereSubject_id($quesInfoRequest->subject_id)
-                    ->where('chapter_id', $v->chapter_id)
-                    ->whereType('multiple_choice')
-                    ->inRandomOrder()
-                    ->get();
-                $i = 0;
-                foreach ($questions as $key => $value) {
-                    if ($i < $v->multiple) {
-                        $data = [
-                            'ques_info_id' => $questionInfo->id,
-                            'question_id' => $value->id,
-                            'type' => 'multiple_choice',
-                            'set' => $time,
-                        ];
-                        QuestionPaper::updateOrCreate($data);
-                        $i += $value->mark;
+        $getSubjects = Subject::whereExam_id($request->exam_id)->get();
+        for ($set = 1; $set <= 5; $set++) {
+            foreach ($getSubjects as $getSubject) {
+                $questionSubjectInfo = QuestionSubjectInfo::create([
+                    'question_info_id' => $questionInfo->id,
+                    'subject_id' => $getSubject->id,
+                    'set' => $set,
+                ]);
+                $quesMarks = MarkDistribution::whereSubject_id($getSubject->id)->get();
+                foreach ($quesMarks as $k => $v) {
+                    $questions = Question::whereExam_id($request->exam_id)
+                        ->whereSubject_id($getSubject->id)
+                        ->where('chapter_id', $v->chapter_id)
+                        ->whereType('multiple_choice')
+                        ->inRandomOrder()
+                        ->get();
+                    $i = 0;
+                    foreach ($questions as $key => $value) {
+                        if ($i < $v->multiple) {
+                            $data = [
+                                'question_subject_info_id' => $questionSubjectInfo->id,
+                                'question_id' => $value->id,
+                                'type' => 'multiple_choice',
+                                // 'set' => $set,
+                                // 'ques_no' => $quesNo,
+                            ];
+                            QuestionPaper::updateOrCreate($data);
+                            $i += $value->mark;
+                        }
                     }
                 }
-            }
 
-            foreach ($quesMarks as $k => $v) {
-                $questions = Question::whereExam_id($quesInfoRequest->exam_id)
-                    ->whereSubject_id($quesInfoRequest->subject_id)
-                    ->where('chapter_id', $v->chapter_id)
-                    ->whereType('short_question')
-                    ->inRandomOrder()
-                    ->get();
-                $j = 0;
-                foreach ($questions as $key => $value) {
-                    if ($j < $v->sort) {
-                        $data = [
-                            'ques_info_id' => $questionInfo->id,
-                            'question_id' => $value->id,
-                            'type' => 'short_question',
-                            'set' => $time,
-                        ];
-                        QuestionPaper::updateOrCreate($data);
-                        $j += $value->mark;
+                foreach ($quesMarks as $k => $v) {
+                    $questions = Question::whereExam_id($request->exam_id)
+                        ->whereSubject_id($getSubject->id)
+                        ->where('chapter_id', $v->chapter_id)
+                        ->whereType('short_question')
+                        ->inRandomOrder()
+                        ->get();
+                    $j = 0;
+                    foreach ($questions as $key => $value) {
+                        if ($j < $v->sort) {
+                            $data = [
+                                'question_subject_info_id' => $questionSubjectInfo->id,
+                                'question_id' => $value->id,
+                                'type' => 'short_question',
+                                // 'set' => $set,
+                                // 'ques_no' => $quesNo,
+                            ];
+                            QuestionPaper::updateOrCreate($data);
+                            $j += $value->mark;
+                        }
                     }
                 }
-            }
 
-            foreach ($quesMarks as $k => $v) {
-                $questions = Question::whereExam_id($quesInfoRequest->exam_id)
-                    ->whereSubject_id($quesInfoRequest->subject_id)
-                    ->where('chapter_id', $v->chapter_id)
-                    ->whereType('long_question')
-                    ->inRandomOrder()
-                    ->get();
+                foreach ($quesMarks as $k => $v) {
+                    $questions = Question::whereExam_id($request->exam_id)
+                        ->whereSubject_id($getSubject->id)
+                        ->where('chapter_id', $v->chapter_id)
+                        ->whereType('long_question')
+                        ->inRandomOrder()
+                        ->get();
 
-                $k = 0;
-                foreach ($questions as $key => $value) {
-                    if ($k < $v->long) {
-                        $data = [
-                            'ques_info_id' => $questionInfo->id,
-                            'question_id' => $value->id,
-                            'type' => 'long_question',
-                            'set' => $time,
-                        ];
-                        QuestionPaper::updateOrCreate($data);
-                        $k += $value->mark;
+                    $k = 0;
+                    foreach ($questions as $key => $value) {
+                        if ($k < $v->long) {
+                            $data = [
+                                'question_subject_info_id' => $questionSubjectInfo->id,
+                                'question_id' => $value->id,
+                                'type' => 'long_question',
+                                // 'set' => $set,
+                                // 'ques_no' => $quesNo,
+                            ];
+                            QuestionPaper::updateOrCreate($data);
+                            $k += $value->mark;
+                        }
                     }
                 }
             }
         }
+
+        // for ($set = 1; $set <= 5; $set++) {
+        //     for ($quesNo = 1; $quesNo <= 5; $quesNo++) {
+        //         foreach ($quesMarks as $k => $v) {
+        //             $questions = Question::whereExam_id($request->exam_id)
+        //                 ->whereSubject_id($getSubject->id)
+        //                 ->where('chapter_id', $v->chapter_id)
+        //                 ->whereType('multiple_choice')
+        //                 ->inRandomOrder()
+        //                 ->get();
+        //             $i = 0;
+        //             foreach ($questions as $key => $value) {
+        //                 if ($i < $v->multiple) {
+        //                     $data = [
+        //                         'question_subject_info_id' => $questionSubjectInfo->id,
+        //                         'question_id' => $value->id,
+        //                         'type' => 'multiple_choice',
+        //                         'set' => $set,
+        //                         'ques_no' => $quesNo,
+        //                     ];
+        //                     QuestionPaper::updateOrCreate($data);
+        //                     $i += $value->mark;
+        //                 }
+        //             }
+        //         }
+
+        //         foreach ($quesMarks as $k => $v) {
+        //             $questions = Question::whereExam_id($request->exam_id)
+        //                 ->whereSubject_id($getSubject->id)
+        //                 ->where('chapter_id', $v->chapter_id)
+        //                 ->whereType('short_question')
+        //                 ->inRandomOrder()
+        //                 ->get();
+        //             $j = 0;
+        //             foreach ($questions as $key => $value) {
+        //                 if ($j < $v->sort) {
+        //                     $data = [
+        //                         'question_subject_info_id' => $questionSubjectInfo->id,
+        //                         'question_id' => $value->id,
+        //                         'type' => 'short_question',
+        //                         'set' => $set,
+        //                         'ques_no' => $quesNo,
+        //                     ];
+        //                     QuestionPaper::updateOrCreate($data);
+        //                     $j += $value->mark;
+        //                 }
+        //             }
+        //         }
+
+        //         foreach ($quesMarks as $k => $v) {
+        //             $questions = Question::whereExam_id($request->exam_id)
+        //                 ->whereSubject_id($getSubject->id)
+        //                 ->where('chapter_id', $v->chapter_id)
+        //                 ->whereType('long_question')
+        //                 ->inRandomOrder()
+        //                 ->get();
+
+        //             $k = 0;
+        //             foreach ($questions as $key => $value) {
+        //                 if ($k < $v->long) {
+        //                     $data = [
+        //                         'question_subject_info_id' => $questionSubjectInfo->id,
+        //                         'question_id' => $value->id,
+        //                         'type' => 'long_question',
+        //                         'set' => $set,
+        //                         'ques_no' => $quesNo,
+        //                     ];
+        //                     QuestionPaper::updateOrCreate($data);
+        //                     $k += $value->mark;
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
 
         try {
             toast('Success!', 'success');
@@ -220,8 +286,9 @@ class GenerateQuestionPaperController extends Controller
 
     public function show($quesInfoId, $set, $type)
     {
+        // return
         $data = $this->questionPaperShow($quesInfoId, $set, $type);
-        $data['mainChapters'] = Chapter::whereSubjectId($data['quesInfo']->subject->id)->get();
+        // $data['mainChapters'] = Chapter::whereSubjectId($data['questionSubjectInfo']->subject->id)->get();
 
         if ($type == 'show') {
             return view('admin.generate_question_paper.show', $data);
@@ -319,7 +386,7 @@ class GenerateQuestionPaperController extends Controller
                     'question_id' => $quesId,
                     'option' => $request->option[$key],
                 ];
-                if (! empty(QuesOption::whereId($request->option_id[$key]))) {
+                if (!empty(QuesOption::whereId($request->option_id[$key]))) {
                     QuesOption::where('id', $request->option_id[$key])->update($option);
                 } else {
                     QuesOption::create($option);

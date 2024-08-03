@@ -76,11 +76,6 @@
                                 title: 'Exam'
                             },
                             {
-                                data: 'subject.name',
-                                name: 'subject.name',
-                                title: 'Subject'
-                            },
-                            {
                                 data: 'date',
                                 name: 'date',
                                 title: 'Date'

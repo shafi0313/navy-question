@@ -48,7 +48,7 @@
                                                 @endif
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        {{-- <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="subject_id">Subject & Trade <span
                                                         class="t_r">*</span></label>
@@ -58,7 +58,7 @@
                                                     <div class="alert alert-danger">{{ $errors->first('subject_id') }}</div>
                                                 @endif
                                             </div>
-                                        </div>
+                                        </div> --}}
 
                                         <div class="col-md-6">
                                             <div class="form-group">
@@ -75,7 +75,7 @@
                                             <div class="form-group">
                                                 <label for="time">Time <span class="t_r">*</span></label>
                                                 <input type="time" name="time" class="form-control"
-                                                    value="{{ old('time', date('h.i A')) }}" required>
+                                                    value="{{ old('time', date('h.i A')) }}">
                                                 @if ($errors->has('time'))
                                                     <div class="alert alert-danger">{{ $errors->first('time') }}</div>
                                                 @endif
@@ -84,15 +84,15 @@
 
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="duration">Duration <span class="t_r">*</span></label><br>
+                                                <label for="duration">Duration </label><br>
                                                 <input style="width:50%; display: inline-block" type="text"
                                                     name="d_hour" class="form-control" value="{{ old('d_hour') }}"
                                                     placeholder="Hour"
-                                                    onInput="this.value = this.value.replace(/[^\d]/g,'');" required>
+                                                    onInput="this.value = this.value.replace(/[^\d]/g,'');" >
                                                 <input style="width:49%; display: inline-block" type="text"
                                                     name="d_minute" class="form-control" value="{{ old('d_minute') }}"
                                                     placeholder="Minute"
-                                                    onInput="this.value = this.value.replace(/[^\d]/g,'');" required>
+                                                    onInput="this.value = this.value.replace(/[^\d]/g,'');" >
                                                 @if ($errors->has('d_hour'))
                                                     <div class="alert alert-danger">{{ $errors->first('d_hour') }}</div>
                                                 @endif
@@ -105,7 +105,7 @@
                                             <div class="form-group">
                                                 <label for="mode">Mode <span class="t_r">*</span></label>
                                                 <input type="text" name="mode" class="form-control"
-                                                    value="{{ old('mode') }}" required>
+                                                    value="{{ old('mode') }}">
                                                 @if ($errors->has('mode'))
                                                     <div class="alert alert-danger">{{ $errors->first('mode') }}</div>
                                                 @endif

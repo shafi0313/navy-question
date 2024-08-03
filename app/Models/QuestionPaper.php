@@ -11,23 +11,28 @@ class QuestionPaper extends Model
 
     protected $guarded = ['id'];
 
-    public function quesInfo()
-    {
-        return $this->belongsTo(QuesInfo::class);
-    }
+    // public function quesInfo()
+    // {
+    //     return $this->belongsTo(QuesInfo::class);
+    // }
 
-    public function subject()
-    {
-        return $this->belongsTo(Subject::class, 'subject_id');
-    }
+    // public function subject()
+    // {
+    //     return $this->belongsTo(Subject::class, 'subject_id');
+    // }
+
+    // public function question()
+    // {
+    //     return $this->belongsTo(Question::class, 'question_id');
+    // }
 
     public function question()
     {
-        return $this->belongsTo(Question::class, 'question_id');
+        return $this->belongsTo(Question::class, 'question_id', 'id');
     }
 
     public function options()
     {
-        return $this->hasMany(QuesOption::class, 'question_id', 'question_id');
+        return $this->belongsTo(QuesOption::class, 'question_id', 'question_id');
     }
 }

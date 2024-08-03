@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Models\MarkDistribution;
-use App\Models\QuesInfo;
-use App\Models\QuestionPaper;
-use App\Traits\QuestionPaperTrait;
-use Illuminate\Http\Request;
 use PDF;
+use App\Models\QuesInfo;
+use App\Models\QuestionInfo;
+use Illuminate\Http\Request;
+use App\Models\QuestionPaper;
+use App\Models\MarkDistribution;
+use App\Traits\QuestionPaperTrait;
+use App\Http\Controllers\Controller;
 use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -22,8 +23,8 @@ class QuestionPaperController extends Controller
             return $error;
         }
         if ($request->ajax()) {
-            $queInfos = QuesInfo::with(['exam:id,name', 'subject:id,name'])
-                ->whereStatus('Created')
+            $queInfos = QuestionInfo::with(['exam:id,name', 'questionSubjectInfo'])
+                ->whereStatus('Pending')
                 ->latest();
 
             return DataTables::of($queInfos)
@@ -101,7 +102,7 @@ class QuestionPaperController extends Controller
             // return view('admin.question_paper.pdf', $data);
             $pdf = PDF::loadView('admin.question_paper.pdf', $data);
 
-            return $pdf->download($data['quesInfo']->exam->name.' - '.$data['quesInfo']->subject->name.' - '.date('h:i:sa d-M-Y').'.pdf');
+            return $pdf->download($data['questionInfo']->exam->name.' - '.date('h:i:sa d-M-Y').'.pdf');
         }
     }
 

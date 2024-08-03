@@ -15,14 +15,13 @@ return new class() extends Migration
     {
         Schema::create('question_papers', function (Blueprint $table) {
             $table->id();
-            // $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            // $table->foreignId('exam_id')->constrained()->cascadeOnDelete();
-            // $table->foreignId('subject_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('ques_info_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('question_subject_info_id')->constrained()->cascadeOnDelete();
             $table->foreignId('question_id')->constrained()->cascadeOnDelete();
-            $table->tinyInteger('set');
+            // $table->foreignId('ques_info_id')->constrained()->cascadeOnDelete();
+            // $table->foreignId('question_id')->constrained()->cascadeOnDelete();
+            // $table->string('set', 64);
+            // $table->tinyInteger('set_no');
             $table->enum('type', ['multiple_choice', 'short_question', 'long_question']);
-
             $table->timestamps();
         });
     }

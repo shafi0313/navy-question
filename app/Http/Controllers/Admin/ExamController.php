@@ -21,9 +21,6 @@ class ExamController extends Controller
 
             return DataTables::of($exams)
                 ->addIndexColumn()
-                ->addColumn('check', function ($row) {
-                    return '<input type="checkbox" name="select[]" onclick="checkcheckbox()" id="check_'.$row->id.'" class="check" value="'.$row->id.'">';
-                })
                 ->addColumn('created_at', function ($row) {
                     return $row->created_at->diffForHumans();
                 })

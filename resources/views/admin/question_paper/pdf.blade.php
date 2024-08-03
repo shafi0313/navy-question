@@ -98,30 +98,30 @@
     <div class="title">
 
         <h4 class="exam_title">
-            @if ($quesInfo->status == 'Pending')
+            @if ($questionInfo->status == 'Pending')
                  <h2>Draft Question Paper</h2>
             @endif
-            {{ $quesInfo->exam->name }} -
-            {{ \Carbon\Carbon::parse($quesInfo->date)->format('F Y') }}
+            {{ $questionInfo->exam->name }} -
+            {{ \Carbon\Carbon::parse($questionInfo->date)->format('F Y') }}
         </h4>
-        <h4 class="exam_title">TRADE: {{ $quesInfo->subject->trade }}</h4>
-        <h4 style="margin-bottom: 15px" class="exam_title">SUBJECT: {{ $quesInfo->subject->name }}</h4>
+        {{-- <h4 class="exam_title">TRADE: {{ $questionInfo->subject->trade }}</h4> --}}
+        {{-- <h4 style="margin-bottom: 15px" class="exam_title">SUBJECT: {{ $questionInfo->subject->name }}</h4> --}}
         <table class="table table-bordered text-left">
-            <tr>
+            {{-- <tr>
                 <td>Mode of Examination</td>
-                <td>{{ $quesInfo->mode }}</td>
+                <td>{{ $questionInfo->mode }}</td>
                 <td>Total Marks</td>
                 <td>{{ $totalMark }}</td>
-            </tr>
+            </tr> --}}
             <tr>
                 <td>Duration of Examination</td>
-                <td>{{ $quesInfo->d_hour }} Hrs {{ $quesInfo->d_minute }} Min</td>
+                <td>{{ $questionInfo->d_hour }} Hrs {{ $questionInfo->d_minute }} Min</td>
                 <td>Pass Marks</td>
-                <td>{{ $passMark }}</td>
+                {{-- <td>{{ $passMark }}</td> --}}
             </tr>
         </table>
-        <p style="margin: 6px 0px"><b>{{ $quesInfo->note }}</b></p>
-        <p style="margin-bottom: 10px"><b><u>{{ $quesInfo->option_note }}</u></b></p>
+        <p style="margin: 6px 0px"><b>{{ $questionInfo->note }}</b></p>
+        <p style="margin-bottom: 10px"><b><u>{{ $questionInfo->option_note }}</u></b></p>
     </div>
 </div>
 <br>
@@ -133,22 +133,27 @@
     </tr>
 </table>
 
+
+@foreach ($questionSubjectInfos as $questionSubjectInfo)
+<div class="subject">
+    <h3>Subject: {{ $questionSubjectInfo->subject->name }}</h3>
+    <h3>Mark: 20</h3>
+</div>
 @php $x = 1 @endphp
-@foreach ($chapters as $chapter => $questions)
-    <h4 class="chapter"><u>{{ $questions->first()->question->chapter->name }}</u></h4>
-    @foreach ($questions as $question)
+    {{-- <h4 class="chapter"><u>{{ $questionPapers->first()->question->chapter->name }}</u></h4> --}}
+    @foreach ($questionSubjectInfo->questionPapers as $questionPaper)
         <table style="width: 100%">
             <tr>
                 <td class="sl">{{ $x++ }}. </td>
-                <td style="text-align:left;">{!! $question->question->ques !!}</td>
-                <td style="text-align:right">{{ $question->question->mark }}</td>
+                <td style="text-align:left;">{!! $questionPaper->question->ques !!}</td>
+                <td style="text-align:right">{{ $questionPaper->question->mark }}</td>
             </tr>
         </table>
-        @if ($question->question->image)
-            <img src="{{ asset('uploads/images/question/' . $question->question->image) }}" alt="">
+        @if ($questionPaper->question->image)
+            <img src="{{ asset('uploads/images/question/' . $questionPaper->question->image) }}" alt="">
         @endif
-        @if ($question->options->count() > 0)
-            @foreach ($question->options as $option)
+        @if ($questionPaper->options)
+            @foreach ($questionPaper->options as $option)
                 <div class="col-md-6 option">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" value="{{ $option->id }}"
