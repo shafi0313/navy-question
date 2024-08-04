@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Exam;
-use App\Models\Chapter;
 use App\Models\Subject;
 use App\Models\QuesInfo;
 use App\Models\Question;
@@ -92,7 +91,10 @@ class GenerateQuestionPaperController extends Controller
     public function getQuestion(Request $request)
     {
         if ($request->ajax()) {
-            $questions = Question::whereNotIn('id', $request->quesId)->whereChapter_id($request->chapterId)->whereType($request->quesType)->get();
+            $questions = Question::whereNotIn('id', $request->get_question_id)
+            ->whereSubjectId($request->subject_id)
+            ->whereType($request->ques_type)
+            ->get();
 
             return response()->json(['questions' => $questions, 'status' => 200]);
         }
@@ -194,80 +196,6 @@ class GenerateQuestionPaperController extends Controller
             }
         }
 
-        // for ($set = 1; $set <= 5; $set++) {
-        //     for ($quesNo = 1; $quesNo <= 5; $quesNo++) {
-        //         foreach ($quesMarks as $k => $v) {
-        //             $questions = Question::whereExam_id($request->exam_id)
-        //                 ->whereSubject_id($getSubject->id)
-        //                 ->where('chapter_id', $v->chapter_id)
-        //                 ->whereType('multiple_choice')
-        //                 ->inRandomOrder()
-        //                 ->get();
-        //             $i = 0;
-        //             foreach ($questions as $key => $value) {
-        //                 if ($i < $v->multiple) {
-        //                     $data = [
-        //                         'question_subject_info_id' => $questionSubjectInfo->id,
-        //                         'question_id' => $value->id,
-        //                         'type' => 'multiple_choice',
-        //                         'set' => $set,
-        //                         'ques_no' => $quesNo,
-        //                     ];
-        //                     QuestionPaper::updateOrCreate($data);
-        //                     $i += $value->mark;
-        //                 }
-        //             }
-        //         }
-
-        //         foreach ($quesMarks as $k => $v) {
-        //             $questions = Question::whereExam_id($request->exam_id)
-        //                 ->whereSubject_id($getSubject->id)
-        //                 ->where('chapter_id', $v->chapter_id)
-        //                 ->whereType('short_question')
-        //                 ->inRandomOrder()
-        //                 ->get();
-        //             $j = 0;
-        //             foreach ($questions as $key => $value) {
-        //                 if ($j < $v->sort) {
-        //                     $data = [
-        //                         'question_subject_info_id' => $questionSubjectInfo->id,
-        //                         'question_id' => $value->id,
-        //                         'type' => 'short_question',
-        //                         'set' => $set,
-        //                         'ques_no' => $quesNo,
-        //                     ];
-        //                     QuestionPaper::updateOrCreate($data);
-        //                     $j += $value->mark;
-        //                 }
-        //             }
-        //         }
-
-        //         foreach ($quesMarks as $k => $v) {
-        //             $questions = Question::whereExam_id($request->exam_id)
-        //                 ->whereSubject_id($getSubject->id)
-        //                 ->where('chapter_id', $v->chapter_id)
-        //                 ->whereType('long_question')
-        //                 ->inRandomOrder()
-        //                 ->get();
-
-        //             $k = 0;
-        //             foreach ($questions as $key => $value) {
-        //                 if ($k < $v->long) {
-        //                     $data = [
-        //                         'question_subject_info_id' => $questionSubjectInfo->id,
-        //                         'question_id' => $value->id,
-        //                         'type' => 'long_question',
-        //                         'set' => $set,
-        //                         'ques_no' => $quesNo,
-        //                     ];
-        //                     QuestionPaper::updateOrCreate($data);
-        //                     $k += $value->mark;
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-
         try {
             toast('Success!', 'success');
             DB::commit();
@@ -288,14 +216,14 @@ class GenerateQuestionPaperController extends Controller
     {
         // return
         $data = $this->questionPaperShow($quesInfoId, $set, $type);
-        // $data['mainChapters'] = Chapter::whereSubjectId($data['questionSubjectInfo']->subject->id)->get();
+        $data['subjects'] = Subject::whereExamId($data['questionInfo']['exam_id'])->get();
 
         if ($type == 'show') {
             return view('admin.generate_question_paper.show', $data);
         }
     }
 
-    public function status(QuesInfo $quesInfo)
+    public function status(QuestionInfo $quesInfo)
     {
         $quesInfo->status = 'Created';
         try {
@@ -309,14 +237,14 @@ class GenerateQuestionPaperController extends Controller
 
     public function addQues(Request $request)
     {
-        if (QuestionPaper::whereQues_info_id($request->ques_info_id)->whereIn('question_id', $request->question_id)->count() > 0) {
+        if (QuestionPaper::whereQuestionSubjectInfoId($request->question_subject_info_id )->whereIn('question_id', $request->question_id)->count() > 0) {
             Alert::info('These questions already exist in this question paper');
 
             return back();
         }
         foreach ($request->question_id as $k => $v) {
             $data = [
-                'ques_info_id' => $request->ques_info_id,
+                'question_subject_info_id ' => $request->question_subject_info_id ,
                 'question_id' => $request->question_id[$k],
                 'type' => $request->type,
             ];
@@ -408,21 +336,18 @@ class GenerateQuestionPaperController extends Controller
         }
     }
 
-    public function quesDestroy($quesId, $quesInfoId)
+    public function quesDestroy($quesPaperId)
     {
         if ($error = $this->authorize('question-generate-delete')) {
             return $error;
         }
         try {
-            QuestionPaper::whereQues_info_id($quesInfoId)->whereQuestion_id($quesId)->first()->delete();
-            toast('Success!', 'success');
-
-            return back();
+            QuestionPaper::findOrFail($quesPaperId)->delete();
+            toast('The information has been updated', 'success');
         } catch (\Exception $ex) {
-            toast('Error', 'error');
-
-            return redirect()->back();
+            toast('Oops something went wrong, Please try again', 'error');
         }
+        return back();
     }
 
     public function quesInfoQuesDestroy($id)

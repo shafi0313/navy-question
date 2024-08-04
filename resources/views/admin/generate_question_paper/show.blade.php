@@ -16,41 +16,31 @@
                     <ul class="breadcrumbs">
                         <li class="nav-home"><a href="{{ route('admin.dashboard') }}"><i class="flaticon-home"></i></a></li>
                         <li class="separator"><i class="flaticon-right-arrow"></i></li>
-                        <li class="nav-home"><a href="{{ route('admin.generate_question.index') }}">Generate Question</a></li>
+                        <li class="nav-home"><a href="{{ route('admin.generate_question.index') }}">Generate Question</a>
+                        </li>
                         <li class="separator"><i class="flaticon-right-arrow"></i></li>
                         <li class="nav-item">Question</li>
                     </ul>
                 </div>
-
-                <div class="row justify-content-center">
-                    <div class="col-md-12">
-                        <form action="{{ route('admin.generate_question.addQues') }}" method="POST" id="">
-                            @csrf
-                            {{-- <input type="hidden" name="subject_id"
-                                value="{{ $questionInfo->subject->subject_id }}">
-                            <input type="hidden" name="ques_info_id"
-                                value="{{ $questionInfo->ques_info_id }}" id="ques_info_id"> --}}
+                <form action="{{ route('admin.generate_question.addQues') }}" method="POST">
+                    @csrf
+                    <div class="row justify-content-center">
+                        <div class="col-md-12">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-md-12 text-center">
-                                            {{-- <h4>Exam/Course: <b>{{ $questionInfo->exam->name }}</b></h4>
-                                            <h4>Subject: <b>{{ $questionInfo->subject->name }}</b></h4>
-                                            <h4>Trade: <b>{{ $questionInfo->subject->trade }}</b></h4> --}}
-                                            <hr>
-                                        </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="chapter_id">Chapters <span class="t_r">*</span></label>
-                                                {{-- <select class="form-control select2" name="chapter_id" id="chapter_id">
-                                                    <option selected value disabled>Select</option>
-                                                    @foreach ($mainChapters as $mainChapter)
-                                                        <option value="{{ $mainChapter->id }}">{{ $mainChapter->name }}
+                                                <label for="subject_id">Subject <span class="t_r">*</span></label>
+                                                <select class="form-control select2" name="subject_id" id="subject_id">
+                                                    <option selected value disabled>Select..</option>
+                                                    @foreach ($subjects as $subject)
+                                                        <option value="{{ $subject->id }}">{{ $subject->name }}
                                                         </option>
                                                     @endforeach
-                                                </select> --}}
-                                                @if ($errors->has('chapter_id'))
-                                                    <div class="alert alert-danger">{{ $errors->first('chapter_id') }}</div>
+                                                </select>
+                                                @if ($errors->has('subject_id'))
+                                                    <div class="alert alert-danger">{{ $errors->first('subject_id') }}</div>
                                                 @endif
                                             </div>
                                         </div>
@@ -58,7 +48,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="type">Question Type <span class="t_r">*</span></label>
-                                                <select class="form-control select2 type" name="type" id="quesType"
+                                                <select class="form-control select2 type" name="type" id="ques_type"
                                                     required>
                                                     <option selected value disabled>Select</option>
                                                     <option value="multiple_choice">Multiple Choice</option>
@@ -92,19 +82,26 @@
                                     </div>
                                 </div>
                             </div>
-                        </form>
-                    </div>
-                </div>
 
-                {{-- <form action="{{ route('admin.generate_question.complete') }}" method="POST">
+                        </div>
+                    </div>
+                    <div class="card-header">
+                        <div class="d-flex align-items-center">
+                            <h4 class="card-title"></h4>
+                            <a href="{{ route('admin.generated_question.show', [$questionInfo->id, $questionSubjectInfos->first()->set, 'pdf']) }}"
+                                class="btn btn-success ml-auto" id="p" style="width: 250px" target="_blank"><i
+                                    class="fas fa-print"></i> PDF Download</a>
+                        </div>
+                    </div>
+                    {{-- <form action="{{ route('admin.generate_question.complete') }}" method="POST">
                     @csrf
                     <input type="hidden" name="quesInfoId" value="{{ $questionInfoId }}"> --}}
                     @include('include.question_paper')
                     {{-- <div class="col-md-12 text-center card-action">
                         <button type="submit" class="btn btn-primary">Generate Question</button>
-                    </div> --}}
-                {{-- </form> --}}
-
+                    </div>
+                </form> --}}
+                </form>
             </div>
         </div>
         @include('include.footer')
@@ -118,64 +115,23 @@
         <!-- Datatables -->
         @include('include.data_table')
         <script>
-            $('#chapter_id').change(function() {
-                $("#quesType").val(null).trigger('change');
-            });
-
-            $('#exam_id').change(function() {
-                $.ajax({
-                    url: '{{ route('admin.global.getSubject') }}',
-                    method: 'get',
-                    data: {
-                        exam_id: $(this).val(),
-                    },
-                    success: function(res) {
-                        if (res.status == 'success') {
-                            $('#subject_id').html(res.html);
-                        }
-                    }
-                });
-            });
-
-            $('#subject_id').change(function() {
-                $.ajax({
-                    url: "{{ route('admin.question.getChapter') }}",
-                    data: {
-                        subjectId: $(this).val()
-                    },
-                    method: 'get',
-                    success: res => {
-                        let opt = '<option disabled selected>- -</option>';
-                        if (res.status == 200) {
-                            $.each(res.chapters, function(i, v) {
-                                opt += '<option value="' + v.id + '">' + v.name + '</option>';
-                            });
-                            $("#chapter_id").html(opt);
-                        } else {
-                            alert('No chapter found')
-                        }
-                    },
-                    error: err => {
-                        alert('No chapter found')
-                    }
-                });
-            });
-
-
-            $('#quesType').change(function() {
+            $('#ques_type').change(function() {
                 $("#questionArea").html('');
-                let chapterId = $('#chapter_id').find(":selected").val();
+                let subject_id = $('#subject_id').find(":selected").val();
+                const get_question_id = $("input[name='get_question_id[]']").map(function() {
+                    return $(this).val(); // Extract each input value
+                }).get();
                 let quesId = [];
-                $("input[name='ques_id']").each(function() {
+                $("input[name='question_id']").each(function() {
                     quesId.push(this.value);
                 });
-                let quesType = $(this).val();
+                let ques_type = $('#ques_type').find(":selected").val();
                 $.ajax({
                     url: "{{ route('admin.generate_question.getQuestion') }}",
                     data: {
-                        chapterId: chapterId,
-                        quesType: quesType,
-                        quesId: quesId,
+                        subject_id: subject_id,
+                        ques_type: ques_type,
+                        get_question_id: get_question_id,
                     },
                     method: 'get',
                     success: res => {

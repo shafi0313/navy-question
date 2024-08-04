@@ -2,13 +2,9 @@
 
 namespace App\Traits;
 
-use App\Models\QuesInfo;
 use App\Models\QuestionInfo;
-use App\Models\QuestionPaper;
-use App\Models\MarkDistribution;
 use App\Models\QuestionSubjectInfo;
 use Illuminate\Support\Facades\DB;
-use RealRashid\SweetAlert\Facades\Alert;
 
 trait QuestionPaperTrait
 {
@@ -26,6 +22,7 @@ trait QuestionPaperTrait
                       ->groupBy('subject_id');
             }
         ])
+        ->whereSet($set)
         ->where('question_info_id', $quesInfoId)
         ->get();
         return $data;

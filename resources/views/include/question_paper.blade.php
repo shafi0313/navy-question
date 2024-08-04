@@ -1,152 +1,108 @@
-<div class="row justify-content-center">
-    <div class="col-md-12">
-        <div class="card">
-            <style>
-                .quesType {
-                    font-size: 18px;
-                    border-bottom: 1px solid gray;
-                    margin-bottom: 10px !important;
-                }
+@include('admin.question_paper.css')
 
-                .questionArea {
-                    padding: 0 20px;
-                }
-
-                .question p {
-                    display: inline-block !important;
-                }
-
-                .option {
-                    margin-left: 30px;
-                }
-
-                .form-check [type=checkbox]:checked,
-                .form-check [type=checkbox]:not(:checked) {
-                    position: absolute;
-                    left: 0;
-                }
-
-                .form-check,
-                .form-group {
-                    margin-bottom: 0;
-                    padding: 0px;
-                }
-            </style>
-            <div class="card-header">
-                <div class="d-flex align-items-center">
-                    <h4 class="card-title"></h4>
-                    <a href="{{ route('admin.generated_question.show', [$questionInfo->id, 1, 'pdf']) }}"
-                        class="btn btn-success ml-auto" id="p" style="width: 250px" target="_blank"><i
-                            class="fas fa-print"></i> PDF Download</a>
-                </div>
-            </div>
-            <div class="card-body" id="printableArea">
-                @if (!empty($complete))
-                    @include('include.question_paper_head')
+@foreach ($questionSubjectInfos as $questionSubjectInfo)
+    @php
+        $totalQuestionMark = 0;
+    @endphp
+    <div class="navy" style="margin-bottom: 20px">
+        <div class="title">
+            <h4 class="exam_title">
+                @if ($questionInfo->status == 'Pending')
+                    <h2>Draft Question Paper</h2>
                 @endif
-                <div class="row">
-                    <h2 style="margin-left: auto; font-weight: bold; padding-right: 25px">Total Mark:
-                        {{-- {{ $totalQuesMark }}</h2> --}}
-                </div>
-                <style>
-                    .subject {
-                        display: flex;
-                        justify-content: space-between;
-                        margin-bottom: 20px;
-                    }
-                </style>
-
-
-                @foreach ($questionSubjectInfos as $questionSubjectInfo)
-                {{-- @if (!empty($complete)) --}}
-                    @include('include.question_paper_head')
-                {{-- @endif --}}
-                {{-- <div class="row">
-                    <h2 style="margin-left: auto; font-weight: bold; padding-right: 25px">Total Mark:
-                        {{ $totalQuesMark }}</h2>
-                </div> --}}
-                    @php $x = 1; @endphp
-                    <div class="subject">
-                        <h3>বিষয়: {{ $questionSubjectInfo->subject->name }}</h3>
-                        <h3>পূর্ণমান: 20</h3>
-                    </div>
-                    @foreach ($questionSubjectInfo->questionPapers as $questionPaper)
-                        <div class="questionArea">
-                            <h4 class="question">
-                                {{ $x++ }}.
-                                {!! $questionPaper->question->ques !!}
-                                <span style="float:right">{{ $questionPaper->question->mark }}
-                                    {{-- @if (!empty($edit))
-                                    <a href="{{ route('admin.generate_question.edit', [$questionPaper->id, $questionPaper->question_info_id]) }}"
-                                        style="margin-left: 20px" class="text-info">Edit</a>
-                                @endif
-                                @if (!empty($delete))
-                                    <a href="{{ route('admin.generate_question.quesDestroy', [$questionPaper->id, $questionPaper->question_info_id]) }}"
-                                        style="margin-left: 20px" class="text-danger">Delete</a>
-                                @endif --}}
-                                </span>
-                            </h4>
-                            @if (isset($questionPaper->question->image))
-                                <img src="{{ asset('uploads/images/question/' . $questionPaper->question->image) }}"
-                                    style="margin-left: 30px" alt="">
-                            @endif
-                        </div>
-                        @if ($questionPaper->options)
-                            @foreach ($questionPaper->options as $option)
-                                <div class="col-md-6 option">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="{{ $option->id }}"
-                                            id="exampleRadios{{ $option->id }}">
-                                        <label class="form-check-label" for="exampleRadios{{ $option->id }}">
-                                            {{ $option->option }}
-                                        </label>
-                                    </div>
-                                </div>
-                            @endforeach
-                        @endif
-                    @endforeach
-                @endforeach
-
-
-
-                {{-- @foreach ($chapters as $chapterName => $questions)
-                    <h3><u>{{ $chapterName }}</u></h3>
-                    @foreach ($questions as $question)
-                        <input type="hidden" name="ques_id" class="ques_id" value="{{ $question->id }}">
-                        <div class="questionArea">
-                            <h4 class="question">{{ $x++ }}. {!! $question->question->ques !!}
-                                <span style="float:right">{{ $question->question->mark }}
-                                    @if (!empty($edit))
-                                        <a href="{{ route('admin.generate_question.edit', [$question->id, $question->question_info_id]) }}"
-                                            style="margin-left: 20px" class="text-info">Edit</a>
-                                    @endif
-                                    @if (!empty($delete))
-                                        <a href="{{ route('admin.generate_question.quesDestroy', [$question->id, $question->question_info_id]) }}"
-                                            style="margin-left: 20px" class="text-danger">Delete</a>
-                                    @endif
-                                </span>
-                            </h4>
-                            @if (isset($question->question->image))
-                                <img src="{{ asset('uploads/images/question/' . $question->question->image) }}"
-                                    style="margin-left: 30px" alt="">
-                            @endif
-                        </div>
-                        @if ($question->options->isNotEmpty())
-                            @foreach ($question->options as $option)
-                                <div class="col-md-6 option">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="{{ $option->id }}"
-                                            id="exampleRadios{{ $option->id }}">
-                                        <label class="form-check-label" for="exampleRadios{{ $option->id }}">
-                                            {{ $option->option }}
-                                        </label>
-                                    </div>
-                                </div>
-                            @endforeach
-                        @endif
-                    @endforeach
-                @endforeach --}}
-            </div>
+                {{ $questionInfo->exam->name }} -
+                {{ \Carbon\Carbon::parse($questionInfo->date)->format('F Y') }}
+            </h4>
+            <span>{{ questionSetInBangla((int) $questionSubjectInfo->set) }}</span>
+            <table class="table table-bordered text-left">
+                <tr>
+                    <td>Mode of Examination</td>
+                    <td>{{ $questionInfo->mode }}</td>
+                    <td>Duration of Examination</td>
+                    <td>{{ $questionInfo->d_hour }} Hrs {{ $questionInfo->d_minute }} Min</td>
+                </tr>
+            </table>
+            <p style="margin: 6px 0px"><b>{{ $questionInfo->note }}</b></p>
+            <p style="margin-bottom: 10px"><b><u>{{ $questionInfo->option_note }}</u></b></p>
         </div>
     </div>
-</div>
+    {{-- For total question mark start --}}
+    @foreach ($questionSubjectInfo->questionPapers as $item)
+        @php
+            $totalQuestionMark += $item->question->mark;
+        @endphp
+    @endforeach
+    {{-- For total question mark end --}}
+    <table style="margin-bottom: 20px">
+        <tr>
+            <td>বিষয়: {{ $questionSubjectInfo->subject->name }}</td>
+            <th style="text-align:right">পূর্ণমান: {{ $totalQuestionMark }}</th>
+        </tr>
+    </table>
+    @php $x = 1 @endphp
+    {{-- Question paper subject info start --}}
+    @foreach ($questionSubjectInfo->questionPapers as $questionPaper)
+        <input type="hidden" name="get_question_id[]" value="{{ $questionPaper->question_id }}">
+        <input type="hidden" name="question_subject_info_id[]" value="{{ $questionPaper->question_subject_info_id }}">
+        <table class="question-table">
+            <tr>
+                <td class="sl">{{ $x++ }}. </td>
+                <td style="text-align:left;">{!! $questionPaper->question->ques !!}</td>
+                <td style="text-align:right">{{ $questionPaper->question->mark }}
+                    <span>
+                        @if (!empty($edit))
+                            <a href="{{ route('admin.generate_question.edit', [$questionPaper->question->id, $questionInfo->id]) }}"
+                                style="margin-left: 20px" class="text-info">Edit</a>
+                        @endif
+                        @if (!empty($delete))
+                            <a href="{{ route('admin.generate_question.quesDestroy', $questionPaper->id) }}"
+                                style="margin-left: 20px" class="text-danger">Delete</a>
+                        @endif
+                    </span>
+                </td>
+            </tr>
+        </table>
+        @if ($questionPaper->question->image)
+            <img src="{{ asset('uploads/images/question/' . $questionPaper->question->image) }}" alt="">
+        @endif
+        @if ($questionPaper->options)
+            @foreach ($questionPaper->options as $option)
+                <div class="col-md-6 option">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="{{ $option->id }}"
+                            id="exampleRadios{{ $option->id }}">
+                        <label class="form-check-label" for="exampleRadios{{ $option->id }}">
+                            {{ $option->option }}
+                        </label>
+                    </div>
+                </div>
+            @endforeach
+        @endif
+    @endforeach
+    <div class="page-break"></div>
+@endforeach
+<br>
+
+<htmlpageheader name="page-header">
+    <p style="display: block; width: 100%; text-align: center; line-height: 15px">CONFIDENTIAL <br>EXAM IN CONFIDENCE
+    </p>
+</htmlpageheader>
+
+<htmlpagefooter name="page-footer">
+    <p style="display: block; width: 100%; text-align: center; line-height: 15px">EXAM IN CONFIDENCE <br>CONFIDENTIAL
+    </p>
+</htmlpagefooter>
+
+
+
+
+
+
+{{-- @if (!empty($edit))
+    <a href="{{ route('admin.generate_question.edit', [$questionPaper->id, $questionPaper->question_info_id]) }}"
+        style="margin-left: 20px" class="text-info">Edit</a>
+@endif
+@if (!empty($delete))
+    <a href="{{ route('admin.generate_question.quesDestroy', [$questionPaper->id, $questionPaper->question_info_id]) }}"
+        style="margin-left: 20px" class="text-danger">Delete</a>
+@endif --}}

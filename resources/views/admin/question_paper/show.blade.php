@@ -13,7 +13,14 @@
                     <li class="nav-item">Question Paper</li>
                 </ul>
             </div>
-
+            <div class="card-header">
+                <div class="d-flex align-items-center">
+                    <h4 class="card-title"></h4>
+                    <a href="{{ route('admin.generated_question.show', [$questionInfo->id, $questionSubjectInfos->first()->set, 'pdf']) }}"
+                        class="btn btn-success ml-auto" id="p" style="width: 250px" target="_blank"><i
+                            class="fas fa-print"></i> PDF Download</a>
+                </div>
+            </div>
             @include('include.question_paper')
         </div>
     </div>

@@ -24,7 +24,7 @@ class QuestionPaperController extends Controller
         }
         if ($request->ajax()) {
             $queInfos = QuestionInfo::with(['exam:id,name', 'questionSubjectInfo'])
-                ->whereStatus('Pending')
+                ->whereStatus('Created')
                 ->latest();
 
             return DataTables::of($queInfos)
