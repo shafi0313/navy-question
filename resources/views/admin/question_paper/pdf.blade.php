@@ -1,9 +1,6 @@
 <style>
-    .quesType {
-        font-size: 18px;
-        border-bottom: 1px solid gray;
-        margin-bottom: 10px !important;
-        margin-top: 5px !important;
+    body {
+        font-family: 'bangla', sans-serif;
     }
 
     .option {
@@ -48,12 +45,12 @@
         width: 100%;
     }
 
-    .sl {
-        width: 22px
+    .question-table tr td {
+        padding: 10px 0;
     }
 
-    .chapter {
-        margin: 5px 0;
+    .sl {
+        width: 22px
     }
 
     p {
@@ -69,6 +66,15 @@
     @page {
         margin-bottom: 100px;
         margin-top: 60px;
+    }
+
+    @page {
+        header: page-header;
+        footer: page-footer;
+    }
+
+    .page-break {
+        page-break-after: always;
     }
 
     footer {
@@ -93,56 +99,45 @@
     }
 </style>
 
-
-<div class="navy">
-    <div class="title">
-
-        <h4 class="exam_title">
-            @if ($questionInfo->status == 'Pending')
-                 <h2>Draft Question Paper</h2>
-            @endif
-            {{ $questionInfo->exam->name }} -
-            {{ \Carbon\Carbon::parse($questionInfo->date)->format('F Y') }}
-        </h4>
-        {{-- <h4 class="exam_title">TRADE: {{ $questionInfo->subject->trade }}</h4> --}}
-        {{-- <h4 style="margin-bottom: 15px" class="exam_title">SUBJECT: {{ $questionInfo->subject->name }}</h4> --}}
-        <table class="table table-bordered text-left">
-            {{-- <tr>
-                <td>Mode of Examination</td>
-                <td>{{ $questionInfo->mode }}</td>
-                <td>Total Marks</td>
-                <td>{{ $totalMark }}</td>
-            </tr> --}}
-            <tr>
-                <td>Duration of Examination</td>
-                <td>{{ $questionInfo->d_hour }} Hrs {{ $questionInfo->d_minute }} Min</td>
-                <td>Pass Marks</td>
-                {{-- <td>{{ $passMark }}</td> --}}
-            </tr>
-        </table>
-        <p style="margin: 6px 0px"><b>{{ $questionInfo->note }}</b></p>
-        <p style="margin-bottom: 10px"><b><u>{{ $questionInfo->option_note }}</u></b></p>
-    </div>
-</div>
-<br>
-
-<table>
-    <tr>
-        <td>Question</td>
-        <td style="text-align: right">Marks</td>
-    </tr>
-</table>
-
-
 @foreach ($questionSubjectInfos as $questionSubjectInfo)
-<div class="subject">
-    <h3>Subject: {{ $questionSubjectInfo->subject->name }}</h3>
-    <h3>Mark: 20</h3>
-</div>
-@php $x = 1 @endphp
-    {{-- <h4 class="chapter"><u>{{ $questionPapers->first()->question->chapter->name }}</u></h4> --}}
+    @php
+        $totalQuestionMark = 0;
+    @endphp
+    <div class="navy" style="margin-bottom: 20px">
+        <div class="title">
+            <h4 class="exam_title">
+                @if ($questionInfo->status == 'Pending')
+                    <h2>Draft Question Paper</h2>
+                @endif
+                {{ $questionInfo->exam->name }} -
+                {{ \Carbon\Carbon::parse($questionInfo->date)->format('F Y') }}
+            </h4>
+            <table class="table table-bordered text-left">
+                <tr>
+                    <td>Mode of Examination</td>
+                    <td>{{ $questionInfo->mode }}</td>
+                    <td>Duration of Examination</td>
+                    <td>{{ $questionInfo->d_hour }} Hrs {{ $questionInfo->d_minute }} Min</td>
+                </tr>
+            </table>
+            <p style="margin: 6px 0px"><b>{{ $questionInfo->note }}</b></p>
+            <p style="margin-bottom: 10px"><b><u>{{ $questionInfo->option_note }}</u></b></p>
+        </div>
+    </div>
+    @foreach ($questionSubjectInfo->questionPapers as $item)
+        @php
+            $totalQuestionMark += $item->question->mark;
+        @endphp
+    @endforeach
+    <table style="margin-bottom: 20px">
+        <tr>
+            <td>বিষয়: {{ $questionSubjectInfo->subject->name }}</td>
+            <th style="text-align:right">পূর্ণমান: {{ $totalQuestionMark }}</th>
+        </tr>
+    </table>
+    @php $x = 1 @endphp
     @foreach ($questionSubjectInfo->questionPapers as $questionPaper)
-        <table style="width: 100%">
+        <table class="question-table">
             <tr>
                 <td class="sl">{{ $x++ }}. </td>
                 <td style="text-align:left;">{!! $questionPaper->question->ques !!}</td>
@@ -166,24 +161,30 @@
             @endforeach
         @endif
     @endforeach
+    <div class="page-break"></div>
 @endforeach
 <br>
 
-<header>
+<htmlpageheader name="page-header">
     <p style="display: block; width: 100%;">CONFIDENTIAL <br>EXAM IN CONFIDENCE </p>
-</header>
-<footer>
+</htmlpageheader>
+{{-- <header>
+    <p style="display: block; width: 100%;">CONFIDENTIAL <br>EXAM IN CONFIDENCE </p>
+</header> --}}
+<htmlpagefooter name="page-footer">
     <p style="display: block; width: 100%;">EXAM IN CONFIDENCE <br>CONFIDENTIAL</p>
-</footer>
+</htmlpagefooter>
+{{-- <footer>
+    <p style="display: block; width: 100%;">EXAM IN CONFIDENCE <br>CONFIDENTIAL</p>
+</footer> --}}
 
-<script type="text/php">
+{{-- <script type="text/php">
     if (isset($pdf)) {
         $text = "Page {PAGE_NUM} / {PAGE_COUNT}";
         $size = 8;
-        $font = $fontMetrics->getFont("Verdana");
         $width = $fontMetrics->get_text_width($text, $font, $size) / 2;
         $x = ($pdf->get_width() - $width) / 2 + 20;
         $y = $pdf->get_height() - 70;
         $pdf->page_text($x, $y, $text, $font, $size);
     }
-</script>
+</script> --}}

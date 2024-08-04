@@ -18,4 +18,8 @@ class QuestionSubjectInfo extends Model
     {
         return $this->hasMany(QuestionPaper::class);
     }
+    public function markDistribution()
+    {
+        return $this->belongsTo(MarkDistribution::class, 'subject_id', 'subject_id');
+    }
 }

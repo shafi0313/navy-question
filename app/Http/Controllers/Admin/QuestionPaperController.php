@@ -99,6 +99,7 @@ class QuestionPaperController extends Controller
         if ($type == 'show') {
             return view('admin.question_paper.show', $data);
         } elseif ($type == 'pdf') {
+            // return $data;
             // return view('admin.question_paper.pdf', $data);
             $pdf = PDF::loadView('admin.question_paper.pdf', $data);
 
