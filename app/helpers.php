@@ -30,6 +30,21 @@ if (! function_exists('time12')) {
     }
 }
 
+if (! function_exists('questionSetInBangla')) {
+    function questionSetInBangla($set)
+    {
+        return match ($set) {
+            1 => 'লাল',
+            2 => 'বাদামি',
+            3 => 'হলুদ',
+            4 => 'নীল',
+            5 => 'বেগুনি',
+            6 => 'কাল',
+            default => 'N/A',
+        };
+    }
+}
+
 if (! function_exists('permissionText')) {
     function permissionText($permission)
     {

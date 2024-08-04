@@ -2,7 +2,7 @@
 @section('title', 'Question Paper')
 @section('content')
 @php $m='generatedQues'; $sm=''; $ssm=''; $complete='c' @endphp
-
+@include('admin.question_paper.css')
 <div class="main-panel">
     <div class="content">
         <div class="page-inner">

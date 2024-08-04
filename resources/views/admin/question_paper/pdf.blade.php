@@ -1,104 +1,5 @@
-<style>
-    body {
-        font-family: 'bangla', sans-serif;
-    }
 
-    .option {
-        margin-left: 30px;
-    }
-
-    .form-check [type=checkbox]:checked,
-    .form-check [type=checkbox]:not(:checked) {
-        position: absolute;
-        left: 0;
-    }
-
-    .form-check,
-    .form-group {
-        margin-bottom: 0;
-        padding: 0px;
-    }
-
-    .title h4 {
-        text-align: center;
-        padding: 0;
-        margin: 0;
-        text-transform: uppercase;
-    }
-
-    .title p {
-        text-align: center;
-        padding: 0;
-        margin: 0;
-        text-transform: uppercase;
-    }
-
-
-    .navy table,
-    .navy th,
-    .navy td {
-        border: 1px solid black;
-        border-collapse: collapse;
-    }
-
-    table {
-        width: 100%;
-    }
-
-    .question-table tr td {
-        padding: 10px 0;
-    }
-
-    .sl {
-        width: 22px
-    }
-
-    p {
-        padding: 0;
-        margin: 0;
-    }
-
-    .exam_title {
-        text-decoration: underline;
-        font-weight: bold;
-    }
-
-    @page {
-        margin-bottom: 100px;
-        margin-top: 60px;
-    }
-
-    @page {
-        header: page-header;
-        footer: page-footer;
-    }
-
-    .page-break {
-        page-break-after: always;
-    }
-
-    footer {
-        position: fixed;
-        bottom: -60px;
-        left: 0px;
-        right: 0px;
-        text-align: center;
-        font-size: 12px;
-        width: 100%;
-        z-index: 1;
-    }
-
-    header {
-        position: fixed;
-        top: -30px;
-        /* height: 50px; */
-        text-align: center;
-        font-size: 12px;
-        width: 100%;
-        z-index: 1;
-    }
-</style>
-
+@include('admin.question_paper.css')
 @foreach ($questionSubjectInfos as $questionSubjectInfo)
     @php
         $totalQuestionMark = 0;
@@ -112,6 +13,7 @@
                 {{ $questionInfo->exam->name }} -
                 {{ \Carbon\Carbon::parse($questionInfo->date)->format('F Y') }}
             </h4>
+            <span>{{ questionSetInBangla((int) $questionSubjectInfo->set) }}</span>
             <table class="table table-bordered text-left">
                 <tr>
                     <td>Mode of Examination</td>
@@ -166,17 +68,15 @@
 <br>
 
 <htmlpageheader name="page-header">
-    <p style="display: block; width: 100%;">CONFIDENTIAL <br>EXAM IN CONFIDENCE </p>
+    <p style="display: block; width: 100%; text-align: center; line-height: 15px">CONFIDENTIAL <br>EXAM IN CONFIDENCE
+    </p>
 </htmlpageheader>
-{{-- <header>
-    <p style="display: block; width: 100%;">CONFIDENTIAL <br>EXAM IN CONFIDENCE </p>
-</header> --}}
+
 <htmlpagefooter name="page-footer">
-    <p style="display: block; width: 100%;">EXAM IN CONFIDENCE <br>CONFIDENTIAL</p>
+    <p style="display: block; width: 100%; text-align: center; line-height: 15px">EXAM IN CONFIDENCE <br>CONFIDENTIAL
+    </p>
 </htmlpagefooter>
-{{-- <footer>
-    <p style="display: block; width: 100%;">EXAM IN CONFIDENCE <br>CONFIDENTIAL</p>
-</footer> --}}
+
 
 {{-- <script type="text/php">
     if (isset($pdf)) {
