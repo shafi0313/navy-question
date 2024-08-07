@@ -43,10 +43,10 @@ class QuestionPaperController extends Controller
                 // })
                 ->addColumn('set', function ($row) {
                     $badgeColors = [
-                        'badge-primary',
-                        'badge-secondary',
-                        'badge-success',
                         'badge-danger',
+                        'badge-primary',
+                        'badge-warning',
+                        'badge-primary',
                         'badge-info',
                     ];
                     $btn = '';
@@ -54,7 +54,7 @@ class QuestionPaperController extends Controller
                         $colorIndex = ($i - 1) % count($badgeColors);
                         $colorClass = $badgeColors[$colorIndex];
 
-                        $btn .= '<a href="'.route('admin.generated_question.show', [$row->id, $i, 'show']).'" class="badge '.htmlspecialchars($colorClass).' mb-1">Set '.quesSet($i).'</a>';
+                        $btn .= '<a href="'.route('admin.generated_question.show', [$row->id, $i, 'show']).'" class="badge '.htmlspecialchars($colorClass).' mb-1">Set '.questionSetInBangla($i).'</a>';
                     }
 
                     return $btn;
