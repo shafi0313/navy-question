@@ -19,12 +19,13 @@ trait QuestionPaperTrait
             'questionPapers.options',
             'markDistribution' => function ($query) {
                 $query->select('subject_id', DB::raw('SUM(`multiple` + `sort` + `long`) as total_mark'))
-                      ->groupBy('subject_id');
-            }
+                    ->groupBy('subject_id');
+            },
         ])
-        ->whereSet($set)
-        ->where('question_info_id', $quesInfoId)
-        ->get();
+            ->whereSet($set)
+            ->where('question_info_id', $quesInfoId)
+            ->get();
+
         return $data;
     }
 }

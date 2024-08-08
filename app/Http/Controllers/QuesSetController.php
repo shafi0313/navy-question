@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\QuesSet;
 use App\Http\Requests\StoreQuesSetRequest;
 use App\Http\Requests\UpdateQuesSetRequest;
+use App\Models\QuesSet;
 
 class QuesSetController extends Controller
 {

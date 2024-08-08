@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use PDF;
+use App\Http\Controllers\Controller;
+use App\Models\MarkDistribution;
 use App\Models\QuesInfo;
 use App\Models\QuestionInfo;
-use Illuminate\Http\Request;
 use App\Models\QuestionPaper;
-use App\Models\MarkDistribution;
 use App\Traits\QuestionPaperTrait;
-use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use PDF;
 use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\Facades\DataTables;
 

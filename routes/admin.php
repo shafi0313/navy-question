@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AjaxController;
 use App\Http\Controllers\Admin\AnswerPaperController;
 use App\Http\Controllers\Admin\BackupController;
 use App\Http\Controllers\Admin\ChapterController;
@@ -14,7 +15,6 @@ use App\Http\Controllers\Admin\QuestionPaperController;
 use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\VisitorInfoController;
-use App\Http\Controllers\Admin\AjaxController;
 use App\Http\Controllers\Auth\Permission\PermissionController;
 use App\Http\Controllers\Auth\Role\RoleController;
 use App\Http\Controllers\AuthController;

@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Exam;
-use App\Models\Subject;
-use App\Models\QuesInfo;
-use App\Models\Question;
-use App\Models\QuesOption;
-use App\Models\QuestionInfo;
-use Illuminate\Http\Request;
-use App\Models\QuestionPaper;
-use App\Models\MarkDistribution;
-use App\Traits\QuestionPaperTrait;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Exam;
+use App\Models\MarkDistribution;
+use App\Models\QuesInfo;
+use App\Models\QuesOption;
+use App\Models\Question;
+use App\Models\QuestionInfo;
+use App\Models\QuestionPaper;
+use App\Models\QuestionSubjectInfo;
+use App\Models\Subject;
+use App\Traits\QuestionPaperTrait;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\Facades\DataTables;
-use App\Models\QuestionSubjectInfo;
 
 class GenerateQuestionPaperController extends Controller
 {
@@ -39,7 +39,7 @@ class GenerateQuestionPaperController extends Controller
                     return bdDate($row->date);
                 })
                 ->addColumn('duration', function ($row) {
-                    return $row->d_hour . ':' . $row->d_minute . ' Minute';
+                    return $row->d_hour.':'.$row->d_minute.' Minute';
                 })
                 ->addColumn('set', function ($row) {
                     $badgeColors = [
@@ -54,13 +54,13 @@ class GenerateQuestionPaperController extends Controller
                         $colorIndex = ($i - 1) % count($badgeColors);
                         $colorClass = $badgeColors[$colorIndex];
 
-                        $btn .= '<a href="' . route('admin.generate_question.show', [$row->id, $i, 'show']) . '" class="badge ' . htmlspecialchars($colorClass) . ' mb-1">Set ' . quesSet($i) . '</a>';
+                        $btn .= '<a href="'.route('admin.generate_question.show', [$row->id, $i, 'show']).'" class="badge '.htmlspecialchars($colorClass).' mb-1">Set '.quesSet($i).'</a>';
                     }
 
                     return $btn;
                 })
                 ->addColumn('generate', function ($row) {
-                    return '<a data-route="' . route('admin.generate_question.status', $row->id) . '" class="btn btn-primary text-light btn-sm" onclick="changeStatus(this)">Generate</a>';
+                    return '<a data-route="'.route('admin.generate_question.status', $row->id).'" class="btn btn-primary text-light btn-sm" onclick="changeStatus(this)">Generate</a>';
                 })
                 ->addColumn('action', function ($row) {
                     $btn = '';
@@ -85,6 +85,7 @@ class GenerateQuestionPaperController extends Controller
         if ($error = $this->authorize('question-generate-add')) {
             return $error;
         }
+
         return view('admin.generate_question_paper.create');
     }
 
@@ -92,9 +93,9 @@ class GenerateQuestionPaperController extends Controller
     {
         if ($request->ajax()) {
             $questions = Question::whereNotIn('id', $request->get_question_id)
-            ->whereSubjectId($request->subject_id)
-            ->whereType($request->ques_type)
-            ->get();
+                ->whereSubjectId($request->subject_id)
+                ->whereType($request->ques_type)
+                ->get();
 
             return response()->json(['questions' => $questions, 'status' => 200]);
         }
@@ -237,14 +238,14 @@ class GenerateQuestionPaperController extends Controller
 
     public function addQues(Request $request)
     {
-        if (QuestionPaper::whereQuestionSubjectInfoId($request->question_subject_info_id )->whereIn('question_id', $request->question_id)->count() > 0) {
+        if (QuestionPaper::whereQuestionSubjectInfoId($request->question_subject_info_id)->whereIn('question_id', $request->question_id)->count() > 0) {
             Alert::info('These questions already exist in this question paper');
 
             return back();
         }
         foreach ($request->question_id as $k => $v) {
             $data = [
-                'question_subject_info_id ' => $request->question_subject_info_id ,
+                'question_subject_info_id ' => $request->question_subject_info_id,
                 'question_id' => $request->question_id[$k],
                 'type' => $request->type,
             ];
@@ -314,7 +315,7 @@ class GenerateQuestionPaperController extends Controller
                     'question_id' => $quesId,
                     'option' => $request->option[$key],
                 ];
-                if (!empty(QuesOption::whereId($request->option_id[$key]))) {
+                if (! empty(QuesOption::whereId($request->option_id[$key]))) {
                     QuesOption::where('id', $request->option_id[$key])->update($option);
                 } else {
                     QuesOption::create($option);
@@ -347,6 +348,7 @@ class GenerateQuestionPaperController extends Controller
         } catch (\Exception $ex) {
             toast('Oops something went wrong, Please try again', 'error');
         }
+
         return back();
     }
 
