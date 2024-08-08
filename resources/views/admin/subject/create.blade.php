@@ -1,145 +1,43 @@
-@extends('admin.layout.master')
-@section('title', 'Admin User')
-@section('content')
-@php $m='setup'; $sm='subject'; $ssm=''; @endphp
-<div class="main-panel">
-    <div class="content">
-        <div class="page-inner">
-            <div class="page-header">
-                <ul class="breadcrumbs">
-                    <li class="nav-home"><a href="{{ route('admin.dashboard') }}"><i class="flaticon-home"></i></a></li>
-                    <li class="separator"><i class="flaticon-right-arrow"></i></li>
-                    <li class="nav-item"><a href="{{ route('admin.adminUser.index') }}">Admin User</a></li>
-                    <li class="separator"><i class="flaticon-right-arrow"></i></li>
-                    <li class="nav-item">Create</li>
-                </ul>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">Add Admin User</div>
-                        </div>
-                        <form action="{{ route('admin.adminUser.store') }}" method="post" enctype="multipart/form-data">
-                            @csrf
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="exampleFormControlSelect1">Permissions <span class="t_r">*</span></label>
-                                            <select class="form-control" name="permission">
-                                                <option selected value disabled>Select</option>
-                                                <option>No Login Permission</option>
-                                                <option value="1">Admin</option>
-                                                <option value="2">Creator</option>
-                                                <option value="3">Editor</option>
-                                                <option value="4">Viewer</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="name">Name <span class="t_r">*</span></label>
-                                            <input type="text" name="name" class="form-control" value="{{ old('name') }}" placeholder="Enter name" required>
-                                            @if ($errors->has('name'))
-                                            <div class="alert alert-danger">{{ $errors->first('name') }}</div>
-                                        @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="designation">Designation </label>
-                                            <input type="text" name="designation" class="form-control" value="{{ old('designation') }}" placeholder="Designation">
-                                            @if ($errors->has('designation'))
-                                                <div class="alert alert-danger">{{ $errors->first('designation') }}</div>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="email">Email address <span class="t_r">*</span></label>
-                                            <input type="email" name="email" class="form-control" value="{{ old('email') }}" placeholder="Enter Email" required>
-                                            @if ($errors->has('email'))
-                                                <div class="alert alert-danger">{{ $errors->first('email') }}</div>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="phone">Phone <span class="t_r">*</span></label>
-                                            <input type="text" name="phone" class="form-control" oninput="this.value = this.value.replace(/[a-zA-z\-*/]/g,'');" class="form-control" value="{{ old('phone') }}" placeholder="Enter phone" required>
-                                            @if ($errors->has('phone'))
-                                                <div class="alert alert-danger">{{ $errors->first('phone') }}</div>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="d_o_b">Date of birth <span class="t_r">*</span></label>
-                                            <input type="date" name="d_o_b" class="form-control" value="{{ old('d_o_b') }}" required >
-                                            @if ($errors->has('d_o_b'))
-                                                <div class="alert alert-danger">{{ $errors->first('d_o_b') }}</div>
-                                            @endif
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="image">Image </label>
-                                            <input type="file" name="image" class="form-control">
-                                            @if ($errors->has('image'))
-                                                <div class="alert alert-danger">{{ $errors->first('image') }}</div>
-                                            @endif
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="comment">Address <span class="t_r">*</span></label>
-                                            <textarea name="address" class="form-control" id="comment" rows="2" required>
-
-                                            </textarea>
-                                            @if ($errors->has('address'))
-                                                <div class="alert alert-danger">{{ $errors->first('address') }}</div>
-                                            @endif
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="passwordsignin">Password <span class="t_r">*</span></label>
-                                            <input type="password" name="password" class="form-control" id="passwordsignin" autocomplete="new-password" required>
-                                            @if ($errors->has('password'))
-                                                <div class="alert alert-danger">{{ $errors->first('password') }}</div>
-                                            @endif
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="confirmpassword">Confirm Password <span class="t_r">*</span></label>
-                                            <input class="form-control" type="password" name="password_confirmation" autocomplete="new-password" required>
-                                            @if ($errors->has('password'))
-                                                <div class="alert alert-danger">{{ $errors->first('password') }}</div>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="text-center card-action">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                                <button type="reset" class="btn btn-danger">Cancel</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addModalModalLabel">Add New</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-    </div>
-    @include('include.footer')
-</div>
+        <form action="{{ route('admin.subjects.store') }}" method="post" onsubmit="ajaxStore(event, this, 'post', 'addModal')">
+            @csrf
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="exam_id">Exam <span class="t_r">*</span></label>
+                            <select name="exam_id" id="exam_id" class="form-control" required>
+                            </select>
+                            @if ($errors->has('exam_id'))
+                                <div class="alert alert-danger">{{ $errors->first('exam_id') }}</div>
+                            @endif
+                        </div>
+                    </div>
 
-@push('custom_scripts')
-@endpush
-@endsection
+                    <div class="form-group col-sm-6">
+                        <label for="name">Name <span class="t_r">*</span></label>
+                        <input type="text" name="name" class="form-control" value="{{old('name')}}">
+                        @error('name')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
 

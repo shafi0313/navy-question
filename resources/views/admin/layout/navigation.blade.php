@@ -36,13 +36,13 @@
                 @endcan
 
 
-                <li class="nav-item {{ activeNav(['admin.subject.*', 'admin.exam.*', 'admin.markDistribution.*']) }}">
+                <li class="nav-item {{ activeNav(['admin.subjects.*', 'admin.exam.*', 'admin.markDistribution.*']) }}">
                     <a data-toggle="collapse" href="#setup">
                         <i class="fa-solid fa-screwdriver-wrench"></i>
                         <p>Setup</p>
                         <span class="caret"></span>
                     </a>
-                    <div class="collapse {{ openNav(['admin.subject.*', 'admin.exam.*', 'admin.markDistribution.*']) }}"
+                    <div class="collapse {{ openNav(['admin.subjects.*', 'admin.exam.*', 'admin.markDistribution.*']) }}"
                         id="setup">
                         <ul class="nav nav-collapse">
                             @can('exam-manage')
@@ -53,9 +53,9 @@
                                 </li>
                             @endcan
                             @can('subject-manage')
-                                <li class="{{ activeSubNav('admin.subject.*') }}">
-                                    <a href="{{ route('admin.subject.index') }}">
-                                        <span class="sub-item">Subject & Chapter</span>
+                                <li class="{{ activeSubNav('admin.subjects.*') }}">
+                                    <a href="{{ route('admin.subjects.index') }}">
+                                        <span class="sub-item">Subject</span>
                                     </a>
                                 </li>
                             @endcan
@@ -85,7 +85,7 @@
                         </a>
                         <div class="collapse {{ openNav(['admin.question.*']) }}" id="questionMenu">
                             <ul class="nav nav-collapse">
-                                <li class="{{ activeSubNav(['admin.question.index','admin.question.edit']) }}">
+                                <li class="{{ activeSubNav(['admin.question.index', 'admin.question.edit']) }}">
                                     <a href="{{ route('admin.question.index') }}">
                                         <span class="sub-item">Manage</span>
                                     </a>
@@ -115,7 +115,8 @@
                         </a>
                         <div class="collapse {{ openNav(['admin.generate_question.*']) }}" id="generateQuestion">
                             <ul class="nav nav-collapse">
-                                <li class="{{ activeSubNav(['admin.generate_question.index','admin.generate_question.edit','admin.generate_question.show']) }}">
+                                <li
+                                    class="{{ activeSubNav(['admin.generate_question.index', 'admin.generate_question.edit', 'admin.generate_question.show']) }}">
                                     <a href="{{ route('admin.generate_question.index') }}">
                                         <span class="sub-item">Manage Question</span>
                                     </a>

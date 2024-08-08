@@ -72,6 +72,7 @@
                             {
                                 data: 'action',
                                 name: 'action',
+                                title: 'Action',
                                 orderable: false,
                                 searchable: false,
                                 className: 'text-center',

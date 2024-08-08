@@ -4,19 +4,23 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Chapter;
+use App\Models\Exam;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class ChapterController extends Controller
+class SubjectController extends Controller
 {
-    // public function index()
-    // {
-    //     if ($error = $this->sendPermissionError('index')) {
-    //         return $error;
-    //     }
-    //     $subjects = Chapter::all();
-    //     return view('admin.subjects.index', compact('subjects'));
-    // }
+    public function index()
+    {
+        if ($error = $this->authorize('subject-manage')) {
+            return $error;
+        }
+        $exams = Exam::all();
+        $subjects = Subject::with('chapters', 'exam')->get();
+
+        return view('admin.subjects.index', compact('subjects', 'exams'));
+    }
 
     public function store(Request $request)
     {
@@ -24,67 +28,65 @@ class ChapterController extends Controller
             return $error;
         }
         $data = $this->validate($request, [
-            'subject_id' => 'required|numeric',
-            'name' => 'required|max:191',
+            'exam_id' => 'required|numeric',
+            'name' => 'required|string|max:191',
+            'trade' => 'required|string|max:191',
         ]);
 
         DB::beginTransaction();
 
         try {
-            Chapter::create($data);
+            Subject::create($data);
             DB::commit();
             toast('Success!', 'success');
-
-            return redirect()->back();
         } catch (\Exception $ex) {
             // // return $ex->getMessage();
             DB::rollBack();
-            toast('Eerror', 'error');
-
-            return redirect()->back();
+            toast('error', 'Error');
         }
+
+        return back();
     }
 
     public function update(Request $request, $id)
     {
-        if ($error = $this->authorize('chapter-edit')) {
+        if ($error = $this->authorize('subject-edit')) {
             return $error;
         }
         $data = $this->validate($request, [
-            'name' => 'required|max:191',
+            'exam_id' => 'required|numeric',
+            'name' => 'required|string|max:191',
+            'trade' => 'required|string|max:191',
         ]);
 
         DB::beginTransaction();
 
         try {
-            Chapter::find($id)->update($data);
+            Subject::find($id)->update($data);
             DB::commit();
-            toast('Success', 'success');
-
-            return redirect()->back();
+            toast('success', 'Success');
         } catch (\Exception $ex) {
             // return $ex->getMessage();
             DB::rollBack();
-            toast('Error', 'error');
-
-            return redirect()->back();
+            toast('error', 'Error');
         }
+
+        return back();
     }
 
     public function destroy($id)
     {
-        if ($error = $this->authorize('chapter-delete')) {
+        if ($error = $this->authorize('subject-delete')) {
             return $error;
         }
         try {
-            Chapter::find($id)->delete();
+            Subject::find($id)->delete();
+            Chapter::whereSubject_id($id)->delete();
             toast('Success!', 'success');
-
-            return redirect()->back();
         } catch (\Exception $ex) {
             toast('Failed', 'error');
-
-            return redirect()->back();
         }
+
+        return back();
     }
 }

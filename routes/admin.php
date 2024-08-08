@@ -87,12 +87,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::post('/update', 'update')->name('myProfile.profile.update');
     });
 
-    Route::controller(SubjectController::class)->prefix('subject')->name('subject.')->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::post('/store', 'store')->name('store');
-        Route::post('/update/{id}', 'update')->name('update');
-        Route::delete('/destroy/{id}', 'destroy')->name('destroy');
-    });
+    Route::resource('/subjects', SubjectController::class)->except(['show']);
+
     Route::controller(ChapterController::class)->prefix('chapter')->name('chapter.')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::post('/store', 'store')->name('store');
