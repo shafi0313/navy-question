@@ -13,8 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('subjects', function (Blueprint $table) {
-            $table->foreignId('exam_id')->nullable()->constrained()->cascadeOnDelete()->after('id');
+        Schema::create('subjects', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('exam_id')->constrained()->cascadeOnDelete();
+            $table->string('name', 191);
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -25,8 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('subjects', function (Blueprint $table) {
-            $table->dropColumn('exam_id');
-        });
+        Schema::dropIfExists('subjects');
     }
 };

@@ -23,6 +23,7 @@ return new class() extends Migration
             $table->integer('mark');
             // $table->boolean('selected')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
