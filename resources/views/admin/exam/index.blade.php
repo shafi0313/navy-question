@@ -43,8 +43,6 @@
             </div>
         </div>
 
-
-
         @push('custom_scripts')
             @can('exam-add')
                 @include('admin.exam.create')
@@ -75,7 +73,9 @@
                                 data: 'action',
                                 name: 'action',
                                 orderable: false,
-                                searchable: false
+                                searchable: false,
+                                className: 'text-center',
+                                width: '150px'
                             },
                         ],
                         scroller: {

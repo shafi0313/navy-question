@@ -42,15 +42,6 @@ class ExamController extends Controller
         return view('admin.exam.index');
     }
 
-    // public function create()
-    // {
-    //     if ($error = $this->authorize('exam-add')) {
-    //         return $error;
-    //     }
-    //     $subjects = Subject::all();
-    //     return view('admin.exam.create', compact('subjects'));
-    // }
-
     public function store(Request $request)
     {
         if ($error = $this->authorize('exam-add')) {
