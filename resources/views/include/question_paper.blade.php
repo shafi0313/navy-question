@@ -66,18 +66,14 @@
             <img src="{{ asset('uploads/images/question/' . $questionPaper->question->image) }}" alt="">
         @endif
         @if ($questionPaper->options)
-        @php
-            $i = 1;
-        @endphp
+            @php
+                $i = 1;
+            @endphp
             @foreach ($questionPaper->options as $option)
                 <div class="col-md-6 option">
-                    {{-- <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="{{ $option->id }}"
-                            id="exampleRadios{{ $option->id }}"> --}}
-                        <label class="form-check-label" for="exampleRadios{{ $option->id }}">
-                            {{ numberToBanglaWord($i++).') ' }} {{ $option->option }}
-                        </label>
-                    {{-- </div> --}}
+                    <label class="form-check-label" for="exampleRadios{{ $option->id }}">
+                        {{ numberToBanglaWord($i++) . ') ' }} {{ $option->option }}
+                    </label>
                 </div>
             @endforeach
         @endif
