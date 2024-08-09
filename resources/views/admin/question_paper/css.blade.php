@@ -3,8 +3,16 @@
         font-family: 'bangla', sans-serif;
     }
 
+    .answer-instruction {
+        text-align: justify;
+        border: 2px solid #000;
+        padding: 10px;
+    }
+
     .option {
-        margin-left: 30px;
+        /* padding-left: 24px !important; */
+        /* padding-left: 10px; */
+        /* display: inline-block; */
     }
 
     .form-check [type=checkbox]:checked,
@@ -33,7 +41,9 @@
         text-transform: uppercase;
     }
 
-
+    .navy{
+        border: none !important;
+    }
     .navy table,
     .navy th,
     .navy td {
@@ -70,7 +80,7 @@
 
     @page {
         header: page-header;
-        footer: page-footer;
+        /* footer: page-footer; */
     }
 
     .page-break {

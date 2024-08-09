@@ -129,9 +129,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::get('/edit/{id}/{quesInfoId}', 'edit')->name('edit');
         Route::post('/update/{id}', 'update')->name('update');
         Route::get('/show/{quesInfo}/{set}/{type}', 'show')->name('show');
+        Route::delete('/destroy/{id}', 'destroy')->name('destroy');
         Route::get('/option/destroy/{id}', 'optionDestroy')->name('optionDestroy');
         Route::get('/question/destroy/{quesPaperId}', 'quesDestroy')->name('quesDestroy');
-        Route::delete('/quesInfoQuesDestroy/{id}', 'quesInfoQuesDestroy')->name('quesInfoQuesDestroy');
         Route::post('/ques-generate', 'quesGenerate')->name('quesGenerate');
         Route::get('/get-question', 'getQuestion')->name('getQuestion');
     });

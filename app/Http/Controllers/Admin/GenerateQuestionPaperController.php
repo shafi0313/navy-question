@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Exam;
 use App\Models\MarkDistribution;
-use App\Models\QuesInfo;
 use App\Models\QuesOption;
 use App\Models\Question;
 use App\Models\QuestionInfo;
@@ -43,10 +42,10 @@ class GenerateQuestionPaperController extends Controller
                 })
                 ->addColumn('set', function ($row) {
                     $badgeColors = [
-                        'badge-primary',
-                        'badge-secondary',
-                        'badge-success',
                         'badge-danger',
+                        'badge-primary',
+                        'badge-warning',
+                        'badge-primary',
                         'badge-info',
                     ];
                     $btn = '';
@@ -67,9 +66,9 @@ class GenerateQuestionPaperController extends Controller
                     // if (userCan('slider-edit')) {
                     //     $btn .= view('button', ['type' => 'ajax-edit', 'route' => route('admin.sliders.edit', $row->id), 'row' => $row]);
                     // }
-                    // if (userCan('slider-delete')) {
-                    //     $btn .= view('button', ['type' => 'ajax-delete', 'route' => route('admin.sliders.destroy', $row->id), 'row' => $row, 'src' => 'dt']);
-                    // }
+                    if (userCan('question-generate-delete')) {
+                        $btn .= view('button', ['type' => 'ajax-delete', 'route' => route('admin.generate_question.destroy', $row->id), 'row' => $row, 'src' => 'dt']);
+                    }
 
                     return $btn;
                 })
@@ -349,21 +348,17 @@ class GenerateQuestionPaperController extends Controller
         return back();
     }
 
-    public function quesInfoQuesDestroy($id)
+    public function destroy($id)
     {
         if ($error = $this->authorize('question-generate-delete')) {
             return $error;
         }
+
         try {
-            QuesInfo::whereExam_id($id)->whereStatus('Pending')->delete();
-            toast('Success!', 'success');
-
-            return back();
-        } catch (\Exception $ex) {
-            // // return $ex->getMessage();
-            toast('Error', 'error');
-
-            return redirect()->back();
+            QuestionInfo::findOrFail($id)->delete();
+            return response()->json(['message' => 'The information has been deleted'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Oops something went wrong, Please try again'], 500);
         }
     }
 }
