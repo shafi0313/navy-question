@@ -64,25 +64,6 @@
                             <div class="row">
                                 <div class="col-5">
                                     <div class="icon-big text-center">
-                                        <i class="fa-solid fa-book-open text-secondary"></i>
-                                    </div>
-                                </div>
-                                <div class="col col-stats">
-                                    <div class="numbers">
-                                        <p class="card-category">Total Chapter</p>
-                                        <h4 class="card-title">{{ $chapterCount }}</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-3">
-                    <div class="card card-stats card-round">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-5">
-                                    <div class="icon-big text-center">
                                         <i class="fa-solid fa-file-circle-question text-success"></i>
                                     </div>
                                 </div>

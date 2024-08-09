@@ -14,7 +14,6 @@ class DashboardController extends Controller
     {
         $data['examCount'] = Exam::count();
         $data['subjectCount'] = Subject::count();
-        $data['chapterCount'] = Chapter::count();
         $data['quesCount'] = Question::count();
         $data['multipleQuesCount'] = Question::whereType('multiple_choice')->count();
         $data['shortQuesCount'] = Question::whereType('short_question')->count();
