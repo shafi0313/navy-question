@@ -55,22 +55,11 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="subject_id">Subject & Trade <span
-                                                        class="t_r">*</span></label>
+                                                <label for="subject_id">Subject <span class="t_r">*</span></label>
                                                 <select class="form-control" name="subject_id" id="subject_id"
                                                     required></select>
                                                 @if ($errors->has('subject_id'))
                                                     <div class="alert alert-danger">{{ $errors->first('subject_id') }}</div>
-                                                @endif
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="chapter_id">Chapters <span class="t_r">*</span></label>
-                                                <select class="form-control" name="chapter_id" id="chapter_id">
-                                                </select>
-                                                @if ($errors->has('chapter_id'))
-                                                    <div class="alert alert-danger">{{ $errors->first('chapter_id') }}</div>
                                                 @endif
                                             </div>
                                         </div>
@@ -88,24 +77,13 @@
                                                 @endif
                                             </div>
                                         </div>
-
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="mark">Marks <span class="t_r">*</span></label>
-                                                <input type="number" name="mark" class="form-control" id="mark"
+                                                <input type="number" value="2" name="mark" class="form-control" id="mark"
                                                     required>
                                                 @if ($errors->has('mark'))
                                                     <div class="alert alert-danger">{{ $errors->first('mark') }}</div>
-                                                @endif
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="ques">Question <span class="t_r">*</span></label>
-                                                <textarea name="ques" class="form-control" id="ques" rows="5" required></textarea>
-                                                @if ($errors->has('ques'))
-                                                    <div class="alert alert-danger">{{ $errors->first('ques') }}</div>
                                                 @endif
                                             </div>
                                         </div>
@@ -118,6 +96,16 @@
                                                 @endif
                                             </div>
                                         </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="ques">Question <span class="t_r">*</span></label>
+                                                <textarea name="ques" class="form-control" id="ques" rows="2" required></textarea>
+                                                @if ($errors->has('ques'))
+                                                    <div class="alert alert-danger">{{ $errors->first('ques') }}</div>
+                                                @endif
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                                 <div class="row quesTypeDiv ml-2" style="display: none">
@@ -226,30 +214,6 @@
                         }
                     }
                 });
-                $('#chapter_id').select2({
-                    width: '100%',
-                    placeholder: 'Select Subject First...',
-                    allowClear: true,
-                    ajax: {
-                        url: window.location.origin + '/admin/select-2-ajax',
-                        dataType: 'json',
-                        delay: 250,
-                        cache: true,
-                        data: function(params) {
-                            let subject_id = $('#subject_id').find(":selected").val();
-                            return {
-                                q: $.trim(params.term),
-                                type: 'getChapterBySubject',
-                                subject_id: subject_id
-                            };
-                        },
-                        processResults: function(data) {
-                            return {
-                                results: data
-                            };
-                        }
-                    }
-                });
             })
 
 
@@ -304,9 +268,6 @@
 
             $('#quesStore').on('submit', function(e) {
                 e.preventDefault();
-                // for (instance in CKEDITOR.instances) {
-                //     CKEDITOR.instances[instance].updateElement();
-                // }
                 var formData = new FormData(this);
                 let url = $(this).attr('action');
                 let method = $(this).attr('method');
@@ -321,15 +282,6 @@
                         clear();
                         question()
                         $(".trData").remove();
-                        // if(res.status == 200){
-                        //     toast('success','Success!');
-                        //     clear();
-                        //     question()
-
-                        //  toast('success', res.message);
-                        // }else{
-                        //     toast('error',res.message);
-                        // }
                     },
                     error: err => {
                         $.each(err.responseJSON.errors, (i, v) => {
@@ -345,7 +297,6 @@
                 $("#mark").val('');
                 $("#option").val('');
                 $("#image").val('');
-                // CKEDITOR.instances.ques.setData('')
             }
 
             function question() {
@@ -385,37 +336,7 @@
                     i++;
                 });
             };
-        </script>
 
-
-        {{-- <script>
-            $('#subject_id').change(function() {
-                $.ajax({
-                    url: "{{ route('admin.question.getChapter') }}",
-                    data: {
-                        subjectId: $(this).val()
-                    },
-                    method: 'get',
-                    success: res => {
-                        let opt = '<option disabled selected>- -</option>';
-                        if (res.status == 200) {
-                            $.each(res.chapters, function(i, v) {
-                                opt += '<option value="' + v.id + '">' + v.name + '</option>';
-                            });
-                            $("#chapter_id").html(opt);
-                        } else {
-                            alert('No chapter found')
-                            // toast('error', 'No Codes found')
-                        }
-                    },
-                    error: err => {
-                        alert('No chapter found')
-                        // toast('error', 'No Codes found')
-                    }
-                });
-            });
-        </script> --}}
-        <script>
             $("#quesType").change(function() {
                 const type = $(this).val();
                 if (type == "multiple_choice") {

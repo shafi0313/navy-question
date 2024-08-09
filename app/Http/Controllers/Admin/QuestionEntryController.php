@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Models\Chapter;
 use App\Models\Exam;
-use App\Models\QuesOption;
-use App\Models\Question;
+use App\Models\Chapter;
 use App\Models\Subject;
+use App\Models\Question;
+use App\Models\QuesOption;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
+use App\Http\Requests\StoreQuestionRequest;
 
 class QuestionEntryController extends Controller
 {
@@ -28,11 +29,11 @@ class QuestionEntryController extends Controller
         if ($error = $this->authorize('question-entry-add')) {
             return $error;
         }
-        $exams = Exam::all();
-        $subjects = Subject::all();
-        $chapters = Chapter::all();
+        // $exams = Exam::all();
+        // $subjects = Subject::all();
+        // $chapters = Chapter::all();
 
-        return view('admin.question_entry.create', compact('exams', 'subjects', 'chapters'));
+        return view('admin.question_entry.create');
     }
 
     public function read(Request $request)
@@ -59,80 +60,20 @@ class QuestionEntryController extends Controller
         }
     }
 
-    // public function store(Request $request)
-    // {
-    //     // return $request;
-    //     if ($error = $this->sendPermissionError('create')) {
-    //         return $error;
-    //     }
-
-    //     $data = $this->validate($request, [
-    //         'exam_id' => 'required|integer',
-    //         'subject_id' => 'required|integer',
-    //         'chapter_id' => 'required|integer',
-    //         'type' => 'required',
-    //         'mark' => 'required',
-    //         'ques' => 'required',
-    //     ]);
-    //     $data['user_id'] = auth()->user()->id;
-
-    //     DB::beginTransaction();
-    //     $question = Question::create($data);
-
-    //     if($request->type == "multiple_choice"){
-    //         foreach($request->option as $key => $value){
-    //             $option=[
-    //                 'question_id' => $question->id,
-    //                 'option' => $request->option[$key],
-    //             ];
-    //             QuesOption::create($option);
-    //         }
-    //     }
-
-    //     try{
-    //         DB::commit();
-    //         toast('success','Success');
-    //         return redirect()->back();
-    //     }catch(\Exception $ex){
-    //         // return $ex->getMessage();
-    //         DB::rollBack();
-    //         toast('error','Error');
-    //         return redirect()->back();
-    //     }
-    // }
-
-    public function store(Request $request)
+    public function store(StoreQuestionRequest $request)
     {
         if ($error = $this->authorize('question-entry-add')) {
             return $error;
         }
-        // return $request;
-        $data = $this->validate($request, [
-            'exam_id' => 'required|integer',
-            'subject_id' => 'required|integer',
-            'chapter_id' => 'required|integer',
-            'type' => 'required',
-            'mark' => 'required',
-            'ques' => 'required',
-        ]);
+        $data = $request->validated();
 
         if ($request->hasFile('image')) {
-            // $files = TextWithSingleImg::wherePage('carPhotoEditing')->whereSec_name('pageHead')->first('image')->before;
-            // $path =  public_path('uploads/images/page/'.$files);
-            // file_exists($files)?unlink($path):'';
-
-            // $path = public_path().'/uploads/images/question';
-            // if (!file_exists($path)) {
-            //     File::makeDirectory($path, 0777, true, true);
-            // }
             $image = $request->file('image');
             $imageName = 'question_'.rand(0, 1000000).'.'.$image->getClientOriginalExtension();
             $request->image->move('uploads/images/question/', $imageName);
             $data['image'] = $imageName;
         }
 
-        // $data['ques'] =$request->ques;
-        $data['user_id'] = auth()->user()->id;
         $questionEntry = Question::create($data);
         if ($request->type == 'multiple_choice') {
             foreach ($request->option as $key => $value) {

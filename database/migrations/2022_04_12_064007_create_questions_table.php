@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('subject_id')->constrained()->cascadeOnDelete();
             $table->enum('type', ['multiple_choice', 'short_question', 'long_question']);
-            $table->string('ques', 500);
+            $table->text('ques');
             $table->integer('mark');
-            // $table->boolean('selected')->default(0);
+            $table->string('image',64)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

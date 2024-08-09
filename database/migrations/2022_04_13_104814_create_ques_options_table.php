@@ -16,9 +16,10 @@ return new class extends Migration
         Schema::create('ques_options', function (Blueprint $table) {
             $table->id();
             $table->foreignId('question_id')->constrained()->cascadeOnDelete();
-            $table->string('option', 191);
+            $table->string('option', 255);
             $table->boolean('correct')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

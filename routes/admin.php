@@ -114,10 +114,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     });
 
     Route::resource('/mark-distributions', MarkDistributionController::class);
-    // Route::controller(MarkDistributionController::class)->prefix('mark-distribution')->name('mark_distributions.')->group(function () {
-    //     Route::get('/read', 'read')->name('read');
-    //     Route::get('/get-mark-info', 'getMarkInfo')->name('getMarkInfo');
-    // });
+    Route::controller(MarkDistributionController::class)->prefix('mark-distribution')->name('mark_distributions.')->group(function () {
+        Route::get('/read', 'read')->name('read');
+        Route::get('/get-mark-info', 'getMarkInfo')->name('getMarkInfo');
+    });
 
     Route::controller(GenerateQuestionPaperController::class)->prefix('generate-question-paper')->name('generate_question.')->group(function () {
         Route::get('/', 'index')->name('index');
