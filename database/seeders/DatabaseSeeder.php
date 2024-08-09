@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             SubjectSeeder::class,
             QuestionSeeder::class,
             QuesOptionSeeder::class,
+            MarkDistributionSeeder::class,
         ]);
     }
 }
