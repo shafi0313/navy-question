@@ -39,7 +39,7 @@ class GenerateQuestionPaperController extends Controller
                     return bdDate($row->date);
                 })
                 ->addColumn('duration', function ($row) {
-                    return $row->d_hour.':'.$row->d_minute.' Minute';
+                    return $row->d_hour . ':' . $row->d_minute . ' Minute';
                 })
                 ->addColumn('set', function ($row) {
                     $badgeColors = [
@@ -54,13 +54,13 @@ class GenerateQuestionPaperController extends Controller
                         $colorIndex = ($i - 1) % count($badgeColors);
                         $colorClass = $badgeColors[$colorIndex];
 
-                        $btn .= '<a href="'.route('admin.generate_question.show', [$row->id, $i, 'show']).'" class="badge '.htmlspecialchars($colorClass).' mb-1">Set '.quesSet($i).'</a>';
+                        $btn .= '<a href="' . route('admin.generate_question.show', [$row->id, $i, 'show']) . '" class="badge ' . htmlspecialchars($colorClass) . ' mb-1">Set ' . questionSetInBangla($i) . '</a>';
                     }
 
                     return $btn;
                 })
                 ->addColumn('generate', function ($row) {
-                    return '<a data-route="'.route('admin.generate_question.status', $row->id).'" class="btn btn-primary text-light btn-sm" onclick="changeStatus(this)">Generate</a>';
+                    return '<a data-route="' . route('admin.generate_question.status', $row->id) . '" class="btn btn-primary text-light btn-sm" onclick="changeStatus(this)">Generate</a>';
                 })
                 ->addColumn('action', function ($row) {
                     $btn = '';
@@ -116,7 +116,7 @@ class GenerateQuestionPaperController extends Controller
             'status' => 'Pending',
         ]);
 
-        $getSubjects = Subject::whereExam_id($request->exam_id)->get();
+        $getSubjects = Subject::whereExamId($request->exam_id)->get();
         for ($set = 1; $set <= 5; $set++) {
             foreach ($getSubjects as $getSubject) {
                 $questionSubjectInfo = QuestionSubjectInfo::create([
@@ -124,11 +124,10 @@ class GenerateQuestionPaperController extends Controller
                     'subject_id' => $getSubject->id,
                     'set' => $set,
                 ]);
-                $quesMarks = MarkDistribution::whereSubject_id($getSubject->id)->get();
+                $quesMarks = MarkDistribution::whereSubjectId($getSubject->id)->get();
                 foreach ($quesMarks as $k => $v) {
-                    $questions = Question::whereExam_id($request->exam_id)
-                        ->whereSubject_id($getSubject->id)
-                        ->where('chapter_id', $v->chapter_id)
+                    $questions = Question::whereSubjectId($getSubject->id)
+                        // ->where('chapter_id', $v->chapter_id)
                         ->whereType('multiple_choice')
                         ->inRandomOrder()
                         ->get();
@@ -149,9 +148,8 @@ class GenerateQuestionPaperController extends Controller
                 }
 
                 foreach ($quesMarks as $k => $v) {
-                    $questions = Question::whereExam_id($request->exam_id)
-                        ->whereSubject_id($getSubject->id)
-                        ->where('chapter_id', $v->chapter_id)
+                    $questions = Question::whereSubjectId($getSubject->id)
+                        // ->where('chapter_id', $v->chapter_id)
                         ->whereType('short_question')
                         ->inRandomOrder()
                         ->get();
@@ -172,9 +170,8 @@ class GenerateQuestionPaperController extends Controller
                 }
 
                 foreach ($quesMarks as $k => $v) {
-                    $questions = Question::whereExam_id($request->exam_id)
-                        ->whereSubject_id($getSubject->id)
-                        ->where('chapter_id', $v->chapter_id)
+                    $questions = Question::whereSubjectId($getSubject->id)
+                        // ->where('chapter_id', $v->chapter_id)
                         ->whereType('long_question')
                         ->inRandomOrder()
                         ->get();

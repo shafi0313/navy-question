@@ -11,6 +11,11 @@ class Subject extends Model
 
     protected $guarded = ['id'];
 
+    public function markDistribution()
+    {
+        return $this->hasOne(MarkDistribution::class);
+    }
+
     public function questions()
     {
         return $this->hasMany(Question::class);

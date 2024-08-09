@@ -33,6 +33,6 @@ class QuestionPaper extends Model
 
     public function options()
     {
-        return $this->belongsTo(QuesOption::class, 'question_id', 'question_id');
+        return $this->hasMany(QuesOption::class, 'question_id', 'question_id');
     }
 }

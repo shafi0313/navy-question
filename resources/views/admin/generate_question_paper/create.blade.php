@@ -48,17 +48,6 @@
                                                 @endif
                                             </div>
                                         </div>
-                                        {{-- <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="subject_id">Subject & Trade <span
-                                                        class="t_r">*</span></label>
-                                                <select class="form-control select2" name="subject_id" id="subject_id"
-                                                    required></select>
-                                                @if ($errors->has('subject_id'))
-                                                    <div class="alert alert-danger">{{ $errors->first('subject_id') }}</div>
-                                                @endif
-                                            </div>
-                                        </div> --}}
 
                                         <div class="col-md-6">
                                             <div class="form-group">
@@ -171,30 +160,30 @@
                         }
                     }
                 });
-                $('#subject_id').select2({
-                    width: '100%',
-                    placeholder: 'Select Exam First...',
-                    allowClear: true,
-                    ajax: {
-                        url: window.location.origin + '/admin/select-2-ajax',
-                        dataType: 'json',
-                        delay: 250,
-                        cache: true,
-                        data: function(params) {
-                            let examId = $('#exam_id').find(":selected").val();
-                            return {
-                                q: $.trim(params.term),
-                                type: 'getSubjectByExam',
-                                exam_id: examId
-                            };
-                        },
-                        processResults: function(data) {
-                            return {
-                                results: data
-                            };
-                        }
-                    }
-                });
+                // $('#subject_id').select2({
+                //     width: '100%',
+                //     placeholder: 'Select Exam First...',
+                //     allowClear: true,
+                //     ajax: {
+                //         url: window.location.origin + '/admin/select-2-ajax',
+                //         dataType: 'json',
+                //         delay: 250,
+                //         cache: true,
+                //         data: function(params) {
+                //             let examId = $('#exam_id').find(":selected").val();
+                //             return {
+                //                 q: $.trim(params.term),
+                //                 type: 'getSubjectByExam',
+                //                 exam_id: examId
+                //             };
+                //         },
+                //         processResults: function(data) {
+                //             return {
+                //                 results: data
+                //             };
+                //         }
+                //     }
+                // });
             })
 
             // $('#subject_id').change(function() {

@@ -66,7 +66,7 @@
                                             <tbody>
                                                 @php $x = 1 @endphp
                                                 @foreach ($exam->subjects as $k => $subject)
-                                                    <input type="hidden" name="subject_id" value="{{ $subject->id }}">
+                                                    <input type="hidden" name="subject_id[]" value="{{ $subject->id }}">
                                                     @php
                                                         $multiple = $subject->markDistribution->multiple ?? 0;
                                                         $sort = $subject->markDistribution->sort ?? 0;

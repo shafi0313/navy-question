@@ -39,39 +39,38 @@ class MarkDistributionController extends Controller
     {
         $exam = Exam::with([
             'subjects:id,exam_id,name',
-            'subjects.questions',
+            'subjects.markDistribution',
+            'subjects.questions:id,subject_id,type,ques',
             ])->find($examId);
         return view('admin.mark-distribution.show', compact('exam'));
     }
 
-    public function create()
-    {
-        if ($error = $this->authorize('mark-distribution-add')) {
-            return $error;
-        }
+    // public function create()
+    // {
+    //     if ($error = $this->authorize('mark-distribution-add')) {
+    //         return $error;
+    //     }
 
-        $questions = Question::all();
-        $subjects = Subject::all();
+    //     $questions = Question::all();
+    //     $subjects = Subject::all();
 
-        return view('admin.mark_distribution.create', compact('questions', 'subjects'));
-    }
+    //     return view('admin.mark_distribution.create', compact('questions', 'subjects'));
+    // }
 
     public function store(Request $request)
     {
         if ($error = $this->authorize('mark-distribution-add')) {
             return $error;
         }
-        foreach ($request->chapter_id as $k => $v) {
+        foreach ($request->subject_id as $k => $v) {
             $data = [
-                'user_id' => auth()->user()->id,
-                'subject_id' => $request->subject_id,
-                'chapter_id' => $request->chapter_id[$k],
+                'subject_id' => $request->subject_id[$k],
                 'multiple' => $request->multiple[$k],
                 'sort' => $request->sort[$k],
                 'long' => $request->long[$k],
                 'pass_mark' => $request->pass_mark,
             ];
-            MarkDistribution::updateOrCreate(['subject_id' => $request->subject_id, 'chapter_id' => $request->chapter_id[$k]], $data);
+            MarkDistribution::updateOrCreate(['subject_id' => $request->subject_id[$k]], $data);
         }
 
         try {

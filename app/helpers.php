@@ -45,6 +45,74 @@ if (! function_exists('questionSetInBangla')) {
     }
 }
 
+if (! function_exists('nu')) {
+    function nu($set)
+    {
+        return match ($set) {
+
+            0 => '০',
+            1 => '১',
+            2 => '২',
+            3 => '৩',
+            4 => '৪',
+            5 => '৫',
+            6 => '৬',
+            7 => '৭',
+            8 => '৮',
+            9 => '৯',
+            default => 'N/A',
+        };
+    }
+}
+
+if (! function_exists('numberToBanglaWord')) {
+    function numberToBanglaWord($set)
+    {
+        return match ($set) {
+            1 => 'ক',
+            2 => 'খ',
+            3 => 'গ',
+            4 => 'ঘ',
+            5 => 'ঙ',
+            6 => 'চ',
+            7 => 'ছ',
+            8 => 'জ',
+            9 => 'ঝ',
+            10 => 'ঞ',
+            11 => 'ট',
+            12 => 'ঠ',
+            13 => 'ড',
+            14 => 'ঢ',
+            15 => 'ণ',
+            16 => 'ত',
+            17 => 'থ',
+            18 => 'দ',
+            19 => 'ধ',
+            20 => 'ন',
+            21 => 'প',
+            22 => 'ফ',
+            23 => 'ব',
+            24 => 'ভ',
+            25 => 'ম',
+            26 => 'য',
+            27 => 'র',
+            28 => 'ল',
+            29 => 'শ',
+            30 => 'ষ',
+            31 => 'স',
+            32 => 'হ',
+            33 => 'ড়',
+            34 => 'ঢ়',
+            35 => 'য়',
+            36 => 'ৎ',
+            37 => 'ং',
+            38 => 'ঃ',
+            39 => 'ঁ',
+            default => 'N/A',
+        };
+    }
+}
+
 if (! function_exists('permissionText')) {
     function permissionText($permission)
     {
