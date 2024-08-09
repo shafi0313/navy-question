@@ -2,31 +2,46 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\Exam;
 use App\Models\Chapter;
-use App\Models\MarkDistribution;
-use App\Models\Question;
 use App\Models\Subject;
+use App\Models\Question;
 use Illuminate\Http\Request;
+use App\Models\MarkDistribution;
+use App\Http\Controllers\Controller;
+use Yajra\DataTables\Facades\DataTables;
 
 class MarkDistributionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         if ($error = $this->authorize('mark-distribution-manage')) {
             return $error;
         }
-        $subjects = Subject::with('exam')->get();
+        if ($request->ajax()) {
+            $exams = Exam::query();
 
-        return view('admin.mark_distribution.index', compact('subjects'));
+            return DataTables::of($exams)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $btn = '';
+                    $btn = '<a href="' . route('admin.mark-distributions.show', $row->id) . '" class="btn btn-link btn-primary btn-lg">Entry</a>';
+                    return $btn;
+                })
+                ->rawColumns(['check', 'action', 'created_at'])
+                ->make(true);
+        }
+
+        return view('admin.mark-distribution.index');
     }
 
-    public function show($subjectId)
+    public function show($examId)
     {
-        $subject = Subject::find($subjectId);
-        $chapters = Chapter::with(['markDistribution', 'question'])->withCount('question')->whereSubject_id($subjectId)->get();
-
-        return view('admin.mark_distribution.show', compact('subject', 'chapters'));
+        $exam = Exam::with([
+            'subjects:id,exam_id,name',
+            'subjects.questions',
+            ])->find($examId);
+        return view('admin.mark-distribution.show', compact('exam'));
     }
 
     public function create()
@@ -63,7 +78,7 @@ class MarkDistributionController extends Controller
 
             toast('Success!', 'success');
 
-            return redirect()->route('admin.markDistribution.index');
+            return redirect()->route('admin.mark-distributions.index');
         } catch (\Exception $ex) {
             // return $ex->getMessage();
             toast('Error', 'error');

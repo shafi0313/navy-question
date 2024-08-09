@@ -20,9 +20,6 @@ class ExamController extends Controller
 
             return DataTables::of($exams)
                 ->addIndexColumn()
-                ->addColumn('created_at', function ($row) {
-                    return $row->created_at->diffForHumans();
-                })
                 ->addColumn('action', function ($row) {
                     $btn = '';
                     if (userCan('exam-edit')) {

@@ -113,16 +113,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::get('/get-question', 'getQuestion')->name('getQuestion');
     });
 
-    Route::controller(MarkDistributionController::class)->prefix('mark-distribution')->name('markDistribution.')->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('/create', 'create')->name('create');
-        Route::post('/store', 'store')->name('store');
-        Route::get('/read', 'read')->name('read');
-        Route::get('/edit/{id}', 'edit')->name('edit');
-        Route::post('/update/{id}', 'update')->name('update');
-        Route::get('/show/{subjectId}', 'show')->name('show');
-        Route::get('/get-mark-info', 'getMarkInfo')->name('getMarkInfo');
-    });
+    Route::resource('/mark-distributions', MarkDistributionController::class);
+    // Route::controller(MarkDistributionController::class)->prefix('mark-distribution')->name('mark_distributions.')->group(function () {
+    //     Route::get('/read', 'read')->name('read');
+    //     Route::get('/get-mark-info', 'getMarkInfo')->name('getMarkInfo');
+    // });
 
     Route::controller(GenerateQuestionPaperController::class)->prefix('generate-question-paper')->name('generate_question.')->group(function () {
         Route::get('/', 'index')->name('index');

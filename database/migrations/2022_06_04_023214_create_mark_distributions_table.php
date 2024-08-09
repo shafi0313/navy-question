@@ -15,15 +15,10 @@ return new class extends Migration
     {
         Schema::create('mark_distributions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('subject_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('chapter_id')->constrained()->cascadeOnDelete();
             $table->integer('multiple')->default(0);
             $table->integer('sort')->default(0);
             $table->integer('long')->default(0);
-            $table->tinyInteger('pass_mark');
-            // $table->enum('type', ["multiple_choice","short_question","long_question"]);
-            // $table->integer('mark');
             $table->timestamps();
         });
     }

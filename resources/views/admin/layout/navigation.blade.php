@@ -36,13 +36,14 @@
                 @endcan
 
 
-                <li class="nav-item {{ activeNav(['admin.subjects.*', 'admin.exam.*', 'admin.markDistribution.*']) }}">
+                <li
+                    class="nav-item {{ activeNav(['admin.subjects.*', 'admin.exam.*', 'admin.mark-distributions.*']) }}">
                     <a data-toggle="collapse" href="#setup">
                         <i class="fa-solid fa-screwdriver-wrench"></i>
                         <p>Setup</p>
                         <span class="caret"></span>
                     </a>
-                    <div class="collapse {{ openNav(['admin.subjects.*', 'admin.exam.*', 'admin.markDistribution.*']) }}"
+                    <div class="collapse {{ openNav(['admin.subjects.*', 'admin.exam.*', 'admin.mark-distributions.*']) }}"
                         id="setup">
                         <ul class="nav nav-collapse">
                             @can('exam-manage')
@@ -60,8 +61,8 @@
                                 </li>
                             @endcan
                             @can('mark-distribution-manage')
-                                <li class="{{ activeSubNav('admin.markDistribution.*') }}">
-                                    <a href="{{ route('admin.markDistribution.index') }}">
+                                <li class="{{ activeSubNav('admin.mark-distributions.*') }}">
+                                    <a href="{{ route('admin.mark-distributions.index') }}">
                                         <span class="sub-item">Mark Distribution</span>
                                     </a>
                                 </li>

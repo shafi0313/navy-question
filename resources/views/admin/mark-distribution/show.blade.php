@@ -34,12 +34,12 @@
                                     padding: 0rem .5rem;
                                 }
                             </style>
-                            <form action="{{ route('admin.markDistribution.store') }}" method="POST">
+                            <form action="{{ route('admin.mark-distributions.store') }}" method="POST">
                                 @csrf
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <h2 class="text-center">{{ $subject->name }}</h2>
+                                            <h2 class="text-center">{{ $exam->name }}</h2>
                                         </div>
                                     </div>
                                     <div class="table-responsive">
@@ -48,7 +48,7 @@
                                             <thead class="bg-secondary thw text-center">
                                                 <tr class="text-center">
                                                     <th rowspan="2">SL</th>
-                                                    <th rowspan="2">Chapter</th>
+                                                    <th rowspan="2">Subject</th>
                                                     <th colspan="2">Multiple Choice</th>
                                                     <th colspan="2">Sort Question</th>
                                                     <th colspan="2">Long Question</th>
@@ -65,37 +65,43 @@
                                             </thead>
                                             <tbody>
                                                 @php $x = 1 @endphp
-                                                @foreach ($chapters as $k => $chapter)
+                                                @foreach ($exam->subjects as $k => $subject)
                                                     <input type="hidden" name="subject_id" value="{{ $subject->id }}">
-                                                    <input type="hidden" name="chapter_id[]" value="{{ $chapter->id }}">
                                                     @php
-                                                        $multiple = $chapter->markDistribution->multiple ?? 0;
-                                                        $sort = $chapter->markDistribution->sort ?? 0;
-                                                        $long = $chapter->markDistribution->long ?? 0;
+                                                        $multiple = $subject->markDistribution->multiple ?? 0;
+                                                        $sort = $subject->markDistribution->sort ?? 0;
+                                                        $long = $subject->markDistribution->long ?? 0;
                                                     @endphp
-                                                    <tr id="calc-{{ $chapter->id }}" class="text-center">
+                                                    <tr id="calc-{{ $subject->id }}" class="text-center">
                                                         <td class="text-center">{{ $x++ }}</td>
-                                                        <td class="text-left">{{ $chapter->name }}</td>
-                                                        <td>{{ $chapter->question->where('type', 'multiple_choice')->count() }}</td>
+                                                        <td class="text-left">{{ $subject->name }}</td>
+                                                        <td>{{ $subject->questions->where('type', 'multiple_choice')->count() }}</td>
                                                         <td>
-                                                            <input type="text" name="multiple[]" class="sum{{ $k }}" value="{{ $multiple }}">
+                                                            <input type="text" name="multiple[]"
+                                                                class="sum{{ $k }}" value="{{ $multiple }}">
                                                         </td>
-                                                        <td>{{ $chapter->question->where('type', 'short_question')->count() }}</td>
-                                                        <td>
-                                                            <input type="text" name="sort[]" class="sum{{ $k }}" value="{{ $sort }}">
+                                                        <td>{{ $subject->questions->where('type', 'short_question')->count() }}
                                                         </td>
-                                                        <td>{{ $chapter->question->where('type', 'long_question')->count() }}</td>
                                                         <td>
-                                                            <input type="text" name="long[]" class="sum{{ $k }}"  value="{{ $long }}">
+                                                            <input type="text" name="sort[]"
+                                                                class="sum{{ $k }}"
+                                                                value="{{ $sort }}">
+                                                        </td>
+                                                        <td>{{ $subject->questions->where('type', 'long_question')->count() }}
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" name="long[]"
+                                                                class="sum{{ $k }}"
+                                                                value="{{ $long }}">
                                                         </td>
                                                         <td>{{ $multiple + $sort + $long }}</td>
                                                     </tr>
                                                 @endforeach
-                                            </tbody> 
+                                            </tbody>
                                         </table>
                                     </div>
                                     <div class="col-md-4">
-                                        <div class="form-group">
+                                        {{-- <div class="form-group">
                                             <label for="pass_mark">Pass Marks <span class="t_r">*</span></label>
                                             <input type="text" name="pass_mark" class="form-control"
                                                 value="{{ $chapter->markDistribution->pass_mark ?? 0 }}"
@@ -103,7 +109,7 @@
                                             @if ($errors->has('pass_mark'))
                                                 <div class="alert alert-danger">{{ $errors->first('pass_mark') }}</div>
                                             @endif
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
                                 <div class="text-center card-action">

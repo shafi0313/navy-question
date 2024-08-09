@@ -11,8 +11,15 @@ class Subject extends Model
 
     protected $guarded = ['id'];
 
-    public function exam()
+    public function questions()
     {
-        return $this->belongsTo(Exam::class);
+        return $this->hasMany(Question::class);
     }
+
+    // public function exam()
+    // {
+    //     return $this->belongsTo(Exam::class);
+    // }
+
+
 }

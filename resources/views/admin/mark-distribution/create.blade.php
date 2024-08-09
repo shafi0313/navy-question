@@ -14,7 +14,7 @@
                     <ul class="breadcrumbs">
                         <li class="nav-home"><a href="{{ route('admin.dashboard') }}"><i class="flaticon-home"></i></a></li>
                         <li class="separator"><i class="flaticon-right-arrow"></i></li>
-                        <li class="nav-item"><a href="{{ route('admin.markDistribution.index') }}">Mark Distribution</a>
+                        <li class="nav-item"><a href="{{ route('admin.mark-distributions.index') }}">Mark Distribution</a>
                         </li>
                         <li class="separator"><i class="flaticon-right-arrow"></i></li>
                         <li class="nav-item">Create</li>
@@ -36,7 +36,7 @@
                                 </div>
                             @endif
 
-                            <form action="{{ route('admin.markDistribution.store') }}" method="POST" id="quesStore">
+                            <form action="{{ route('admin.mark-distributions.store') }}" method="POST" id="quesStore">
                                 @csrf
                                 <div class="card-body">
                                     <div class="row">
