@@ -49,20 +49,20 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-6">
+                                        <div class="col-md-3">
                                             <div class="form-group">
-                                                <label for="date">Date <span class="t_r">*</span></label>
+                                                <label for="date">Date </label>
                                                 <input type="date" name="date" class="form-control"
-                                                    value="{{ old('date', date('d-m-Y')) }}" required>
+                                                    value="{{ old('date', date('d-m-Y')) }}">
                                                 @if ($errors->has('date'))
                                                     <div class="alert alert-danger">{{ $errors->first('date') }}</div>
                                                 @endif
                                             </div>
                                         </div>
 
-                                        <div class="col-md-6">
+                                        <div class="col-md-3">
                                             <div class="form-group">
-                                                <label for="time">Time <span class="t_r">*</span></label>
+                                                <label for="time">Time </label>
                                                 <input type="time" name="time" class="form-control"
                                                     value="{{ old('time', date('h.i A')) }}">
                                                 @if ($errors->has('time'))
@@ -71,7 +71,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-6">
+                                        {{-- <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="duration">Duration </label><br>
                                                 <input style="width:50%; display: inline-block" type="text"
@@ -89,28 +89,27 @@
                                                     <div class="alert alert-danger">{{ $errors->first('d_minute') }}</div>
                                                 @endif
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
+                                        </div> --}}
+                                        {{-- <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="mode">Mode <span class="t_r">*</span></label>
+                                                <label for="mode">Mode </label>
                                                 <input type="text" name="mode" class="form-control"
                                                     value="{{ old('mode') }}">
                                                 @if ($errors->has('mode'))
                                                     <div class="alert alert-danger">{{ $errors->first('mode') }}</div>
                                                 @endif
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="note">Note</label>
-                                                <input type="text" name="note" class="form-control"
-                                                    value="(Note: Attention is hereby drawn to NR Appendix LVI)">
+                                                <textarea name="" class="form-control" rows="5">সঠিক উত্তরটি নির্বাচন করে সরবরাহকৃত উত্তর পত্রে বৃত্ত পূরণ করতে হবে । যে উত্তরটি সঠিক, উত্তর পত্রের বিষয় ভিত্তিক প্রশ্ন নম্বরে প্রদত্ত ক্রমিকে(ক, খ, গ, ঘ/a, b, c, d) বৃত্ত পূরণ করতে হবে। যেমন 'খ' উত্তরটি সঠিক হলে উত্তর পত্রের বিষয় ভিত্তিক প্রশ্ন নম্বরের 'খ' উত্তরটিতে বৃত্ত পূরণ করতে হবে। একটি প্রশ্নের জন্য একটি উত্তর পূরণ করতে হবে। একাধিক বৃত্ত পূরণ করলে তা বাতিল বলে গণ্য হবে।</textarea>
                                                 @if ($errors->has('note'))
                                                     <div class="alert alert-danger">{{ $errors->first('note') }}</div>
                                                 @endif
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
+                                        {{-- <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="option_note">Question Option Note</label>
                                                 <input type="text" name="option_note" class="form-control"
@@ -120,7 +119,7 @@
                                                     </div>
                                                 @endif
                                             </div>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
                                 <div class="text-center card-action">

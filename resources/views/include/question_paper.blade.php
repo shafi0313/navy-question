@@ -1,10 +1,14 @@
 @include('admin.question_paper.css')
+<htmlpageheader name="page-header">
+    <p style="display: block; width: 100%; text-align: center; line-height: 15px">গোপনীয়</p>
+</htmlpageheader>
 
 @foreach ($questionSubjectInfos as $questionSubjectInfo)
     @php
         $totalQuestionMark = 0;
     @endphp
-    <div class="navy" style="margin-bottom: 20px">
+    <div class="navy" style="margin-bottom: 5px">
+        <span>{{ questionSetInBangla((int) $questionSubjectInfo->set) }}</span>
         <div class="title">
             <h4 class="exam_title">
                 @if ($questionInfo->status == 'Pending')
@@ -14,7 +18,7 @@
                 ডিই/ইউসি
                 {{-- {{ \Carbon\Carbon::parse($questionInfo->date)->format('F Y') }} --}}
             </h4>
-            <span>{{ questionSetInBangla((int) $questionSubjectInfo->set) }}</span>
+
             {{-- <table class="table table-bordered text-left">
                 <tr>
                     <td>Mode of Examination</td>
@@ -33,7 +37,7 @@
         বিষয় ভিত্তিক প্রশ্ন নম্বরের 'খ' উত্তরটিতে বৃত্ত পূরণ করতে হবে। একটি প্রশ্নের জন্য একটি উত্তর পূরণ করতে হবে।
         একাধিক বৃত্ত পূরণ করলে তা বাতিল বলে গণ্য হবে।
     </p>
-    <br>
+
     {{-- For total question mark start --}}
     @foreach ($questionSubjectInfo->questionPapers as $item)
         @php
@@ -41,7 +45,7 @@
         @endphp
     @endforeach
     {{-- For total question mark end --}}
-    <table style="margin-bottom: 20px">
+    <table>
         <tr>
             <th style="text-align:left">বিষয়: {{ $questionSubjectInfo->subject->name }}</th>
             <th style="text-align:right">পূর্ণমান: {{ $totalQuestionMark }}</th>
@@ -84,34 +88,7 @@
             @endforeach
         @endif
     @endforeach
-    <div class="page-break"></div>
+    @if (!$loop->last)
+        <div class="page-break"></div>
+    @endif
 @endforeach
-<br>
-
-<htmlpageheader name="page-header">
-    <p style="display: block; width: 100%; text-align: center; line-height: 15px">গোপনীয়</p>
-</htmlpageheader>
-
-{{-- <htmlpageheader name="page-header">
-    <p style="display: block; width: 100%; text-align: center; line-height: 15px">CONFIDENTIAL <br>EXAM IN CONFIDENCE
-    </p>
-</htmlpageheader>
-
-<htmlpagefooter name="page-footer">
-    <p style="display: block; width: 100%; text-align: center; line-height: 15px">EXAM IN CONFIDENCE <br>CONFIDENTIAL
-    </p>
-</htmlpagefooter> --}}
-
-
-
-
-
-
-{{-- @if (!empty($edit))
-    <a href="{{ route('admin.generate_question.edit', [$questionPaper->id, $questionPaper->question_info_id]) }}"
-        style="margin-left: 20px" class="text-info">Edit</a>
-@endif
-@if (!empty($delete))
-    <a href="{{ route('admin.generate_question.quesDestroy', [$questionPaper->id, $questionPaper->question_info_id]) }}"
-        style="margin-left: 20px" class="text-danger">Delete</a>
-@endif --}}

@@ -7,6 +7,7 @@
         text-align: justify;
         border: 2px solid #000;
         padding: 10px;
+        margin-bottom: 5px;
     }
 
     .option {
@@ -31,14 +32,14 @@
         text-align: center;
         padding: 0;
         margin: 0;
-        text-transform: uppercase;
+        /* text-transform: uppercase; */
     }
 
     .title p {
         text-align: center;
         padding: 0;
         margin: 0;
-        text-transform: uppercase;
+        /* text-transform: uppercase; */
     }
 
     .navy{
@@ -74,7 +75,7 @@
     }
 
     @page {
-        margin-bottom: 100px;
+        margin-bottom: 60px;
         margin-top: 60px;
     }
 
