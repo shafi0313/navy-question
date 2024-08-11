@@ -1,20 +1,19 @@
 @php $x = 1 @endphp
 @foreach ($inputs as $input)
     <tr>
-        <td>{{ $x++ }}</td>
+        <td class="text-center">{{ $x++ }}</td>
         <td><input type="hidden" name="exam_id[]" value="{{ $input->exam_id }}">{!! $input->ques !!}</td>
         <td>{{ ucfirst(preg_replace('/[^a-z]/', ' ', $input->type)) }}</td>
-        <td>{{ $input->mark }}</td>
-        <td>
+        <td class="text-center">{{ $input->mark }}</td>
+        <td class="text-center">
             <div class="form-button-action">
-                <a href="{{ route('admin.question.edit', $input->id) }}" data-toggle="tooltip" title=""
-                    class="btn btn-link btn-primary btn-lg" data-original-title="Show">
-                    Edit
+                <a href="{{ route('admin.question.edit', $input->id) }}" title="Edit" class="btn btn-link btn-primary">
+                    <i class="fa-solid fa-pen-to-square"></i>
                 </a>
+                <span class="px-1">|</span>
                 <form action="{{ route('admin.question.destroy', $input->id) }}" method="POST">
                     @csrf @method('DELETE')
-                    <button type="submit" data-toggle="tooltip" title="" class="btn btn-link btn-danger"
-                        data-original-title="Remove">
+                    <button type="submit" title="Delete" class="btn btn-link btn-danger">
                         <i class="fa fa-times"></i>
                     </button>
                 </form>

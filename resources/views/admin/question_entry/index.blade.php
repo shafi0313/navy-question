@@ -51,7 +51,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="subject_id">Subject & Trade <span class="t_r">*</span></label>
+                                            <label for="subject_id">Subject <span class="t_r">*</span></label>
                                             <select class="form-control" name="subject_id" id="subject_id"
                                                 required></select>
                                             @if ($errors->has('subject_id'))
@@ -59,7 +59,7 @@
                                             @endif
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    {{-- <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="chapter_id">Chapter <span class="t_r">*</span></label>
                                             <select class="form-control" name="chapter_id" id="chapter_id">
@@ -68,7 +68,7 @@
                                                 <div class="alert alert-danger">{{ $errors->first('chapter_id') }}</div>
                                             @endif
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="type">Question Type <span class="t_r">*</span></label>
@@ -84,14 +84,14 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <table class="table table-striped table-bordered table-hover w-100">
+                                        <table class="table table-striped table-bordered table-hover mt-3 w-100">
                                             <thead>
                                                 <tr>
                                                     <th>SN</th>
                                                     <th>Question</th>
                                                     <th>Type</th>
                                                     <th>Marks</th>
-                                                    <th>Action</th>
+                                                    <th style="width:60px">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="questionArea" id="questionArea"></tbody>
@@ -158,30 +158,30 @@
                         }
                     }
                 });
-                $('#chapter_id').select2({
-                    width: '100%',
-                    placeholder: 'Select Subject First...',
-                    allowClear: true,
-                    ajax: {
-                        url: window.location.origin + '/admin/select-2-ajax',
-                        dataType: 'json',
-                        delay: 250,
-                        cache: true,
-                        data: function(params) {
-                            let subject_id = $('#subject_id').find(":selected").val();
-                            return {
-                                q: $.trim(params.term),
-                                type: 'getChapterBySubject',
-                                subject_id: subject_id
-                            };
-                        },
-                        processResults: function(data) {
-                            return {
-                                results: data
-                            };
-                        }
-                    }
-                });
+                // $('#chapter_id').select2({
+                //     width: '100%',
+                //     placeholder: 'Select Subject First...',
+                //     allowClear: true,
+                //     ajax: {
+                //         url: window.location.origin + '/admin/select-2-ajax',
+                //         dataType: 'json',
+                //         delay: 250,
+                //         cache: true,
+                //         data: function(params) {
+                //             let subject_id = $('#subject_id').find(":selected").val();
+                //             return {
+                //                 q: $.trim(params.term),
+                //                 type: 'getChapterBySubject',
+                //                 subject_id: subject_id
+                //             };
+                //         },
+                //         processResults: function(data) {
+                //             return {
+                //                 results: data
+                //             };
+                //         }
+                //     }
+                // });
             })
 
             $("#subject_id, #chapter_id").change(function() {
@@ -198,7 +198,7 @@
                     method: 'get',
                     data: {
                         subject_id: $('#subject_id').val(),
-                        chapter_id: $('#chapter_id').val(),
+                        // chapter_id: $('#chapter_id').val(),
                         type: $('#quesType').val(),
                     },
                     success: function(res) {

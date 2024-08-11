@@ -63,7 +63,7 @@
                                                 @endif
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="type">Question Type <span class="t_r">*</span></label>
                                                 <select class="form-control" name="type" id="quesType" required>
@@ -80,14 +80,14 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="mark">Marks <span class="t_r">*</span></label>
-                                                <input type="number" value="2" name="mark" class="form-control" id="mark"
+                                                <input type="number" name="mark" class="form-control" id="mark"
                                                     required>
                                                 @if ($errors->has('mark'))
                                                     <div class="alert alert-danger">{{ $errors->first('mark') }}</div>
                                                 @endif
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="image">Image</label>
                                                 <input type="file" name="image" class="form-control" id="image">
@@ -294,7 +294,7 @@
             function clear() {
                 $("#questionArea").html('');
                 $("#ques").val('');
-                $("#mark").val('');
+                // $("#mark").val('');
                 $("#option").val('');
                 $("#image").val('');
             }

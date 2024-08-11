@@ -29,17 +29,13 @@ class QuestionEntryController extends Controller
         if ($error = $this->authorize('question-entry-add')) {
             return $error;
         }
-        // $exams = Exam::all();
-        // $subjects = Subject::all();
-        // $chapters = Chapter::all();
-
         return view('admin.question_entry.create');
     }
 
     public function read(Request $request)
     {
         $inputs = Question::whereSubjectId($request->subject_id)
-            ->whereChapterId($request->chapter_id)
+            // ->whereChapterId($request->chapter_id)
             ->whereType($request->type)
             ->get();
         if ($inputs->count() > 0) {
