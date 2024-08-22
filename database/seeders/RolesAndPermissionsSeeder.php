@@ -76,6 +76,12 @@ class RolesAndPermissionsSeeder extends Seeder
                 'exam-edit',
                 'exam-delete',
             ],
+            'rank' => [
+                'rank-manage',
+                'rank-add',
+                'rank-edit',
+                'rank-delete',
+            ],
             'mark-distribution' => [
                 'mark-distribution-manage',
                 'mark-distribution-add',
@@ -117,7 +123,7 @@ class RolesAndPermissionsSeeder extends Seeder
             }
         }
 
-        // $superadmin = Role::create(['name' => 'superadmin','removable'=> 0]);
+        $superadmin = Role::create(['name' => 'superadmin','removable'=> 0]);
         $admin = Role::create(['name' => 'admin', 'removable' => 0]);
         $admin->givePermissionTo(Permission::all());
         $teacher = Role::create(['name' => 'user', 'removable' => 0]);

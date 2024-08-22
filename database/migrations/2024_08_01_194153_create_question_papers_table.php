@@ -17,10 +17,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('question_subject_info_id')->constrained()->cascadeOnDelete();
             $table->foreignId('question_id')->constrained()->cascadeOnDelete();
-            // $table->foreignId('ques_info_id')->constrained()->cascadeOnDelete();
-            // $table->foreignId('question_id')->constrained()->cascadeOnDelete();
-            // $table->string('set', 64);
-            // $table->tinyInteger('set_no');
             $table->enum('type', ['multiple_choice', 'short_question', 'long_question']);
             $table->timestamps();
         });

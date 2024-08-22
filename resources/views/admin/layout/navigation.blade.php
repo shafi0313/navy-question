@@ -53,6 +53,13 @@
                                     </a>
                                 </li>
                             @endcan
+                            @can('rank-manage')
+                                <li class="{{ activeSubNav('admin.ranks.*') }}">
+                                    <a href="{{ route('admin.ranks.index') }}">
+                                        <span class="sub-item">Rank</span>
+                                    </a>
+                                </li>
+                            @endcan
                             @can('subject-manage')
                                 <li class="{{ activeSubNav('admin.subjects.*') }}">
                                     <a href="{{ route('admin.subjects.index') }}">

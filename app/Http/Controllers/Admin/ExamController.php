@@ -47,15 +47,10 @@ class ExamController extends Controller
             'name' => 'required|max:100',
         ]);
         $data['user_id'] = auth()->user()->id;
-        DB::beginTransaction();
         try {
             Exam::create($data);
-            DB::commit();
-
             return response()->json(['message' => 'Data Successfully Inserted'], 200);
         } catch (\Exception $e) {
-            DB::rollBack();
-
             return response()->json(['message' => __('app.oops')], 500);
             // return response()->json(['message'=>$e->getMessage()], 500);
         }
@@ -68,9 +63,9 @@ class ExamController extends Controller
      */
     public function edit(Request $request, Exam $exam)
     {
-        // if ($error = $this->authorize('class-room-edit')) {
-        //     return $error;
-        // }
+        if ($error = $this->authorize('exam-edit')) {
+            return $error;
+        }
         if ($request->ajax()) {
             $modal = view('admin.exam.edit')->with('exam', $exam)->render();
 
