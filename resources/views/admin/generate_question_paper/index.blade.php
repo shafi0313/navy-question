@@ -76,6 +76,11 @@
                                 title: 'Exam'
                             },
                             {
+                                data: 'rank.name',
+                                name: 'rank.name',
+                                title: 'Rank'
+                            },
+                            {
                                 data: 'date',
                                 name: 'date',
                                 title: 'Date'
@@ -89,11 +94,6 @@
                                 data: 'duration',
                                 name: 'duration',
                                 title: 'duration'
-                            },
-                            {
-                                data: 'mode',
-                                name: 'mode',
-                                title: 'Mode'
                             },
                             {
                                 data: 'status',

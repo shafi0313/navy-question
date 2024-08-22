@@ -15,6 +15,10 @@ class QuestionInfo extends Model
     {
         return $this->belongsTo(Exam::class);
     }
+    public function rank()
+    {
+        return $this->belongsTo(Rank::class);
+    }
 
     public function questionSubjectInfo()
     {

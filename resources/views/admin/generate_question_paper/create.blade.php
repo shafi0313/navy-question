@@ -48,7 +48,16 @@
                                                 @endif
                                             </div>
                                         </div>
-
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="rank_id">Rank <span class="t_r">*</span></label>
+                                                <select class="form-control" name="rank_id" id="rank_id"
+                                                    required></select>
+                                                @if ($errors->has('rank_id'))
+                                                    <div class="alert alert-danger">{{ $errors->first('rank_id') }}</div>
+                                                @endif
+                                            </div>
+                                        </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="date">Date </label>
@@ -150,6 +159,28 @@
                             return {
                                 q: $.trim(params.term),
                                 type: 'getExam',
+                            };
+                        },
+                        processResults: function(data) {
+                            return {
+                                results: data
+                            };
+                        }
+                    }
+                });
+                $('#rank_id').select2({
+                    width: '100%',
+                    placeholder: 'Type to search...',
+                    allowClear: true,
+                    ajax: {
+                        url: window.location.origin + '/admin/select-2-ajax',
+                        dataType: 'json',
+                        delay: 250,
+                        cache: true,
+                        data: function(params) {
+                            return {
+                                q: $.trim(params.term),
+                                type: 'getRank',
                             };
                         },
                         processResults: function(data) {

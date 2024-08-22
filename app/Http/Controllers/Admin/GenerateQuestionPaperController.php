@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Exam;
-use App\Models\MarkDistribution;
-use App\Models\QuesOption;
-use App\Models\Question;
-use App\Models\QuestionInfo;
-use App\Models\QuestionPaper;
-use App\Models\QuestionSubjectInfo;
 use App\Models\Subject;
-use App\Traits\QuestionPaperTrait;
+use App\Models\Question;
+use App\Models\QuesOption;
+use App\Models\QuestionInfo;
 use Illuminate\Http\Request;
+use App\Models\QuestionPaper;
+use App\Models\MarkDistribution;
+use App\Traits\QuestionPaperTrait;
 use Illuminate\Support\Facades\DB;
+use App\Models\QuestionSubjectInfo;
+use App\Http\Controllers\Controller;
 use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\Facades\DataTables;
+use App\Http\Requests\StoreQuestionInfoRequest;
 
 class GenerateQuestionPaperController extends Controller
 {
@@ -28,7 +29,11 @@ class GenerateQuestionPaperController extends Controller
         }
 
         if ($request->ajax()) {
-            $queInfos = QuestionInfo::with(['exam:id,name', 'questionSubjectInfo'])
+            $queInfos = QuestionInfo::with([
+                'exam:id,name',
+                'rank:id,name',
+                'questionSubjectInfo'
+                ])
                 ->whereStatus('Pending')
                 ->latest();
 
@@ -88,32 +93,29 @@ class GenerateQuestionPaperController extends Controller
         return view('admin.generate_question_paper.create');
     }
 
-    public function getQuestion(Request $request)
-    {
-        if ($request->ajax()) {
-            $questions = Question::whereNotIn('id', $request->get_question_id)
-                ->whereSubjectId($request->subject_id)
-                ->whereType($request->ques_type)
-                ->get();
+    // public function getQuestion(Request $request)
+    // {
+    //     if ($request->ajax()) {
+    //         $questions = Question::whereNotIn('id', $request->get_question_id)
+    //             ->whereSubjectId($request->subject_id)
+    //             ->whereType($request->ques_type)
+    //             ->get();
 
-            return response()->json(['questions' => $questions, 'status' => 200]);
-        }
-    }
+    //         return response()->json(['questions' => $questions, 'status' => 200]);
+    //     }
+    // }
 
-    public function store(Request $request)
+    public function store(Request $request, StoreQuestionInfoRequest $questionInfoRequest)
     {
         if ($error = $this->authorize('question-generate-add')) {
             return $error;
         }
         DB::beginTransaction();
 
-        $questionInfo = QuestionInfo::create([
-            'exam_id' => $request->exam_id,
-            'date' => $request->date,
-            'd_hour' => $request->d_hour,
-            'd_minute' => $request->d_minute,
-            'status' => 'Pending',
-        ]);
+        $data = $questionInfoRequest->validated();
+        $data['status'] = 'Pending';
+
+        $questionInfo = QuestionInfo::create($data);
 
         $getSubjects = Subject::whereExamId($request->exam_id)->get();
         for ($set = 1; $set <= 5; $set++) {
@@ -126,6 +128,7 @@ class GenerateQuestionPaperController extends Controller
                 $quesMarks = MarkDistribution::whereSubjectId($getSubject->id)->get();
                 foreach ($quesMarks as $k => $v) {
                     $questions = Question::whereSubjectId($getSubject->id)
+                        ->whereRankId($questionInfoRequest->rank_id)
                         // ->where('chapter_id', $v->chapter_id)
                         ->whereType('multiple_choice')
                         ->inRandomOrder()
@@ -137,8 +140,6 @@ class GenerateQuestionPaperController extends Controller
                                 'question_subject_info_id' => $questionSubjectInfo->id,
                                 'question_id' => $value->id,
                                 'type' => 'multiple_choice',
-                                // 'set' => $set,
-                                // 'ques_no' => $quesNo,
                             ];
                             QuestionPaper::updateOrCreate($data);
                             $i += $value->mark;
@@ -148,6 +149,7 @@ class GenerateQuestionPaperController extends Controller
 
                 foreach ($quesMarks as $k => $v) {
                     $questions = Question::whereSubjectId($getSubject->id)
+                        ->whereRankId($questionInfoRequest->rank_id)
                         // ->where('chapter_id', $v->chapter_id)
                         ->whereType('short_question')
                         ->inRandomOrder()
@@ -170,6 +172,7 @@ class GenerateQuestionPaperController extends Controller
 
                 foreach ($quesMarks as $k => $v) {
                     $questions = Question::whereSubjectId($getSubject->id)
+                        ->whereRankId($questionInfoRequest->rank_id)
                         // ->where('chapter_id', $v->chapter_id)
                         ->whereType('long_question')
                         ->inRandomOrder()
