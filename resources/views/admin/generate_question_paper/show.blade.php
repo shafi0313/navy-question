@@ -31,6 +31,16 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
+                                                <label for="rank_id">Rank <span class="t_r">*</span></label>
+                                                <select class="form-control" name="rank_id" id="rank_id"
+                                                    required></select>
+                                                @if ($errors->has('rank_id'))
+                                                    <div class="alert alert-danger">{{ $errors->first('rank_id') }}</div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
                                                 <label for="subject_id">Subject <span class="t_r">*</span></label>
                                                 <select class="form-control select2" name="subject_id" id="subject_id">
                                                     <option selected value disabled>Select..</option>
@@ -44,7 +54,6 @@
                                                 @endif
                                             </div>
                                         </div>
-
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="type">Question Type <span class="t_r">*</span></label>
@@ -115,9 +124,35 @@
         <!-- Datatables -->
         @include('include.data_table')
         <script>
+            $(document).ready(function() {
+                $('#rank_id').select2({
+                    width: '100%',
+                    placeholder: 'Type to search...',
+                    allowClear: true,
+                    ajax: {
+                        url: window.location.origin + '/admin/select-2-ajax',
+                        dataType: 'json',
+                        delay: 250,
+                        cache: true,
+                        data: function(params) {
+                            return {
+                                q: $.trim(params.term),
+                                type: 'getRank',
+                            };
+                        },
+                        processResults: function(data) {
+                            return {
+                                results: data
+                            };
+                        }
+                    }
+                });
+            })
+
             $('#ques_type').change(function() {
                 $("#questionArea").html('');
                 let subject_id = $('#subject_id').find(":selected").val();
+                let rank_id = $('#rank_id').find(":selected").val();
                 const get_question_id = $("input[name='get_question_id[]']").map(function() {
                     return $(this).val(); // Extract each input value
                 }).get();
@@ -129,6 +164,7 @@
                 $.ajax({
                     url: "{{ route('admin.generate_question.getQuestion') }}",
                     data: {
+                        rank_id: rank_id,
                         subject_id: subject_id,
                         ques_type: ques_type,
                         get_question_id: get_question_id,

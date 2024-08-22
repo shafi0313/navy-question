@@ -11,7 +11,7 @@ trait QuestionPaperTrait
     public function questionPaperShow($quesInfoId, $set, $type)
     {
         // return
-        $data['questionInfo'] = QuestionInfo::with(['exam:id,name'])->find($quesInfoId);
+        $data['questionInfo'] = QuestionInfo::with(['exam:id,name', 'rank:id,name'])->find($quesInfoId);
         // return
         $data['questionSubjectInfos'] = QuestionSubjectInfo::with([
             'subject:id,name',

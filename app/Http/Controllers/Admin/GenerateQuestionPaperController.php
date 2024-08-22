@@ -93,17 +93,18 @@ class GenerateQuestionPaperController extends Controller
         return view('admin.generate_question_paper.create');
     }
 
-    // public function getQuestion(Request $request)
-    // {
-    //     if ($request->ajax()) {
-    //         $questions = Question::whereNotIn('id', $request->get_question_id)
-    //             ->whereSubjectId($request->subject_id)
-    //             ->whereType($request->ques_type)
-    //             ->get();
+    public function getQuestion(Request $request)
+    {
+        if ($request->ajax()) {
+            $questions = Question::whereNotIn('id', $request->get_question_id)
+                ->whereSubjectId($request->subject_id)
+                ->whereRankId($request->rank_id)
+                ->whereType($request->ques_type)
+                ->get();
 
-    //         return response()->json(['questions' => $questions, 'status' => 200]);
-    //     }
-    // }
+            return response()->json(['questions' => $questions, 'status' => 200]);
+        }
+    }
 
     public function store(Request $request, StoreQuestionInfoRequest $questionInfoRequest)
     {

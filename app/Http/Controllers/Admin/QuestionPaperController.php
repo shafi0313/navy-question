@@ -23,7 +23,10 @@ class QuestionPaperController extends Controller
             return $error;
         }
         if ($request->ajax()) {
-            $queInfos = QuestionInfo::with(['exam:id,name', 'questionSubjectInfo'])
+            $queInfos = QuestionInfo::with([
+                'exam:id,name',
+                'rank:id,name',
+                'questionSubjectInfo'])
                 ->whereStatus('Created')
                 ->latest();
 

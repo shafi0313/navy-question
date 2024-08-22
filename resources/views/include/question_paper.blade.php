@@ -15,7 +15,7 @@
                     <h2>Draft Question Paper</h2>
                 @endif
                 {{ $questionInfo->exam->name }} <br>
-                ডিই/ইউসি
+                {{ $questionInfo->rank->name }}
                 {{-- {{ \Carbon\Carbon::parse($questionInfo->date)->format('F Y') }} --}}
             </h4>
 
