@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('subject_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('rank_id')->constrained()->cascadeOnDelete();
             $table->enum('type', ['multiple_choice', 'short_question', 'long_question']);
             $table->text('ques');
             $table->integer('mark');

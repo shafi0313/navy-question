@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Chapter;
 use App\Models\Exam;
+use App\Models\Rank;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 
@@ -39,10 +39,9 @@ class AjaxController extends Controller
                             ];
                         })->toArray();
                     break;
-                case 'getChapterBySubject':
-                    $response = Chapter::select('id', 'name')
+                case 'getRank':
+                    $response = Rank::select('id', 'name')
                         ->where('name', 'like', "%{$request->q}%")
-                        ->whereSubjectId($request->subject_id)
                         ->orderBy('name')
                         ->limit(10)
                         ->get()->map(function ($data) {
@@ -52,6 +51,19 @@ class AjaxController extends Controller
                             ];
                         })->toArray();
                     break;
+                // case 'getChapterBySubject':
+                //     $response = Chapter::select('id', 'name')
+                //         ->where('name', 'like', "%{$request->q}%")
+                //         ->whereSubjectId($request->subject_id)
+                //         ->orderBy('name')
+                //         ->limit(10)
+                //         ->get()->map(function ($data) {
+                //             return [
+                //                 'id' => $data->id,
+                //                 'text' => $data->name,
+                //             ];
+                //         })->toArray();
+                //     break;
                     // case 'getProduct':
                     //     $query = Product::with(['generic' => function ($q) {
                     //         $q->select('id', 'name');

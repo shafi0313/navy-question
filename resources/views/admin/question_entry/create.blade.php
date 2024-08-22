@@ -65,6 +65,16 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
+                                                <label for="rank_id">Rank <span class="t_r">*</span></label>
+                                                <select class="form-control" name="rank_id" id="rank_id"
+                                                    required></select>
+                                                @if ($errors->has('rank_id'))
+                                                    <div class="alert alert-danger">{{ $errors->first('rank_id') }}</div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
                                                 <label for="type">Question Type <span class="t_r">*</span></label>
                                                 <select class="form-control" name="type" id="quesType" required>
                                                     <option selected value disabled>Select</option>
@@ -152,7 +162,6 @@
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    {{-- <tbody class="questionArea" id="questionArea"></tbody> --}}
                                     <tbody class="questionArea" id="question"></tbody>
                                 </table>
                             </div>
@@ -205,6 +214,28 @@
                                 q: $.trim(params.term),
                                 type: 'getSubjectByExam',
                                 exam_id: examId
+                            };
+                        },
+                        processResults: function(data) {
+                            return {
+                                results: data
+                            };
+                        }
+                    }
+                });
+                $('#rank_id').select2({
+                    width: '100%',
+                    placeholder: 'Type to search...',
+                    allowClear: true,
+                    ajax: {
+                        url: window.location.origin + '/admin/select-2-ajax',
+                        dataType: 'json',
+                        delay: 250,
+                        cache: true,
+                        data: function(params) {
+                            return {
+                                q: $.trim(params.term),
+                                type: 'getRank',
                             };
                         },
                         processResults: function(data) {

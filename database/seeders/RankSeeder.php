@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Rank;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,11 @@ class RankSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $ranks = [
+            [
+                'name' => 'ডিই/ইউসি',
+            ],
+        ];
+        Rank::insert($ranks);
     }
 }

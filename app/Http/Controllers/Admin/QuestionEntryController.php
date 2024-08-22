@@ -35,7 +35,7 @@ class QuestionEntryController extends Controller
     public function read(Request $request)
     {
         $inputs = Question::whereSubjectId($request->subject_id)
-            // ->whereChapterId($request->chapter_id)
+            ->whereRankId($request->rank)
             ->whereType($request->type)
             ->get();
         if ($inputs->count() > 0) {
@@ -47,14 +47,14 @@ class QuestionEntryController extends Controller
         }
     }
 
-    public function getQuestion(Request $request)
-    {
-        if ($request->ajax()) {
-            $questions = Question::whereChapter_id($request->chapterId)->whereType($request->quesType)->get();
+    // public function getQuestion(Request $request)
+    // {
+    //     if ($request->ajax()) {
+    //         $questions = Question::whereChapter_id($request->chapterId)->whereType($request->quesType)->get();
 
-            return response()->json(['questions' => $questions, 'status' => 200]);
-        }
-    }
+    //         return response()->json(['questions' => $questions, 'status' => 200]);
+    //     }
+    // }
 
     public function store(StoreQuestionRequest $request)
     {
