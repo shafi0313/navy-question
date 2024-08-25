@@ -65,7 +65,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="rank_id">Rank <span class="t_r">*</span></label>
+                                                <label for="rank_id">Branch/Rank <span class="t_r">*</span></label>
                                                 <select class="form-control" name="rank_id" id="rank_id"
                                                     required></select>
                                                 @if ($errors->has('rank_id'))
@@ -175,80 +175,8 @@
 
     @push('custom_scripts')
         @include('include.toast');
+        @include('admin.question_entry.get-js')
         <script>
-            $(document).ready(function() {
-                $('#exam_id').select2({
-                    width: '100%',
-                    placeholder: 'Select...',
-                    allowClear: true,
-                    ajax: {
-                        url: window.location.origin + '/admin/select-2-ajax',
-                        dataType: 'json',
-                        delay: 250,
-                        cache: true,
-                        data: function(params) {
-                            return {
-                                q: $.trim(params.term),
-                                type: 'getExam',
-                            };
-                        },
-                        processResults: function(data) {
-                            return {
-                                results: data
-                            };
-                        }
-                    }
-                });
-                $('#subject_id').select2({
-                    width: '100%',
-                    placeholder: 'Select Exam First...',
-                    allowClear: true,
-                    ajax: {
-                        url: window.location.origin + '/admin/select-2-ajax',
-                        dataType: 'json',
-                        delay: 250,
-                        cache: true,
-                        data: function(params) {
-                            let examId = $('#exam_id').find(":selected").val();
-                            return {
-                                q: $.trim(params.term),
-                                type: 'getSubjectByExam',
-                                exam_id: examId
-                            };
-                        },
-                        processResults: function(data) {
-                            return {
-                                results: data
-                            };
-                        }
-                    }
-                });
-                $('#rank_id').select2({
-                    width: '100%',
-                    placeholder: 'Type to search...',
-                    allowClear: true,
-                    ajax: {
-                        url: window.location.origin + '/admin/select-2-ajax',
-                        dataType: 'json',
-                        delay: 250,
-                        cache: true,
-                        data: function(params) {
-                            return {
-                                q: $.trim(params.term),
-                                type: 'getRank',
-                            };
-                        },
-                        processResults: function(data) {
-                            return {
-                                results: data
-                            };
-                        }
-                    }
-                });
-            })
-
-
-
             $('.add-item').on('click', function() {
                 var option = $('#option').val();
                 if (option == '') {

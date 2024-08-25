@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\AnswerPaperController;
 use App\Http\Controllers\Admin\VisitorInfoController;
 use App\Http\Controllers\Admin\QuestionEntryController;
 use App\Http\Controllers\Admin\QuestionPaperController;
+use App\Http\Controllers\Admin\QuestionImportController;
 use App\Http\Controllers\Admin\MarkDistributionController;
 use App\Http\Controllers\Auth\Permission\PermissionController;
 use App\Http\Controllers\Admin\GenerateQuestionPaperController;
@@ -154,4 +155,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     Route::resource('/exam', ExamController::class);
     Route::resource('/ranks', RankController::class);
+    Route::resource('/question-imports', QuestionImportController::class)->except(['create', 'show']);
+    Route::controller(QuestionImportController::class)->prefix('question-import')->name('question_imports.')->group(function () {
+        Route::post('/imports', 'import')->name('imports');
+        Route::get('/imports/all-delete', 'allDelete')->name('all_deletes');
+    });
 });
