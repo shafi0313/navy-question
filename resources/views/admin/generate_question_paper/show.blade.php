@@ -176,7 +176,7 @@
                             $.each(res.questions, function(i, v) {
                                 let str = v.type;
                                 let id = v.id;
-                                let url = '{{ route('admin.question.edit', ':id') }}';
+                                let url = '{{ route('admin.questions.edit', ':id') }}';
                                 url = url.replace(':id', id);
                                 quesData += '<tr>'
                                 quesData +=

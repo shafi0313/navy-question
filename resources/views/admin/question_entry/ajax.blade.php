@@ -7,11 +7,11 @@
         <td class="text-center">{{ $input->mark }}</td>
         <td class="text-center">
             <div class="form-button-action">
-                <a href="{{ route('admin.question.edit', $input->id) }}" title="Edit" class="btn btn-link btn-primary">
+                <a href="{{ route('admin.questions.edit', $input->id) }}" title="Edit" class="btn btn-link btn-primary">
                     <i class="fa-solid fa-pen-to-square"></i>
                 </a>
                 <span class="px-1">|</span>
-                <form action="{{ route('admin.question.destroy', $input->id) }}" method="POST">
+                <form action="{{ route('admin.questions.destroy', $input->id) }}" method="POST">
                     @csrf @method('DELETE')
                     <button type="submit" title="Delete" class="btn btn-link btn-danger">
                         <i class="fa fa-times"></i>

@@ -1,11 +1,6 @@
 @extends('admin.layout.master')
 @section('title', 'Question')
 @section('content')
-    @php
-        $m = '';
-        $sm = '';
-        $ssm = '';
-    @endphp
     <div class="main-panel">
         <div class="content">
             <div class="page-inner">
@@ -23,7 +18,7 @@
                         <div class="card">
                             <div class="d-flex card-header">
                                 <div class="card-title">Add Question</div>
-                                <a href="{{ route('admin.question.index') }}"
+                                <a href="{{ route('admin.questions.index') }}"
                                     class="btn btn-primary btn-round ml-auto text-light" style="min-width: 200px">
                                     <i class="fa-solid fa-pen-to-square fa-beat fa-lg"></i> Edit Question
                                 </a>
@@ -38,7 +33,7 @@
                                 </div>
                             @endif
 
-                            <form action="{{ route('admin.question.store') }}" method="POST" id="quesStore"
+                            <form action="{{ route('admin.questions.store') }}" method="POST" id="quesStore"
                                 enctype="multipart/form-data">
                                 @csrf
                                 <div class="card-body">
@@ -148,10 +143,10 @@
                                     <button type="reset" class="btn btn-danger">Cancel</button>
                                 </div>
                             </form>
-                            <div class="col-md-12">
+                            {{-- <div class="col-md-12">
                                 <hr class="bg-danger">
-                            </div>
-                            <div class="col-md-12">
+                            </div> --}}
+                            {{-- <div class="col-md-12">
                                 <h3 class="text-primary">Question</h3>
                                 <table class="table table-striped table-bordered table-hover w-100">
                                     <thead>
@@ -164,7 +159,7 @@
                                     </thead>
                                     <tbody class="questionArea" id="question"></tbody>
                                 </table>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -201,29 +196,30 @@
                 e.preventDefault();
                 serialMaintain();
             });
-            $('#quesType').change(function() {
-                $("#questionArea").html('');
-                let chapterId = $('#chapter_id').find(":selected").val();
-                let quesType = $(this).val();
-                $.ajax({
-                    url: "{{ route('admin.question.getQuestion') }}",
-                    data: {
-                        chapterId: chapterId,
-                        quesType: quesType
-                    },
-                    method: 'get',
-                    success: res => {
-                        if (res.status == 200) {
-                            question()
-                        } else {
-                            // alert('No question found')
-                        }
-                    },
-                    error: err => {
-                        // alert('No question found')
-                    }
-                });
-            });
+
+            // $('#quesType').change(function() {
+            //     $("#questionArea").html('');
+            //     let chapterId = $('#chapter_id').find(":selected").val();
+            //     let quesType = $(this).val();
+            //     $.ajax({
+            //         url: "{{ route('admin.questions.getQuestion') }}",
+            //         data: {
+            //             chapterId: chapterId,
+            //             quesType: quesType
+            //         },
+            //         method: 'get',
+            //         success: res => {
+            //             if (res.status == 200) {
+            //                 question()
+            //             } else {
+            //                 // alert('No question found')
+            //             }
+            //         },
+            //         error: err => {
+            //             // alert('No question found')
+            //         }
+            //     });
+            // });
 
             $('#quesStore').on('submit', function(e) {
                 e.preventDefault();
@@ -239,7 +235,7 @@
                     success: res => {
                         toast('success', 'Success!');
                         clear();
-                        question()
+                        // question()
                         $(".trData").remove();
                     },
                     error: err => {
@@ -258,22 +254,22 @@
                 $("#image").val('');
             }
 
-            function question() {
-                $.ajax({
-                    url: '{{ route('admin.question.read') }}',
-                    method: 'get',
-                    data: {
-                        subject_id: $('#subject_id').val(),
-                        chapter_id: $('#chapter_id').val(),
-                        type: $('#quesType').val(),
-                    },
-                    success: function(res) {
-                        if (res.status == 'success') {
-                            $('#question').html(res.html);
-                        }
-                    }
-                });
-            }
+            // function question() {
+            //     $.ajax({
+            //         url: '{{ route('admin.questions.read') }}',
+            //         method: 'get',
+            //         data: {
+            //             subject_id: $('#subject_id').val(),
+            //             rank_id: $('#rank_id').val(),
+            //             type: $('#quesType').val(),
+            //         },
+            //         success: function(res) {
+            //             if (res.status == 'success') {
+            //                 $('#question').html(res.html);
+            //             }
+            //         }
+            //     });
+            // }
 
             function getData() {
                 return {

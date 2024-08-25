@@ -127,7 +127,7 @@
                                                             <td class="text-center">
                                                                 <span class="btn btn-sm btn-success addrow"><i
                                                                         class="fa fa-plus" aria-hidden="true"></i></span>
-                                                                <a href="{{ route('admin.question.optionDestroy', $option->id) }}"
+                                                                <a href="{{ route('admin.questions.optionDestroy', $option->id) }}"
                                                                     data-toggle="tooltip" title=""
                                                                     class="btn btn-link btn-danger"
                                                                     data-original-title="Remove"
@@ -167,7 +167,7 @@
         <script>
             $('#subject_id').change(function() {
                 $.ajax({
-                    url: "{{ route('admin.question.getChapter') }}",
+                    url: "{{ route('admin.questions.getChapter') }}",
                     data: {
                         subjectId: $(this).val()
                     },

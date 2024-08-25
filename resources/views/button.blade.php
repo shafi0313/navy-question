@@ -4,8 +4,8 @@
 @endif
 
 @if ($type == 'edit')
-<a href="{{route($route.'.edit', $row->id)}}" class='btn btn-primary btn-sm mb-2' data-bs-placement="top" data-bs-toggle="tooltip"  data-bs-original-title="@lang("app.edit")"
-    title='@lang("app.edit")'><i class='fa fa-edit'></i> </a>
+<a href="{{route($route.'.edit', $row->id)}}" class='btn btn-primary btn-sm mb-2'
+    title='Edit'><i class='fa fa-edit'></i> </a>
 @endif
 
 @if ($type == 'delete')

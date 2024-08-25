@@ -46,6 +46,28 @@
                 }
             }
         });
+        $('#only_subject_id').select2({
+            width: '100%',
+            placeholder: 'Select Exam First...',
+            allowClear: true,
+            ajax: {
+                url: window.location.origin + '/admin/select-2-ajax',
+                dataType: 'json',
+                delay: 250,
+                cache: true,
+                data: function(params) {
+                    return {
+                        q: $.trim(params.term),
+                        type: 'getSubject',
+                    };
+                },
+                processResults: function(data) {
+                    return {
+                        results: data
+                    };
+                }
+            }
+        });
         $('#rank_id').select2({
             width: '100%',
             placeholder: 'Type to search...',

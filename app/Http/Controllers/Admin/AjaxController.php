@@ -39,6 +39,19 @@ class AjaxController extends Controller
                             ];
                         })->toArray();
                     break;
+                case 'getSubject':
+                    $response = Subject::select('id', 'exam_id', 'name')
+                        ->with('exam:id,name')
+                        ->where('name', 'like', "%{$request->q}%")
+                        ->orderBy('name')
+                        ->limit(10)
+                        ->get()->map(function ($data) {
+                            return [
+                                'id' => $data->id,
+                                'text' => $data->name . ' (' . $data->exam->name . ')',
+                            ];
+                        })->toArray();
+                    break;
                 case 'getRank':
                     $response = Rank::select('id', 'name')
                         ->where('name', 'like', "%{$request->q}%")

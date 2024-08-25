@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\GlobalController;
 use App\Http\Controllers\Admin\ChapterController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\SubjectController;
+use App\Http\Controllers\Admin\QuestionController;
 use App\Http\Controllers\Auth\Role\RoleController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AnswerPaperController;
@@ -97,23 +98,23 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::post('/update/{id}', 'update')->name('update');
         Route::delete('/destroy/{id}', 'destroy')->name('destroy');
     });
-    Route::controller(QuestionEntryController::class)->prefix('question')->name('question.')->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('/create', 'create')->name('create');
-        Route::post('/store', 'store')->name('store');
-        Route::get('/read', 'read')->name('read');
-        Route::get('/edit/{id}', 'edit')->name('edit');
-        Route::post('/update/{id}', 'update')->name('update');
-        Route::get('/show/{id}', 'show')->name('show');
-        Route::get('/option/destroy/{id}', 'optionDestroy')->name('optionDestroy');
-        Route::delete('/destroy/{id}', 'destroy')->name('destroy');
-        Route::post('/ques-generate', 'quesGenerate')->name('quesGenerate');
-        Route::post('/newOptionAdd', 'newOptionAdd')->name('newOptionAdd');
-        // Route::get('/get-subject', 'getSubject')->name('getSubject');
-        Route::get('/get-subject', 'getSubject')->name('getSubject');
-        Route::get('/get-chapter', 'getChapter')->name('getChapter');
-        Route::get('/get-question', 'getQuestion')->name('getQuestion');
-    });
+    // Route::controller(QuestionEntryController::class)->prefix('question')->name('question.')->group(function () {
+    //     // Route::get('/', 'index')->name('index');
+    //     // Route::get('/create', 'create')->name('create');
+    //     // Route::post('/store', 'store')->name('store');
+    //     Route::get('/read', 'read')->name('read');
+    //     Route::get('/edit/{id}', 'edit')->name('edit');
+    //     Route::post('/update/{id}', 'update')->name('update');
+    //     Route::get('/show/{id}', 'show')->name('show');
+    //     Route::get('/option/destroy/{id}', 'optionDestroy')->name('optionDestroy');
+    //     Route::delete('/destroy/{id}', 'destroy')->name('destroy');
+    //     Route::post('/ques-generate', 'quesGenerate')->name('quesGenerate');
+    //     Route::post('/newOptionAdd', 'newOptionAdd')->name('newOptionAdd');
+    //     // Route::get('/get-subject', 'getSubject')->name('getSubject');
+    //     Route::get('/get-subject', 'getSubject')->name('getSubject');
+    //     Route::get('/get-chapter', 'getChapter')->name('getChapter');
+    //     Route::get('/get-question', 'getQuestion')->name('getQuestion');
+    // });
 
     Route::resource('/mark-distributions', MarkDistributionController::class);
     Route::controller(MarkDistributionController::class)->prefix('mark-distribution')->name('mark_distributions.')->group(function () {
@@ -160,4 +161,16 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::post('/imports', 'import')->name('imports');
         Route::get('/imports/all-delete', 'allDelete')->name('all_deletes');
     });
+    Route::resource('/questions', QuestionController::class);
+    Route::controller(QuestionController::class)->prefix('questions')->name('questions.')->group(function () {
+        Route::get('/read', 'read')->name('read');
+        Route::get('/option/destroy/{id}', 'optionDestroy')->name('optionDestroy');
+        Route::post('/ques-generate', 'quesGenerate')->name('quesGenerate');
+        Route::post('/newOptionAdd', 'newOptionAdd')->name('newOptionAdd');
+        // Route::get('/get-subject', 'getSubject')->name('getSubject');
+        // Route::get('/get-subject', 'getSubject')->name('getSubject');
+        // Route::get('/get-chapter', 'getChapter')->name('getChapter');
+        Route::get('/get-question', 'getQuestion')->name('getQuestion');
+    });
+
 });

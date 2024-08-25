@@ -16,9 +16,23 @@ class Question extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function rank()
+    {
+        return $this->belongsTo(Rank::class)->withDefault([
+            'name' => 'N/A',
+        ]);
+    }
+    public function exam()
+    {
+        return $this->belongsTo(Subject::class)->withDefault([
+            'name' => 'N/A',
+        ]);
+    }
     public function subject()
     {
-        return $this->belongsTo(Subject::class, 'subject_id');
+        return $this->belongsTo(Subject::class)->withDefault([
+            'name' => 'N/A',
+        ]);
     }
 
     public function chapter()

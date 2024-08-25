@@ -21,7 +21,6 @@ return new class extends Migration
             $table->tinyInteger('d_minute')->nullable();
             $table->enum('status', ['Pending', 'Created', 'Started', 'Completed'])->nullable();
             $table->text('note')->nullable();
-            // $table->string('option_note', 255)->nullable();
             $table->timestamps();
         });
     }

@@ -2,13 +2,9 @@
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Intervention\Image\Facades\Image;
 
-if (! function_exists('devAdminEmail')) {
-    function devAdminEmail()
-    {
-        return 'dev.admin@shafi95.com';
-    }
-}
 
 if (! function_exists('bdDate')) {
     function bdDate($date)
@@ -163,21 +159,6 @@ if (! function_exists('quesSet')) {
     }
 }
 
-if (! function_exists('profileImg')) {
-    function profileImg($email = '', $image = '')
-    {
-        if ($email == devAdminEmail()) {
-            $profileImg = asset('uploads/images/users/shafi.jpg');
-        } elseif ($image == null) {
-            $profileImg = asset('uploads/images/users/company_logo.jpg');
-        } else {
-            $profileImg = asset('uploads/images/users/'.$image);
-        }
-
-        return $profileImg;
-    }
-}
-
 if (! function_exists('ageWithDays')) {
     function ageWithDays($d_o_b)
     {
@@ -191,17 +172,6 @@ if (! function_exists('ageWithMonths')) {
     }
 }
 
-if (! function_exists('readableSize')) {
-    function readableSize($bytes)
-    {
-        $units = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB'];
-        for ($i = 0; $bytes > 1024; $i++) {
-            $bytes /= 1024;
-        }
-
-        return round($bytes, 2).' '.$units[$i];
-    }
-}
 
 if (! function_exists('activeSubNav')) {
     function activeSubNav($route)
@@ -252,55 +222,210 @@ if (! function_exists('user')) {
         return auth()->user();
     }
 }
-if (! function_exists('userCan')) {
+if (!function_exists('userCan')) {
     function userCan($permission)
     {
         if (auth()->check() && user()->can($permission)) {
             return true;
         }
-
         return false;
     }
 }
-if (! function_exists('imageStore')) {
-    function imageStore(Request $request, string $name, string $path)
+/************************** Image **************************/
+
+if (! function_exists('imgProcessAndStore')) {
+    function imgProcessAndStore($image, string $path, ?array $size = null, $oldImage = null)
     {
-        if ($request->hasFile('image')) {
-            $pathCreate = public_path().$path;
-            ! file_exists($pathCreate) ?? File::makeDirectory($pathCreate, 0777, true, true);
+        $dir = public_path('/uploads/images/' . $path);
+        if (! is_dir($dir)) {
+            mkdir($dir, 0777, true);
+        }
 
-            $image = $request->file('image');
-            $image_name = $name.uniqueId(20).'.'.$image->getClientOriginalExtension();
+        $extension = strtolower($image->getClientOriginalExtension());
+
+        if ($oldImage != null) {
+            $checkPath = $dir . '/' . $oldImage;
+            if ($oldImage && file_exists($checkPath)) {
+                unlink($checkPath);
+            }
+        }
+
+        if ($extension == 'svg') {
+            $imageName = $path . '-' . uniqueId(10) . '.svg';
+            $image->move($dir, $imageName);
+        } else {
+            $image = Image::make($image);
+            if (! is_null($size) && count($size) == 2) {
+                $image->fit($size[0], $size[1]);
+            }
+
+            if ($size[0] && $size[1] == null) {
+                $image->resize($size[0], null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+            }
+            $uniqueId = uniqueId(10);
+
+            if ($extension == 'png') {
+                $imageName = $path . '-' . $uniqueId . '.png';
+                $image->encode('png', 80)->save($dir . '/' . $imageName);
+            } else {
+                $imageName = $path . '-' . $uniqueId . '.webp';
+                $image->encode('webp', 80)->save($dir . '/' . $imageName);
+            }
+        }
+
+        return $imageName;
+    }
+}
+
+if (!function_exists('imgWebpStore')) {
+    function imgWebpStore($image, string $path, array $size = null)
+    {
+        $image = Image::make($image);
+        if ($size[0] && $size[1]) {
+            $image->fit($size[0], $size[1]);
+        }
+
+        if ($size[0] && $size[1] == null) {
+            $image->resize($size[0], null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+        }
+
+        $dir = public_path('/uploads/images/' . $path);
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, true);
+        }
+        $imageName = $path . '-' . uniqueId(10) . '.webp';
+        $image->encode('webp', 70)->save($dir . '/' . $imageName);
+        return $imageName;
+    }
+}
+
+if (!function_exists('imgWebpUpdate')) {
+    function imgWebpUpdate($image, string $path, array $size = null, $oldImage)
+    {
+        $image = Image::make($image);
+        if ($size[0] && $size[1]) {
+            $image->fit($size[0], $size[1]);
+        }
+
+        if ($size[0] && $size[1] == null) {
+            $image->resize($size[0], null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+        }
+
+        $dir = public_path('/uploads/images/' . $path);
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, true);
+        }
+        $imageName = $path . '-' . uniqueId(10) . '.webp';
+        $image->encode('webp', 70)->save($dir . '/' . $imageName);
+
+        $checkPath =  $dir . '/' . $oldImage;
+        if ($oldImage && file_exists($checkPath)) {
+            unlink($checkPath);
+        }
+        return $imageName;
+    }
+}
+if (!function_exists('imgUnlink')) {
+    function imgUnlink($folder, $image)
+    {
+        $path = public_path('uploads/images/' . $folder . '/' . $image);
+        if ($image && file_exists($path)) {
+            return unlink($path);
+        }
+    }
+}
+
+
+if (!function_exists('imageStore')) {
+    function imageStore(Request $request, $request_name, string $name, string $path)
+    {
+        if ($request->hasFile($request_name)) {
+            $pathCreate = public_path() . '/uploads/images/' . $path . '/';
+            !file_exists($pathCreate) ?? File::makeDirectory($pathCreate, 0777, true, true);
+
+            $image = $request->file($request_name);
+            $imageName = $name . uniqueId(10) . '.' . $image->getClientOriginalExtension();
             if ($image->isValid()) {
-                $request->image->move($path, $image_name);
-
-                return $image_name;
+                $request->$request_name->move(public_path() . '/uploads/images/' . $path . '/', $imageName);
+                return $imageName;
             }
         }
     }
 }
 
-if (! function_exists('imageUpdate')) {
-    function imageUpdate(Request $request, string $name, string $path, $image)
+if (!function_exists('imageUpdate')) {
+    function imageUpdate(Request $request, $request_name, string $name, string $path, $old_image)
     {
-        if ($request->hasFile('image')) {
-            $deletePath = public_path($path.$image);
-            file_exists($deletePath) ? unlink($deletePath) : false;
+        if ($request->hasFile($request_name)) {
+            $deletePath = public_path("uploads/images/{$path}/{$old_image}");
 
-            // $deletePath = public_path().$path.$model->first()->image;
-            // $path =  public_path('uploads/images/users/'.$files->image);
-            // file_exists($deletePath) ? unlink($deletePath) : false;
-
-            $createPath = public_path().$path;
-            ! file_exists($createPath) ?? File::makeDirectory($createPath, 0777, true, true);
-
-            $image = $request->file('image');
-            $image_name = $name.uniqueId(20).'.'.$image->getClientOriginalExtension();
-            if ($image->isValid()) {
-                $request->image->move($path, $image_name);
-
-                return $image_name;
+            if (!empty($old_image) && file_exists($deletePath)) {
+                unlink($deletePath);
             }
+
+            $createPath = public_path($path);
+            if (!file_exists($createPath)) {
+                File::makeDirectory($createPath, 0777, true, true);
+            }
+
+            $image = $request->file($request_name);
+            $imageName = "{$name}_" . uniqueId(10) . '.' . $image->getClientOriginalExtension();
+
+            if ($image->isValid()) {
+                $image->move(public_path("uploads/images/{$path}/"), $imageName);
+                return $imageName;
+            }
+        } else {
+            return $old_image;
         }
+    }
+}
+
+if (!function_exists('imagePath')) {
+    function imagePath($folder, $image)
+    {
+        $path = 'uploads/images/' . $folder . '/' . $image;
+        if (@GetImageSize($path)) {
+            return asset($path);
+        } else {
+            return asset('uploads/images/no-img.jpg');
+        }
+    }
+}
+
+if (!function_exists('profileImg')) {
+    function profileImg()
+    {
+        if (file_exists(asset('uploads/images/user/' . user()->image))) {
+            return asset('uploads/images/user/' . user()->image);
+        } else {
+            return asset('uploads/images/user/avatar.png');
+            // if(user()->gender && user()->gender == 'Female'){
+            //     return asset('uploads/images/user/female-blank.jpg');
+            // }else{
+            //     return asset('uploads/images/user/avatar.png');
+            // }
+
+        }
+    }
+}
+/************************** !Image **************************/
+if (!function_exists('uniqueId')) {
+    function uniqueId($lenght = 8)
+    {
+        if (function_exists("random_bytes")) {
+            $bytes = random_bytes(ceil($lenght / 2));
+        } elseif (function_exists("openssl_random_pseudo_bytes")) {
+            $bytes = openssl_random_pseudo_bytes(ceil($lenght / 2));
+        } else {
+            throw new \Exception("no cryptographically secure random function available");
+        }
+        return substr(bin2hex($bytes), 0, $lenght);
     }
 }

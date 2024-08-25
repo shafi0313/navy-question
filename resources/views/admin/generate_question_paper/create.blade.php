@@ -80,7 +80,7 @@
                                             </div>
                                         </div>
 
-                                        {{-- <div class="col-md-6">
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="duration">Duration </label><br>
                                                 <input style="width:50%; display: inline-block" type="text"
@@ -98,17 +98,7 @@
                                                     <div class="alert alert-danger">{{ $errors->first('d_minute') }}</div>
                                                 @endif
                                             </div>
-                                        </div> --}}
-                                        {{-- <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="mode">Mode </label>
-                                                <input type="text" name="mode" class="form-control"
-                                                    value="{{ old('mode') }}">
-                                                @if ($errors->has('mode'))
-                                                    <div class="alert alert-danger">{{ $errors->first('mode') }}</div>
-                                                @endif
-                                            </div>
-                                        </div> --}}
+                                        </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="note">Note</label>
@@ -118,17 +108,6 @@
                                                 @endif
                                             </div>
                                         </div>
-                                        {{-- <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="option_note">Question Option Note</label>
-                                                <input type="text" name="option_note" class="form-control"
-                                                    value="(Answer all the question)">
-                                                @if ($errors->has('option_note'))
-                                                    <div class="alert alert-danger">{{ $errors->first('option_note') }}
-                                                    </div>
-                                                @endif
-                                            </div>
-                                        </div> --}}
                                     </div>
                                 </div>
                                 <div class="text-center card-action">
@@ -190,145 +169,7 @@
                         }
                     }
                 });
-                // $('#subject_id').select2({
-                //     width: '100%',
-                //     placeholder: 'Select Exam First...',
-                //     allowClear: true,
-                //     ajax: {
-                //         url: window.location.origin + '/admin/select-2-ajax',
-                //         dataType: 'json',
-                //         delay: 250,
-                //         cache: true,
-                //         data: function(params) {
-                //             let examId = $('#exam_id').find(":selected").val();
-                //             return {
-                //                 q: $.trim(params.term),
-                //                 type: 'getSubjectByExam',
-                //                 exam_id: examId
-                //             };
-                //         },
-                //         processResults: function(data) {
-                //             return {
-                //                 results: data
-                //             };
-                //         }
-                //     }
-                // });
             })
-
-            // $('#subject_id').change(function() {
-            //     $.ajax({
-            //         url: "{{ route('admin.question.getChapter') }}",
-            //         data: {
-            //             subjectId: $(this).val()
-            //         },
-            //         method: 'get',
-            //         success: res => {
-            //             let opt = '<option disabled selected>- -</option>';
-            //             if (res.status == 200) {
-            //                 $.each(res.chapters, function(i, v) {
-            //                     opt += '<option value="' + v.id + '">' + v.name + '</option>';
-            //                 });
-            //                 $("#chapter_id").html(opt);
-            //             } else {
-            //                 alert('No chapter found')
-            //             }
-            //         },
-            //         error: err => {
-            //             alert('No chapter found')
-            //         }
-            //     });
-            // });
-
-            // $('#subject_id').change(function() {
-            //     $.ajax({
-            //         url: "{{ route('admin.question.getChapter') }}",
-            //         data: {
-            //             subjectId: $(this).val()
-            //         },
-            //         method: 'get',
-            //         success: res => {
-            //             let opt = '<option disabled selected>- -</option>';
-            //             if (res.status == 200) {
-            //                 $.each(res.chapters, function(i, v) {
-            //                     opt += '<option value="' + v.id + '">' + v.name + '</option>';
-            //                 });
-            //                 $("#chapter_id").html(opt);
-            //             } else {
-            //                 alert('No chapter found')
-            //             }
-            //         },
-            //         error: err => {
-            //             alert('No chapter found')
-            //         }
-            //     });
-            // });
-
-            // $('#quesType').change(function() {
-            //     $("#questionArea").html('');
-            //     let chapterId = $('#chapter_id').find(":selected").val();
-            //     let quesType = $(this).val();
-            //     $.ajax({
-            //         url: "{{ route('admin.generate_question.getQuestion') }}",
-            //         data: {
-            //             chapterId: chapterId,
-            //             quesType: quesType
-            //         },
-            //         method: 'get',
-            //         success: res => {
-            //             if (res.status == 200) {
-            //                 var quesData = '';
-            //                 $.each(res.questions, function(i, v) {
-            //                     quesData += '<tr>'
-            //                     // quesData += '<input type="hidden" name="type" value="'+v.type+'">'
-            //                     quesData +=
-            //                         '<td><input type="checkbox" name="question_id[]" value="' + v
-            //                         .id + '">&nbsp;&nbsp; ' + v.ques + '</td>'
-            //                     quesData += '<td>' + v.type + '</td>'
-            //                     quesData += '<td>' + v.mark + '</td>'
-            //                     quesData += '</tr>'
-            //                 });
-            //                 $("#questionArea").append(quesData);
-            //             } else {
-            //                 alert('No question found')
-            //             }
-            //         },
-            //         error: err => {
-            //             alert('No question found')
-            //         }
-            //     });
-            // });
         </script>
-        {{-- <script>
-            $("#quesType").change(function() {
-                const type = $(this).val();
-                if (type == "multiple_choice") {
-                    $(".quesTypeDiv").show();
-                } else {
-                    $(".quesTypeDiv").hide();
-                }
-            })
-
-            $(document).ready(function() {
-                var i = 1;
-                $('.addrow').click(function() {
-                    i++;
-                    html = '';
-                    html += '<tr id="remove_' + i + '" class="post_item">';
-                    html +=
-                        '	<td><input type="text" name="option[]" id="purchase_" class="form-control form-control-sm"/></td>';
-                    html +=
-                        '	<td style="width: 20px"  class="col-md-2"><span class="btn btn-sm btn-danger" onclick="return remove(' +
-                        i + ')"><i class="fa fa-times" aria-hidden="true"></i></span></td>';
-                    html += '</tr>';
-                    $('#showItem').append(html);
-                });
-            });
-
-            function remove(id) {
-                $('#remove_' + id).remove();
-                total_price();
-            }
-        </script> --}}
     @endpush
 @endsection

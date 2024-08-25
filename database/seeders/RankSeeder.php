@@ -17,6 +17,9 @@ class RankSeeder extends Seeder
             [
                 'name' => 'ডিই/ইউসি',
             ],
+            [
+                'name' => 'ইউসি',
+            ],
         ];
         Rank::insert($ranks);
     }

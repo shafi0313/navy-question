@@ -110,7 +110,7 @@
         <script>
             $('#subject_id').change(function() {
                 $.ajax({
-                    url: "{{ route('admin.question.getChapter') }}",
+                    url: "{{ route('admin.questions.getChapter') }}",
                     data: {
                         subjectId: $(this).val()
                     },
@@ -149,7 +149,7 @@
                             let quesData = '';
                             $.each(res.questions, function(i, v) {
                                 let id = v.id;
-                                let url = '{{ route('admin.question.edit', ':id') }}';
+                                let url = '{{ route('admin.questions.edit', ':id') }}';
                                 url = url.replace(':id', id);
 
                                 quesData += '<tr>'

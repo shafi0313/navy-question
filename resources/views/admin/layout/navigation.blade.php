@@ -79,32 +79,33 @@
                 </li>
 
                 @can('question-entry-manage')
-                    {{-- <li class="nav-item {{ activeNav('admin.question.*') }}">
-                        <a href="{{ route('admin.question.index') }}">
+                    {{-- <li class="nav-item {{ activeNav('admin.questions.*') }}">
+                        <a href="{{ route('admin.questions.index') }}">
                             <i class="fa-solid fa-circle-question"></i>
                             <p>Question Entry</p>
                         </a>
                     </li> --}}
-                    <li class="nav-item {{ activeNav('admin.question.*','admin.question-imports.*') }}">
+                    <li class="nav-item {{ activeNav('admin.questions.*', 'admin.question-imports.*') }}">
                         <a data-toggle="collapse" href="#questionMenu">
                             <i class="fas fa-users-cog"></i>
                             <p>Question</p>
                             <span class="caret"></span>
                         </a>
-                        <div class="collapse {{ openNav(['admin.question.*','admin.question-imports.*']) }}" id="questionMenu">
+                        <div class="collapse {{ openNav(['admin.questions.*', 'admin.question-imports.*']) }}"
+                            id="questionMenu">
                             <ul class="nav nav-collapse">
                                 <li class="{{ activeSubNav(['admin.question-imports.*']) }}">
                                     <a href="{{ route('admin.question-imports.index') }}">
                                         <span class="sub-item">Import</span>
                                     </a>
                                 </li>
-                                <li class="{{ activeSubNav(['admin.question.index', 'admin.question.edit']) }}">
-                                    <a href="{{ route('admin.question.index') }}">
+                                <li class="{{ activeSubNav(['admin.questions.index', 'admin.questions.edit']) }}">
+                                    <a href="{{ route('admin.questions.index') }}">
                                         <span class="sub-item">Manage</span>
                                     </a>
                                 </li>
-                                <li class="{{ activeSubNav(['admin.question.create']) }}">
-                                    <a href="{{ route('admin.question.create') }}">
+                                <li class="{{ activeSubNav(['admin.questions.create']) }}">
+                                    <a href="{{ route('admin.questions.create') }}">
                                         <span class="sub-item">Entry</span>
                                     </a>
                                 </li>
