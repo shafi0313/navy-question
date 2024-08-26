@@ -90,6 +90,11 @@
                                 title: 'Address'
                             },
                             {
+                                data: 'created_by.name',
+                                name: 'created_by.name',
+                                title: 'Created By'
+                            },
+                            {
                                 data: 'action',
                                 name: 'action',
                                 title: 'Action',

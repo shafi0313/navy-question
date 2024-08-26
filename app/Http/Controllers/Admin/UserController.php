@@ -17,10 +17,9 @@ class UserController extends Controller
         if ($error = $this->authorize('user-manage')) {
             return $error;
         }
-        // return User::with('createdBy:id,name', 'roles:id,name')->get();
+
         if ($request->ajax()) {
             $users = User::with('createdBy:id,name', 'roles:id,name')->orderBy('name');
-
             return DataTables::of($users)
                 ->addIndexColumn()
                 ->addColumn('image', function ($row) {
@@ -95,13 +94,10 @@ class UserController extends Controller
             return $error;
         }
         $data = $request->validated();
-
-        // Hash the password if it's provided
+        $date['updated_by'] = user()->id;
         if ($request->filled('password')) {
             $data['password'] = bcrypt($request->password);
         }
-
-        // Process image if a new one is uploaded
         $existingImage = $user->image;
         if ($request->hasFile('image')) {
             $data['image'] = imgProcessAndStore($request->image, 'users', [200, 200], $existingImage);
@@ -109,11 +105,9 @@ class UserController extends Controller
 
         try {
             $user->update($data);
-
             if ($request->has('role')) {
                 $user->syncRoles($data['role']);
             }
-
             return response()->json(['message' => 'The information has been updated successfully'], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
