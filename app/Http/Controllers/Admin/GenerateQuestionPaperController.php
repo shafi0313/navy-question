@@ -33,7 +33,7 @@ class GenerateQuestionPaperController extends Controller
                 'exam:id,name',
                 'rank:id,name',
                 'questionSubjectInfo'
-                ])
+            ])
                 ->whereStatus('Pending')
                 ->latest();
 

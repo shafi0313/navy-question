@@ -12,22 +12,7 @@ class User extends Authenticatable
 {
     use HasFactory, HasRoles, Notifiable, SoftDeletes;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'permission',
-        'phone',
-        'd_o_b',
-        'address',
-        'photo',
-        'remember_token',
-        'password',
-    ];
+    protected $guarded = ['id'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -36,7 +21,7 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        // 'remember_token',
+        'remember_token',
     ];
 
     /**
@@ -50,13 +35,14 @@ class User extends Authenticatable
 
     protected $dates = ['ordered_at', 'created_at', 'updated_at'];
 
-    public function getSomeDateAttribute($date)
+    public function createdBy()
     {
-        return $date->format('d/m/Y');
+        return $this->belongsTo(User::class, 'created_by', 'id')->withDefault([
+            'name' => 'System'
+        ]);
     }
-
-    public function accessPermission()
+    public function updatedBy()
     {
-        return $this->hasOne(ModelHasRole::class, 'model_id', 'id');
+        return $this->belongsTo(User::class, 'updated_by', 'id');
     }
 }

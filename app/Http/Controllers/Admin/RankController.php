@@ -50,27 +50,28 @@ class RankController extends Controller
         $data = $request->Validated();
         try {
             Rank::create($data);
-            return response()->json(['message' => 'Data Successfully Inserted'], 200);
+            return response()->json(['message' => 'The information has been inserted'], 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => __('app.oops')], 500);
-            // return response()->json(['message'=>$e->getMessage()], 500);
+            return response()->json(['message' => 'Oops something went wrong, Please try again.'], 500);
         }
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Rank $rank)
-    {
-        //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Rank $rank)
+    public function edit(Request $request, Rank $rank)
     {
-        //
+        if ($error = $this->authorize('rank-edit')) {
+            return $error;
+        }
+
+        if ($request->ajax()) {
+            $modal = view('admin.product.rank.edit')->with(['rank' => $rank])->render();
+
+            return response()->json(['modal' => $modal], 200);
+        }
+
+        return abort(500);
     }
 
     /**
@@ -78,7 +79,22 @@ class RankController extends Controller
      */
     public function update(UpdateRankRequest $request, Rank $rank)
     {
-        //
+        if ($error = $this->authorize('brand-add')) {
+            return $error;
+        }
+
+        $data = $request->validated();
+        $image = $brand->logo;
+        if ($request->hasFile('logo')) {
+            $data['logo'] = imgWebpUpdate($request->logo, 'brand', [400, 400], $image);
+        }
+        try {
+            $brand->update($data);
+
+            return response()->json(['message' => 'The information has been updated'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Oops something went wrong, Please try again'], 500);
+        }
     }
 
     /**
@@ -92,10 +108,9 @@ class RankController extends Controller
         try {
             $rank->delete();
 
-            return response()->json(['message' => 'ClassRoom Deleted Successfully'], 200);
+            return response()->json(['message' => 'The information has been deleted'], 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => __('app.oops')], 500);
-            // return response()->json(['message'=>$e->getMessage()], 500);
+            return response()->json(['message' => 'Oops something went wrong, Please try again.'], 500);
         }
     }
 }

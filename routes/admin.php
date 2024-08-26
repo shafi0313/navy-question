@@ -85,7 +85,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     //     Route::delete('/destroy/{id}', 'destroy')->name('destroy');
     // });
 
-    Route::resource('/users', UserController::class);
+    Route::resource('/users', UserController::class)->except(['create','show']);
 
     Route::controller(ProfileController::class)->prefix('my-profile')->group(function () {
         Route::get('/', 'index')->name('myProfile.profile.index');

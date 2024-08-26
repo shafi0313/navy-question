@@ -64,17 +64,17 @@ class RolesAndPermissionsSeeder extends Seeder
                 'setting-manage',
                 'language-manage',
             ],
-            'subject' => [
-                'subject-manage',
-                'subject-add',
-                'subject-edit',
-                'subject-delete',
-            ],
             'exam' => [
                 'exam-manage',
                 'exam-add',
                 'exam-edit',
                 'exam-delete',
+            ],
+            'subject' => [
+                'subject-manage',
+                'subject-add',
+                'subject-edit',
+                'subject-delete',
             ],
             'rank' => [
                 'rank-manage',
@@ -88,11 +88,11 @@ class RolesAndPermissionsSeeder extends Seeder
                 'mark-distribution-edit',
                 'mark-distribution-delete',
             ],
-            'question-entry' => [
-                'question-entry-manage',
-                'question-entry-add',
-                'question-entry-edit',
-                'question-entry-delete',
+            'question' => [
+                'question-manage',
+                'question-add',
+                'question-edit',
+                'question-delete',
             ],
             'question-generate' => [
                 'question-generate-manage',
@@ -100,11 +100,6 @@ class RolesAndPermissionsSeeder extends Seeder
                 'question-generate-edit',
                 'question-generate-delete',
                 'question-generate-generate',
-            ],
-            'answer-paper' => [
-                'answer-paper-manage',
-                'answer-paper-edit',
-                'answer-paper-delete',
             ],
             'question-paper' => [
                 'question-paper-manage',
@@ -123,9 +118,9 @@ class RolesAndPermissionsSeeder extends Seeder
             }
         }
 
-        $superadmin = Role::create(['name' => 'superadmin','removable'=> 0]);
+        $superadmin = Role::create(['name' => 'super_admin','removable'=> 0]);
         $admin = Role::create(['name' => 'admin', 'removable' => 0]);
         $admin->givePermissionTo(Permission::all());
-        $teacher = Role::create(['name' => 'user', 'removable' => 0]);
+        // $teacher = Role::create(['name' => 'user', 'removable' => 0]);
     }
 }

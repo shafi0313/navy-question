@@ -65,13 +65,18 @@
                                 title: 'Name'
                             },
                             {
+                                data: 'roleName',
+                                name: 'roleName',
+                                title: 'Permission'
+                            },
+                            {
                                 data: 'email',
                                 name: 'email',
                                 title: 'Email'
                             },
                             {
-                                data: 'phone',
-                                name: 'phone',
+                                data: 'mobile',
+                                name: 'mobile',
                                 title: 'Phone'
                             },
                             {

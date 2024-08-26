@@ -49,9 +49,9 @@ class ExamController extends Controller
         $data['user_id'] = auth()->user()->id;
         try {
             Exam::create($data);
-            return response()->json(['message' => 'Data Successfully Inserted'], 200);
+            return response()->json(['message' => 'The information has been inserted'], 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => __('app.oops')], 500);
+            return response()->json(['message' => 'Oops something went wrong, Please try again.'], 500);
             // return response()->json(['message'=>$e->getMessage()], 500);
         }
     }
@@ -90,11 +90,11 @@ class ExamController extends Controller
             $exam->update($data);
             DB::commit();
 
-            return response()->json(['message' => 'Data Successfully Inserted'], 200);
+            return response()->json(['message' => 'The information has been inserted'], 200);
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return response()->json(['message' => __('app.oops')], 500);
+            return response()->json(['message' => 'Oops something went wrong, Please try again.'], 500);
             // return response()->json(['message'=>$e->getMessage()], 500);
         }
     }
@@ -107,9 +107,9 @@ class ExamController extends Controller
         try {
             $exam->delete();
 
-            return response()->json(['message' => 'ClassRoom Deleted Successfully'], 200);
+            return response()->json(['message' => 'The information has been deleted'], 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => __('app.oops')], 500);
+            return response()->json(['message' => 'Oops something went wrong, Please try again.'], 500);
             // return response()->json(['message'=>$e->getMessage()], 500);
         }
     }

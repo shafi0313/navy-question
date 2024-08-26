@@ -405,13 +405,7 @@ if (!function_exists('profileImg')) {
         if (file_exists(asset('uploads/images/user/' . user()->image))) {
             return asset('uploads/images/user/' . user()->image);
         } else {
-            return asset('uploads/images/user/avatar.png');
-            // if(user()->gender && user()->gender == 'Female'){
-            //     return asset('uploads/images/user/female-blank.jpg');
-            // }else{
-            //     return asset('uploads/images/user/avatar.png');
-            // }
-
+            return asset('uploads/images/icons/navy.jpg');
         }
     }
 }

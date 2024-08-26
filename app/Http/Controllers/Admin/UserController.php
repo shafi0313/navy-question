@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\UserStoreRequest;
-use App\Http\Requests\UserUpdateRequest;
-use App\Models\ModelHasRole;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 use Spatie\Permission\Models\Role;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
@@ -19,18 +17,21 @@ class UserController extends Controller
         if ($error = $this->authorize('user-manage')) {
             return $error;
         }
+        // return User::with('createdBy:id,name', 'roles:id,name')->get();
         if ($request->ajax()) {
-            $users = User::all();
+            $users = User::with('createdBy:id,name', 'roles:id,name')->orderBy('name');
 
             return DataTables::of($users)
                 ->addIndexColumn()
-                ->addColumn('age', function ($row) {
-                    return ageWithDays($row->d_o_b);
-                })
                 ->addColumn('image', function ($row) {
-                    $src = asset('uploads/images/users/' . $row->image);
-
-                    return '<img src="' . $src . '" width="100px">';
+                    return '<img src="' . profileImg() . '" width="70px">';
+                })
+                ->addColumn('roleName', function ($row) {
+                    $roleName = '';
+                    foreach ($row->roles as $role) {
+                        $roleName .= '<span class="badge badge-primary">' . $role->name . '</span>';
+                    }
+                    return $roleName;
                 })
                 ->addColumn('action', function ($row) {
                     $btn = '';
@@ -43,7 +44,7 @@ class UserController extends Controller
 
                     return $btn;
                 })
-                ->rawColumns(['check', 'age', 'action', 'image', 'created_at'])
+                ->rawColumns(['roleName', 'action', 'image'])
                 ->make(true);
         }
         $roles = Role::all();
@@ -51,30 +52,25 @@ class UserController extends Controller
         return view('admin.user.index', compact('roles'));
     }
 
-    public function store(UserStoreRequest $request)
+    public function store(StoreUserRequest $request)
     {
         if ($error = $this->authorize('user-add')) {
             return $error;
         }
         $data = $request->validated();
-        $data['type'] = '1';
-        $data['image'] = imageStore($request, 'user', 'uploads/images/users/');
+        if ($request->hasFile('image')) {
+            $data['image'] = imgProcessAndStore($request, 'user', [200, 200]);
+        }
+        $date['permission'] = '1';
+        $date['password'] = bcrypt($request->password);
+        $date['created_by'] = user()->id;
 
         try {
             $user = User::create($data);
-            if ($request->permission) {
-                $permission = [
-                    'role_id' => $request->permission,
-                    'model_type' => "App\Models\User",
-                    'model_id' => $user->id,
-                ];
-                ModelHasRole::create($permission);
-            }
-
-            return response()->json(['message' => 'Data Successfully Inserted'], 200);
+            $user->assignRole($request->role);
+            return response()->json(['message' => 'The information has been inserted'], 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => __('app.oops')], 500);
-            // return response()->json(['message'=>$e->getMessage()], 500);
+            return response()->json(['message' => 'Oops something went wrong, Please try again.'], 500);
         }
     }
 
@@ -85,8 +81,7 @@ class UserController extends Controller
         }
         if ($request->ajax()) {
             $roles = Role::all();
-            $modelHasRole = ModelHasRole::whereModel_id($user->id)->first()->role_id;
-            $modal = view('admin.user.edit')->with(['user' => $user, 'roles' => $roles, 'modelHasRole' => $modelHasRole])->render();
+            $modal = view('admin.user.edit')->with(['user' => $user, 'roles' => $roles])->render();
 
             return response()->json(['modal' => $modal], 200);
         }
@@ -94,52 +89,36 @@ class UserController extends Controller
         return abort(500);
     }
 
-    public function update(UserUpdateRequest $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
         if ($error = $this->authorize('user-add')) {
             return $error;
         }
         $data = $request->validated();
-        if (isset($request->password)) {
+
+        // Hash the password if it's provided
+        if ($request->filled('password')) {
             $data['password'] = bcrypt($request->password);
         }
 
-        $image = User::find($user->id)->image;
+        // Process image if a new one is uploaded
+        $existingImage = $user->image;
         if ($request->hasFile('image')) {
-            $data['image'] = imageUpdate($request, 'user', 'uploads/images/users/', $image);
+            $data['image'] = imgProcessAndStore($request, 'user', [200, 200], $existingImage);
         }
 
         try {
             $user->update($data);
-            if ($request->permission) {
-                $permission = [
-                    'role_id' => $request->permission,
-                    'model_type' => "App\Models\User",
-                    'model_id' => $user->id,
-                ];
-                ModelHasRole::whereModel_id($user->id)->update($permission);
-            }
 
-            return response()->json(['message' => 'Data Successfully Inserted'], 200);
+            // if ($request->has('role')) {
+            //     $user->syncRoles([$request->role]);
+            // }
+
+            return response()->json(['message' => 'The information has been updated successfully'], 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => __('app.oops')], 500);
-            // return response()->json(['message'=>$e->getMessage()], 500);
+            return response()->json(['message' => $e->getMessage()], 500);
+            return response()->json(['message' => 'Oops, something went wrong. Please try again.'], 500);
         }
-
-        // if($request->hasFile('image')){
-        //     $files = User::where('id', $id)->first();
-        //     $path =  public_path('uploads/images/users/'.$files->image);
-        //     file_exists($path) ? unlink($path) : false;
-
-        //     $path = public_path().'/uploads/images/users/';
-        //     !file_exists($path) ?? File::makeDirectory($path, 0777, true, true);
-
-        //     $image = $request->file('image');
-        //     $image_name = "admin_user_".rand(0,1000).'.'.$image->getClientOriginalExtension();
-        //     $request->image->move('uploads/images/users/',$image_name);
-
-        //     $data['image'] = $image_name;
-        // }
     }
 
     public function destroy(User $user)
@@ -152,7 +131,7 @@ class UserController extends Controller
 
             return response()->json(['message' => 'Data Successfully Deleted'], 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => __('app.oops')], 500);
+            return response()->json(['message' => 'Oops something went wrong, Please try again.'], 500);
             // return response()->json(['message'=>$e->getMessage()], 500);
         }
     }
