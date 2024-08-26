@@ -18,20 +18,20 @@ class QuestionEntryController extends Controller
 {
 
 
-    public function read(Request $request)
-    {
-        $inputs = Question::whereSubjectId($request->subject_id)
-            ->whereRankId($request->rank)
-            ->whereType($request->type)
-            ->get();
-        if ($inputs->count() > 0) {
-            $questions = view('admin.question_entry.ajax', ['inputs' => $inputs])->render();
+    // public function read(Request $request)
+    // {
+    //     $inputs = Question::whereSubjectId($request->subject_id)
+    //         ->whereRankId($request->rank)
+    //         ->whereType($request->type)
+    //         ->get();
+    //     if ($inputs->count() > 0) {
+    //         $questions = view('admin.question_entry.ajax', ['inputs' => $inputs])->render();
 
-            return response()->json(['status' => 'success', 'html' => $questions, 'questions']);
-        } else {
-            return response()->json(['status' => 'no', 'message' => 'No data found']);
-        }
-    }
+    //         return response()->json(['status' => 'success', 'html' => $questions, 'questions']);
+    //     } else {
+    //         return response()->json(['status' => 'no', 'message' => 'No data found']);
+    //     }
+    // }
 
     // public function getQuestion(Request $request)
     // {

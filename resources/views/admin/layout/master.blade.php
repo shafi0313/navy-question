@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-    @php
+@php
     $user = auth()->user();
-    @endphp
+@endphp
+
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>@yield('title') | {{config('app.name')}}</title>
+    <title>@yield('title') | {{ config('app.name') }}</title>
     <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <link rel="icon" href="{{ asset('uploads/images/icons/navy_fav.png') }}" type="image/x-icon" />
 
     {{-- <!-- Fonts and icons --> --}}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="{{ asset('backend/js/plugin/webfont/webfont.min.js') }}"></script>
     <script>
         WebFont.load({
@@ -22,9 +25,9 @@
                 "families": ["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular",
                     "Font Awesome 5 Brands", "simple-line-icons"
                 ],
-                urls: ['{{ asset("backend/css/fonts.min.css" )}}']
+                urls: ['{{ asset('backend/css/fonts.min.css') }}']
             },
-            active: function () {
+            active: function() {
                 sessionStorage.fonts = true;
             }
         });
@@ -39,12 +42,17 @@
 </head>
 
 <body data-background-color="bg1">
+    <div class="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
     <div class="wrapper">
         <div class="main-header">
             <!-- Logo Header -->
             <div class="logo-header" data-background-color="blue2">
-                <a href="{{ route('admin.dashboard') }}" class="logo"> <h4 class="display:4 text-light" style="margin-top: 20px"><span title="Bangladesh Navy">BN</span> Question Bank</h4>
-				</a>
+                <a href="{{ route('admin.dashboard') }}" class="logo">
+                    <h4 class="display:4 text-light" style="margin-top: 20px"><span title="Bangladesh Navy">BN</span>
+                        Question Bank</h4>
+                </a>
                 <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse"
                     data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon">
@@ -84,17 +92,11 @@
     <!-- jQuery Scrollbar -->
     <script src="{{ asset('backend/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
 
-    <!-- jQuery Sparkline -->
-    {{-- <script src="{{ asset('backend/js/plugin/jquery.sparkline/jquery.sparkline.min.js') }}"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 
     <!-- Bootstrap Notify -->
     <script src="{{ asset('backend/js/plugin/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
-
-    {{-- jQuery Vector Maps
-    <script src="{{ asset('backend/js/plugin/jqvmap/jquery.vmap.min.js') }}"></script>
-    <script src="{{ asset('backend/js/plugin/jqvmap/maps/jquery.vmap.world.js') }}"></script> --}}
 
     <script src="{{ asset('backend/js/plugin/select2/select2.full.min.js') }}"></script>
     {{-- <!-- Sweet Alert --> --}}
@@ -120,7 +122,7 @@
     </script>
 
     @include('sweetalert::alert')
-	@stack('custom_scripts')
+    @stack('custom_scripts')
 </body>
 
 </html>
