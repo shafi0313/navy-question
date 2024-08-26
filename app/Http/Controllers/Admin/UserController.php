@@ -24,7 +24,7 @@ class UserController extends Controller
             return DataTables::of($users)
                 ->addIndexColumn()
                 ->addColumn('image', function ($row) {
-                    return '<img src="' . profileImg() . '" width="70px">';
+                    return '<img src="' . imagePath('users', $row->image) . '" width="70px">';
                 })
                 ->addColumn('roleName', function ($row) {
                     $roleName = '';
@@ -59,7 +59,7 @@ class UserController extends Controller
         }
         $data = $request->validated();
         if ($request->hasFile('image')) {
-            $data['image'] = imgProcessAndStore($request, 'user', [200, 200]);
+            $data['image'] = imgProcessAndStore($request->image, 'users', [200, 200]);
         }
         $date['permission'] = '1';
         $date['password'] = bcrypt($request->password);
@@ -104,7 +104,7 @@ class UserController extends Controller
         // Process image if a new one is uploaded
         $existingImage = $user->image;
         if ($request->hasFile('image')) {
-            $data['image'] = imgProcessAndStore($request, 'user', [200, 200], $existingImage);
+            $data['image'] = imgProcessAndStore($request->image, 'users', [200, 200], $existingImage);
         }
 
         try {
@@ -127,6 +127,7 @@ class UserController extends Controller
             return $error;
         }
         try {
+            imgUnlink('users', $user->image);
             $user->delete();
 
             return response()->json(['message' => 'Data Successfully Deleted'], 200);

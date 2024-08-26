@@ -59,7 +59,11 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-6">
+                            <label>Old Image </label>
+                            <img src="{{ imagePath('users', $user->image) }}" width="80px">
+                        </div>
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="image">Image </label>
                                 <input type="file" name="image" class="form-control">

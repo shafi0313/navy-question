@@ -402,8 +402,8 @@ if (!function_exists('imagePath')) {
 if (!function_exists('profileImg')) {
     function profileImg()
     {
-        if (file_exists(asset('uploads/images/user/' . user()->image))) {
-            return asset('uploads/images/user/' . user()->image);
+        if (file_exists(asset('uploads/images/users/' . user()->image))) {
+            return asset('uploads/images/users/' . user()->image);
         } else {
             return asset('uploads/images/icons/navy.jpg');
         }
