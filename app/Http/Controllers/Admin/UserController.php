@@ -24,31 +24,27 @@ class UserController extends Controller
 
             return DataTables::of($users)
                 ->addIndexColumn()
-                // ->addColumn('created_at', function ($row) {
-                //     return $row->created_at->diffForHumans();
-                // })
                 ->addColumn('age', function ($row) {
                     return ageWithDays($row->d_o_b);
                 })
                 ->addColumn('image', function ($row) {
-                    $src = asset('uploads/images/users/'.$row->image);
+                    $src = asset('uploads/images/users/' . $row->image);
 
-                    return '<img src="'.$src.'" width="100px">';
+                    return '<img src="' . $src . '" width="100px">';
                 })
                 ->addColumn('action', function ($row) {
                     $btn = '';
                     if (userCan('user-edit')) {
-                        $btn .= view('button', ['type' => 'ajax-edit', 'route' => route('admin.user.edit', $row->id), 'row' => $row]);
+                        $btn .= view('button', ['type' => 'ajax-edit', 'route' => route('admin.users.edit', $row->id), 'row' => $row]);
                     }
                     if (userCan('user-delete')) {
-                        $btn .= view('button', ['type' => 'ajax-delete', 'route' => route('admin.user.destroy', $row->id), 'row' => $row, 'src' => 'dt']);
+                        $btn .= view('button', ['type' => 'ajax-delete', 'route' => route('admin.users.destroy', $row->id), 'row' => $row, 'src' => 'dt']);
                     }
 
                     return $btn;
                 })
                 ->rawColumns(['check', 'age', 'action', 'image', 'created_at'])
                 ->make(true);
-
         }
         $roles = Role::all();
 

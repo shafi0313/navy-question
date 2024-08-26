@@ -77,13 +77,15 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::get('/get-subject', 'getSubject')->name('getSubject');
     });
 
-    Route::controller(UserController::class)->prefix('user')->name('user.')->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('/create', 'create')->name('create');
-        Route::post('/store', 'store')->name('store');
-        Route::get('/edit/{id}', 'edit')->name('edit');
-        Route::delete('/destroy/{id}', 'destroy')->name('destroy');
-    });
+    // Route::controller(UserController::class)->prefix('user')->name('user.')->group(function () {
+    //     Route::get('/', 'index')->name('index');
+    //     Route::get('/create', 'create')->name('create');
+    //     Route::post('/store', 'store')->name('store');
+    //     Route::get('/edit/{id}', 'edit')->name('edit');
+    //     Route::delete('/destroy/{id}', 'destroy')->name('destroy');
+    // });
+
+    Route::resource('/users', UserController::class);
 
     Route::controller(ProfileController::class)->prefix('my-profile')->group(function () {
         Route::get('/', 'index')->name('myProfile.profile.index');
@@ -154,7 +156,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::post('/store', 'store')->name('store');
     });
 
-    Route::resource('/exam', ExamController::class);
+    Route::resource('/exams', ExamController::class);
     Route::resource('/ranks', RankController::class);
     Route::resource('/question-imports', QuestionImportController::class)->except(['create', 'show']);
     Route::controller(QuestionImportController::class)->prefix('question-import')->name('question_imports.')->group(function () {

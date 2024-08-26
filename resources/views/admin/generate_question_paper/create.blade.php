@@ -14,7 +14,7 @@
                     <ul class="breadcrumbs">
                         <li class="nav-home"><a href="{{ route('admin.dashboard') }}"><i class="flaticon-home"></i></a></li>
                         <li class="separator"><i class="flaticon-right-arrow"></i></li>
-                        <li class="nav-item"><a href="{{ route('admin.exam.index') }}">Question</a></li>
+                        <li class="nav-item"><a href="{{ route('admin.exams.index') }}">Question</a></li>
                         <li class="separator"><i class="flaticon-right-arrow"></i></li>
                         <li class="nav-item">Create</li>
                     </ul>
@@ -86,11 +86,11 @@
                                                 <input style="width:50%; display: inline-block" type="text"
                                                     name="d_hour" class="form-control" value="{{ old('d_hour') }}"
                                                     placeholder="Hour"
-                                                    onInput="this.value = this.value.replace(/[^\d]/g,'');" >
+                                                    onInput="this.value = this.value.replace(/[^\d]/g,'');">
                                                 <input style="width:49%; display: inline-block" type="text"
                                                     name="d_minute" class="form-control" value="{{ old('d_minute') }}"
                                                     placeholder="Minute"
-                                                    onInput="this.value = this.value.replace(/[^\d]/g,'');" >
+                                                    onInput="this.value = this.value.replace(/[^\d]/g,'');">
                                                 @if ($errors->has('d_hour'))
                                                     <div class="alert alert-danger">{{ $errors->first('d_hour') }}</div>
                                                 @endif

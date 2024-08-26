@@ -45,7 +45,7 @@
 
         @push('custom_scripts')
             @can('exam-add')
-                @include('admin.exam.create')
+                @include('admin.exams.create')
             @endcan
             <!-- Datatables -->
             @include('include.data_table')
@@ -58,7 +58,7 @@
                         ordering: true,
                         responsive: true,
                         scrollY: 400,
-                        ajax: "{{ route('admin.exam.index') }}",
+                        ajax: "{{ route('admin.exams.index') }}",
                         columns: [{
                                 data: 'DT_RowIndex',
                                 name: 'DT_RowIndex',

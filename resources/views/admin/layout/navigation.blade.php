@@ -17,16 +17,16 @@
                     <h4 class="text-section">Components</h4>
                 </li>
                 @can('user-manage')
-                    <li class="nav-item {{ activeNav('admin.user.*') }}">
+                    <li class="nav-item {{ activeNav('admin.users.*') }}">
                         <a data-toggle="collapse" href="#base">
                             <i class="fas fa-users-cog"></i>
                             <p>Admin</p>
                             <span class="caret"></span>
                         </a>
-                        <div class="collapse {{ openNav(['admin.user.*']) }}" id="base">
+                        <div class="collapse {{ openNav(['admin.users.*']) }}" id="base">
                             <ul class="nav nav-collapse">
-                                <li class="{{ activeSubNav(['admin.user.*']) }}">
-                                    <a href="{{ route('admin.user.index') }}">
+                                <li class="{{ activeSubNav(['admin.users.*']) }}">
+                                    <a href="{{ route('admin.users.index') }}">
                                         <span class="sub-item">User</span>
                                     </a>
                                 </li>
@@ -37,18 +37,18 @@
 
 
                 <li
-                    class="nav-item {{ activeNav(['admin.subjects.*', 'admin.exam.*', 'admin.mark-distributions.*']) }}">
+                    class="nav-item {{ activeNav(['admin.subjects.*', 'admin.exams.*', 'admin.mark-distributions.*']) }}">
                     <a data-toggle="collapse" href="#setup">
                         <i class="fa-solid fa-screwdriver-wrench"></i>
                         <p>Setup</p>
                         <span class="caret"></span>
                     </a>
-                    <div class="collapse {{ openNav(['admin.subjects.*', 'admin.exam.*', 'admin.mark-distributions.*']) }}"
+                    <div class="collapse {{ openNav(['admin.subjects.*', 'admin.exams.*', 'admin.mark-distributions.*']) }}"
                         id="setup">
                         <ul class="nav nav-collapse">
                             @can('exam-manage')
-                                <li class="{{ activeSubNav('admin.exam.*') }}">
-                                    <a href="{{ route('admin.exam.index') }}">
+                                <li class="{{ activeSubNav('admin.exams.*') }}">
+                                    <a href="{{ route('admin.exams.index') }}">
                                         <span class="sub-item">Exam</span>
                                     </a>
                                 </li>

@@ -23,10 +23,10 @@ class ExamController extends Controller
                 ->addColumn('action', function ($row) {
                     $btn = '';
                     if (userCan('exam-edit')) {
-                        $btn .= view('button', ['type' => 'ajax-edit', 'route' => route('admin.exam.edit', $row->id), 'row' => $row]);
+                        $btn .= view('button', ['type' => 'ajax-edit', 'route' => route('admin.exams.edit', $row->id), 'row' => $row]);
                     }
                     if (userCan('exam-delete')) {
-                        $btn .= view('button', ['type' => 'ajax-delete', 'route' => route('admin.exam.destroy', $row->id), 'row' => $row, 'src' => 'dt']);
+                        $btn .= view('button', ['type' => 'ajax-delete', 'route' => route('admin.exams.destroy', $row->id), 'row' => $row, 'src' => 'dt']);
                     }
 
                     return $btn;
@@ -35,7 +35,7 @@ class ExamController extends Controller
                 ->make(true);
         }
 
-        return view('admin.exam.index');
+        return view('admin.exams.index');
     }
 
     public function store(Request $request)
@@ -67,7 +67,7 @@ class ExamController extends Controller
             return $error;
         }
         if ($request->ajax()) {
-            $modal = view('admin.exam.edit')->with('exam', $exam)->render();
+            $modal = view('admin.exams.edit')->with('exam', $exam)->render();
 
             return response()->json(['modal' => $modal], 200);
         }
