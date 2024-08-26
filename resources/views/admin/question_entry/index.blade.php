@@ -184,6 +184,11 @@
                             title: 'Question'
                         },
                         {
+                            data: 'options',
+                            name: 'options',
+                            title: 'Options'
+                        },
+                        {
                             data: 'action',
                             name: 'action',
                             title: 'Action',

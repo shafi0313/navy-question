@@ -17,7 +17,7 @@ class QuestionController extends Controller
 {
     public function index(Request $request)
     {
-        if ($error = $this->authorize('question-entry-manage')) {
+        if ($error = $this->authorize('question-manage')) {
             return $error;
         }
         // return $questions = Question::with([
@@ -30,14 +30,22 @@ class QuestionController extends Controller
             $questions = Question::with([
                 'rank:id,name',
                 'subject:id,name',
-                // Uncomment the following line if options are needed
-                // 'options:id,question_id,option',
+                'options:id,question_id,option',
             ]);
 
             return DataTables::of($questions)
                 ->addIndexColumn()
                 ->addColumn('type', function ($row) {
                     return Str::title(str_replace('_', ' ', $row->type));
+                })
+                ->addColumn('options', function ($row) {
+                    $options = '';
+                    if ($row->type == 'multiple_choice') {
+                        foreach ($row->options as $option) {
+                            $options .= '<span class="badge badge-primary mr-2">' . $option->option . '</span>';
+                        }
+                    }
+                    return $options;
                 })
                 ->addColumn('action', function ($row) {
                     $btn = '';
@@ -60,12 +68,6 @@ class QuestionController extends Controller
                     return $btn;
                 })
                 ->filter(function ($query) use ($request) {
-                    // Apply filters based on exam_id, subject_id, rank_id
-                    // if ($request->filled('exam_id')) {
-                    //     $query->whereHas('exam', function ($q) use ($request) {
-                    //         $q->where('exams.id', $request->exam_id);
-                    //     });
-                    // }
                     if ($request->filled('subject_id')) {
                         $query->where('subject_id', $request->subject_id);
                     }
@@ -87,7 +89,7 @@ class QuestionController extends Controller
                         });
                     }
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['options','action'])
                 ->make(true);
         }
 
@@ -150,7 +152,7 @@ class QuestionController extends Controller
         $data = $request->validated();
 
         DB::beginTransaction();
-        
+
         if ($request->hasFile('image')) {
             $data['image'] = imgProcessAndStore($request->file('image'), 'question');
         }
@@ -198,27 +200,19 @@ class QuestionController extends Controller
         return back();
     }
 
-    public function destroy($id)
+    public function destroy(Question $question)
     {
-        if ($error = $this->authorize('question-entry-delete')) {
+        if ($error = $this->authorize('question-delete')) {
             return $error;
         }
-        $user = Question::find($id);
-        QuesOption::whereQuestion_id($id)->delete();
-        $path = public_path('uploads/images/users/' . $user->image);
-        if (file_exists($path) && ! is_null($user->image)) {
-            unlink($path);
-            $user->delete();
-            QuesOption::whereQuestion_id($id)->delete();
-            toast('Successfully Deleted', 'success');
+        try {
+            QuesOption::where('question_id', $question->id)->delete();
+            imgUnlink('question', $question->image);
+            $question->delete();
 
-            return redirect()->back();
-        } else {
-            $user->delete();
-            QuesOption::whereQuestion_id($id)->delete();
-            toast('Successfully Deleted', 'success');
-
-            return redirect()->back();
+            return response()->json(['message' => 'The information has been deleted'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Oops something went wrong, Please try again.'], 500);
         }
     }
 

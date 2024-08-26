@@ -16,11 +16,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <div class="d-flex align-items-center">
-                                    <h4 class="card-title">List of Exam</h4>
-                                    <a data-toggle="modal" data-target="#addModal"
-                                        class="btn btn-primary btn-round ml-auto text-light" style="min-width: 200px">
-                                        <i class="fa fa-plus"></i> Add New
-                                    </a>
+                                    <h4 class="card-title">List of Exams</h4>
                                 </div>
                             </div>
                             <div class="card-body row justify-content-center">
