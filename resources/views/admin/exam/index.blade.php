@@ -26,13 +26,7 @@
                             <div class="card-body row justify-content-center">
                                 <div class="table-responsive">
                                     <table id="DT" class="table table-striped table-hover">
-                                        <thead class="bg-secondary thw">
-                                            <tr>
-                                                <th>SL</th>
-                                                <th>Name</th>
-                                                <th class="no-sort">Action</th>
-                                            </tr>
-                                        </thead>
+                                        <thead class="bg-secondary thw"></thead>
                                         <tbody></tbody>
                                     </table>
                                 </div>
@@ -45,7 +39,7 @@
 
         @push('custom_scripts')
             @can('exam-add')
-                @include('admin.exams.create')
+                @include('admin.exam.create')
             @endcan
             <!-- Datatables -->
             @include('include.data_table')
@@ -62,12 +56,24 @@
                         columns: [{
                                 data: 'DT_RowIndex',
                                 name: 'DT_RowIndex',
+                                title: 'SL',
                                 searchable: false,
                                 orderable: false,
                             },
                             {
                                 data: 'name',
-                                name: 'name'
+                                name: 'name',
+                                title: 'Name'
+                            },
+                            {
+                                data: 'created_by.name',
+                                name: 'created_by.name',
+                                title: 'Created By'
+                            },
+                            {
+                                data: 'updated_by.name',
+                                name: 'updated_by.name',
+                                title: 'Updated By'
                             },
                             {
                                 data: 'action',

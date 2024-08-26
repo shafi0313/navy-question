@@ -13,7 +13,10 @@ class ExamSeeder extends Seeder
     public function run(): void
     {
         $exams = [
-            ['name' => 'বাংলাদেশ নৌবাহিনী নাবিক ভর্তি পরীক্ষা'],
+            [
+                'name' => 'বাংলাদেশ নৌবাহিনী নাবিক ভর্তি পরীক্ষা',
+                'created_by' => 1,
+            ],
         ];
 
         Exam::insert($exams);

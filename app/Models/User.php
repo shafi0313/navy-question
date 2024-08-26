@@ -43,6 +43,8 @@ class User extends Authenticatable
     }
     public function updatedBy()
     {
-        return $this->belongsTo(User::class, 'updated_by', 'id');
+        return $this->belongsTo(User::class, 'updated_by', 'id')->withDefault([
+            'name' => ''
+        ]);
     }
 }

@@ -95,6 +95,11 @@
                                 title: 'Created By'
                             },
                             {
+                                data: 'updated_by.name',
+                                name: 'updated_by.name',
+                                title: 'Updated By'
+                            },
+                            {
                                 data: 'action',
                                 name: 'action',
                                 title: 'Action',

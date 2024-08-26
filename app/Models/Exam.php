@@ -16,23 +16,16 @@ class Exam extends Model
         return $this->hasMany(Subject::class);
     }
 
-    
-
-    // public function questionPaper()
-    // {
-    //     return $this->hasOne(QuestionPaper::class, 'exam_id');
-    // }
-
-    // public function subject(){
-    //     return $this->belongsTo(Subject::class, 'subject_id');
-    // }
-    // public function enroll()
-    // {
-    //     return $this->hasOne(Enroll::class, 'exam_id');
-    // }
-
-    // public function ans()
-    // {
-    //     return $this->hasOne(QuesAns::class, 'exam_id');
-    // }
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id')->withDefault([
+            'name' => 'System'
+        ]);
+    }
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by', 'id')->withDefault([
+            'name' => ''
+        ]);
+    }
 }

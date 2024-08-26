@@ -19,7 +19,12 @@ class UserController extends Controller
         }
 
         if ($request->ajax()) {
-            $users = User::with('createdBy:id,name', 'roles:id,name')->orderBy('name');
+            $users = User::with([
+                'createdBy:id,name',
+                'updatedBy:id,name',
+                'roles:id,name'
+            ])->orderBy('name');
+            
             return DataTables::of($users)
                 ->addIndexColumn()
                 ->addColumn('image', function ($row) {

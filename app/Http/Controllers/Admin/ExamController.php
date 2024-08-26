@@ -16,7 +16,10 @@ class ExamController extends Controller
             return $error;
         }
         if ($request->ajax()) {
-            $exams = Exam::query();
+            $exams = Exam::with([
+                'createdBy:id,name',
+                'updatedBy:id,name'
+            ])->orderBy('name');
 
             return DataTables::of($exams)
                 ->addIndexColumn()
@@ -35,7 +38,7 @@ class ExamController extends Controller
                 ->make(true);
         }
 
-        return view('admin.exams.index');
+        return view('admin.exam.index');
     }
 
     public function store(Request $request)
@@ -46,13 +49,12 @@ class ExamController extends Controller
         $data = $this->validate($request, [
             'name' => 'required|max:100',
         ]);
-        $data['user_id'] = auth()->user()->id;
+        $data['created_by'] = user()->id;
         try {
             Exam::create($data);
             return response()->json(['message' => 'The information has been inserted'], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Oops something went wrong, Please try again.'], 500);
-            // return response()->json(['message'=>$e->getMessage()], 500);
         }
     }
 
@@ -67,7 +69,7 @@ class ExamController extends Controller
             return $error;
         }
         if ($request->ajax()) {
-            $modal = view('admin.exams.edit')->with('exam', $exam)->render();
+            $modal = view('admin.exam.edit')->with('exam', $exam)->render();
 
             return response()->json(['modal' => $modal], 200);
         }
@@ -84,18 +86,12 @@ class ExamController extends Controller
         $data = $this->validate($request, [
             'name' => 'required|max:100',
         ]);
-        $data['user_id'] = auth()->user()->id;
-        DB::beginTransaction();
+        $data['updated_by'] = user()->id;
         try {
             $exam->update($data);
-            DB::commit();
-
             return response()->json(['message' => 'The information has been inserted'], 200);
         } catch (\Exception $e) {
-            DB::rollBack();
-
             return response()->json(['message' => 'Oops something went wrong, Please try again.'], 500);
-            // return response()->json(['message'=>$e->getMessage()], 500);
         }
     }
 
