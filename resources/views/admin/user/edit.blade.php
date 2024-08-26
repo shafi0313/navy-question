@@ -18,7 +18,7 @@
                                 <select name="role" class="form-control">
                                     <option selected>Select</option>
                                     @foreach ($roles as $role)
-                                        <option value="{{ $role->id }}" @selected($role->id == $user->roles->first()->id)>
+                                        <option value="{{ $role->name }}" @selected($role->id == $user->roles->first()->id)>
                                             {{ $role->name }}</option>
                                     @endforeach
                                 </select>

@@ -110,9 +110,9 @@ class UserController extends Controller
         try {
             $user->update($data);
 
-            // if ($request->has('role')) {
-            //     $user->syncRoles([$request->role]);
-            // }
+            if ($request->has('role')) {
+                $user->syncRoles($data['role']);
+            }
 
             return response()->json(['message' => 'The information has been updated successfully'], 200);
         } catch (\Exception $e) {
