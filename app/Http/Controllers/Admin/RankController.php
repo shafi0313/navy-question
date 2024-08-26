@@ -21,7 +21,10 @@ class RankController extends Controller
             return $error;
         }
         if ($request->ajax()) {
-            $exams = Rank::query();
+            $exams = Rank::with([
+                'createdBy:id,name',
+                'updatedBy:id,name'
+            ])->orderBy('name');
 
             return DataTables::of($exams)
                 ->addIndexColumn()
@@ -48,6 +51,7 @@ class RankController extends Controller
     public function store(StoreRankRequest $request)
     {
         $data = $request->Validated();
+        $data['created_by'] = user()->id;
         try {
             Rank::create($data);
             return response()->json(['message' => 'The information has been inserted'], 200);
@@ -66,7 +70,7 @@ class RankController extends Controller
         }
 
         if ($request->ajax()) {
-            $modal = view('admin.product.rank.edit')->with(['rank' => $rank])->render();
+            $modal = view('admin.rank.edit')->with(['rank' => $rank])->render();
 
             return response()->json(['modal' => $modal], 200);
         }
@@ -79,17 +83,14 @@ class RankController extends Controller
      */
     public function update(UpdateRankRequest $request, Rank $rank)
     {
-        if ($error = $this->authorize('brand-add')) {
+        if ($error = $this->authorize('rank-add')) {
             return $error;
         }
 
         $data = $request->validated();
-        $image = $brand->logo;
-        if ($request->hasFile('logo')) {
-            $data['logo'] = imgWebpUpdate($request->logo, 'brand', [400, 400], $image);
-        }
+        $data['updated_by'] = user()->id;
         try {
-            $brand->update($data);
+            $rank->update($data);
 
             return response()->json(['message' => 'The information has been updated'], 200);
         } catch (\Exception $e) {

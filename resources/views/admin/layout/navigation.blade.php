@@ -35,16 +35,16 @@
                     </li>
                 @endcan
 
-
-                <li
-                    class="nav-item {{ activeNav(['admin.subjects.*', 'admin.exams.*', 'admin.mark-distributions.*']) }}">
+                @php
+                    $setup = ['admin.subjects.*', 'admin.exams.*', 'admin.mark-distributions.*', 'admin.ranks.*'];
+                @endphp
+                <li class="nav-item {{ activeNav($setup) }}">
                     <a data-toggle="collapse" href="#setup">
                         <i class="fa-solid fa-screwdriver-wrench"></i>
                         <p>Setup</p>
                         <span class="caret"></span>
                     </a>
-                    <div class="collapse {{ openNav(['admin.subjects.*', 'admin.exams.*', 'admin.mark-distributions.*']) }}"
-                        id="setup">
+                    <div class="collapse {{ openNav($setup) }}" id="setup">
                         <ul class="nav nav-collapse">
                             @can('exam-manage')
                                 <li class="{{ activeSubNav('admin.exams.*') }}">

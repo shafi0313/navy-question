@@ -2,23 +2,19 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Exam Update</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Rank Update</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('admin.exams.update', $exam->id) }}" method="post"
+            <form action="{{ route('admin.ranks.update', $rank->id) }}" method="post"
                 onsubmit="ajaxStore(event, this, 'POST', 'editModal')" class="form-horizontal">
                 @csrf @method('PUT')
                 <div class="modal-body">
                     <div class="row">
                         <div class="form-group col-sm-12">
                             <label for="name">Name <span class="t_r">*</span></label>
-                            <input type="text" name="name"
-                                class="form-control @error('name') is-invalid @enderror" value="{{ $exam->name }}">
-                            @error('name')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
+                            <input type="text" name="name" class="form-control" value="{{ $rank->name }}">
                         </div>
                     </div>
                 </div>

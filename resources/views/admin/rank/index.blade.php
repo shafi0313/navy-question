@@ -65,6 +65,16 @@
                                 title: 'Name'
                             },
                             {
+                                data: 'created_by.name',
+                                name: 'created_by.name',
+                                title: 'Created By'
+                            },
+                            {
+                                data: 'updated_by.name',
+                                name: 'updated_by.name',
+                                title: 'Updated By'
+                            },
+                            {
                                 data: 'action',
                                 name: 'action',
                                 title: 'Action',
