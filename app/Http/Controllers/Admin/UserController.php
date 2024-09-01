@@ -24,7 +24,7 @@ class UserController extends Controller
                 'updatedBy:id,name',
                 'roles:id,name'
             ])->orderBy('name');
-            
+
             return DataTables::of($users)
                 ->addIndexColumn()
                 ->addColumn('image', function ($row) {
