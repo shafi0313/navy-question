@@ -143,23 +143,6 @@
                                     <button type="reset" class="btn btn-danger">Cancel</button>
                                 </div>
                             </form>
-                            {{-- <div class="col-md-12">
-                                <hr class="bg-danger">
-                            </div> --}}
-                            {{-- <div class="col-md-12">
-                                <h3 class="text-primary">Question</h3>
-                                <table class="table table-striped table-bordered table-hover w-100">
-                                    <thead>
-                                        <tr>
-                                            <th>Question</th>
-                                            <th>Type</th>
-                                            <th>Marks</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="questionArea" id="question"></tbody>
-                                </table>
-                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -197,35 +180,12 @@
                 serialMaintain();
             });
 
-            // $('#quesType').change(function() {
-            //     $("#questionArea").html('');
-            //     let chapterId = $('#chapter_id').find(":selected").val();
-            //     let quesType = $(this).val();
-            //     $.ajax({
-            //         url: "{{ route('admin.questions.getQuestion') }}",
-            //         data: {
-            //             chapterId: chapterId,
-            //             quesType: quesType
-            //         },
-            //         method: 'get',
-            //         success: res => {
-            //             if (res.status == 200) {
-            //                 question()
-            //             } else {
-            //                 // alert('No question found')
-            //             }
-            //         },
-            //         error: err => {
-            //             // alert('No question found')
-            //         }
-            //     });
-            // });
-
             $('#quesStore').on('submit', function(e) {
                 e.preventDefault();
                 var formData = new FormData(this);
                 let url = $(this).attr('action');
                 let method = $(this).attr('method');
+                showLoadingAnimation();
                 var request = $.ajax({
                     url: url,
                     method: method,
@@ -233,15 +193,21 @@
                     contentType: false,
                     processData: false,
                     success: res => {
-                        toast('success', 'Success!');
+                        hideLoadingAnimation();
                         clear();
-                        // question()
-                        $(".trData").remove();
+                        swal({
+                            icon: 'success',
+                            title: 'Success',
+                            text: res.message
+                        });
                     },
                     error: err => {
-                        $.each(err.responseJSON.errors, (i, v) => {
-                            toast('error', v);
-                        })
+                        hideLoadingAnimation();
+                        swal({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: err.responseJSON.message
+                        });
                     }
                 });
             });
@@ -252,35 +218,7 @@
                 // $("#mark").val('');
                 $("#option").val('');
                 $("#image").val('');
-            }
-
-            // function question() {
-            //     $.ajax({
-            //         url: '{{ route('admin.questions.read') }}',
-            //         method: 'get',
-            //         data: {
-            //             subject_id: $('#subject_id').val(),
-            //             rank_id: $('#rank_id').val(),
-            //             type: $('#quesType').val(),
-            //         },
-            //         success: function(res) {
-            //             if (res.status == 'success') {
-            //                 $('#question').html(res.html);
-            //             }
-            //         }
-            //     });
-            // }
-
-            function getData() {
-                return {
-                    '_token': "{{ csrf_token() }}",
-                    'subject_id': $('#subject_id').val(),
-                    'chapter_id': $('#chapter_id').val(),
-                    'type': $('#quesType').val(),
-                    'mark': $('#mark').val(),
-                    'ques': $('#ques').val(),
-                    'option': $('#option').val(),
-                };
+                $(".item_data_table tbody").empty();
             }
 
             function serialMaintain() {

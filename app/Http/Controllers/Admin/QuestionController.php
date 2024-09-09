@@ -118,6 +118,9 @@ class QuestionController extends Controller
 
         $questionEntry = Question::create($data);
         if ($request->type == 'multiple_choice') {
+            if(!$request->option) {
+                return response()->json(['message' => 'At least two options are required for multiple choice question'], 500);
+            }
             foreach ($request->option as $key => $value) {
                 $option = [
                     'question_id' => $questionEntry->id,
@@ -127,7 +130,11 @@ class QuestionController extends Controller
             }
         }
 
-        return response()->json($questionEntry, 200);
+        try {
+            return response()->json(['message' => 'The information has been inserted'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Oops something went wrong, Please try again.'], 500);
+        }
     }
 
     public function edit($id)
@@ -136,6 +143,7 @@ class QuestionController extends Controller
             return $error;
         }
         $question = Question::with([
+            'exam:id,name',
             'rank:id,name',
             'subject:id,name',
             'options'
@@ -159,6 +167,10 @@ class QuestionController extends Controller
         Question::find($id)->update($data);
 
         if ($request->type == 'multiple_choice') {
+            if(!$request->option) {
+                Alert::error('Success', 'At least two options are required for multiple choice question');
+                return back();
+            }
             foreach ($request->option as $key => $value) {
                 $option = [
                     'question_id' => $id,
