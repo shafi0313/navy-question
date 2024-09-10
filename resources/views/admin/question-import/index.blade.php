@@ -104,8 +104,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="subject_id">Subject <span class="t_r">*</span></label>
-                                                    <select class="form-control" name="subject_id" id="subject_id"
-                                                        required>
+                                                    <select class="form-control" name="subject_id" id="subject_id" required>
                                                     </select>
                                                     @if ($errors->has('subject_id'))
                                                         <div class="alert alert-danger">{{ $errors->first('subject_id') }}
@@ -115,9 +114,8 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="rank_id">Branch/Rank <span class="t_r">*</span></label>
-                                                    <select class="form-control" name="rank_id" id="rank_id"
-                                                        required>
+                                                    <label for="rank_id">Batch <span class="t_r">*</span></label>
+                                                    <select class="form-control" name="rank_id" id="rank_id" required>
                                                     </select>
                                                     @if ($errors->has('rank_id'))
                                                         <div class="alert alert-danger">{{ $errors->first('rank_id') }}
