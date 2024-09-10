@@ -60,9 +60,9 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label for="date">Date </label>
+                                                <label for="date">Date <span class="t_r">*</span></label>
                                                 <input type="date" name="date" class="form-control"
-                                                    value="{{ old('date', date('d-m-Y')) }}">
+                                                    value="{{ old('date', date('d-m-Y')) }}" required>
                                                 @if ($errors->has('date'))
                                                     <div class="alert alert-danger">{{ $errors->first('date') }}</div>
                                                 @endif

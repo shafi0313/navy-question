@@ -173,11 +173,11 @@
                             name: 'subject.name',
                             title: 'Subject'
                         },
-                        {
-                            data: 'type',
-                            name: 'type',
-                            title: 'Type'
-                        },
+                        // {
+                        //     data: 'type',
+                        //     name: 'type',
+                        //     title: 'Type'
+                        // },
                         {
                             data: 'ques',
                             name: 'ques',

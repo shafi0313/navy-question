@@ -88,6 +88,7 @@
                                 </div>
                                 <form action="{{ route('admin.question-imports.store') }}" method="post">
                                     @csrf @method('POST')
+                                    <input type="hidden" name="type" value="multiple_choice">
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-6">
@@ -123,7 +124,7 @@
                                                     @endif
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            {{-- <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="type">Question Type <span
                                                             class="t_r">*</span></label>
@@ -137,7 +138,7 @@
                                                         <div class="alert alert-danger">{{ $errors->first('type') }}</div>
                                                     @endif
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                         </div>
                                         <div class="row mt-5">
                                             <div class="col-md-12 text-right">

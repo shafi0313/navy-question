@@ -36,6 +36,7 @@
                             <form action="{{ route('admin.questions.store') }}" method="POST" id="quesStore"
                                 enctype="multipart/form-data">
                                 @csrf
+                                <input type="hidden" name="type" value="multiple_choice">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-6">
@@ -68,7 +69,7 @@
                                                 @endif
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        {{-- <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="type">Question Type <span class="t_r">*</span></label>
                                                 <select class="form-control" name="type" id="quesType" required>
@@ -81,7 +82,7 @@
                                                     <div class="alert alert-danger">{{ $errors->first('type') }}</div>
                                                 @endif
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="mark">Marks <span class="t_r">*</span></label>
@@ -113,7 +114,7 @@
 
                                     </div>
                                 </div>
-                                <div class="row quesTypeDiv ml-2" style="display: none">
+                                <div class="row quesTypeDiv ml-2">
                                     <div class="col-md-6">
                                         <div class="row">
                                             <div class="form-group ">
@@ -230,14 +231,14 @@
                 });
             };
 
-            $("#quesType").change(function() {
-                const type = $(this).val();
-                if (type == "multiple_choice") {
-                    $(".quesTypeDiv").show();
-                } else {
-                    $(".quesTypeDiv").hide();
-                }
-            })
+            // $("#quesType").change(function() {
+            //     const type = $(this).val();
+            //     if (type == "multiple_choice") {
+            //         $(".quesTypeDiv").show();
+            //     } else {
+            //         $(".quesTypeDiv").hide();
+            //     }
+            // })
         </script>
     @endpush
 @endsection

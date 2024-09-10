@@ -52,12 +52,12 @@ class GenerateQuestionPaperController extends Controller
                         'badge-warning',
                         'badge-primary',
                         'badge-info',
+                        'badge-dark',
                     ];
                     $btn = '';
-                    for ($i = 1; $i <= 5; $i++) {
+                    for ($i = 1; $i <= 6; $i++) {
                         $colorIndex = ($i - 1) % count($badgeColors);
                         $colorClass = $badgeColors[$colorIndex];
-
                         $btn .= '<a href="' . route('admin.generate_question.show', [$row->id, $i, 'show']) . '" class="badge ' . htmlspecialchars($colorClass) . ' mb-1">Set ' . questionSetInBangla($i) . '</a>';
                     }
 
@@ -119,7 +119,7 @@ class GenerateQuestionPaperController extends Controller
         $questionInfo = QuestionInfo::create($data);
 
         $getSubjects = Subject::whereExamId($request->exam_id)->get();
-        for ($set = 1; $set <= 5; $set++) {
+        for ($set = 1; $set <= 6; $set++) {
             foreach ($getSubjects as $getSubject) {
                 $questionSubjectInfo = QuestionSubjectInfo::create([
                     'question_info_id' => $questionInfo->id,
