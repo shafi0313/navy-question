@@ -35,8 +35,7 @@ if (! function_exists('questionSetInBangla')) {
             3 => 'হলুদ',
             4 => 'নীল',
             5 => 'বেগুনি',
-            6 => 'কাল',
-            7 => 'সবুজ',
+            6 => 'সবুজ',
             default => 'N/A',
         };
     }

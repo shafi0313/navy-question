@@ -3,14 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\MarkDistribution;
 use App\Models\QuesInfo;
 use App\Models\QuestionInfo;
 use App\Models\QuestionPaper;
 use App\Traits\QuestionPaperTrait;
 use Illuminate\Http\Request;
 use PDF;
-use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\Facades\DataTables;
 
 class QuestionPaperController extends Controller
@@ -45,21 +43,20 @@ class QuestionPaperController extends Controller
                 //     return '<textarea class="form-control">'.strip_tags($row->content).'</textarea>';
                 // })
                 ->addColumn('set', function ($row) {
-                    $badgeColors = [
-                        'badge-danger',
-                        'badge-primary',
-                        'badge-warning',
-                        'badge-primary',
-                        'badge-info',
+                    $setColorCodes = [
+                        1 => '#dc3545', // Red (Bootstrap's badge-danger)
+                        2 => '#6c757d', // Brown/Secondary
+                        3 => '#ffc107', // Yellow (Bootstrap's badge-warning)
+                        4 => '#007bff', // Blue (Bootstrap's badge-primary)
+                        5 => '#6f42c1', // Purple (custom color)
+                        6 => '#28a745', // Green (Bootstrap's badge-success)
                     ];
+
                     $btn = '';
-                    for ($i = 1; $i <= 5; $i++) {
-                        $colorIndex = ($i - 1) % count($badgeColors);
-                        $colorClass = $badgeColors[$colorIndex];
-
-                        $btn .= '<a href="'.route('admin.generated_question.show', [$row->id, $i, 'show']).'" class="badge '.htmlspecialchars($colorClass).' mb-1">Set '.questionSetInBangla($i).'</a>';
+                    for ($i = 1; $i <= 6; $i++) {
+                        $colorCode = $setColorCodes[$i];
+                        $btn .= '<a href="' . route('admin.generated_question.show', [$row->id, $i, 'show']) . '" class="badge mb-1" style="background-color: ' . htmlspecialchars($colorCode) . '; color: white;">Set ' . questionSetInBangla($i) . '</a> ';
                     }
-
                     return $btn;
                 })
                 // ->addColumn('generate', function ($row) {

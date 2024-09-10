@@ -46,19 +46,19 @@ class GenerateQuestionPaperController extends Controller
                     return $row->d_hour . ':' . $row->d_minute . ' Minute';
                 })
                 ->addColumn('set', function ($row) {
-                    $badgeColors = [
-                        'badge-danger',
-                        'badge-primary',
-                        'badge-warning',
-                        'badge-primary',
-                        'badge-info',
-                        'badge-dark',
+                    $setColorCodes = [
+                        1 => '#dc3545', // Red (Bootstrap's badge-danger)
+                        2 => '#6c757d', // Brown/Secondary
+                        3 => '#ffc107', // Yellow (Bootstrap's badge-warning)
+                        4 => '#007bff', // Blue (Bootstrap's badge-primary)
+                        5 => '#6f42c1', // Purple (custom color)
+                        6 => '#28a745', // Green (Bootstrap's badge-success)
                     ];
+
                     $btn = '';
                     for ($i = 1; $i <= 6; $i++) {
-                        $colorIndex = ($i - 1) % count($badgeColors);
-                        $colorClass = $badgeColors[$colorIndex];
-                        $btn .= '<a href="' . route('admin.generate_question.show', [$row->id, $i, 'show']) . '" class="badge ' . htmlspecialchars($colorClass) . ' mb-1">Set ' . questionSetInBangla($i) . '</a>';
+                        $colorCode = $setColorCodes[$i];
+                        $btn .= '<a href="' . route('admin.generate_question.show', [$row->id, $i, 'show']) . '" class="badge mb-1" style="background-color: ' . htmlspecialchars($colorCode) . '; color: white;">Set ' . questionSetInBangla($i) . '</a> ';
                     }
 
                     return $btn;
@@ -130,7 +130,6 @@ class GenerateQuestionPaperController extends Controller
                 foreach ($quesMarks as $k => $v) {
                     $questions = Question::whereSubjectId($getSubject->id)
                         ->whereRankId($questionInfoRequest->rank_id)
-                        // ->where('chapter_id', $v->chapter_id)
                         ->whereType('multiple_choice')
                         ->inRandomOrder()
                         ->get();
@@ -147,75 +146,22 @@ class GenerateQuestionPaperController extends Controller
                         }
                     }
                 }
-
-                foreach ($quesMarks as $k => $v) {
-                    $questions = Question::whereSubjectId($getSubject->id)
-                        ->whereRankId($questionInfoRequest->rank_id)
-                        // ->where('chapter_id', $v->chapter_id)
-                        ->whereType('short_question')
-                        ->inRandomOrder()
-                        ->get();
-                    $j = 0;
-                    foreach ($questions as $key => $value) {
-                        if ($j < $v->sort) {
-                            $data = [
-                                'question_subject_info_id' => $questionSubjectInfo->id,
-                                'question_id' => $value->id,
-                                'type' => 'short_question',
-                                // 'set' => $set,
-                                // 'ques_no' => $quesNo,
-                            ];
-                            QuestionPaper::updateOrCreate($data);
-                            $j += $value->mark;
-                        }
-                    }
-                }
-
-                foreach ($quesMarks as $k => $v) {
-                    $questions = Question::whereSubjectId($getSubject->id)
-                        ->whereRankId($questionInfoRequest->rank_id)
-                        // ->where('chapter_id', $v->chapter_id)
-                        ->whereType('long_question')
-                        ->inRandomOrder()
-                        ->get();
-
-                    $k = 0;
-                    foreach ($questions as $key => $value) {
-                        if ($k < $v->long) {
-                            $data = [
-                                'question_subject_info_id' => $questionSubjectInfo->id,
-                                'question_id' => $value->id,
-                                'type' => 'long_question',
-                                // 'set' => $set,
-                                // 'ques_no' => $quesNo,
-                            ];
-                            QuestionPaper::updateOrCreate($data);
-                            $k += $value->mark;
-                        }
-                    }
-                }
             }
         }
 
         try {
             toast('Success!', 'success');
             DB::commit();
-
-            // $questionInfoIdsString = implode(',', $questionInfoIds);
-            // return redirect()->route('admin.generate_question.show', ['ids' => $questionInfoIdsString]);
             return redirect()->route('admin.generate_question.index');
         } catch (\Exception $ex) {
-            return $ex->getMessage();
             toast('Error', 'error');
             DB::rollBack();
-
             return back();
         }
     }
 
     public function show($quesInfoId, $set, $type)
     {
-        // return
         $data = $this->questionPaperShow($quesInfoId, $set, $type);
         $data['subjects'] = Subject::whereExamId($data['questionInfo']['exam_id'])->get();
 
@@ -254,32 +200,12 @@ class GenerateQuestionPaperController extends Controller
         try {
             toast('Success!', 'success');
             DB::commit();
-
-            return back();
         } catch (\Exception $ex) {
-            // return $ex->getMessage();
             toast('Error', 'error');
             DB::rollBack();
-
-            return redirect()->back();
         }
+        return back();
     }
-
-    // public function complete(Request $request)
-    // {
-    //     if ($error = $this->authorize('question-generate-generate')) {
-    //         return $error;
-    //     }
-    //     $quesInfo = QuesInfo::find($request->quesInfoId);
-    //     try {
-    //         $quesInfo->update(['status' => 'Completed']);
-    //         toast('Success!', 'success');
-    //         return redirect()->route('admin.generate_question.showBySubject', Carbon::parse($quesInfo->date)->format('Y'));
-    //     } catch (\Exception $ex) {
-    //         toast('Error', 'error');
-    //         return redirect()->back();
-    //     }
-    // }
 
     public function edit($id, $quesInfoId)
     {
@@ -326,13 +252,10 @@ class GenerateQuestionPaperController extends Controller
         try {
             DB::commit();
             toast('Success!', 'success');
-
             return redirect()->route('admin.generate_question.show', $request->quesInfoId);
         } catch (\Exception $ex) {
-            // return $ex->getMessage();
             DB::rollBack();
             toast('error', 'Error');
-
             return redirect()->back();
         }
     }
