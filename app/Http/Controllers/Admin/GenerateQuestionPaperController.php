@@ -99,7 +99,6 @@ class GenerateQuestionPaperController extends Controller
             $questions = Question::whereNotIn('id', $request->get_question_id)
                 ->whereSubjectId($request->subject_id)
                 ->whereRankId($request->rank_id)
-                ->whereType($request->ques_type)
                 ->get();
 
             return response()->json(['questions' => $questions, 'status' => 200]);
@@ -164,6 +163,8 @@ class GenerateQuestionPaperController extends Controller
     {
         $data = $this->questionPaperShow($quesInfoId, $set, $type);
         $data['subjects'] = Subject::whereExamId($data['questionInfo']['exam_id'])->get();
+        $data['quesInfoId'] = $quesInfoId;
+        $data['set'] = $set;
 
         if ($type == 'show') {
             return view('admin.generate_question_paper.show', $data);
@@ -184,16 +185,21 @@ class GenerateQuestionPaperController extends Controller
 
     public function addQues(Request $request)
     {
-        if (QuestionPaper::whereQuestionSubjectInfoId($request->question_subject_info_id)->whereIn('question_id', $request->question_id)->count() > 0) {
+        $questionSubjectInfo = QuestionSubjectInfo::where('question_info_id', $request->question_info_id)
+            ->where('subject_id', $request->subject_id)
+            ->where('set', $request->set)
+            ->first();
+
+        if (QuestionPaper::whereQuestionSubjectInfoId($questionSubjectInfo->id)->whereIn('question_id', $request->question_id)->count() > 0) {
             Alert::info('These questions already exist in this question paper');
 
             return back();
         }
         foreach ($request->question_id as $k => $v) {
             $data = [
-                'question_subject_info_id ' => $request->question_subject_info_id,
+                'question_subject_info_id' => $questionSubjectInfo->id,
                 'question_id' => $request->question_id[$k],
-                'type' => $request->type,
+                'type' => 'multiple_choice',
             ];
             QuestionPaper::updateOrCreate($data);
         }

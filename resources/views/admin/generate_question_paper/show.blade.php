@@ -1,13 +1,6 @@
 @extends('admin.layout.master')
 @section('title', 'Generate Question')
 @section('content')
-    @php
-        $m = 'generateQuestion';
-        $sm = '';
-        $ssm = '';
-        $delete = 'delete';
-        $edit = 'edit';
-    @endphp
 
     <div class="main-panel">
         <div class="content">
@@ -24,6 +17,9 @@
                 </div>
                 <form action="{{ route('admin.generate_question.addQues') }}" method="POST">
                     @csrf
+                    <input type="hidden" name="question_info_id" value="{{ $quesInfoId }}">
+                    <input type="hidden" name="set" value="{{ $set }}">
+                    <input type="hidden" name="question_subject_info_id" value="{{ $questionSubjectInfos->first()->id }}">
                     <div class="row justify-content-center">
                         <div class="col-md-12">
                             <div class="card">
@@ -54,7 +50,7 @@
                                                 @endif
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        {{-- <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="type">Question Type <span class="t_r">*</span></label>
                                                 <select class="form-control select2 type" name="type" id="ques_type"
@@ -68,15 +64,14 @@
                                                     <div class="alert alert-danger">{{ $errors->first('type') }}</div>
                                                 @endif
                                             </div>
-                                        </div>
+                                        </div> --}}
                                     </div>
-                                    <div class="col-md-12">
+                                    <div class="mt-2">
                                         <h3 class="text-primary">Question</h3>
                                         <table class="table table-striped table-bordered table-hover w-100">
                                             <thead>
                                                 <tr>
                                                     <th>Question</th>
-                                                    <th>Type</th>
                                                     <th>Marks</th>
                                                     <th>Action</th>
                                                 </tr>
@@ -149,7 +144,7 @@
                 });
             })
 
-            $('#ques_type').change(function() {
+            $('#subject_id').change(function() {
                 $("#questionArea").html('');
                 let subject_id = $('#subject_id').find(":selected").val();
                 let rank_id = $('#rank_id').find(":selected").val();
@@ -160,45 +155,44 @@
                 $("input[name='question_id']").each(function() {
                     quesId.push(this.value);
                 });
-                let ques_type = $('#ques_type').find(":selected").val();
                 $.ajax({
                     url: "{{ route('admin.generate_question.getQuestion') }}",
                     data: {
                         rank_id: rank_id,
                         subject_id: subject_id,
-                        ques_type: ques_type,
                         get_question_id: get_question_id,
                     },
                     method: 'get',
                     success: res => {
-                        if (res.status == 200) {
+                        if (res.status === 200) {
                             let quesData = '';
+
                             $.each(res.questions, function(i, v) {
-                                let str = v.type;
-                                let id = v.id;
-                                let url = '{{ route('admin.questions.edit', ':id') }}';
-                                url = url.replace(':id', id);
-                                quesData += '<tr>'
-                                quesData +=
-                                    '<td class="ptag"><input type="checkbox" name="question_id[]" value="' +
-                                    v.id + '">&nbsp;&nbsp; ' + v.ques + '</td>'
-                                quesData += '<td>' + str.replace(/_/g, ' ') + '</td>'
-                                quesData += '<td>' + v.mark + '</td>'
-                                quesData += '<td>'
-                                quesData += '<div class="form-button-action">'
-                                quesData += '<a href=' + url +
-                                    ' data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">Edit</a>'
-                                quesData += '</div>'
-                                quesData += '</td>'
-                                quesData += '</tr>'
+                                let {id,type,ques,mark} = v;
+                                let url = '{{ route('admin.questions.edit', ':id') }}'.replace(':id', id);
+                                quesData += `
+                                <tr>
+                                    <td class="ptag">
+                                        <input type="checkbox" name="question_id[]" value="${id}">&nbsp;&nbsp; ${ques}
+                                    </td>
+                                    <td>${mark}</td>
+                                    <td>
+                                        <div class="form-button-action">
+                                            <a href="${url}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">Edit</a>
+                                        </div>
+                                    </td>
+                                </tr>`;
                             });
-                            // if(quesData==''){
-                            //     alert('fd')
-                            // }
-                            $("#questionArea").append(quesData);
+
+                            if (quesData) {
+                                $("#questionArea").append(quesData);
+                            } else {
+                                alert('No questions found');
+                            }
                         } else {
-                            alert('No question found')
+                            alert('No questions found');
                         }
+
                     },
                     error: err => {
                         alert('No question found')
