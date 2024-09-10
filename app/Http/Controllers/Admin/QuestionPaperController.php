@@ -59,20 +59,17 @@ class QuestionPaperController extends Controller
                     }
                     return $btn;
                 })
-                // ->addColumn('generate', function ($row) {
-                //     return '<a data-route="' . route('admin.generate_question.status', $row->id) . '" class="btn btn-primary text-light btn-sm" onclick="changeStatus(this)">Generate</a>';
-                // })
-                ->addColumn('action', function ($row) {
-                    $btn = '';
-                    // if (userCan('slider-edit')) {
-                    //     $btn .= view('button', ['type' => 'ajax-edit', 'route' => route('admin.sliders.edit', $row->id), 'row' => $row]);
-                    // }
-                    // if (userCan('slider-delete')) {
-                    //     $btn .= view('button', ['type' => 'ajax-delete', 'route' => route('admin.sliders.destroy', $row->id), 'row' => $row, 'src' => 'dt']);
-                    // }
+                // ->addColumn('action', function ($row) {
+                //     $btn = '';
+                //     if (userCan('slider-edit')) {
+                //         $btn .= view('button', ['type' => 'ajax-edit', 'route' => route('admin.sliders.edit', $row->id), 'row' => $row]);
+                //     }
+                //     if (userCan('slider-delete')) {
+                //         $btn .= view('button', ['type' => 'ajax-delete', 'route' => route('admin.sliders.destroy', $row->id), 'row' => $row, 'src' => 'dt']);
+                //     }
 
-                    return $btn;
-                })
+                //     return $btn;
+                // })
                 ->rawColumns(['set', 'generate', 'action'])
                 ->make(true);
         }
