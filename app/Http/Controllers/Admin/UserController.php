@@ -62,12 +62,12 @@ class UserController extends Controller
             return $error;
         }
         $data = $request->validated();
+        $data['permission'] = '1';
+        $data['password'] = bcrypt($request->password);
+        $data['created_by'] = user()->id;
         if ($request->hasFile('image')) {
             $data['image'] = imgProcessAndStore($request->image, 'users', [200, 200]);
         }
-        $date['permission'] = '1';
-        $date['password'] = bcrypt($request->password);
-        $date['created_by'] = user()->id;
 
         try {
             $user = User::create($data);
@@ -99,6 +99,7 @@ class UserController extends Controller
             return $error;
         }
         $data = $request->validated();
+        $data['permission'] = '1';
         $date['updated_by'] = user()->id;
         if ($request->filled('password')) {
             $data['password'] = bcrypt($request->password);

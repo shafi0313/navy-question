@@ -53,12 +53,7 @@ class AuthController extends Controller
         $this->validate($request, [
             'name' => 'required|max:100',
             'email' => 'required|email|unique:users,email',
-            'password' => ['required', 'confirmed', Password::min(6)
-                ->letters()
-                                                            // ->mixedCase()
-                ->numbers()
-                ->symbols()
-                ->uncompromised()],
+            'password' => ['required', 'confirmed', Password::min(6)],
         ]);
 
         $user = User::create([
@@ -69,7 +64,7 @@ class AuthController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
-        Mail::to($user->email)->send(new EmailVerification($user));
+        // Mail::to($user->email)->send(new EmailVerification($user));
 
         try {
             return redirect()->route('verifyNotification');
