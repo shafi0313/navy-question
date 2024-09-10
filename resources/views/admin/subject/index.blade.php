@@ -57,6 +57,7 @@
                         columns: [{
                                 data: 'DT_RowIndex',
                                 name: 'DT_RowIndex',
+                                title: 'SL',
                                 searchable: false,
                                 orderable: false,
                             },

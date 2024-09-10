@@ -16,7 +16,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <div class="d-flex align-items-center">
-                                    <h4 class="card-title">Rank List</h4>
+                                    <h4 class="card-title">Batch List</h4>
                                     <a data-toggle="modal" data-target="#createModal"
                                         class="btn btn-primary btn-round ml-auto text-light" style="min-width: 200px">
                                         <i class="fa fa-plus"></i> Add New Rank
