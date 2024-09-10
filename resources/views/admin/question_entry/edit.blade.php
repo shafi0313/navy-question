@@ -39,7 +39,7 @@
                                 <input type="hidden" name="type" value="multiple_choice">
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-5">
                                             <div class="form-group">
                                                 <label for="only_subject_id">Subject <span class="t_r">*</span></label>
                                                 <select class="form-control" name="subject_id" id="only_subject_id"
@@ -52,7 +52,7 @@
                                                 @endif
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-5">
                                             <div class="form-group">
                                                 <label for="rank_id">Batch <span class="t_r">*</span></label>
                                                 <select class="form-control" name="rank_id" id="rank_id" required>
@@ -65,7 +65,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-6">
+                                        <div class="col-md-2">
                                             <div class="form-group">
                                                 <label for="mark">Marks <span class="t_r">*</span></label>
                                                 <input name="mark" class="form-control" value="{{ $question->mark }}"
