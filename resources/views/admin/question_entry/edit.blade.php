@@ -36,6 +36,7 @@
                             @endif
                             <form action="{{ route('admin.questions.update', $question->id) }}" method="post">
                                 @csrf @method('PUT')
+                                <input type="hidden" name="type" value="multiple_choice">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-6">
@@ -60,23 +61,6 @@
                                                 </select>
                                                 @if ($errors->has('rank_id'))
                                                     <div class="alert alert-danger">{{ $errors->first('rank_id') }}</div>
-                                                @endif
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="type">Question Type <span class="t_r">*</span></label>
-                                                <select class="form-control" name="type" id="quesType" required>
-                                                    <option selected value disabled>Select</option>
-                                                    <option value="multiple_choice" @selected($question->type == 'multiple_choice')>Multiple
-                                                        Choice</option>
-                                                    <option value="short_question" @selected($question->type == 'short_question')>Short
-                                                        Question</option>
-                                                    <option value="long_question" @selected($question->type == 'long_question')>Long Question
-                                                    </option>
-                                                </select>
-                                                @if ($errors->has('type'))
-                                                    <div class="alert alert-danger">{{ $errors->first('type') }}</div>
                                                 @endif
                                             </div>
                                         </div>
