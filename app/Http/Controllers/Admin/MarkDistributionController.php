@@ -3,9 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Exam;
-use App\Models\Chapter;
-use App\Models\Subject;
-use App\Models\Question;
 use Illuminate\Http\Request;
 use App\Models\MarkDistribution;
 use App\Http\Controllers\Controller;
@@ -45,18 +42,6 @@ class MarkDistributionController extends Controller
         return view('admin.mark-distribution.show', compact('exam'));
     }
 
-    // public function create()
-    // {
-    //     if ($error = $this->authorize('mark-distribution-add')) {
-    //         return $error;
-    //     }
-
-    //     $questions = Question::all();
-    //     $subjects = Subject::all();
-
-    //     return view('admin.mark_distribution.create', compact('questions', 'subjects'));
-    // }
-
     public function store(Request $request)
     {
         if ($error = $this->authorize('mark-distribution-add')) {
@@ -66,9 +51,6 @@ class MarkDistributionController extends Controller
             $data = [
                 'subject_id' => $request->subject_id[$k],
                 'multiple' => $request->multiple[$k],
-                'sort' => $request->sort[$k],
-                'long' => $request->long[$k],
-                'pass_mark' => $request->pass_mark,
             ];
             MarkDistribution::updateOrCreate(['subject_id' => $request->subject_id[$k]], $data);
         }
@@ -76,12 +58,10 @@ class MarkDistributionController extends Controller
         try {
 
             toast('Success!', 'success');
-
             return redirect()->route('admin.mark-distributions.index');
         } catch (\Exception $ex) {
-            // return $ex->getMessage();
             toast('Error', 'error');
-            // return back();
+            return back();
         }
     }
 

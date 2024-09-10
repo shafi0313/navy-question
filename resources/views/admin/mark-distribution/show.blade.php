@@ -43,22 +43,14 @@
                                         </div>
                                     </div>
                                     <div class="table-responsive">
-                                        <table class="display table table-bordered table-hover calculation-table"
-                                            id="suunto-table">
+                                        <table class="table table-bordered table-hover">
                                             <thead class="bg-secondary thw text-center">
                                                 <tr class="text-center">
                                                     <th rowspan="2">SL</th>
                                                     <th rowspan="2">Subject</th>
                                                     <th colspan="2">Multiple Choice</th>
-                                                    <th colspan="2">Sort Question</th>
-                                                    <th colspan="2">Long Question</th>
-                                                    <th rowspan="2">Total Mark</th>
                                                 </tr>
                                                 <tr>
-                                                    <th>No Of Question</th>
-                                                    <th>Mark</th>
-                                                    <th>No Of Question</th>
-                                                    <th>Mark</th>
                                                     <th>No Of Question</th>
                                                     <th>Mark</th>
                                                 </tr>
@@ -78,38 +70,12 @@
                                                         <td>{{ $subject->questions->where('type', 'multiple_choice')->count() }}</td>
                                                         <td>
                                                             <input type="text" name="multiple[]"
-                                                                class="sum{{ $k }}" value="{{ $multiple }}">
+                                                                class="sum{{ $k }} text-center" value="{{ $multiple }}">
                                                         </td>
-                                                        <td>{{ $subject->questions->where('type', 'short_question')->count() }}
-                                                        </td>
-                                                        <td>
-                                                            <input type="text" name="sort[]"
-                                                                class="sum{{ $k }}"
-                                                                value="{{ $sort }}">
-                                                        </td>
-                                                        <td>{{ $subject->questions->where('type', 'long_question')->count() }}
-                                                        </td>
-                                                        <td>
-                                                            <input type="text" name="long[]"
-                                                                class="sum{{ $k }}"
-                                                                value="{{ $long }}">
-                                                        </td>
-                                                        <td>{{ $multiple + $sort + $long }}</td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
                                         </table>
-                                    </div>
-                                    <div class="col-md-4">
-                                        {{-- <div class="form-group">
-                                            <label for="pass_mark">Pass Marks <span class="t_r">*</span></label>
-                                            <input type="text" name="pass_mark" class="form-control"
-                                                value="{{ $chapter->markDistribution->pass_mark ?? 0 }}"
-                                                onInput="this.value = this.value.replace(/[a-zA-z\-*/]/g,'');" required>
-                                            @if ($errors->has('pass_mark'))
-                                                <div class="alert alert-danger">{{ $errors->first('pass_mark') }}</div>
-                                            @endif
-                                        </div> --}}
                                     </div>
                                 </div>
                                 <div class="text-center card-action">
@@ -126,20 +92,5 @@
     </div>
 
     @push('custom_scripts')
-        <!-- Datatables -->
-        @include('include.data_table')
-        <script>
-            $(document).on("input", "input:text", function() {
-                var strClass = $(this).prop("class");
-                var intTotal = 0;
-                $.each($("input:text." + strClass), function() {
-                    var intInputValue = parseInt($(this).val());
-                    if (!isNaN(intInputValue)) {
-                        intTotal = intTotal + intInputValue;
-                    }
-                });
-                $(this).parent("td").siblings("td:last").text(intTotal);
-            });
-        </script>
     @endpush
 @endsection
