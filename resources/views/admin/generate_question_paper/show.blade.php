@@ -73,7 +73,6 @@
                                                 <tr>
                                                     <th>Question</th>
                                                     <th>Marks</th>
-                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="questionArea" id="questionArea"></tbody>
@@ -169,18 +168,12 @@
 
                             $.each(res.questions, function(i, v) {
                                 let {id,type,ques,mark} = v;
-                                let url = '{{ route('admin.questions.edit', ':id') }}'.replace(':id', id);
                                 quesData += `
                                 <tr>
                                     <td class="ptag">
                                         <input type="checkbox" name="question_id[]" value="${id}">&nbsp;&nbsp; ${ques}
                                     </td>
                                     <td>${mark}</td>
-                                    <td>
-                                        <div class="form-button-action">
-                                            <a href="${url}" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">Edit</a>
-                                        </div>
-                                    </td>
                                 </tr>`;
                             });
 
@@ -192,7 +185,6 @@
                         } else {
                             alert('No questions found');
                         }
-
                     },
                     error: err => {
                         alert('No question found')
