@@ -56,7 +56,7 @@
                             @can('rank-manage')
                                 <li class="{{ activeSubNav('admin.ranks.*') }}">
                                     <a href="{{ route('admin.ranks.index') }}">
-                                        <span class="sub-item">Batch</span>
+                                        <span class="sub-item">Branch</span>
                                     </a>
                                 </li>
                             @endcan

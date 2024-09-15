@@ -54,7 +54,7 @@
                                         </div>
                                         <div class="col-md-5">
                                             <div class="form-group">
-                                                <label for="rank_id">Batch <span class="t_r">*</span></label>
+                                                <label for="rank_id">Branch <span class="t_r">*</span></label>
                                                 <select class="form-control" name="rank_id" id="rank_id" required>
                                                     <option value="{{ $question->rank_id }}" @selected($question->rank_id == $question->rank->id)>
                                                         {{ $question->rank->name }}</option>

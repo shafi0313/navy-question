@@ -30,7 +30,9 @@
     }
 
 
-    .navy table,.navy th,.navy td {
+    .navy table,
+    .navy th,
+    .navy td {
         border: 1px solid black;
         border-collapse: collapse;
     }
@@ -48,7 +50,7 @@
     <div class="title">
         <h4>CONFIDENTIAL</h4>
         <h4>EXAM IN CONFIDENCE</h4>
-        <h4>PROGRAM EXAM FOR THE Batch OF {{$questionPapers->first()->quesInfo->name}}</h4>
+        <h4>PROGRAM EXAM FOR THE Branch OF {{$questionPapers->first()->quesInfo->name}}</h4>
         <h4>TRADE: {{$questionPapers->first()->quesInfo->trade}}</h4>
         <h4>SUBJECT: {{ $questionPapers->first()->question->subject->name }}</h4>
         <table>
@@ -81,50 +83,50 @@
 
 @php $x = 1 @endphp
 @if($questionPapers->where('type','multiple_choice')->count() > 0)
-    <h4 class="quesType">Multiple Choice</h4>
-    @foreach ($questionPapers->where('type','multiple_choice') as $key => $question)
-        <table style="width: 100%">
-            <tr>
-                <td class="sl">{{$x++}}. </td>
-                <td style="text-align:left;">{!! $question->question->ques !!}</td>
-                <td style="text-align:right">{{ $question->question->mark }}</td>
-            </tr>
-        </table>
-        @isset($question->question->image)
-            <img src="{{asset('uploads/images/question/'.$question->question->image)}}" alt="">
-        @endisset
+<h4 class="quesType">Multiple Choice</h4>
+@foreach ($questionPapers->where('type','multiple_choice') as $key => $question)
+<table style="width: 100%">
+    <tr>
+        <td class="sl">{{$x++}}. </td>
+        <td style="text-align:left;">{!! $question->question->ques !!}</td>
+        <td style="text-align:right">{{ $question->question->mark }}</td>
+    </tr>
+</table>
+@isset($question->question->image)
+<img src="{{asset('uploads/images/question/'.$question->question->image)}}" alt="">
+@endisset
 
-        @foreach ($question->question->options as $option)
-            <div class="col-md-6 option">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="{{$option->id}}" id="exampleRadios{{$option->id}}">
-                    <label class="form-check-label" for="exampleRadios{{$option->id}}" id="exampleRadios{{$option->id}}">
-                        {{ $option->option }}
-                    </label>
-                </div>
-            </div>
-        @endforeach
-        </div>
-    @endforeach
-    <br>
+@foreach ($question->question->options as $option)
+<div class="col-md-6 option">
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="{{$option->id}}" id="exampleRadios{{$option->id}}">
+        <label class="form-check-label" for="exampleRadios{{$option->id}}" id="exampleRadios{{$option->id}}">
+            {{ $option->option }}
+        </label>
+    </div>
+</div>
+@endforeach
+</div>
+@endforeach
+<br>
 @endif
 
 
 @if ($questionPapers->where('type','short_question')->count() > 0)
-    <h4 class="quesType">Short Question</h4>
-    @foreach ($questionPapers->where('type','short_question') as $question)
-        <table style="width: 100%">
-            <tr>
-                <td class="sl">{{$x++}}. </td>
-                <td style="text-align:left;">{!! $question->question->ques !!}</td>
-                <td style="text-align:right">{{ $question->question->mark }}</td>
-            </tr>
-        </table>
-        @isset($question->question->image)
-            <img src="{{asset('uploads/images/question/'.$question->question->image)}}" alt="">
-        @endisset
-    @endforeach
-    <br>
+<h4 class="quesType">Short Question</h4>
+@foreach ($questionPapers->where('type','short_question') as $question)
+<table style="width: 100%">
+    <tr>
+        <td class="sl">{{$x++}}. </td>
+        <td style="text-align:left;">{!! $question->question->ques !!}</td>
+        <td style="text-align:right">{{ $question->question->mark }}</td>
+    </tr>
+</table>
+@isset($question->question->image)
+<img src="{{asset('uploads/images/question/'.$question->question->image)}}" alt="">
+@endisset
+@endforeach
+<br>
 @endif
 
 @if ($questionPapers->where('type','long_question')->count() > 0)

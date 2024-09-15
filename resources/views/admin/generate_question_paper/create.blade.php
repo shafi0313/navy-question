@@ -50,7 +50,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="rank_id">Batch <span class="t_r">*</span></label>
+                                                <label for="rank_id">Branch <span class="t_r">*</span></label>
                                                 <select class="form-control" name="rank_id" id="rank_id"
                                                     required></select>
                                                 @if ($errors->has('rank_id'))
