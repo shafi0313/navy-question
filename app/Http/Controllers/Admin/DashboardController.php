@@ -16,8 +16,8 @@ class DashboardController extends Controller
         $data['subjectCount'] = Subject::count();
         $data['quesCount'] = Question::count();
         $data['multipleQuesCount'] = Question::whereType('multiple_choice')->count();
-        $data['shortQuesCount'] = Question::whereType('short_question')->count();
-        $data['longQuesCount'] = Question::whereType('long_question')->count();
+        // $data['shortQuesCount'] = Question::whereType('short_question')->count();
+        // $data['longQuesCount'] = Question::whereType('long_question')->count();
 
         return view('admin.dashboard', $data);
     }
