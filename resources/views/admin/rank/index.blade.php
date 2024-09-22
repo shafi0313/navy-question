@@ -1,5 +1,8 @@
 @extends('admin.layout.master')
-@section('title', 'Rank')
+@php
+    $title = 'Branch';
+@endphp
+@section('title', $title)
 @section('content')
     <div class="main-panel">
         <div class="content">
@@ -8,7 +11,9 @@
                     <ul class="breadcrumbs">
                         <li class="nav-home"><a href="{{ route('admin.dashboard') }}"><i class="flaticon-home"></i></a></li>
                         <li class="separator"><i class="flaticon-right-arrow"></i></li>
-                        <li class="nav-item">Rank</li>
+                        <li class="nav-item">Setup</li>
+                        <li class="separator"><i class="flaticon-right-arrow"></i></li>
+                        <li class="nav-item">{{ $title }}</li>
                     </ul>
                 </div>
                 <div class="row">
@@ -16,7 +21,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <div class="d-flex align-items-center">
-                                    <h4 class="card-title">Branch List</h4>
+                                    <h4 class="card-title">{{ $title }} List</h4>
                                     <a data-toggle="modal" data-target="#createModal"
                                         class="btn btn-primary btn-round ml-auto text-light" style="min-width: 200px">
                                         <i class="fa fa-plus"></i> Add New Rank

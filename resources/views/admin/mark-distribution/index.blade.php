@@ -1,5 +1,8 @@
 @extends('admin.layout.master')
-@section('title', 'Mark Distribution')
+@php
+    $title = 'Mark Distribution';
+@endphp
+@section('title', $title )
 @section('content')
     <div class="main-panel">
         <div class="content">
@@ -8,7 +11,9 @@
                     <ul class="breadcrumbs">
                         <li class="nav-home"><a href="{{ route('admin.dashboard') }}"><i class="flaticon-home"></i></a></li>
                         <li class="separator"><i class="flaticon-right-arrow"></i></li>
-                        <li class="nav-item">Mark Distribution</li>
+                        <li class="nav-item">Setup</li>
+                        <li class="separator"><i class="flaticon-right-arrow"></i></li>
+                        <li class="nav-item">{{ $title }}</li>
                     </ul>
                 </div>
                 <div class="row">

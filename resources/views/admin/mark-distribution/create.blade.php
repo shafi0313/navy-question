@@ -1,12 +1,9 @@
 @extends('admin.layout.master')
-@section('title', 'Mark Distribution')
+@php
+    $title = 'Mark Distribution';
+@endphp
+@section('title', $title)
 @section('content')
-    @php
-        $m = '';
-        $sm = '';
-        $ssm = '';
-    @endphp
-
     <div class="main-panel">
         <div class="content">
             <div class="page-inner">
@@ -14,7 +11,7 @@
                     <ul class="breadcrumbs">
                         <li class="nav-home"><a href="{{ route('admin.dashboard') }}"><i class="flaticon-home"></i></a></li>
                         <li class="separator"><i class="flaticon-right-arrow"></i></li>
-                        <li class="nav-item"><a href="{{ route('admin.mark-distributions.index') }}">Mark Distribution</a>
+                        <li class="nav-item"><a href="{{ route('admin.mark-distributions.index') }}">{{ $title }}</a>
                         </li>
                         <li class="separator"><i class="flaticon-right-arrow"></i></li>
                         <li class="nav-item">Create</li>
@@ -24,7 +21,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <div class="card-title">Add Mark Distribution</div>
+                                <div class="card-title">Add {{ $title }}</div>
                             </div>
                             @if ($errors->any())
                                 <div class="alert alert-danger">

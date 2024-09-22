@@ -1,12 +1,9 @@
 @extends('admin.layout.master')
-@section('title', 'Question')
+@php
+    $title = 'Mark Distribution';
+@endphp
+@section('title', $title)
 @section('content')
-    @php
-        $m = '';
-        $sm = '';
-        $ssm = '';
-    @endphp
-
     <div class="main-panel">
         <div class="content">
             <div class="page-inner">
@@ -14,7 +11,9 @@
                     <ul class="breadcrumbs">
                         <li class="nav-home"><a href="{{ route('admin.dashboard') }}"><i class="flaticon-home"></i></a></li>
                         <li class="separator"><i class="flaticon-right-arrow"></i></li>
-                        <li class="nav-item">Question</li>
+                        <li class="nav-item">Setup</li>
+                        <li class="separator"><i class="flaticon-right-arrow"></i></li>
+                        <li class="nav-item">{{ $title }}</li>
                     </ul>
                 </div>
 
@@ -23,7 +22,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <div class="d-flex align-items-center">
-                                    <h4 class="card-title">Mark Distribution Table</h4>
+                                    <h4 class="card-title">{{ $title }} Table</h4>
                                 </div>
                             </div>
                             <style>
