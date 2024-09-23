@@ -2,22 +2,19 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Exam;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreQuestionRequest;
 use App\Models\Chapter;
-use App\Models\Subject;
-use App\Models\Question;
+use App\Models\Exam;
 use App\Models\QuesOption;
+use App\Models\Question;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
-use Yajra\DataTables\Facades\DataTables;
-use App\Http\Requests\StoreQuestionRequest;
 
 class QuestionEntryController extends Controller
 {
-
-
     // public function read(Request $request)
     // {
     //     $inputs = Question::whereSubjectId($request->subject_id)

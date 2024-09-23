@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Exam;
-use Illuminate\Http\Request;
-use App\Models\MarkDistribution;
 use App\Http\Controllers\Controller;
+use App\Models\Exam;
+use App\Models\MarkDistribution;
+use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
 class MarkDistributionController extends Controller
@@ -22,7 +22,8 @@ class MarkDistributionController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     $btn = '';
-                    $btn = '<a href="' . route('admin.mark-distributions.show', $row->id) . '" class="btn btn-link btn-primary btn-lg">Entry</a>';
+                    $btn = '<a href="'.route('admin.mark-distributions.show', $row->id).'" class="btn btn-link btn-primary btn-lg">Entry</a>';
+
                     return $btn;
                 })
                 ->rawColumns(['check', 'action', 'created_at'])
@@ -38,7 +39,8 @@ class MarkDistributionController extends Controller
             'subjects:id,exam_id,name',
             'subjects.markDistribution',
             'subjects.questions:id,subject_id,type,ques',
-            ])->find($examId);
+        ])->find($examId);
+
         return view('admin.mark-distribution.show', compact('exam'));
     }
 
@@ -58,9 +60,11 @@ class MarkDistributionController extends Controller
         try {
 
             toast('Success!', 'success');
+
             return redirect()->route('admin.mark-distributions.index');
         } catch (\Exception $ex) {
             toast('Error', 'error');
+
             return back();
         }
     }

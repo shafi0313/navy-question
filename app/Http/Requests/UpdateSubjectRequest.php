@@ -23,7 +23,7 @@ class UpdateSubjectRequest extends FormRequest
     {
         return [
             'exam_id' => ['required', 'exists:exams,id'],
-            'name' => ['required', 'string', 'min:1', 'max:191']
+            'name' => ['required', 'string', 'min:1', 'max:191'],
         ];
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Chapter;
 use App\Models\Exam;
 use App\Models\Question;
 use App\Models\Subject;

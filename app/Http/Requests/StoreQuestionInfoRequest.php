@@ -22,14 +22,14 @@ class StoreQuestionInfoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'exam_id'  => ['required', 'exists:exams,id'],
-            'rank_id'  => ['required', 'exists:ranks,id'],
-            'date'     => ['required', 'date'],
-            'time'     => ['nullable'],
-            'd_hour'   => ['nullable', 'integer', 'min:0', 'max:127'],
+            'exam_id' => ['required', 'exists:exams,id'],
+            'rank_id' => ['required', 'exists:ranks,id'],
+            'date' => ['required', 'date'],
+            'time' => ['nullable'],
+            'd_hour' => ['nullable', 'integer', 'min:0', 'max:127'],
             'd_minute' => ['nullable', 'integer', 'min:0', 'max:127'],
-            'status'   => ['nullable', 'string', 'in:Pending,Created,Started,Completed'],
-            'note'     => ['nullable', 'string', 'min:1']
+            'status' => ['nullable', 'string', 'in:Pending,Created,Started,Completed'],
+            'note' => ['nullable', 'string', 'min:1'],
         ];
     }
 }

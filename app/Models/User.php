@@ -38,13 +38,14 @@ class User extends Authenticatable
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by', 'id')->withDefault([
-            'name' => 'System'
+            'name' => 'System',
         ]);
     }
+
     public function updatedBy()
     {
         return $this->belongsTo(User::class, 'updated_by', 'id')->withDefault([
-            'name' => ''
+            'name' => '',
         ]);
     }
 }

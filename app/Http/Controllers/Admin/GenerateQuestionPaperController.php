@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Exam;
-use App\Models\Subject;
-use App\Models\Question;
-use App\Models\QuesOption;
-use App\Models\QuestionInfo;
-use Illuminate\Http\Request;
-use App\Models\QuestionPaper;
-use App\Models\MarkDistribution;
-use App\Traits\QuestionPaperTrait;
-use Illuminate\Support\Facades\DB;
-use App\Models\QuestionSubjectInfo;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreQuestionInfoRequest;
+use App\Models\Exam;
+use App\Models\MarkDistribution;
+use App\Models\QuesOption;
+use App\Models\Question;
+use App\Models\QuestionInfo;
+use App\Models\QuestionPaper;
+use App\Models\QuestionSubjectInfo;
+use App\Models\Subject;
+use App\Traits\QuestionPaperTrait;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\Facades\DataTables;
-use App\Http\Requests\StoreQuestionInfoRequest;
 
 class GenerateQuestionPaperController extends Controller
 {
@@ -32,7 +32,7 @@ class GenerateQuestionPaperController extends Controller
             $queInfos = QuestionInfo::with([
                 'exam:id,name',
                 'rank:id,name',
-                'questionSubjectInfo'
+                'questionSubjectInfo',
             ])
                 ->whereStatus('Pending')
                 ->latest();
@@ -43,7 +43,7 @@ class GenerateQuestionPaperController extends Controller
                     return bdDate($row->date);
                 })
                 ->addColumn('duration', function ($row) {
-                    return $row->d_hour . ':' . $row->d_minute . ' Minute';
+                    return $row->d_hour.':'.$row->d_minute.' Minute';
                 })
                 ->addColumn('set', function ($row) {
                     $setColorCodes = [
@@ -58,13 +58,13 @@ class GenerateQuestionPaperController extends Controller
                     $btn = '';
                     for ($i = 1; $i <= 6; $i++) {
                         $colorCode = $setColorCodes[$i];
-                        $btn .= '<a href="' . route('admin.generate_question.show', [$row->id, $i, 'show']) . '" class="badge mb-1" style="background-color: ' . htmlspecialchars($colorCode) . '; color: white;">Set ' . questionSetInBangla($i) . '</a> ';
+                        $btn .= '<a href="'.route('admin.generate_question.show', [$row->id, $i, 'show']).'" class="badge mb-1" style="background-color: '.htmlspecialchars($colorCode).'; color: white;">Set '.questionSetInBangla($i).'</a> ';
                     }
 
                     return $btn;
                 })
                 ->addColumn('generate', function ($row) {
-                    return '<a data-route="' . route('admin.generate_question.status', $row->id) . '" class="btn btn-primary text-light btn-sm" onclick="changeStatus(this)">Generate</a>';
+                    return '<a data-route="'.route('admin.generate_question.status', $row->id).'" class="btn btn-primary text-light btn-sm" onclick="changeStatus(this)">Generate</a>';
                 })
                 ->addColumn('action', function ($row) {
                     $btn = '';
@@ -151,10 +151,12 @@ class GenerateQuestionPaperController extends Controller
         try {
             toast('Success!', 'success');
             DB::commit();
+
             return redirect()->route('admin.generate_question.index');
         } catch (\Exception $ex) {
             toast('Error', 'error');
             DB::rollBack();
+
             return back();
         }
     }
@@ -210,6 +212,7 @@ class GenerateQuestionPaperController extends Controller
             toast('Error', 'error');
             DB::rollBack();
         }
+
         return back();
     }
 
@@ -258,10 +261,12 @@ class GenerateQuestionPaperController extends Controller
         try {
             DB::commit();
             toast('Success!', 'success');
+
             return redirect()->route('admin.generate_question.show', $request->quesInfoId);
         } catch (\Exception $ex) {
             DB::rollBack();
             toast('error', 'Error');
+
             return redirect()->back();
         }
     }
@@ -289,6 +294,7 @@ class GenerateQuestionPaperController extends Controller
 
         try {
             QuestionInfo::findOrFail($id)->delete();
+
             return response()->json(['message' => 'The information has been deleted'], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Oops something went wrong, Please try again'], 500);

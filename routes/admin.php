@@ -1,27 +1,27 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\AjaxController;
-use App\Http\Controllers\Admin\ExamController;
-use App\Http\Controllers\Admin\RankController;
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\BackupController;
-use App\Http\Controllers\Admin\GlobalController;
-use App\Http\Controllers\Admin\ChapterController;
-use App\Http\Controllers\Admin\ProfileController;
-use App\Http\Controllers\Admin\SubjectController;
-use App\Http\Controllers\Admin\QuestionController;
-use App\Http\Controllers\Auth\Role\RoleController;
-use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AnswerPaperController;
-use App\Http\Controllers\Admin\VisitorInfoController;
-use App\Http\Controllers\Admin\QuestionEntryController;
-use App\Http\Controllers\Admin\QuestionPaperController;
-use App\Http\Controllers\Admin\QuestionImportController;
-use App\Http\Controllers\Admin\MarkDistributionController;
-use App\Http\Controllers\Auth\Permission\PermissionController;
+use App\Http\Controllers\Admin\BackupController;
+use App\Http\Controllers\Admin\ChapterController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ExamController;
 use App\Http\Controllers\Admin\GenerateQuestionPaperController;
+use App\Http\Controllers\Admin\GlobalController;
+use App\Http\Controllers\Admin\MarkDistributionController;
+use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\QuestionController;
+use App\Http\Controllers\Admin\QuestionEntryController;
+use App\Http\Controllers\Admin\QuestionImportController;
+use App\Http\Controllers\Admin\QuestionPaperController;
+use App\Http\Controllers\Admin\RankController;
+use App\Http\Controllers\Admin\SubjectController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\VisitorInfoController;
+use App\Http\Controllers\Auth\Permission\PermissionController;
+use App\Http\Controllers\Auth\Role\RoleController;
+use App\Http\Controllers\AuthController;
+use Illuminate\Support\Facades\Route;
 
 Route::controller(AuthController::class)->group(function () {
     Route::get('/', 'login')->name('login');
@@ -85,7 +85,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     //     Route::delete('/destroy/{id}', 'destroy')->name('destroy');
     // });
 
-    Route::resource('/users', UserController::class)->except(['create','show']);
+    Route::resource('/users', UserController::class)->except(['create', 'show']);
 
     Route::controller(ProfileController::class)->prefix('my-profile')->group(function () {
         Route::get('/', 'index')->name('myProfile.profile.index');

@@ -22,12 +22,12 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'role'     => ['required'],
-            'name'     => ['required', 'string', 'min:1', 'max:100'],
-            'email'    => ['required', 'string', 'min:1', 'max:64', 'unique:users,email'],
-            'mobile'   => ['nullable', 'string', 'min:10', 'max:64'],
-            'address'  => ['nullable', 'string', 'min:1', 'max:255'],
-            'image'    => ['nullable', 'image', 'mimes:jpeg,jpg,JPG,png,webp,svg', 'max:1024'],
+            'role' => ['required'],
+            'name' => ['required', 'string', 'min:1', 'max:100'],
+            'email' => ['required', 'string', 'min:1', 'max:64', 'unique:users,email'],
+            'mobile' => ['nullable', 'string', 'min:10', 'max:64'],
+            'address' => ['nullable', 'string', 'min:1', 'max:255'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,jpg,JPG,png,webp,svg', 'max:1024'],
             'password' => ['required', 'confirmed', 'string', 'min:6'],
         ];
     }

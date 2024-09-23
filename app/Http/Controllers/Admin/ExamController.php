@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Exam;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class ExamController extends Controller
@@ -18,7 +17,7 @@ class ExamController extends Controller
         if ($request->ajax()) {
             $exams = Exam::with([
                 'createdBy:id,name',
-                'updatedBy:id,name'
+                'updatedBy:id,name',
             ])->orderBy('name');
 
             return DataTables::of($exams)
@@ -52,6 +51,7 @@ class ExamController extends Controller
         $data['created_by'] = user()->id;
         try {
             Exam::create($data);
+
             return response()->json(['message' => 'The information has been inserted'], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Oops something went wrong, Please try again.'], 500);
@@ -89,6 +89,7 @@ class ExamController extends Controller
         $data['updated_by'] = user()->id;
         try {
             $exam->update($data);
+
             return response()->json(['message' => 'The information has been inserted'], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Oops something went wrong, Please try again.'], 500);

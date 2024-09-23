@@ -118,7 +118,7 @@ class RolesAndPermissionsSeeder extends Seeder
             }
         }
 
-        $superadmin = Role::create(['name' => 'super_admin','removable'=> 0]);
+        $superadmin = Role::create(['name' => 'super_admin', 'removable' => 0]);
         $admin = Role::create(['name' => 'admin', 'removable' => 0]);
         $admin->givePermissionTo(Permission::all());
         // $teacher = Role::create(['name' => 'user', 'removable' => 0]);

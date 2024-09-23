@@ -22,12 +22,14 @@ class Question extends Model
             'name' => 'N/A',
         ]);
     }
+
     public function exam()
     {
         return $this->belongsTo(Subject::class)->withDefault([
             'name' => 'N/A',
         ]);
     }
+
     public function subject()
     {
         return $this->belongsTo(Subject::class)->withDefault([

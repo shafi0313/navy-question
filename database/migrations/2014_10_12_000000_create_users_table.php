@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->enum('permission', [0, 1, 2])->default(0)->comment('0=No login,1=Admin,2=User');
             $table->string('mobile', 64)->nullable();
             $table->string('address')->nullable();
-            $table->string('image',32)->nullable();
+            $table->string('image', 32)->nullable();
             $table->string('password');
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

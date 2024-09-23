@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\User;
-use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
@@ -22,19 +22,20 @@ class UserController extends Controller
             $users = User::with([
                 'createdBy:id,name',
                 'updatedBy:id,name',
-                'roles:id,name'
+                'roles:id,name',
             ])->orderBy('name');
 
             return DataTables::of($users)
                 ->addIndexColumn()
                 ->addColumn('image', function ($row) {
-                    return '<img src="' . imagePath('users', $row->image) . '" width="70px">';
+                    return '<img src="'.imagePath('users', $row->image).'" width="70px">';
                 })
                 ->addColumn('roleName', function ($row) {
                     $roleName = '';
                     foreach ($row->roles as $role) {
-                        $roleName .= '<span class="badge badge-primary">' . $role->name . '</span>';
+                        $roleName .= '<span class="badge badge-primary">'.$role->name.'</span>';
                     }
+
                     return $roleName;
                 })
                 ->addColumn('action', function ($row) {
@@ -72,6 +73,7 @@ class UserController extends Controller
         try {
             $user = User::create($data);
             $user->assignRole($request->role);
+
             return response()->json(['message' => 'The information has been inserted'], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Oops something went wrong, Please try again.'], 500);
@@ -114,9 +116,11 @@ class UserController extends Controller
             if ($request->has('role')) {
                 $user->syncRoles($data['role']);
             }
+
             return response()->json(['message' => 'The information has been updated successfully'], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
+
             return response()->json(['message' => 'Oops, something went wrong. Please try again.'], 500);
         }
     }

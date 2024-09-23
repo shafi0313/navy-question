@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Question;
-use App\Models\QuesOption;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use RealRashid\SweetAlert\Facades\Alert;
-use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\StoreQuestionRequest;
 use App\Http\Requests\UpdateQuestionRequest;
+use App\Models\QuesOption;
+use App\Models\Question;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use RealRashid\SweetAlert\Facades\Alert;
+use Yajra\DataTables\Facades\DataTables;
 
 class QuestionController extends Controller
 {
@@ -20,12 +20,7 @@ class QuestionController extends Controller
         if ($error = $this->authorize('question-manage')) {
             return $error;
         }
-        // return $questions = Question::with([
-        //     'exam:id,name',
-        //     'rank:id,name',
-        //     'subject:id,name',
-        //     // 'options:id,question_id,option',
-        //     ])->get();
+
         if ($request->ajax()) {
             $questions = Question::with([
                 'rank:id,name',
@@ -42,9 +37,10 @@ class QuestionController extends Controller
                     $options = '';
                     if ($row->type == 'multiple_choice') {
                         foreach ($row->options as $option) {
-                            $options .= '<span class="badge badge-primary mr-2">' . $option->option . '</span>';
+                            $options .= '<span class="badge badge-primary mr-2">'.$option->option.'</span>';
                         }
                     }
+
                     return $options;
                 })
                 ->addColumn('action', function ($row) {
@@ -54,7 +50,7 @@ class QuestionController extends Controller
                             'type' => 'edit',
                             'route' => 'admin.questions',
                             $row->id,
-                            'row' => $row
+                            'row' => $row,
                         ]);
                     }
                     if (userCan('question-entry-delete')) {
@@ -62,9 +58,10 @@ class QuestionController extends Controller
                             'type' => 'ajax-delete',
                             'route' => route('admin.questions.destroy', $row->id),
                             'row' => $row,
-                            'src' => 'dt'
+                            'src' => 'dt',
                         ]);
                     }
+
                     return $btn;
                 })
                 ->filter(function ($query) use ($request) {
@@ -89,10 +86,9 @@ class QuestionController extends Controller
                         });
                     }
                 })
-                ->rawColumns(['options','action'])
+                ->rawColumns(['options', 'action'])
                 ->make(true);
         }
-
 
         return view('admin.question_entry.index');
     }
@@ -102,6 +98,7 @@ class QuestionController extends Controller
         if ($error = $this->authorize('question-entry-add')) {
             return $error;
         }
+
         return view('admin.question_entry.create');
     }
 
@@ -118,7 +115,7 @@ class QuestionController extends Controller
 
         $questionEntry = Question::create($data);
         if ($request->type == 'multiple_choice') {
-            if(!$request->option) {
+            if (! $request->option) {
                 return response()->json(['message' => 'At least two options are required for multiple choice question'], 500);
             }
             foreach ($request->option as $key => $value) {
@@ -146,7 +143,7 @@ class QuestionController extends Controller
             'exam:id,name',
             'rank:id,name',
             'subject:id,name',
-            'options'
+            'options',
         ])->find($id);
 
         return view('admin.question_entry.edit', compact('question'));
@@ -167,8 +164,9 @@ class QuestionController extends Controller
         Question::find($id)->update($data);
 
         if ($request->type == 'multiple_choice') {
-            if(!$request->option) {
+            if (! $request->option) {
                 Alert::error('Success', 'At least two options are required for multiple choice question');
+
                 return back();
             }
             foreach ($request->option as $key => $value) {
@@ -191,6 +189,7 @@ class QuestionController extends Controller
             DB::rollBack();
             Alert::error('Error', 'Failed to update data');
         }
+
         return back();
     }
 
@@ -209,6 +208,7 @@ class QuestionController extends Controller
         } catch (\Exception $ex) {
             Alert::error('Error', 'Failed to insert data');
         }
+
         return back();
     }
 

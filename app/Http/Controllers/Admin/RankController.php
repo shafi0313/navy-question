@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Rank;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Auth\Events\Validated;
 use App\Http\Requests\StoreRankRequest;
 use App\Http\Requests\UpdateRankRequest;
+use App\Models\Rank;
+use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
 class RankController extends Controller
@@ -23,7 +22,7 @@ class RankController extends Controller
         if ($request->ajax()) {
             $exams = Rank::with([
                 'createdBy:id,name',
-                'updatedBy:id,name'
+                'updatedBy:id,name',
             ])->orderBy('name');
 
             return DataTables::of($exams)
@@ -36,6 +35,7 @@ class RankController extends Controller
                     if (userCan('s-delete')) {
                         $btn .= view('button', ['type' => 'ajax-delete', 'route' => route('admin.ranks.destroy', $row->id), 'row' => $row, 'src' => 'dt']);
                     }
+
                     return $btn;
                 })
                 ->rawColumns(['action', 'created_at'])
@@ -54,6 +54,7 @@ class RankController extends Controller
         $data['created_by'] = user()->id;
         try {
             Rank::create($data);
+
             return response()->json(['message' => 'The information has been inserted'], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Oops something went wrong, Please try again.'], 500);

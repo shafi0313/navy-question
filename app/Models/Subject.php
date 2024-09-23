@@ -25,6 +25,4 @@ class Subject extends Model
     {
         return $this->belongsTo(Exam::class);
     }
-
-
 }

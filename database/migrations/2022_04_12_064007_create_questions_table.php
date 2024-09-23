@@ -20,7 +20,7 @@ return new class extends Migration
             $table->enum('type', ['multiple_choice', 'short_question', 'long_question']);
             $table->text('ques');
             $table->integer('mark');
-            $table->string('image',64)->nullable();
+            $table->string('image', 64)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

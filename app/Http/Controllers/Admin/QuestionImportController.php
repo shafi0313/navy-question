@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
-
-use App\Models\Question;
-use App\Imports\QuesImport;
-use Illuminate\Http\Request;
-use App\Models\QuestionImport;
 use App\Http\Controllers\Controller;
-use Maatwebsite\Excel\Facades\Excel;
-use RealRashid\SweetAlert\Facades\Alert;
 use App\Http\Requests\StoreQuestionImportRequest;
 use App\Http\Requests\UpdateQuestionImportRequest;
+use App\Imports\QuesImport;
 use App\Models\QuesOption;
+use App\Models\Question;
+use App\Models\QuestionImport;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class QuestionImportController extends Controller
 {
@@ -23,6 +22,7 @@ class QuestionImportController extends Controller
     public function index()
     {
         $questions = QuestionImport::paginate(30);
+
         return view('admin.question-import.index', compact('questions'));
     }
 
@@ -41,8 +41,10 @@ class QuestionImportController extends Controller
         } catch (\Exception $e) {
             Alert::error('Something went wrong!, Please try again.');
         }
+
         return back();
     }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -101,6 +103,7 @@ class QuestionImportController extends Controller
             DB::rollBack();
             Alert::error('Something went wrong!, Please try again.');
         }
+
         return back();
     }
 
@@ -136,6 +139,7 @@ class QuestionImportController extends Controller
         } catch (\Exception $e) {
             Alert::error('Something went wrong!, Please try again.');
         }
+
         return back();
     }
 
@@ -150,6 +154,7 @@ class QuestionImportController extends Controller
         } catch (\Exception $e) {
             Alert::error('Something went wrong!, Please try again.');
         }
+
         return back();
     }
 }

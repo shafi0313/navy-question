@@ -48,7 +48,7 @@ class AjaxController extends Controller
                         ->get()->map(function ($data) {
                             return [
                                 'id' => $data->id,
-                                'text' => $data->name . ' (' . $data->exam->name . ')',
+                                'text' => $data->name.' ('.$data->exam->name.')',
                             ];
                         })->toArray();
                     break;
@@ -64,19 +64,19 @@ class AjaxController extends Controller
                             ];
                         })->toArray();
                     break;
-                // case 'getChapterBySubject':
-                //     $response = Chapter::select('id', 'name')
-                //         ->where('name', 'like', "%{$request->q}%")
-                //         ->whereSubjectId($request->subject_id)
-                //         ->orderBy('name')
-                //         ->limit(10)
-                //         ->get()->map(function ($data) {
-                //             return [
-                //                 'id' => $data->id,
-                //                 'text' => $data->name,
-                //             ];
-                //         })->toArray();
-                //     break;
+                    // case 'getChapterBySubject':
+                    //     $response = Chapter::select('id', 'name')
+                    //         ->where('name', 'like', "%{$request->q}%")
+                    //         ->whereSubjectId($request->subject_id)
+                    //         ->orderBy('name')
+                    //         ->limit(10)
+                    //         ->get()->map(function ($data) {
+                    //             return [
+                    //                 'id' => $data->id,
+                    //                 'text' => $data->name,
+                    //             ];
+                    //         })->toArray();
+                    //     break;
                     // case 'getProduct':
                     //     $query = Product::with(['generic' => function ($q) {
                     //         $q->select('id', 'name');
