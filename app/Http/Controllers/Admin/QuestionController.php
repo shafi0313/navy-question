@@ -17,10 +17,6 @@ class QuestionController extends Controller
 {
     public function index(Request $request)
     {
-        if ($error = $this->authorize('question-manage')) {
-            return $error;
-        }
-
         if ($request->ajax()) {
             $questions = Question::with([
                 'rank:id,name',
@@ -95,18 +91,11 @@ class QuestionController extends Controller
 
     public function create()
     {
-        if ($error = $this->authorize('question-entry-add')) {
-            return $error;
-        }
-
         return view('admin.question_entry.create');
     }
 
     public function store(StoreQuestionRequest $request)
     {
-        if ($error = $this->authorize('question-entry-add')) {
-            return $error;
-        }
         $data = $request->validated();
 
         if ($request->hasFile('image')) {
@@ -151,9 +140,6 @@ class QuestionController extends Controller
 
     public function update(UpdateQuestionRequest $request, $id)
     {
-        if ($error = $this->authorize('question-entry-edit')) {
-            return $error;
-        }
         $data = $request->validated();
 
         DB::beginTransaction();
@@ -214,9 +200,6 @@ class QuestionController extends Controller
 
     public function destroy(Question $question)
     {
-        if ($error = $this->authorize('question-delete')) {
-            return $error;
-        }
         try {
             QuesOption::where('question_id', $question->id)->delete();
             imgUnlink('question', $question->image);
@@ -230,9 +213,6 @@ class QuestionController extends Controller
 
     public function optionDestroy($id)
     {
-        if ($error = $this->authorize('question-entry-delete')) {
-            return $error;
-        }
         try {
             QuesOption::find($id)->delete();
             toast('Success!', 'success');

@@ -13,9 +13,6 @@ class SubjectController extends Controller
 {
     public function index(Request $request)
     {
-        if ($error = $this->authorize('subject-manage')) {
-            return $error;
-        }
         if ($request->ajax()) {
             $subjects = Subject::with(['exam:id,name']);
 
@@ -44,9 +41,6 @@ class SubjectController extends Controller
      */
     public function store(StoreSubjectRequest $request)
     {
-        if ($error = $this->authorize('subject-add')) {
-            return $error;
-        }
         $data = $request->validated();
         try {
             Subject::create($data);
@@ -62,10 +56,6 @@ class SubjectController extends Controller
      */
     public function edit(Request $request, Subject $subject)
     {
-        if ($error = $this->authorize('subject-edit')) {
-            return $error;
-        }
-
         if ($request->ajax()) {
             $subject->load('exam:id,name');
             $modal = view('admin.subject.edit')->with(['subject' => $subject])->render();
@@ -81,10 +71,6 @@ class SubjectController extends Controller
      */
     public function update(UpdateSubjectRequest $request, Subject $subject)
     {
-        if ($error = $this->authorize('subject-add')) {
-            return $error;
-        }
-
         $data = $request->validated();
         try {
             $subject->update($data);
@@ -100,10 +86,6 @@ class SubjectController extends Controller
      */
     public function destroy(Subject $subject)
     {
-        if ($error = $this->authorize('subject-delete')) {
-            return $error;
-        }
-
         try {
             $subject->delete();
 

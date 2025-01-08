@@ -12,9 +12,6 @@ class MarkDistributionController extends Controller
 {
     public function index(Request $request)
     {
-        if ($error = $this->authorize('mark-distribution-manage')) {
-            return $error;
-        }
         if ($request->ajax()) {
             $exams = Exam::query();
 
@@ -46,9 +43,6 @@ class MarkDistributionController extends Controller
 
     public function store(Request $request)
     {
-        if ($error = $this->authorize('mark-distribution-add')) {
-            return $error;
-        }
         foreach ($request->subject_id as $k => $v) {
             $data = [
                 'subject_id' => $request->subject_id[$k],

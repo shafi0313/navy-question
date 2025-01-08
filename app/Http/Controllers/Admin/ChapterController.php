@@ -20,9 +20,6 @@ class ChapterController extends Controller
 
     public function store(Request $request)
     {
-        if ($error = $this->authorize('subject-add')) {
-            return $error;
-        }
         $data = $this->validate($request, [
             'subject_id' => 'required|numeric',
             'name' => 'required|max:191',
@@ -39,7 +36,7 @@ class ChapterController extends Controller
         } catch (\Exception $ex) {
             // // return $ex->getMessage();
             DB::rollBack();
-            toast('Eerror', 'error');
+            toast('Error', 'error');
 
             return redirect()->back();
         }
@@ -47,9 +44,6 @@ class ChapterController extends Controller
 
     public function update(Request $request, $id)
     {
-        if ($error = $this->authorize('chapter-edit')) {
-            return $error;
-        }
         $data = $this->validate($request, [
             'name' => 'required|max:191',
         ]);
@@ -73,9 +67,6 @@ class ChapterController extends Controller
 
     public function destroy($id)
     {
-        if ($error = $this->authorize('chapter-delete')) {
-            return $error;
-        }
         try {
             Chapter::find($id)->delete();
             toast('Success!', 'success');

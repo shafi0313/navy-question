@@ -14,10 +14,6 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        if ($error = $this->authorize('user-manage')) {
-            return $error;
-        }
-
         if ($request->ajax()) {
             $users = User::with([
                 'createdBy:id,name',
@@ -59,9 +55,6 @@ class UserController extends Controller
 
     public function store(StoreUserRequest $request)
     {
-        if ($error = $this->authorize('user-add')) {
-            return $error;
-        }
         $data = $request->validated();
         $data['permission'] = '1';
         $data['password'] = bcrypt($request->password);
@@ -82,9 +75,6 @@ class UserController extends Controller
 
     public function edit(Request $request, User $user)
     {
-        if ($error = $this->authorize('user-edit')) {
-            return $error;
-        }
         if ($request->ajax()) {
             $roles = Role::all();
             $modal = view('admin.user.edit')->with(['user' => $user, 'roles' => $roles])->render();
@@ -97,9 +87,6 @@ class UserController extends Controller
 
     public function update(UpdateUserRequest $request, User $user)
     {
-        if ($error = $this->authorize('user-add')) {
-            return $error;
-        }
         $data = $request->validated();
         $data['permission'] = '1';
         $date['updated_by'] = user()->id;
@@ -127,9 +114,6 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        if ($error = $this->authorize('user-delete')) {
-            return $error;
-        }
         try {
             imgUnlink('users', $user->image);
             $user->delete();

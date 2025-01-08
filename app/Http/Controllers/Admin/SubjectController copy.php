@@ -13,9 +13,6 @@ class SubjectController extends Controller
 {
     public function index()
     {
-        if ($error = $this->authorize('subject-manage')) {
-            return $error;
-        }
         $exams = Exam::all();
         $subjects = Subject::with('chapters', 'exam')->get();
 
@@ -24,9 +21,6 @@ class SubjectController extends Controller
 
     public function store(Request $request)
     {
-        if ($error = $this->authorize('subject-add')) {
-            return $error;
-        }
         $data = $this->validate($request, [
             'exam_id' => 'required|numeric',
             'name' => 'required|string|max:191',
@@ -50,9 +44,6 @@ class SubjectController extends Controller
 
     public function update(Request $request, $id)
     {
-        if ($error = $this->authorize('subject-edit')) {
-            return $error;
-        }
         $data = $this->validate($request, [
             'exam_id' => 'required|numeric',
             'name' => 'required|string|max:191',
@@ -76,9 +67,6 @@ class SubjectController extends Controller
 
     public function destroy($id)
     {
-        if ($error = $this->authorize('subject-delete')) {
-            return $error;
-        }
         try {
             Subject::find($id)->delete();
             Chapter::whereSubject_id($id)->delete();

@@ -10,9 +10,6 @@ class AnswerPaperController extends Controller
 {
     public function index()
     {
-        if ($error = $this->authorize('ans-paper-manage')) {
-            return $error;
-        }
         $answerPapers = QuesAns::with(['user', 'exam', 'subject'])->get();
 
         return view('admin.answer_paper.index', compact('answerPapers'));
@@ -20,9 +17,6 @@ class AnswerPaperController extends Controller
 
     public function show($userId, $examId)
     {
-        if ($error = $this->authorize('ans-paper-manage')) {
-            return $error;
-        }
         $answerPapers = QuesAns::whereUser_id($userId)->whereExam_id($examId)->get();
 
         return view('admin.answer_paper.show', compact('answerPapers'));
@@ -30,9 +24,6 @@ class AnswerPaperController extends Controller
 
     public function store(Request $request)
     {
-        if ($error = $this->authorize('ans-paper-add')) {
-            return $error;
-        }
         foreach ($request->question_id as $key => $value) {
             $data = [
                 // 'question_id' => $request->question_id[$key],

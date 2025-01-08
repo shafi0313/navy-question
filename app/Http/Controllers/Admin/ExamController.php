@@ -11,9 +11,6 @@ class ExamController extends Controller
 {
     public function index(Request $request)
     {
-        if ($error = $this->authorize('exam-manage')) {
-            return $error;
-        }
         if ($request->ajax()) {
             $exams = Exam::with([
                 'createdBy:id,name',
@@ -42,9 +39,6 @@ class ExamController extends Controller
 
     public function store(Request $request)
     {
-        if ($error = $this->authorize('exam-add')) {
-            return $error;
-        }
         $data = $this->validate($request, [
             'name' => 'required|max:100',
         ]);
@@ -65,9 +59,6 @@ class ExamController extends Controller
      */
     public function edit(Request $request, Exam $exam)
     {
-        if ($error = $this->authorize('exam-edit')) {
-            return $error;
-        }
         if ($request->ajax()) {
             $modal = view('admin.exam.edit')->with('exam', $exam)->render();
 
@@ -79,10 +70,6 @@ class ExamController extends Controller
 
     public function update(Request $request, Exam $exam)
     {
-        if ($error = $this->authorize('exam-edit')) {
-            return $error;
-        }
-
         $data = $this->validate($request, [
             'name' => 'required|max:100',
         ]);
@@ -98,9 +85,6 @@ class ExamController extends Controller
 
     public function destroy(Exam $exam)
     {
-        if ($error = $this->authorize('exam-delete')) {
-            return $error;
-        }
         try {
             $exam->delete();
 

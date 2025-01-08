@@ -16,9 +16,6 @@ class RankController extends Controller
      */
     public function index(Request $request)
     {
-        if ($error = $this->authorize('rank-manage')) {
-            return $error;
-        }
         if ($request->ajax()) {
             $exams = Rank::with([
                 'createdBy:id,name',
@@ -66,10 +63,6 @@ class RankController extends Controller
      */
     public function edit(Request $request, Rank $rank)
     {
-        if ($error = $this->authorize('rank-edit')) {
-            return $error;
-        }
-
         if ($request->ajax()) {
             $modal = view('admin.rank.edit')->with(['rank' => $rank])->render();
 
@@ -84,10 +77,6 @@ class RankController extends Controller
      */
     public function update(UpdateRankRequest $request, Rank $rank)
     {
-        if ($error = $this->authorize('rank-add')) {
-            return $error;
-        }
-
         $data = $request->validated();
         $data['updated_by'] = user()->id;
         try {
@@ -104,9 +93,6 @@ class RankController extends Controller
      */
     public function destroy(Rank $rank)
     {
-        if ($error = $this->authorize('rank-delete')) {
-            return $error;
-        }
         try {
             $rank->delete();
 

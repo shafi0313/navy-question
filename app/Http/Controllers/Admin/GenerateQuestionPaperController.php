@@ -24,10 +24,6 @@ class GenerateQuestionPaperController extends Controller
 
     public function index(Request $request)
     {
-        if ($error = $this->authorize('question-generate-manage')) {
-            return $error;
-        }
-
         if ($request->ajax()) {
             $queInfos = QuestionInfo::with([
                 'exam:id,name',
@@ -86,10 +82,6 @@ class GenerateQuestionPaperController extends Controller
 
     public function create()
     {
-        if ($error = $this->authorize('question-generate-add')) {
-            return $error;
-        }
-
         return view('admin.generate_question_paper.create');
     }
 
@@ -107,13 +99,11 @@ class GenerateQuestionPaperController extends Controller
 
     public function store(Request $request, StoreQuestionInfoRequest $questionInfoRequest)
     {
-        if ($error = $this->authorize('question-generate-add')) {
-            return $error;
-        }
-        DB::beginTransaction();
 
         $data = $questionInfoRequest->validated();
         $data['status'] = 'Pending';
+
+        DB::beginTransaction();
 
         $questionInfo = QuestionInfo::create($data);
 
@@ -218,9 +208,6 @@ class GenerateQuestionPaperController extends Controller
 
     public function edit($id, $quesInfoId)
     {
-        if ($error = $this->authorize('question-generate-edit')) {
-            return $error;
-        }
         $question = Question::with('options')->find($id);
         $exams = Exam::all();
 
@@ -229,9 +216,6 @@ class GenerateQuestionPaperController extends Controller
 
     public function update(Request $request, $quesId)
     {
-        if ($error = $this->authorize('ques-generate-edit')) {
-            return $error;
-        }
         $data = $this->validate($request, [
             'subject_id' => 'required|integer',
             'chapter_id' => 'required|integer',
@@ -273,9 +257,6 @@ class GenerateQuestionPaperController extends Controller
 
     public function quesDestroy($quesPaperId)
     {
-        if ($error = $this->authorize('question-generate-delete')) {
-            return $error;
-        }
         try {
             QuestionPaper::findOrFail($quesPaperId)->delete();
             toast('The information has been updated', 'success');
@@ -288,10 +269,6 @@ class GenerateQuestionPaperController extends Controller
 
     public function destroy($id)
     {
-        if ($error = $this->authorize('question-generate-delete')) {
-            return $error;
-        }
-
         try {
             QuestionInfo::findOrFail($id)->delete();
 

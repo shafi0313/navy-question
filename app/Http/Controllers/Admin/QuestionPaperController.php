@@ -17,9 +17,6 @@ class QuestionPaperController extends Controller
 
     public function index(Request $request)
     {
-        if ($error = $this->authorize('question-paper-manage')) {
-            return $error;
-        }
         if ($request->ajax()) {
             $queInfos = QuestionInfo::with([
                 'exam:id,name',
@@ -127,9 +124,6 @@ class QuestionPaperController extends Controller
     // }
     public function destroy($id)
     {
-        // if ($error = $this->authorize('question-paper-delete')) {
-        //     return $error;
-        // }
         try {
             QuesInfo::find($id)->delete();
             QuestionPaper::whereQues_info_id($id)->delete();
