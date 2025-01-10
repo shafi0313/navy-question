@@ -45,14 +45,14 @@
                     </a>
                     <div class="collapse {{ openNav($setup) }}" id="setup">
                         <ul class="nav nav-collapse">
-                            <li class="{{ activeSubNav('admin.exams.*') }}">
+                            {{-- <li class="{{ activeSubNav('admin.exams.*') }}">
                                 <a href="{{ route('admin.exams.index') }}">
                                     <span class="sub-item">Exam</span>
                                 </a>
-                            </li>
+                            </li> --}}
                             <li class="{{ activeSubNav('admin.ranks.*') }}">
                                 <a href="{{ route('admin.ranks.index') }}">
-                                    <span class="sub-item">Branch</span>
+                                    <span class="sub-item">Rank</span>
                                 </a>
                             </li>
                             <li class="{{ activeSubNav('admin.subjects.*') }}">
@@ -60,11 +60,11 @@
                                     <span class="sub-item">Subject</span>
                                 </a>
                             </li>
-                            <li class="{{ activeSubNav('admin.mark-distributions.*') }}">
+                            {{-- <li class="{{ activeSubNav('admin.mark-distributions.*') }}">
                                 <a href="{{ route('admin.mark-distributions.index') }}">
                                     <span class="sub-item">Mark Distribution</span>
                                 </a>
-                            </li>
+                            </li> --}}
                         </ul>
                     </div>
                 </li>

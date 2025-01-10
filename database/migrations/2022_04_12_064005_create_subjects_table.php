@@ -15,9 +15,11 @@ return new class extends Migration
     {
         Schema::create('subjects', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('exam_id')->constrained()->cascadeOnDelete();
-            $table->string('name', 191);
+            $table->foreignId('rank_id')->constraint('ranks')->cascadeOnDelete();
+            $table->string('name', 255);
             $table->timestamps();
+            $table->unsignedBigInteger('created_by')->nullable()->constraint('users')->nullOnDelete();
+            $table->unsignedBigInteger('updated_by')->nullable()->constraint('users')->nullOnDelete();
             $table->softDeletes();
         });
     }

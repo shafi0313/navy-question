@@ -67,9 +67,9 @@
                                 orderable: false,
                             },
                             {
-                                data: 'exam.name',
-                                name: 'exam.name',
-                                title: 'Exam Name'
+                                data: 'rank.name',
+                                name: 'rank.name',
+                                title: 'Rank'
                             },
                             {
                                 data: 'name',

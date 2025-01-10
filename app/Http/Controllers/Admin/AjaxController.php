@@ -26,10 +26,10 @@ class AjaxController extends Controller
                             ];
                         })->toArray();
                     break;
-                case 'getSubjectByExam':
+                case 'getSubjectByRank':
                     $response = Subject::select('id', 'name')
                         ->where('name', 'like', "%{$request->q}%")
-                        ->whereExamId($request->exam_id)
+                        ->whereRankId($request->rank_id)
                         ->orderBy('name')
                         ->limit(10)
                         ->get()->map(function ($data) {
@@ -40,8 +40,8 @@ class AjaxController extends Controller
                         })->toArray();
                     break;
                 case 'getSubject':
-                    $response = Subject::select('id', 'exam_id', 'name')
-                        ->with('exam:id,name')
+                    $response = Subject::select('id', 'rank_id', 'name')
+                        ->with('rank:id,name')
                         ->where('name', 'like', "%{$request->q}%")
                         ->orderBy('name')
                         ->limit(10)

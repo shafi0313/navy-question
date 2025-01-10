@@ -18,10 +18,6 @@
                         <div class="card">
                             <div class="d-flex card-header">
                                 <div class="card-title">Add Question</div>
-                                <a href="{{ route('admin.questions.index') }}"
-                                    class="btn btn-primary btn-round ml-auto text-light" style="min-width: 200px">
-                                    <i class="fa-solid fa-pen-to-square fa-beat fa-lg"></i> Edit Question
-                                </a>
                             </div>
                             @if ($errors->any())
                                 <div class="alert alert-danger">
@@ -39,13 +35,23 @@
                                 <input type="hidden" name="type" value="multiple_choice">
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        {{-- <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="exam_id">Exam <span class="t_r">*</span></label>
                                                 <select class="form-control" name="exam_id" id="exam_id" required>
                                                 </select>
                                                 @if ($errors->has('exam_id'))
                                                     <div class="alert alert-danger">{{ $errors->first('exam_id') }}</div>
+                                                @endif
+                                            </div>
+                                        </div> --}}
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="rank_id">Rank <span class="t_r">*</span></label>
+                                                <select class="form-control" name="rank_id" id="rank_id"
+                                                    required></select>
+                                                @if ($errors->has('rank_id'))
+                                                    <div class="alert alert-danger">{{ $errors->first('rank_id') }}</div>
                                                 @endif
                                             </div>
                                         </div>
@@ -58,17 +64,7 @@
                                                     <div class="alert alert-danger">{{ $errors->first('subject_id') }}</div>
                                                 @endif
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="rank_id">Branch <span class="t_r">*</span></label>
-                                                <select class="form-control" name="rank_id" id="rank_id"
-                                                    required></select>
-                                                @if ($errors->has('rank_id'))
-                                                    <div class="alert alert-danger">{{ $errors->first('rank_id') }}</div>
-                                                @endif
-                                            </div>
-                                        </div>
+                                        </div>                                        
                                         {{-- <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="type">Question Type <span class="t_r">*</span></label>
@@ -84,7 +80,7 @@
                                             </div>
                                         </div> --}}
                                         
-                                        <div class="col-md-2">
+                                        {{-- <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="type">Is Important <span class="t_r">*</span></label>
                                                 <select name="important" class="form-control">
@@ -92,8 +88,8 @@
                                                     <option value="1">Yes</option>
                                                 </select>
                                             </div>
-                                        </div>
-                                        <div class="col-md-2">
+                                        </div> --}}
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="mark">Marks <span class="t_r">*</span></label>
                                                 <input type="number" name="mark" class="form-control" id="mark"
@@ -103,7 +99,7 @@
                                                 @endif
                                             </div>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="image">Image</label>
                                                 <input type="file" name="image" class="form-control" id="image">
@@ -121,50 +117,51 @@
                                                 @endif
                                             </div>
                                         </div>
+                                    </div>
 
-                                    </div>
-                                </div>
-                                <div class="row ml-2 justify-content-center">
-                                    <div class="col-md-8">
-                                        <table class="table table-bordered table-hover">
-                                            <tr>
-                                                <td>Option</td>
-                                                <td>Answer</td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <input type="text" id="option" class="form-control">
-                                                </td>
-                                                <td>
-                                                    <input type="checkbox" id="correct" class="form-check"
-                                                        style="display: inline-block">
-                                                    <label for="correct" class="form-label">Correct</label>
-                                                </td>
-                                                <td class="text-center">
-                                                    <button class="btn btn-success btn-sm add-item"
-                                                        type="button">Add</button>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        
-                                        <table class="table table-bordered table-hover item_data_table">
-                                            <thead>
+                                    <div class="row mt-4 justify-content-center">
+                                        <div class="col-md-10">
+                                            <table class="table table-bordered table-hover">
                                                 <tr>
-                                                    <th>SN</th>
-                                                    <th>Option</th>
-                                                    <th>Correct</th>
-                                                    <th width="50px"></th>
+                                                    <td>Option</td>
+                                                    <td>Answer</td>
+                                                    <td></td>
                                                 </tr>
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
+                                                <tr>
+                                                    <td>
+                                                        <input type="text" id="option" class="form-control">
+                                                    </td>
+                                                    <td>
+                                                        <input type="checkbox" id="correct" class="form-check"
+                                                            style="display: inline-block">
+                                                        <label for="correct" class="form-label">Correct</label>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <button class="btn btn-success btn-sm add-item"
+                                                            type="button">Add</button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            
+                                            <table class="table table-bordered table-hover item_data_table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>SN</th>
+                                                        <th>Option</th>
+                                                        <th>Correct</th>
+                                                        <th width="50px"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="text-center card-action">
+                                        <button type="submit" class="btn btn-primary">Add</button>
+                                        <button type="reset" class="btn btn-danger">Cancel</button>
                                     </div>
                                 </div>
-                                <div class="text-center card-action">
-                                    <button type="submit" class="btn btn-primary">Add</button>
-                                    <button type="reset" class="btn btn-danger">Cancel</button>
-                                </div>
+                                
                             </form>
                         </div>
                     </div>
@@ -216,10 +213,10 @@
                 serialMaintain();
             });
             $('.item_data_table').on('click', '.item-delete', function(e) {
+                e.preventDefault();
                 var element = $(this).parents('tr');
                 element.remove();
                 toast('warning', 'item removed!');
-                e.preventDefault();
                 serialMaintain();
             });
 
@@ -257,10 +254,7 @@
 
             function clear() {
                 $("#questionArea").html('');
-                $("#ques").val('');
-                $("#mark").val('');
-                $("#option").val('');
-                $("#image").val('');
+                $("#ques, #option, #image").val('');
                 $(".item_data_table tbody").empty();
             }
 
@@ -272,15 +266,6 @@
                     i++;
                 });
             };
-
-            // $("#quesType").change(function() {
-            //     const type = $(this).val();
-            //     if (type == "multiple_choice") {
-            //         $(".quesTypeDiv").show();
-            //     } else {
-            //         $(".quesTypeDiv").hide();
-            //     }
-            // })
         </script>
     @endpush
 @endsection

@@ -29,7 +29,7 @@ class QuestionController extends Controller
                     if ($row->type == 'multiple_choice') {
                         $options = '';
                         foreach ($row->options as $index => $option) {
-                            $options .= '<p class="mb-0">';
+                            $options .= '<p class="mb-2">';
                             $options .= $option->correct == 1
                                 ? '<i class="fa-regular fa-circle-check"></i> '
                                 : numberToBanglaWord($index + 1).') ';

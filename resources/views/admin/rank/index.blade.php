@@ -1,6 +1,6 @@
 @extends('admin.layout.master')
 @php
-    $title = 'Branch';
+    $title = 'Rank';
 @endphp
 @section('title', $title)
 @section('content')

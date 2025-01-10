@@ -20,19 +20,14 @@ class RankController extends Controller
             $exams = Rank::with([
                 'createdBy:id,name',
                 'updatedBy:id,name',
-            ])->orderBy('name');
+            ]);
 
             return DataTables::of($exams)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     $btn = '';
-                    if (userCan('rank-edit')) {
-                        $btn .= view('button', ['type' => 'ajax-edit', 'route' => route('admin.ranks.edit', $row->id), 'row' => $row]);
-                    }
-                    if (userCan('s-delete')) {
-                        $btn .= view('button', ['type' => 'ajax-delete', 'route' => route('admin.ranks.destroy', $row->id), 'row' => $row, 'src' => 'dt']);
-                    }
-
+                    $btn .= view('button', ['type' => 'ajax-edit', 'route' => route('admin.ranks.edit', $row->id), 'row' => $row]);
+                    $btn .= view('button', ['type' => 'ajax-delete', 'route' => route('admin.ranks.destroy', $row->id), 'row' => $row, 'src' => 'dt']);
                     return $btn;
                 })
                 ->rawColumns(['action', 'created_at'])

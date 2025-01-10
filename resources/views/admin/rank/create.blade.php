@@ -12,9 +12,11 @@
                 @csrf
                 <div class="modal-body">
                     <div class="row">
-                        <div class="form-group col-sm-12">
+                        <div class="col-md-12">
+                        <div class="form-group">
                             <label for="name">Name <span class="t_r">*</span></label>
                             <input type="text" name="name" class="form-control">
+                        </div>
                         </div>
                     </div>
                     <div class="modal-footer">

@@ -12,28 +12,13 @@ class SubjectSeeder extends Seeder
      */
     public function run(): void
     {
-        $subjects = [
-            [
-                'exam_id' => 1,
-                'name' => 'বাংলা',
-            ],
-            [
-                'exam_id' => 1,
-                'name' => 'ইংরেজি',
-            ],
-            [
-                'exam_id' => 1,
-                'name' => 'গণিত',
-            ],
-            [
-                'exam_id' => 1,
-                'name' => 'বিজ্ঞান',
-            ],
-            [
-                'exam_id' => 1,
-                'name' => 'সাধারণ জ্ঞান ও বুদ্ধিমত্তা',
-            ],
-        ];
+        $subjects = array(
+            array('rank_id' => 1, 'name' => 'বাংলা','created_at' => NULL,'updated_at' => NULL,'deleted_at' => NULL),
+            array('rank_id' => 1, 'name' => 'ইংরেজি','created_at' => NULL,'updated_at' => NULL,'deleted_at' => NULL),
+            array('rank_id' => 1, 'name' => 'গণিত','created_at' => NULL,'updated_at' => NULL,'deleted_at' => NULL),
+            array('rank_id' => 1, 'name' => 'বিজ্ঞান','created_at' => NULL,'updated_at' => NULL,'deleted_at' => NULL),
+            array('rank_id' => 1, 'name' => 'সাধারণ জ্ঞান ও বুদ্ধিমত্তা','created_at' => NULL,'updated_at' => NULL,'deleted_at' => NULL)
+          );
         Subject::insert($subjects);
     }
 }

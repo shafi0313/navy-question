@@ -20,7 +20,7 @@
                                     <h4 class="card-title">Show Questions</h4>
                                     <a href="{{ route('admin.questions.create') }}"
                                         class="btn btn-primary btn-round ml-auto text-light" style="min-width: 200px">
-                                        <i class="fa-solid fa-plus fa-beat fa-lg"></i> Add New Question
+                                        <i class="fa-solid fa-plus fa-lg"></i> Add New Question
                                     </a>
                                 </div>
                             </div>
@@ -47,7 +47,6 @@
                                         </div>
                                     </div>
                                 </div>
-
 
 
                                 <table id="DT" class="table table-striped table-hover">
@@ -110,7 +109,8 @@
                         {
                             data: 'options',
                             name: 'options',
-                            title: 'Options'
+                            title: 'Options',
+                            width: '200px'
                         },
                         {
                             data: 'important',

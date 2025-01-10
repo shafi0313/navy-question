@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="addModalModalLabel">Add New</h5>
+          <h5 class="modal-title" id="addModalModalLabel">Add New Subject</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -11,23 +11,19 @@
             @csrf
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-group">
-                            <label for="exam_id">Exam <span class="t_r">*</span></label>
-                            <select name="exam_id" id="exam_id" class="form-control" required>
+                            <label for="rank_id">Rank <span class="t_r">*</span></label>
+                            <select name="rank_id" id="rank_id" class="form-control" required>
                             </select>
-                            @if ($errors->has('exam_id'))
-                                <div class="alert alert-danger">{{ $errors->first('exam_id') }}</div>
-                            @endif
                         </div>
                     </div>
 
-                    <div class="form-group col-sm-6">
+                    <div class="col-md-12">
+                    <div class="form-group">
                         <label for="name">Name <span class="t_r">*</span></label>
                         <input type="text" name="name" class="form-control" value="{{old('name')}}">
-                        @error('name')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                        @enderror
+                    </div>
                     </div>
               </div>
               <div class="modal-footer">

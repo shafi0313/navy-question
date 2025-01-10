@@ -14,22 +14,17 @@ class SubjectController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $subjects = Subject::with(['exam:id,name']);
+            $subjects = Subject::with('rank:id,name');
 
             return DataTables::of($subjects)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     $btn = '';
-                    if (userCan('subject-edit')) {
-                        $btn .= view('button', ['type' => 'ajax-edit', 'route' => route('admin.subjects.edit', $row->id), 'row' => $row]);
-                    }
-                    if (userCan('subject-delete')) {
-                        $btn .= view('button', ['type' => 'ajax-delete', 'route' => route('admin.subjects.destroy', $row->id), 'row' => $row, 'src' => 'dt']);
-                    }
-
+                    $btn .= view('button', ['type' => 'ajax-edit', 'route' => route('admin.subjects.edit', $row->id), 'row' => $row]);
+                    $btn .= view('button', ['type' => 'ajax-delete', 'route' => route('admin.subjects.destroy', $row->id), 'row' => $row, 'src' => 'dt']);
                     return $btn;
                 })
-                ->rawColumns(['check', 'action', 'created_at'])
+                ->rawColumns(['action', 'created_at'])
                 ->make(true);
         }
 

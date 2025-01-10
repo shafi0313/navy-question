@@ -21,8 +21,13 @@ class Subject extends Model
         return $this->hasMany(Question::class);
     }
 
-    public function exam()
+    public function rank()
     {
-        return $this->belongsTo(Exam::class);
+        return $this->belongsTo(Rank::class);
     }
+
+    // public function exam()
+    // {
+    //     return $this->belongsTo(Exam::class);
+    // }
 }
