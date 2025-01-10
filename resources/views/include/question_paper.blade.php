@@ -14,7 +14,7 @@
                 @if ($questionInfo->status == 'Pending')
                     <h2>Draft Question Paper</h2>
                 @endif
-                {{ $questionInfo->exam->name }} <br>
+                {{ $questionInfo->exam_name }} <br>
                 {{ $questionInfo->rank->name }}
                 {{-- {{ \Carbon\Carbon::parse($questionInfo->date)->format('F Y') }} --}}
             </h4>

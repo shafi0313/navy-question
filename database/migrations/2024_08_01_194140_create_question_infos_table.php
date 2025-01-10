@@ -13,14 +13,15 @@ return new class extends Migration
     {
         Schema::create('question_infos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('exam_id')->constrained()->cascadeOnDelete();
             $table->foreignId('rank_id')->constrained()->cascadeOnDelete();
+            $table->string('exam_name', 255);
             $table->date('date');
             $table->time('time')->nullable();
-            $table->tinyInteger('d_hour')->nullable();
-            $table->tinyInteger('d_minute')->nullable();
-            $table->enum('status', ['Pending', 'Created', 'Started', 'Completed'])->nullable();
+            $table->unsignedTinyInteger('d_hour')->nullable();
+            $table->unsignedTinyInteger('d_minute')->nullable();
+            $table->unsignedTinyInteger('status')->nullable();
             $table->text('note')->nullable();
+            $table->text('comment')->nullable();
             $table->timestamps();
         });
     }

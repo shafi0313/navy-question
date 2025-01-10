@@ -71,8 +71,8 @@
                                 orderable: false,
                             },
                             {
-                                data: 'exam.name',
-                                name: 'exam.name',
+                                data: 'exam_name',
+                                name: 'exam_name',
                                 title: 'Exam'
                             },
                             {

@@ -16,12 +16,12 @@ class DatabaseSeeder extends Seeder
         $this->call(RolesAndPermissionsSeeder::class);
         $this->call(UserSeeder::class);
         $this->call([
-            ExamSeeder::class,
+            // ExamSeeder::class,
             RankSeeder::class,
             SubjectSeeder::class,
             QuestionSeeder::class,
             QuesOptionSeeder::class,
-            MarkDistributionSeeder::class,
+            // MarkDistributionSeeder::class,
         ]);
     }
 }

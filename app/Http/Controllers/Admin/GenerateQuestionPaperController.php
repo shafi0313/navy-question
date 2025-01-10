@@ -26,11 +26,10 @@ class GenerateQuestionPaperController extends Controller
     {
         if ($request->ajax()) {
             $queInfos = QuestionInfo::with([
-                'exam:id,name',
                 'rank:id,name',
                 'questionSubjectInfo',
             ])
-                ->whereStatus('Pending')
+                ->whereStatus(1)
                 ->latest();
 
             return DataTables::of($queInfos)
@@ -39,10 +38,10 @@ class GenerateQuestionPaperController extends Controller
                     return bdDate($row->date);
                 })
                 ->addColumn('status', function ($row) {
-                    return $row->status == 'Pending' ? 'Draft' : 'Created';
+                    return $row->status == 1 ? 'Draft' : 'Created';
                 })
                 ->addColumn('duration', function ($row) {
-                    return $row->d_hour.':'.$row->d_minute.' Minute';
+                    return $row->d_hour . ':' . $row->d_minute . ' Minute';
                 })
                 ->addColumn('set', function ($row) {
                     $setColorCodes = [
@@ -57,7 +56,7 @@ class GenerateQuestionPaperController extends Controller
                     $btn = '';
                     for ($i = 1; $i <= 6; $i++) {
                         $colorCode = $setColorCodes[$i];
-                        $btn .= '<a href="'.route('admin.generate_question.show', [$row->id, $i, 'show']).'" class="badge mb-1" style="background-color: '.htmlspecialchars($colorCode).'; color: white;">Set '.questionSetInBangla($i).'</a> ';
+                        $btn .= '<a href="' . route('admin.generate_question.show', [$row->id, $i, 'show']) . '" class="badge mb-1" style="background-color: ' . htmlspecialchars($colorCode) . '; color: white;">Set ' . questionSetInBangla($i) . '</a> ';
                     }
 
                     return $btn;
@@ -70,7 +69,7 @@ class GenerateQuestionPaperController extends Controller
                     // if (userCan('slider-edit')) {
                     //     $btn .= view('button', ['type' => 'ajax-edit', 'route' => route('admin.sliders.edit', $row->id), 'row' => $row]);
                     // }
-                    $btn .= '<a data-route="'.route('admin.generate_question.status', $row->id).'" class="btn btn-primary text-light btn-sm mb-2" onclick="changeStatus(this)">Generate</a>';
+                    $btn .= '<a data-route="' . route('admin.generate_question.status', $row->id) . '" class="btn btn-primary text-light btn-sm mb-2" onclick="changeStatus(this)">Generate</a>';
                     $btn .= view('button', ['type' => 'ajax-delete', 'route' => route('admin.generate_question.destroy', $row->id), 'row' => $row, 'src' => 'dt']);
                     return $btn;
                 })
@@ -89,53 +88,76 @@ class GenerateQuestionPaperController extends Controller
     public function getQuestion(Request $request)
     {
         if ($request->ajax()) {
-            $questions = Question::whereNotIn('id', $request->get_question_id)
-                ->whereSubjectId($request->subject_id)
-                ->whereRankId($request->rank_id)
+            $questions = Question::whereNotIn('id', $request->get('question_id'))
+                ->where('subject_id', $request->get('subject_id'))
+                ->where('rank_id', $request->get('rank_id'))
                 ->get();
 
             return response()->json(['questions' => $questions, 'status' => 200]);
         }
+
+        return response()->json(['message' => 'Invalid request'], 400);
+    }
+
+
+
+    /**
+     * Retrieve subjects based on the rank ID from the request.
+     *
+     * This method handles AJAX requests to fetch subjects associated with a specific rank ID.
+     * If the request is not an AJAX request, it returns an error response.
+     *
+     * @param \Illuminate\Http\Request $request The incoming request instance.
+     * @return \Illuminate\Http\JsonResponse The JSON response containing subjects or an error message.
+     */
+    public function getSubject(Request $request)
+    {
+        if ($request->ajax()) {
+            $subjects = Subject::whereRankId($request->rank_id)->get();
+            return response()->json(['subjects' => $subjects, 'status' => 200]);
+        }
+        return response()->json(['message' => 'Invalid request'], 400);
     }
 
     public function store(Request $request, StoreQuestionInfoRequest $questionInfoRequest)
     {
-
         $data = $questionInfoRequest->validated();
-        $data['status'] = 'Pending';
+        $data['status'] = 1;
 
         DB::beginTransaction();
 
         $questionInfo = QuestionInfo::create($data);
 
-        $getSubjects = Subject::whereExamId($request->exam_id)->get();
+        // $getSubjects = Subject::whereRankId($request->rank_id)->get();
         for ($set = 1; $set <= 6; $set++) {
-            foreach ($getSubjects as $getSubject) {
+            foreach ($questionInfoRequest->subject_id as $sub_key => $subject_id) {
                 $questionSubjectInfo = QuestionSubjectInfo::create([
                     'question_info_id' => $questionInfo->id,
-                    'subject_id' => $getSubject->id,
+                    'subject_id' => $subject_id,
                     'set' => $set,
                 ]);
-                $quesMarks = MarkDistribution::whereSubjectId($getSubject->id)->get();
-                foreach ($quesMarks as $k => $v) {
-                    $questions = Question::whereSubjectId($getSubject->id)
-                        ->whereRankId($questionInfoRequest->rank_id)
-                        ->whereType('multiple_choice')
-                        ->inRandomOrder()
-                        ->get();
-                    $i = 0;
-                    foreach ($questions as $key => $value) {
-                        if ($i < $v->multiple) {
-                            $data = [
-                                'question_subject_info_id' => $questionSubjectInfo->id,
-                                'question_id' => $value->id,
-                                'type' => 'multiple_choice',
-                            ];
-                            QuestionPaper::updateOrCreate($data);
-                            $i += $value->mark;
-                        }
+                // $quesMarks = MarkDistribution::whereSubjectId($subject_id)->get();
+                // foreach ($quesMarks as $k => $v) {
+                $questions = Question::whereRankId($questionInfoRequest->rank_id)                    
+                    ->whereSubjectId($subject_id)
+                    ->whereType('multiple_choice')
+                    ->inRandomOrder()
+                    ->get();
+
+                $i = 0;
+                foreach ($questions as $key => $value) {
+                    // return $questionInfoRequest->mark[5];
+                    if ($i < $questionInfoRequest->mark[$sub_key]) {
+                        $data = [
+                            'question_subject_info_id' => $questionSubjectInfo->id,
+                            'question_id' => $value->id,
+                            'type' => 'multiple_choice',
+                        ];
+                        QuestionPaper::updateOrCreate($data);
+                        $i += $value->mark;
                     }
                 }
+                // }
             }
         }
 
@@ -155,7 +177,7 @@ class GenerateQuestionPaperController extends Controller
     public function show($quesInfoId, $set, $type)
     {
         $data = $this->questionPaperShow($quesInfoId, $set, $type);
-        $data['subjects'] = Subject::whereExamId($data['questionInfo']['exam_id'])->get();
+        $data['subjects'] = Subject::whereRankId($data['questionInfo']['rank_id'])->get();
         $data['quesInfoId'] = $quesInfoId;
         $data['set'] = $set;
 

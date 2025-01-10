@@ -113,12 +113,6 @@
                             width: '200px'
                         },
                         {
-                            data: 'important',
-                            name: 'important',
-                            title: 'Important',
-                            className: 'text-center',
-                        },
-                        {
                             data: 'action',
                             name: 'action',
                             title: 'Action',

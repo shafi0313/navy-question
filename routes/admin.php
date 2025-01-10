@@ -139,6 +139,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::get('/question/destroy/{quesPaperId}', 'quesDestroy')->name('quesDestroy');
         Route::post('/ques-generate', 'quesGenerate')->name('quesGenerate');
         Route::get('/get-question', 'getQuestion')->name('getQuestion');
+        Route::get('/get-subject', 'getSubject')->name('getSubject');
     });
 
     Route::controller(QuestionPaperController::class)->prefix('question-paper')->name('generated_question.')->group(function () {

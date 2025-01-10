@@ -39,9 +39,6 @@ class QuestionController extends Controller
                         return $options;
                     }
                 })
-                ->addColumn('important', function ($row) {
-                    return $row->important == 1 ? 'Yes' : 'No';
-                })
                 ->addColumn('action', function ($row) {
                     $btn = '';
                     $btn .= view('button', [
