@@ -16,24 +16,23 @@
                     </span>
                     <h4 class="text-section">Components</h4>
                 </li>
-                @can('user-manage')
-                    <li class="nav-item {{ activeNav('admin.users.*') }}">
-                        <a data-toggle="collapse" href="#base">
-                            <i class="fas fa-users-cog"></i>
-                            <p>Admin</p>
-                            <span class="caret"></span>
-                        </a>
-                        <div class="collapse {{ openNav(['admin.users.*']) }}" id="base">
-                            <ul class="nav nav-collapse">
-                                <li class="{{ activeSubNav(['admin.users.*']) }}">
-                                    <a href="{{ route('admin.users.index') }}">
-                                        <span class="sub-item">User</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                @endcan
+
+                <li class="nav-item {{ activeNav('admin.users.*') }}">
+                    <a data-toggle="collapse" href="#base">
+                        <i class="fas fa-users-cog"></i>
+                        <p>Admin</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse {{ openNav(['admin.users.*']) }}" id="base">
+                        <ul class="nav nav-collapse">
+                            <li class="{{ activeSubNav(['admin.users.*']) }}">
+                                <a href="{{ route('admin.users.index') }}">
+                                    <span class="sub-item">User</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
 
                 @php
                     $setup = ['admin.subjects.*', 'admin.exams.*', 'admin.mark-distributions.*', 'admin.ranks.*'];
@@ -46,113 +45,99 @@
                     </a>
                     <div class="collapse {{ openNav($setup) }}" id="setup">
                         <ul class="nav nav-collapse">
-                            @can('exam-manage')
-                                <li class="{{ activeSubNav('admin.exams.*') }}">
-                                    <a href="{{ route('admin.exams.index') }}">
-                                        <span class="sub-item">Exam</span>
-                                    </a>
-                                </li>
-                            @endcan
-                            @can('rank-manage')
-                                <li class="{{ activeSubNav('admin.ranks.*') }}">
-                                    <a href="{{ route('admin.ranks.index') }}">
-                                        <span class="sub-item">Branch</span>
-                                    </a>
-                                </li>
-                            @endcan
-                            @can('subject-manage')
-                                <li class="{{ activeSubNav('admin.subjects.*') }}">
-                                    <a href="{{ route('admin.subjects.index') }}">
-                                        <span class="sub-item">Subject</span>
-                                    </a>
-                                </li>
-                            @endcan
-                            @can('mark-distribution-manage')
-                                <li class="{{ activeSubNav('admin.mark-distributions.*') }}">
-                                    <a href="{{ route('admin.mark-distributions.index') }}">
-                                        <span class="sub-item">Mark Distribution</span>
-                                    </a>
-                                </li>
-                            @endcan
+                            <li class="{{ activeSubNav('admin.exams.*') }}">
+                                <a href="{{ route('admin.exams.index') }}">
+                                    <span class="sub-item">Exam</span>
+                                </a>
+                            </li>
+                            <li class="{{ activeSubNav('admin.ranks.*') }}">
+                                <a href="{{ route('admin.ranks.index') }}">
+                                    <span class="sub-item">Branch</span>
+                                </a>
+                            </li>
+                            <li class="{{ activeSubNav('admin.subjects.*') }}">
+                                <a href="{{ route('admin.subjects.index') }}">
+                                    <span class="sub-item">Subject</span>
+                                </a>
+                            </li>
+                            <li class="{{ activeSubNav('admin.mark-distributions.*') }}">
+                                <a href="{{ route('admin.mark-distributions.index') }}">
+                                    <span class="sub-item">Mark Distribution</span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </li>
 
-                @can('question-entry-manage')
-                    {{-- <li class="nav-item {{ activeNav('admin.questions.*') }}">
+                {{-- <li class="nav-item {{ activeNav('admin.questions.*') }}">
                         <a href="{{ route('admin.questions.index') }}">
                             <i class="fa-solid fa-circle-question"></i>
                             <p>Question Entry</p>
                         </a>
                     </li> --}}
-                    <li class="nav-item {{ activeNav('admin.questions.*', 'admin.question-imports.*') }}">
-                        <a data-toggle="collapse" href="#questionMenu">
-                            <i class="fas fa-users-cog"></i>
-                            <p>Question</p>
-                            <span class="caret"></span>
-                        </a>
-                        <div class="collapse {{ openNav(['admin.questions.*', 'admin.question-imports.*']) }}"
-                            id="questionMenu">
-                            <ul class="nav nav-collapse">
-                                <li class="{{ activeSubNav(['admin.question-imports.*']) }}">
-                                    <a href="{{ route('admin.question-imports.index') }}">
-                                        <span class="sub-item">Import</span>
-                                    </a>
-                                </li>
-                                <li class="{{ activeSubNav(['admin.questions.index', 'admin.questions.edit']) }}">
-                                    <a href="{{ route('admin.questions.index') }}">
-                                        <span class="sub-item">Manage</span>
-                                    </a>
-                                </li>
-                                <li class="{{ activeSubNav(['admin.questions.create']) }}">
-                                    <a href="{{ route('admin.questions.create') }}">
-                                        <span class="sub-item">Entry</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                @endcan
+                <li class="nav-item {{ activeNav('admin.questions.*', 'admin.question-imports.*') }}">
+                    <a data-toggle="collapse" href="#questionMenu">
+                        <i class="fas fa-users-cog"></i>
+                        <p>Question</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse {{ openNav(['admin.questions.*', 'admin.question-imports.*']) }}"
+                        id="questionMenu">
+                        <ul class="nav nav-collapse">
+                            <li class="{{ activeSubNav(['admin.question-imports.*']) }}">
+                                <a href="{{ route('admin.question-imports.index') }}">
+                                    <span class="sub-item">Import</span>
+                                </a>
+                            </li>
+                            <li class="{{ activeSubNav(['admin.questions.index', 'admin.questions.edit']) }}">
+                                <a href="{{ route('admin.questions.index') }}">
+                                    <span class="sub-item">Manage</span>
+                                </a>
+                            </li>
+                            <li class="{{ activeSubNav(['admin.questions.create']) }}">
+                                <a href="{{ route('admin.questions.create') }}">
+                                    <span class="sub-item">Entry</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
 
-                @can('question-generate-manage')
-                    {{-- <li class="nav-item {{ activeNav('admin.generate_question.*') }}">
+                {{-- <li class="nav-item {{ activeNav('admin.generate_question.*') }}">
                         <a href="{{ route('admin.generate_question.index') }}">
                             <i class="fa-solid fa-file-circle-question"></i>
                             <p>Generate Question</p>
                         </a>
                     </li> --}}
-                    <li class="nav-item {{ activeNav('admin.generate_question.*') }}">
-                        <a data-toggle="collapse" href="#generateQuestion">
-                            <i class="fas fa-users-cog"></i>
-                            <p>Generate Question</p>
-                            <span class="caret"></span>
-                        </a>
-                        <div class="collapse {{ openNav(['admin.generate_question.*']) }}" id="generateQuestion">
-                            <ul class="nav nav-collapse">
-                                <li
-                                    class="{{ activeSubNav(['admin.generate_question.index', 'admin.generate_question.edit', 'admin.generate_question.show']) }}">
-                                    <a href="{{ route('admin.generate_question.index') }}">
-                                        <span class="sub-item">Manage Question</span>
-                                    </a>
-                                </li>
-                                <li class="{{ activeSubNav(['admin.generate_question.create']) }}">
-                                    <a href="{{ route('admin.generate_question.create') }}">
-                                        <span class="sub-item">Generate Question</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                @endcan
+                <li class="nav-item {{ activeNav('admin.generate_question.*') }}">
+                    <a data-toggle="collapse" href="#generateQuestion">
+                        <i class="fas fa-users-cog"></i>
+                        <p>Prepare Question</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse {{ openNav(['admin.generate_question.*']) }}" id="generateQuestion">
+                        <ul class="nav nav-collapse">
+                            <li
+                                class="{{ activeSubNav(['admin.generate_question.index', 'admin.generate_question.edit', 'admin.generate_question.show']) }}">
+                                <a href="{{ route('admin.generate_question.index') }}">
+                                    <span class="sub-item">Manage Question</span>
+                                </a>
+                            </li>
+                            <li class="{{ activeSubNav(['admin.generate_question.create']) }}">
+                                <a href="{{ route('admin.generate_question.create') }}">
+                                    <span class="sub-item">Generate Question</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
 
-                @can('question-paper-manage')
-                    <li class="nav-item {{ activeNav('admin.generated_question.*') }}">
-                        <a href="{{ route('admin.generated_question.index') }}">
-                            <i class="fa-solid fa-clipboard-question"></i>
-                            <p>Question Paper</p>
-                        </a>
-                    </li>
-                @endcan
+                <li class="nav-item {{ activeNav('admin.generated_question.*') }}">
+                    <a href="{{ route('admin.generated_question.index') }}">
+                        <i class="fa-solid fa-clipboard-question"></i>
+                        <p>Question Paper</p>
+                    </a>
+                </li>
 
                 {{-- @can('answer-paper-manage')
                 <li class="nav-item {{ activeNav('admin.answerPaper.*') }}">
@@ -173,27 +158,21 @@
                     <div class="collapse {{ openNav(['admin.role.*', 'admin.backup.*', 'admin.visitorInfo.*', 'admin.permission.*']) }}"
                         id="settings">
                         <ul class="nav nav-collapse">
-                            @canany('role-manage', 'permission-manage')
-                                <li class="{{ activeSubNav('admin.role.*', 'admin.permission.*') }}">
-                                    <a href="{{ route('admin.role.index') }}">
-                                        <span class="sub-item">@lang('nav.role-permission')</span>
-                                    </a>
-                                </li>
-                            @endcanany
-                            @canany('backup-manage')
-                                <li class="{{ activeSubNav('admin.backup.*') }}">
-                                    <a href="{{ route('admin.backup.password') }}">
-                                        <span class="sub-item">App Backup</span>
-                                    </a>
-                                </li>
-                            @endcanany
-                            @canany('visitor-manage')
-                                <li class="{{ activeSubNav('admin.visitorInfo.*') }}">
-                                    <a href="{{ route('admin.visitorInfo.index') }}">
-                                        <span class="sub-item">Visitor Info</span>
-                                    </a>
-                                </li>
-                            @endcanany
+                            <li class="{{ activeSubNav('admin.role.*', 'admin.permission.*') }}">
+                                <a href="{{ route('admin.role.index') }}">
+                                    <span class="sub-item">@lang('nav.role-permission')</span>
+                                </a>
+                            </li>
+                            <li class="{{ activeSubNav('admin.backup.*') }}">
+                                <a href="{{ route('admin.backup.password') }}">
+                                    <span class="sub-item">App Backup</span>
+                                </a>
+                            </li>
+                            <li class="{{ activeSubNav('admin.visitorInfo.*') }}">
+                                <a href="{{ route('admin.visitorInfo.index') }}">
+                                    <span class="sub-item">Visitor Info</span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </li>
