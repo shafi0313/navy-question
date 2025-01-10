@@ -26,8 +26,17 @@ class Subject extends Model
         return $this->belongsTo(Rank::class);
     }
 
-    // public function exam()
-    // {
-    //     return $this->belongsTo(Exam::class);
-    // }
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id')->withDefault([
+            'name' => 'System',
+        ]);
+    }
+
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by', 'id')->withDefault([
+            'name' => 'System',
+        ]);
+    }
 }

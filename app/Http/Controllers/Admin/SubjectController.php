@@ -14,7 +14,7 @@ class SubjectController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $subjects = Subject::with('rank:id,name');
+            $subjects = Subject::with(['rank:id,name', 'createdBy:id,name', 'updatedBy:id,name']);
 
             return DataTables::of($subjects)
                 ->addIndexColumn()
@@ -37,6 +37,7 @@ class SubjectController extends Controller
     public function store(StoreSubjectRequest $request)
     {
         $data = $request->validated();
+        $data['created_by'] = user()->id;
         try {
             Subject::create($data);
 
@@ -52,7 +53,7 @@ class SubjectController extends Controller
     public function edit(Request $request, Subject $subject)
     {
         if ($request->ajax()) {
-            $subject->load('exam:id,name');
+            $subject->load('rank:id,name');
             $modal = view('admin.subject.edit')->with(['subject' => $subject])->render();
 
             return response()->json(['modal' => $modal], 200);
@@ -67,6 +68,8 @@ class SubjectController extends Controller
     public function update(UpdateSubjectRequest $request, Subject $subject)
     {
         $data = $request->validated();
+        $data['updated_by'] = user()->id;
+
         try {
             $subject->update($data);
 

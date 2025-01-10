@@ -22,8 +22,8 @@ class StoreSubjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'exam_id' => ['required', 'exists:exams,id'],
-            'name' => ['required', 'string', 'min:1', 'max:191'],
+            'rank_id' => ['required', 'exists:ranks,id'],
+            'name' => ['required', 'string', 'min:1', 'max:255'],
         ];
     }
 }

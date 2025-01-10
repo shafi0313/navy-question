@@ -12,25 +12,26 @@
                 @csrf @method('PUT')
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group">
-                                <label for="exam_id">Exam <span class="t_r">*</span></label>
-                                <select name="exam_id" id="exam_id" class="form-control" required>
-                                    <option value="{{ $subject->exam_id }}" @selected($subject->exam_id == $subject->exam->id)>
-                                        {{ $subject->exam->name }}</option>
+                                <label for="rank_id">Rank <span class="t_r">*</span></label>
+                                <select name="rank_id" class="form-control rank_id" required>
+                                    <option value="{{ $subject->rank_id }}" @selected($subject->rank->id)>
+                                        {{ $subject->rank->name }}</option>
                                 </select>
-                                @if ($errors->has('exam_id'))
-                                    <div class="alert alert-danger">{{ $errors->first('exam_id') }}</div>
+                                @if ($errors->has('rank_id'))
+                                    <div class="alert alert-danger">{{ $errors->first('rank_id') }}</div>
                                 @endif
                             </div>
                         </div>
-                        <div class="form-group col-sm-6">
-                            <label for="name">Name <span class="t_r">*</span></label>
-                            <input type="text" name="name"
-                                class="form-control" value="{{ $subject->name }}">
-                            @error('name')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="name">Name <span class="t_r">*</span></label>
+                                <input type="text" name="name" class="form-control" value="{{ $subject->name }}">
+                                @error('name')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -42,3 +43,31 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        $('.rank_id').select2({
+            dropdownParent: $('#editModal'),
+            width: '100%',
+            placeholder: 'Select...',
+            allowClear: true,
+            ajax: {
+                url: window.location.origin + '/admin/select-2-ajax',
+                dataType: 'json',
+                delay: 250,
+                cache: true,
+                data: function(params) {
+                    return {
+                        q: $.trim(params.term),
+                        type: 'getRank',
+                    };
+                },
+                processResults: function(data) {
+                    return {
+                        results: data
+                    };
+                }
+            }
+        });
+    });
+</script>
