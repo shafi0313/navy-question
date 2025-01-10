@@ -113,13 +113,19 @@
                             title: 'Options'
                         },
                         {
+                            data: 'important',
+                            name: 'important',
+                            title: 'Important',
+                            className: 'text-center',
+                        },
+                        {
                             data: 'action',
                             name: 'action',
                             title: 'Action',
                             orderable: false,
                             searchable: false,
                             className: 'text-center',
-                            width: '150px'
+                            width: '100px'
                         },
                     ],
                     scroller: {

@@ -21,42 +21,41 @@ class QuestionController extends Controller
             $questions = Question::with([
                 'rank:id,name',
                 'subject:id,name',
-                'options:id,question_id,option',
+                'options:id,question_id,option,correct',
             ]);
 
             return DataTables::of($questions)
                 ->addIndexColumn()
-                ->addColumn('type', function ($row) {
-                    return Str::title(str_replace('_', ' ', $row->type));
-                })
                 ->addColumn('options', function ($row) {
-                    $options = '';
                     if ($row->type == 'multiple_choice') {
-                        foreach ($row->options as $option) {
-                            $options .= '<span class="badge badge-primary mr-2">'.$option->option.'</span>';
+                        $options = '';
+                        foreach ($row->options as $index => $option) {
+                            $options .= '<p class="mb-0">';
+                            $options .= $option->correct == 1
+                                ? '<i class="fa-regular fa-circle-check"></i> '
+                                : numberToBanglaWord($index + 1) . ') ';
+                            $options .= $option->option . '</p>';
                         }
+                        return $options;
                     }
-
-                    return $options;
+                })
+                ->addColumn('important', function ($row) {
+                    return $row->important == 1 ? 'Yes' : 'No';
                 })
                 ->addColumn('action', function ($row) {
                     $btn = '';
-                    if (userCan('question-entry-edit')) {
-                        $btn .= view('button', [
-                            'type' => 'edit',
-                            'route' => 'admin.questions',
-                            $row->id,
-                            'row' => $row,
-                        ]);
-                    }
-                    if (userCan('question-entry-delete')) {
-                        $btn .= view('button', [
-                            'type' => 'ajax-delete',
-                            'route' => route('admin.questions.destroy', $row->id),
-                            'row' => $row,
-                            'src' => 'dt',
-                        ]);
-                    }
+                    $btn .= view('button', [
+                        'type' => 'edit',
+                        'route' => 'admin.questions',
+                        $row->id,
+                        'row' => $row,
+                    ]);
+                    $btn .= view('button', [
+                        'type' => 'ajax-delete',
+                        'route' => route('admin.questions.destroy', $row->id),
+                        'row' => $row,
+                        'src' => 'dt',
+                    ]);
 
                     return $btn;
                 })

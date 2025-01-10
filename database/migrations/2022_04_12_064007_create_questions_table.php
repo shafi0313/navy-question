@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('ques');
             $table->integer('mark');
             $table->string('image', 64)->nullable();
+            $table->boolean('important')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

@@ -82,7 +82,8 @@
                 $i = 1;
             @endphp
             @foreach ($questionPaper->options as $option)
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="option">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <label class="option">
                     {{ numberToBanglaWord($i++) . ') ' }} {{ $option->option }}
                 </label>
             @endforeach
