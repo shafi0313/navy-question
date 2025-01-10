@@ -25,13 +25,13 @@ class StoreQuestionRequest extends FormRequest
             'subject_id' => ['required', 'exists:subjects,id'],
             'rank_id' => ['required', 'exists:ranks,id'],
             'type' => ['required', 'string', 'in:multiple_choice'],
-            // 'type'       => ['required', 'string', 'in:multiple_choice,short_question,long_question'],
             'ques' => ['required', 'string', 'min:1'],
-            'mark' => ['required', 'integer', 'min:0', 'max:2147483647'],
+            'mark' => ['required', 'integer', 'min:1', 'max:10'],
+            'important' => ['required', 'boolean'],
             'image' => ['nullable', 'image', 'mimes:jpeg,jpg,JPG,png,webp,svg'],
 
             'option.*' => ['required', 'string', 'min:1', 'max:255'],
-            'correct' => ['nullable', 'boolean'],
+            'correct.*' => ['nullable', 'boolean'],
         ];
     }
 }

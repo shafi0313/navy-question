@@ -130,7 +130,10 @@
                     ],
                     scroller: {
                         loadingIndicator: true
-                    }
+                    },
+                    order: [
+                        [0]
+                    ],
                 });
 
                 // Trigger table redraw when the filter is changed

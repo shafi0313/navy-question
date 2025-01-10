@@ -9,7 +9,6 @@ use App\Models\QuesOption;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -33,9 +32,10 @@ class QuestionController extends Controller
                             $options .= '<p class="mb-0">';
                             $options .= $option->correct == 1
                                 ? '<i class="fa-regular fa-circle-check"></i> '
-                                : numberToBanglaWord($index + 1) . ') ';
-                            $options .= $option->option . '</p>';
+                                : numberToBanglaWord($index + 1).') ';
+                            $options .= $option->option.'</p>';
                         }
+
                         return $options;
                     }
                 })
@@ -97,11 +97,14 @@ class QuestionController extends Controller
     {
         $data = $request->validated();
 
+        DB::beginTransaction();
+
         if ($request->hasFile('image')) {
             $data['image'] = imgProcessAndStore($request->file('image'), 'question');
         }
 
         $questionEntry = Question::create($data);
+
         if ($request->type == 'multiple_choice') {
             if (! $request->option) {
                 return response()->json(['message' => 'At least two options are required for multiple choice question'], 500);
@@ -110,14 +113,19 @@ class QuestionController extends Controller
                 $option = [
                     'question_id' => $questionEntry->id,
                     'option' => $request->option[$key],
+                    'correct' => $request->correct[$key],
                 ];
                 QuesOption::create($option);
             }
         }
 
         try {
+            DB::commit();
+
             return response()->json(['message' => 'The information has been inserted'], 200);
         } catch (\Exception $e) {
+            DB::rollBack();
+
             return response()->json(['message' => 'Oops something went wrong, Please try again.'], 500);
         }
     }

@@ -11,12 +11,12 @@ class QuesImport implements ToModel, WithHeadingRow
     public function model(array $row)
     {
         return QuestionImport::create([
-            'ques'     => $row['question'],
+            'ques' => $row['question'],
             'option_1' => $row['option_1'],
             'option_2' => $row['option_2'],
             'option_3' => $row['option_3'],
             'option_4' => $row['option_4'],
-            'mark'     => $row['mark'],
+            'mark' => $row['mark'],
         ]);
     }
 }

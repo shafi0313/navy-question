@@ -70,6 +70,7 @@ class AjaxController extends Controller
             }
             $name = preg_split('/(?=[A-Z])/', str_replace('get', '', $request->type), -1, PREG_SPLIT_NO_EMPTY);
             $name = implode(' ', $name);
+
             return $response;
         }
 
