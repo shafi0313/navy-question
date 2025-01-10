@@ -98,7 +98,10 @@
                         ],
                         scroller: {
                             loadingIndicator: true
-                        }
+                        },
+                        order: [
+                            [2, 'asc']
+                        ]
                     });
                 });
                 $(document).ready(function() {
