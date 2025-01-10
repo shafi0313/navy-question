@@ -40,17 +40,17 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="exam_id">Exam <span class="t_r">*</span></label>
-                                                <select class="form-control" name="exam_id" id="exam_id" required>
-                                                </select>
-                                                @if ($errors->has('exam_id'))
-                                                    <div class="alert alert-danger">{{ $errors->first('exam_id') }}</div>
+                                                <label for="exam_name">Exam Name <span class="t_r">*</span></label>
+                                                <input type="text" name="exam_name" class="form-control"
+                                                    value="{{ old('exam_name') }}" required>
+                                                @if ($errors->has('exam_name'))
+                                                    <div class="alert alert-danger">{{ $errors->first('exam_name') }}</div>
                                                 @endif
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="rank_id">Branch <span class="t_r">*</span></label>
+                                                <label for="rank_id">Rank <span class="t_r">*</span></label>
                                                 <select class="form-control" name="rank_id" id="rank_id"
                                                     required></select>
                                                 @if ($errors->has('rank_id'))
@@ -102,7 +102,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="note">Note</label>
-                                                <textarea name="" class="form-control" rows="5">সঠিক উত্তরটি নির্বাচন করে সরবরাহকৃত উত্তর পত্রে বৃত্ত পূরণ করতে হবে । যে উত্তরটি সঠিক, উত্তর পত্রের বিষয় ভিত্তিক প্রশ্ন নম্বরে প্রদত্ত ক্রমিকে(ক, খ, গ, ঘ/a, b, c, d) বৃত্ত পূরণ করতে হবে। যেমন 'খ' উত্তরটি সঠিক হলে উত্তর পত্রের বিষয় ভিত্তিক প্রশ্ন নম্বরের 'খ' উত্তরটিতে বৃত্ত পূরণ করতে হবে। একটি প্রশ্নের জন্য একটি উত্তর পূরণ করতে হবে। একাধিক বৃত্ত পূরণ করলে তা বাতিল বলে গণ্য হবে।</textarea>
+                                                <textarea name="note" class="form-control" rows="5">সঠিক উত্তরটি নির্বাচন করে সরবরাহকৃত উত্তর পত্রে বৃত্ত পূরণ করতে হবে । যে উত্তরটি সঠিক, উত্তর পত্রের বিষয় ভিত্তিক প্রশ্ন নম্বরে প্রদত্ত ক্রমিকে(ক, খ, গ, ঘ/a, b, c, d) বৃত্ত পূরণ করতে হবে। যেমন 'খ' উত্তরটি সঠিক হলে উত্তর পত্রের বিষয় ভিত্তিক প্রশ্ন নম্বরের 'খ' উত্তরটিতে বৃত্ত পূরণ করতে হবে। একটি প্রশ্নের জন্য একটি উত্তর পূরণ করতে হবে। একাধিক বৃত্ত পূরণ করলে তা বাতিল বলে গণ্য হবে।</textarea>
                                                 @if ($errors->has('note'))
                                                     <div class="alert alert-danger">{{ $errors->first('note') }}</div>
                                                 @endif

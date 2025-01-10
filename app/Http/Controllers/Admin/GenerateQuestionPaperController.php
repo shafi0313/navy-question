@@ -38,6 +38,9 @@ class GenerateQuestionPaperController extends Controller
                 ->addColumn('date', function ($row) {
                     return bdDate($row->date);
                 })
+                ->addColumn('status', function ($row) {
+                    return $row->status == 'Pending' ? 'Draft' : 'Created';
+                })
                 ->addColumn('duration', function ($row) {
                     return $row->d_hour.':'.$row->d_minute.' Minute';
                 })
@@ -59,18 +62,16 @@ class GenerateQuestionPaperController extends Controller
 
                     return $btn;
                 })
-                ->addColumn('generate', function ($row) {
-                    return '<a data-route="'.route('admin.generate_question.status', $row->id).'" class="btn btn-primary text-light btn-sm" onclick="changeStatus(this)">Generate</a>';
-                })
+                // ->addColumn('generate', function ($row) {
+                //     return '<a data-route="'.route('admin.generate_question.status', $row->id).'" class="btn btn-primary text-light btn-sm" onclick="changeStatus(this)">Generate</a>';
+                // })
                 ->addColumn('action', function ($row) {
                     $btn = '';
                     // if (userCan('slider-edit')) {
                     //     $btn .= view('button', ['type' => 'ajax-edit', 'route' => route('admin.sliders.edit', $row->id), 'row' => $row]);
                     // }
-                    if (userCan('question-generate-delete')) {
-                        $btn .= view('button', ['type' => 'ajax-delete', 'route' => route('admin.generate_question.destroy', $row->id), 'row' => $row, 'src' => 'dt']);
-                    }
-
+                    $btn .= '<a data-route="'.route('admin.generate_question.status', $row->id).'" class="btn btn-primary text-light btn-sm mb-2" onclick="changeStatus(this)">Generate</a>';
+                    $btn .= view('button', ['type' => 'ajax-delete', 'route' => route('admin.generate_question.destroy', $row->id), 'row' => $row, 'src' => 'dt']);
                     return $btn;
                 })
                 ->rawColumns(['set', 'generate', 'action'])

@@ -80,30 +80,25 @@
                                 name: 'rank.name',
                                 title: 'Rank'
                             },
-                            {
-                                data: 'date',
-                                name: 'date',
-                                title: 'Date'
-                            },
-                            {
-                                data: 'time',
-                                name: 'time',
-                                title: 'Time'
-                            },
-                            {
-                                data: 'duration',
-                                name: 'duration',
-                                title: 'duration'
-                            },
+                            // {
+                            //     data: 'date',
+                            //     name: 'date',
+                            //     title: 'Date'
+                            // },
+                            // {
+                            //     data: 'time',
+                            //     name: 'time',
+                            //     title: 'Time'
+                            // },
+                            // {
+                            //     data: 'duration',
+                            //     name: 'duration',
+                            //     title: 'duration'
+                            // },
                             {
                                 data: 'status',
                                 name: 'status',
                                 title: 'Status'
-                            },
-                            {
-                                data: 'generate',
-                                name: 'generate',
-                                title: 'Generate'
                             },
                             {
                                 data: 'set',
