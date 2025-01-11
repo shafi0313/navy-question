@@ -127,8 +127,6 @@ class GenerateQuestionPaperController extends Controller
         DB::beginTransaction();
 
         $questionInfo = QuestionInfo::create($data);
-
-        // $getSubjects = Subject::whereRankId($request->rank_id)->get();
         for ($set = 1; $set <= 6; $set++) {
             foreach ($questionInfoRequest->subject_id as $sub_key => $subject_id) {
                 $questionSubjectInfo = QuestionSubjectInfo::create([
@@ -136,9 +134,7 @@ class GenerateQuestionPaperController extends Controller
                     'subject_id' => $subject_id,
                     'set' => $set,
                 ]);
-                // $quesMarks = MarkDistribution::whereSubjectId($subject_id)->get();
-                // foreach ($quesMarks as $k => $v) {
-                $questions = Question::whereRankId($questionInfoRequest->rank_id)                    
+                $questions = Question::whereRankId($questionInfoRequest->rank_id)
                     ->whereSubjectId($subject_id)
                     ->whereType('multiple_choice')
                     ->inRandomOrder()
@@ -146,7 +142,6 @@ class GenerateQuestionPaperController extends Controller
 
                 $i = 0;
                 foreach ($questions as $key => $value) {
-                    // return $questionInfoRequest->mark[5];
                     if ($i < $questionInfoRequest->mark[$sub_key]) {
                         $data = [
                             'question_subject_info_id' => $questionSubjectInfo->id,
@@ -157,7 +152,6 @@ class GenerateQuestionPaperController extends Controller
                         $i += $value->mark;
                     }
                 }
-                // }
             }
         }
 
