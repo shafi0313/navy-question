@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreQuestionInfoRequest;
 use App\Models\Exam;
-use App\Models\MarkDistribution;
 use App\Models\QuesOption;
 use App\Models\Question;
 use App\Models\QuestionInfo;
@@ -88,9 +87,9 @@ class GenerateQuestionPaperController extends Controller
     public function getQuestion(Request $request)
     {
         if ($request->ajax()) {
-            $questions = Question::whereNotIn('id', $request->get('question_id'))
-                ->where('subject_id', $request->get('subject_id'))
-                ->where('rank_id', $request->get('rank_id'))
+            $questions = Question::whereNotIn('id', $request->question_id)
+                ->where('rank_id', $request->rank_id)
+                ->where('subject_id', $request->subject_id)
                 ->get();
 
             return response()->json(['questions' => $questions, 'status' => 200]);
@@ -99,17 +98,6 @@ class GenerateQuestionPaperController extends Controller
         return response()->json(['message' => 'Invalid request'], 400);
     }
 
-
-
-    /**
-     * Retrieve subjects based on the rank ID from the request.
-     *
-     * This method handles AJAX requests to fetch subjects associated with a specific rank ID.
-     * If the request is not an AJAX request, it returns an error response.
-     *
-     * @param \Illuminate\Http\Request $request The incoming request instance.
-     * @return \Illuminate\Http\JsonResponse The JSON response containing subjects or an error message.
-     */
     public function getSubject(Request $request)
     {
         if ($request->ajax()) {
@@ -226,59 +214,73 @@ class GenerateQuestionPaperController extends Controller
     public function edit($id, $quesInfoId)
     {
         $question = Question::with('options')->find($id);
-        $exams = Exam::all();
 
-        return view('admin.generate_question_paper.edit', compact('question', 'exams', 'quesInfoId'));
+        return view('admin.generate_question_paper.edit', compact('quesInfoId', 'question'));
     }
 
     public function update(Request $request, $quesId)
     {
         $data = $this->validate($request, [
-            'subject_id' => 'required|integer',
-            'chapter_id' => 'required|integer',
-            'type' => 'required',
-            'mark' => 'required',
-            'ques' => 'required',
+            'rank_id' => 'required|exists:ranks,id',
+            'subject_id' => 'required|exists:subjects,id',
+            // 'type' => 'required',
+            'mark' => 'required|numeric',
+            'ques' => 'required|string',
+            'option' => 'required|array',
+            'correct' => 'required|array',
         ]);
-        $data['user_id'] = auth()->user()->id;
+
+        $data['type'] = 'multiple_choice';
 
         DB::beginTransaction();
+
         Question::find($quesId)->update($data);
 
-        if ($request->type == 'multiple_choice') {
-            foreach ($request->option as $key => $value) {
-                $option = [
-                    'question_id' => $quesId,
-                    'option' => $request->option[$key],
-                ];
-                if (! empty(QuesOption::whereId($request->option_id[$key]))) {
-                    QuesOption::where('id', $request->option_id[$key])->update($option);
+        foreach ($request->option as $key => $option) {
+            $correct = strtolower(str_replace(' ', '', $request->correct[$key]));
+            $correct = ($correct === 'yes') ? 1 : 0;
+        
+            $optionData = [
+                'question_id' => $quesId,
+                'option' => $option,
+                'correct' => $correct,
+            ];
+        
+            if (isset($request->option_id[$key])) {
+                $existingOption = QuesOption::find($request->option_id[$key]);
+                if ($existingOption) {
+                    $existingOption->update($optionData);
                 } else {
-                    QuesOption::create($option);
+                    QuesOption::create($optionData);
                 }
+            } else {
+                QuesOption::create($optionData);
             }
         }
+
 
         try {
             DB::commit();
             toast('Success!', 'success');
-
+            return back();
             return redirect()->route('admin.generate_question.show', $request->quesInfoId);
-        } catch (\Exception $ex) {
+        } catch (\Exception $e) {
+            return $e->getMessage();
             DB::rollBack();
             toast('error', 'Error');
 
-            return redirect()->back();
+            return back();
         }
     }
 
     public function quesDestroy($quesPaperId)
     {
         try {
-            QuestionPaper::findOrFail($quesPaperId)->delete();
-            toast('The information has been updated', 'success');
+            $questionPaper = QuestionPaper::findOrFail($quesPaperId);
+            $questionPaper->delete();
+            toast('Question has been successfully deleted.', 'success');
         } catch (\Exception $ex) {
-            toast('Oops something went wrong, Please try again', 'error');
+            toast('An error occurred while deleting the question paper. Please try again.', 'error');
         }
 
         return back();

@@ -41,33 +41,31 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="subject_id">Subject <span class="t_r">*</span></label>
-                                                <select class="form-control" name="subject_id" id="subject_id">
-                                                    <option selected value="{{ $question->subject_id }}">
-                                                        {{ $question->subject->name }}</option>
+                                                <label for="rank_id">Rank <span class="t_r">*</span></label>
+                                                <select class="form-control" name="rank_id" id="rank_id" required>
+                                                    <option value="{{ $question->rank_id }}">{{ $question->rank->name }}
+                                                    </option>
                                                 </select>
-                                                @if ($errors->has('subject_id'))
-                                                    <div class="alert alert-danger">{{ $errors->first('subject_id') }}</div>
+                                                @if ($errors->has('rank_id'))
+                                                    <div class="alert alert-danger">{{ $errors->first('rank_id') }}</div>
                                                 @endif
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="chapter_id">Chapter <span class="t_r">*</span></label>
-                                                <select class="form-control" name="chapter_id" id="chapter_id">
-                                                    <option selected value="{{ $question->chapter_id }}">
-                                                        {{ $question->chapter->name }}</option>
+                                                <label for="subject_id">Subject <span class="t_r">*</span></label>
+                                                <select class="form-control" name="subject_id" id="subject_id" required>
+                                                    <option value="{{ $question->subject_id }}">
+                                                        {{ $question->subject->name }}</option>
                                                 </select>
-                                                @if ($errors->has('chapter_id'))
-                                                    <div class="alert alert-danger">{{ $errors->first('chapter_id') }}
+                                                @if ($errors->has('subject_id'))
+                                                    <div class="alert alert-danger">{{ $errors->first('subject_id') }}
                                                     </div>
                                                 @endif
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
-                                            <hr class="bg-danger">
-                                        </div>
-                                        <div class="col-md-4">
+
+                                        {{-- <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="type">Question Type <span class="t_r">*</span></label>
                                                 <select class="form-control" name="type" id="quesType" required>
@@ -85,7 +83,7 @@
                                                     <div class="alert alert-danger">{{ $errors->first('type') }}</div>
                                                 @endif
                                             </div>
-                                        </div>
+                                        </div> --}}
 
                                         <div class="col-md-4">
                                             <div class="form-group">
@@ -107,30 +105,38 @@
                                                 @endif
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="row justify-content-center">
                                         @if ($question->type == 'multiple_choice')
-                                            <div class="col-md-6 quesTypeDiv">
+                                            <div class="col-md-8 quesTypeDiv">
                                                 <table class="table table-bordered">
                                                     <tr>
+                                                        <td>SL</td>
                                                         <th>Option</th>
-                                                        <th style="width: 100px;text-align:center;">
-                                                            <span class="btn btn-info btn-sm" style="padding: 4px 13px"><i
-                                                                    class="fas fa-mouse"></i></span>
+                                                        <th width="100px">Correct ans</th>
+                                                        <th style="width: 100px; text-align:center;" title="Add More">
+                                                            <span class="btn btn-sm btn-success add-row">
+                                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                                            </span>
                                                         </th>
                                                     </tr>
                                                     @foreach ($question->options as $option)
                                                         <tr>
-                                                            <input type="hidden" name="option_id[]" class="form-control"
+                                                            <input type="hidden" name="option_id[]"
                                                                 value="{{ $option->id }}" />
-                                                            <td><input type="text" name="option[]" id="option"
+
+                                                            <th class="serial">{{ @$i += 1 }}</th>
+                                                            <td>
+                                                                <input type="text" name="option[]" id="option"
                                                                     class="form-control" value="{{ $option->option }}" />
                                                             </td>
                                                             <td class="text-center">
-                                                                <span class="btn btn-sm btn-success addrow"><i
-                                                                        class="fa fa-plus" aria-hidden="true"></i></span>
+                                                                <input type="text" name="correct[]"
+                                                                    class="form-control" value="{{ $option->correct == 1 ? 'yes' : 'no' }}"/>
+                                                            </td>
+                                                            <td class="text-center">
                                                                 <a href="{{ route('admin.questions.optionDestroy', $option->id) }}"
-                                                                    data-toggle="tooltip" title=""
                                                                     class="btn btn-link btn-danger"
-                                                                    data-original-title="Remove"
                                                                     onclick="return confirm('Are you sure')">
                                                                     <i class="fa fa-times"></i>
                                                                 </a>
@@ -160,64 +166,77 @@
     </div>
 
     @push('custom_scripts')
-        <script src="{{ asset('backend/ckeditor/ckeditor.js') }}"></script>
-        <script>
-            CKEDITOR.replace('ques')
-        </script>
-        <script>
-            $('#subject_id').change(function() {
-                $.ajax({
-                    url: "{{ route('admin.questions.getChapter') }}",
-                    data: {
-                        subjectId: $(this).val()
-                    },
-                    method: 'get',
-                    success: res => {
-                        let opt = '<option disabled selected>- -</option>';
-                        if (res.status == 200) {
-                            $.each(res.chapters, function(i, v) {
-                                opt += '<option value="' + v.id + '">' + v.name + '</option>';
-                            });
-                            $("#chapter_id").html(opt);
-                        } else {
-                            alert('No chapter found')
-                        }
-                    },
-                    error: err => {
-                        alert('No chapter found')
-                    }
-                });
-            });
+        @include('admin.question_entry.get-js')
 
-            $("#quesType").change(function() {
-                const type = $(this).val();
-                if (type == "multiple_choice") {
-                    $(".quesTypeDiv").show();
-                } else {
-                    $(".quesTypeDiv").hide();
-                }
-            })
+        <script>
+            // $('#subject_id').change(function() {
+            //     $.ajax({
+            //         url: "{{ 'admin.questions.getChapter' }}",
+            //         data: {
+            //             subjectId: $(this).val()
+            //         },
+            //         method: 'get',
+            //         success: res => {
+            //             let opt = '<option disabled selected>- -</option>';
+            //             if (res.status == 200) {
+            //                 $.each(res.chapters, function(i, v) {
+            //                     opt += '<option value="' + v.id + '">' + v.name + '</option>';
+            //                 });
+            //                 $("#chapter_id").html(opt);
+            //             } else {
+            //                 alert('No chapter found')
+            //             }
+            //         },
+            //         error: err => {
+            //             alert('No chapter found')
+            //         }
+            //     });
+            // });
+
+            // $("#quesType").change(function() {
+            //     const type = $(this).val();
+            //     if (type == "multiple_choice") {
+            //         $(".quesTypeDiv").show();
+            //     } else {
+            //         $(".quesTypeDiv").hide();
+            //     }
+            // })
             $(document).ready(function() {
                 var i = 1;
-                $('.addrow').click(function() {
+                $('.add-row').click(function() {
                     i++;
-                    html = '';
-                    html += '<tr id="remove_' + i + '" class="post_item">';
-                    html += '	<input type="hidden" name="option_id[]" value="{{ $option->id ?? 0 }}">';
-                    html +=
-                        '	<td><input type="text" name="option[]" id="purchase_" class="form-control form-control-sm"/></td>';
-                    html +=
-                        '	<td style="width: 20px"  class="col-md-2"><span class="btn btn-sm btn-danger" onClick="return remove(' +
-                        i + ')"><i class="fa fa-times" aria-hidden="true"></i></span></td>';
-                    html += '</tr>';
-                    $('#showItem').append(html);
-                });
-            });
+                    var html = `
+                        <tr id="remove_${i}">
+                            <td class="serial">${i}</td>
+                            <td>
+                                <input type="text" name="option[]" class="form-control"/>
+                            </td>
+                            <td class="text-center">
+                                <input type="text" name="correct[]"  class="form-control" />
+                            </td>
+                            <td style="width: 20px" class="text-center">
+                                <span class="btn btn-sm btn-danger" onClick="return remove(${i})">
+                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                </span>
+                            </td>
+                        </tr>
+                    `;
 
-            function remove(id) {
-                $('#remove_' + id).remove();
-                total_price();
-            }
+                    $('#showItem').append(html);
+                    updateSerialNumbers();
+                });
+
+                window.remove = function(id) {
+                    $('#remove_' + id).remove();
+                    updateSerialNumbers();
+                }
+
+                function updateSerialNumbers() {
+                    $('.serial').each(function(index) {
+                        $(this).text(index + 1);
+                    });
+                }
+            });
         </script>
     @endpush
 @endsection

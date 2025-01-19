@@ -68,7 +68,7 @@
                         @endif
                         @if (!empty($delete))
                             <a href="{{ route('admin.generate_question.quesDestroy', $questionPaper->id) }}"
-                                style="margin-left: 20px" class="text-danger">Delete</a>
+                                style="margin-left: 20px" class="text-danger" onclick="return confirm('Are you sure?')">Delete</a>
                         @endif
                     </span>
                 </td>

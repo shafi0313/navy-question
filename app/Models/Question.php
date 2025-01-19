@@ -23,12 +23,12 @@ class Question extends Model
         ]);
     }
 
-    public function exam()
-    {
-        return $this->belongsTo(Subject::class)->withDefault([
-            'name' => 'N/A',
-        ]);
-    }
+    // public function exam()
+    // {
+    //     return $this->belongsTo(Subject::class)->withDefault([
+    //         'name' => 'N/A',
+    //     ]);
+    // }
 
     public function subject()
     {
@@ -37,18 +37,18 @@ class Question extends Model
         ]);
     }
 
-    public function chapter()
-    {
-        return $this->belongsTo(Chapter::class, 'chapter_id');
-    }
+    // public function chapter()
+    // {
+    //     return $this->belongsTo(Chapter::class, 'chapter_id');
+    // }
 
     public function options()
     {
         return $this->hasMany(QuesOption::class, 'question_id');
     }
 
-    public function enroll()
-    {
-        return $this->belongsTo(Enroll::class, 'exam_id');
-    }
+    // public function enroll()
+    // {
+    //     return $this->belongsTo(Enroll::class, 'exam_id');
+    // }
 }

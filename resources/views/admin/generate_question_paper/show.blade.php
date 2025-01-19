@@ -2,6 +2,10 @@
 @section('title', 'Generate Question')
 @section('content')
 
+@php
+    $edit = $delete = 1;
+@endphp
+
     <div class="main-panel">
         <div class="content">
             <div class="page-inner">
@@ -20,6 +24,7 @@
                     <input type="hidden" name="question_info_id" value="{{ $quesInfoId }}">
                     <input type="hidden" name="set" value="{{ $set }}">
                     <input type="hidden" name="question_subject_info_id" value="{{ $questionSubjectInfos->first()->id }}">
+
                     <div class="row justify-content-center">
                         <div class="col-md-12">
                             <div class="card">
@@ -148,18 +153,20 @@
                 let subject_id = $('#subject_id').find(":selected").val();
                 let rank_id = $('#rank_id').find(":selected").val();
                 const get_question_id = $("input[name='get_question_id[]']").map(function() {
-                    return $(this).val(); // Extract each input value
+                    return $(this).val(); 
                 }).get();
+
                 let quesId = [];
                 $("input[name='question_id']").each(function() {
                     quesId.push(this.value);
                 });
+                
                 $.ajax({
                     url: "{{ route('admin.generate_question.getQuestion') }}",
                     data: {
                         rank_id: rank_id,
                         subject_id: subject_id,
-                        get_question_id: get_question_id,
+                        question_id: get_question_id,
                     },
                     method: 'get',
                     success: res => {
