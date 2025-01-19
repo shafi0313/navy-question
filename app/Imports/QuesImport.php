@@ -17,6 +17,7 @@ class QuesImport implements ToModel, WithHeadingRow
             'option_3' => $row['option_3'],
             'option_4' => $row['option_4'],
             'mark' => $row['mark'],
+            'correct' => $row['correct'],
         ]);
     }
 }

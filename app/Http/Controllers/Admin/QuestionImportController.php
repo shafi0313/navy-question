@@ -51,13 +51,13 @@ class QuestionImportController extends Controller
     public function store(StoreQuestionImportRequest $request)
     {
         $request = $request->validated();
-        $questions = QuestionImport::select('id', 'ques', 'option_1', 'option_2', 'option_3', 'option_4', 'mark')->get();
+        $questions = QuestionImport::select('id', 'ques', 'option_1', 'option_2', 'option_3', 'option_4', 'mark', 'correct')->get();
 
         DB::beginTransaction();
         foreach ($questions as $question) {
             $existingQuestion = Question::where('ques', $question->ques)
-                ->where('subject_id', $request['subject_id'])
                 ->where('rank_id', $request['rank_id'])
+                ->where('subject_id', $request['subject_id'])
                 ->where('type', $request['type'])
                 ->first();
 
@@ -66,8 +66,8 @@ class QuestionImportController extends Controller
                 continue;
             }
             $quesData = Question::create([
-                'subject_id' => $request['subject_id'],
                 'rank_id' => $request['rank_id'],
+                'subject_id' => $request['subject_id'],
                 'type' => $request['type'],
                 'ques' => $question->ques,
                 'mark' => $question->mark,
@@ -77,14 +77,19 @@ class QuestionImportController extends Controller
                 $question->option_1,
                 $question->option_2,
                 $question->option_3,
-                $question->option_4,
+                $question->option_4
             ];
 
-            foreach ($options as $option) {
+            $correctAnswerIndex = (int) $question->correct - 1;
+
+            foreach ($options as $key => $option) {
+                $correct = ($key === $correctAnswerIndex) ? 1 : 0;
+
                 if ($option) {
                     QuesOption::create([
                         'question_id' => $quesData->id,
                         'option' => $option,
+                        'correct' => $correct,
                     ]);
                 }
             }

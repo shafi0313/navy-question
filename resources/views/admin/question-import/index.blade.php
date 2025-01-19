@@ -57,6 +57,7 @@
                                                     <th>Option 3</th>
                                                     <th>Option 4</th>
                                                     <th>Mark</th>
+                                                    <th>Correct Option</th>
                                                     <th class="no-sort" width="60px">Action</th>
                                                 </tr>
                                             </thead>
@@ -69,6 +70,7 @@
                                                         <td>{{ $question->option_3 }}</td>
                                                         <td>{{ $question->option_4 }}</td>
                                                         <td>{{ $question->mark }}</td>
+                                                        <td>{{ $question->correct }}</td>
                                                         <td class="text-center">
                                                             <form
                                                                 action="{{ route('admin.question-imports.destroy', $question->id) }}"
@@ -92,7 +94,7 @@
                                     <input type="hidden" name="type" value="multiple_choice">
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-md-6">
+                                            {{-- <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="exam_id">Exam <span class="t_r">*</span></label>
                                                     <select class="form-control" name="exam_id" id="exam_id" required>
@@ -102,29 +104,28 @@
                                                         </div>
                                                     @endif
                                                 </div>
+                                            </div> --}}
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="rank_id">Rank <span class="t_r">*</span></label>
+                                                    <select class="form-control" name="rank_id" id="rank_id"
+                                                        required></select>
+                                                    @if ($errors->has('rank_id'))
+                                                        <div class="alert alert-danger">{{ $errors->first('rank_id') }}</div>
+                                                    @endif
+                                                </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="subject_id">Subject <span class="t_r">*</span></label>
-                                                    <select class="form-control" name="subject_id" id="subject_id" required>
-                                                    </select>
+                                                    <select class="form-control" name="subject_id" id="subject_id"
+                                                        required></select>
                                                     @if ($errors->has('subject_id'))
-                                                        <div class="alert alert-danger">{{ $errors->first('subject_id') }}
-                                                        </div>
+                                                        <div class="alert alert-danger">{{ $errors->first('subject_id') }}</div>
                                                     @endif
                                                 </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="rank_id">Branch <span class="t_r">*</span></label>
-                                                    <select class="form-control" name="rank_id" id="rank_id" required>
-                                                    </select>
-                                                    @if ($errors->has('rank_id'))
-                                                        <div class="alert alert-danger">{{ $errors->first('rank_id') }}
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                            </div>
+                                            </div>   
+                                            
                                             {{-- <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="type">Question Type <span

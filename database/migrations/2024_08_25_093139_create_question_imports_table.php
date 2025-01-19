@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('option_2')->nullable();
             $table->string('option_3')->nullable();
             $table->string('option_4')->nullable();
-            $table->string('mark');
+            $table->unsignedTinyInteger('mark');
+            $table->unsignedTinyInteger('correct')->nullable();
             $table->timestamps();
         });
     }
