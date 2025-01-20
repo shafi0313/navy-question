@@ -11,7 +11,6 @@ use App\Http\Controllers\Admin\GlobalController;
 use App\Http\Controllers\Admin\MarkDistributionController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\QuestionController;
-use App\Http\Controllers\Admin\QuestionEntryController;
 use App\Http\Controllers\Admin\QuestionImportController;
 use App\Http\Controllers\Admin\QuestionPaperController;
 use App\Http\Controllers\Admin\RankController;
@@ -131,7 +130,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::post('/store', 'store')->name('store');
         Route::patch('/status/{quesInfo}', 'status')->name('status');
         // Route::post('/complete', 'complete')->name('complete');
-        Route::get('/edit/{id}/{quesInfoId}', 'edit')->name('edit');
+        Route::get('/edit/{id}/{quesInfoId}/{set}', 'edit')->name('edit');
         Route::post('/update/{id}', 'update')->name('update');
         Route::get('/show/{quesInfo}/{set}/{type}', 'show')->name('show');
         Route::delete('/destroy/{id}', 'destroy')->name('destroy');

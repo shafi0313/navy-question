@@ -37,6 +37,7 @@
                             <form action="{{ route('admin.generate_question.update', $question->id) }}" method="post">
                                 @csrf
                                 <input type="hidden" name="quesInfoId" value="{{ $quesInfoId }}">
+                                <input type="hidden" name="set" value="{{ $set }}">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-6">

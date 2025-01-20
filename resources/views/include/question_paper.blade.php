@@ -63,7 +63,7 @@
                 <td style="text-align:right">{{ $questionPaper->question->mark }}
                     <span>
                         @if (!empty($edit))
-                            <a href="{{ route('admin.generate_question.edit', [$questionPaper->question->id, $questionInfo->id]) }}"
+                            <a href="{{ route('admin.generate_question.edit', [$questionPaper->question->id, $questionInfo->id, $set]) }}"
                                 style="margin-left: 20px" class="text-info">Edit</a>
                         @endif
                         @if (!empty($delete))

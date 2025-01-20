@@ -211,11 +211,11 @@ class GenerateQuestionPaperController extends Controller
         return back();
     }
 
-    public function edit($id, $quesInfoId)
+    public function edit($id, $quesInfoId, $set)
     {
         $question = Question::with('options')->find($id);
 
-        return view('admin.generate_question_paper.edit', compact('quesInfoId', 'question'));
+        return view('admin.generate_question_paper.edit', compact('question', 'quesInfoId', 'set'));
     }
 
     public function update(Request $request, $quesId)
@@ -223,7 +223,6 @@ class GenerateQuestionPaperController extends Controller
         $data = $this->validate($request, [
             'rank_id' => 'required|exists:ranks,id',
             'subject_id' => 'required|exists:subjects,id',
-            // 'type' => 'required',
             'mark' => 'required|numeric',
             'ques' => 'required|string',
             'option' => 'required|array',
@@ -239,13 +238,13 @@ class GenerateQuestionPaperController extends Controller
         foreach ($request->option as $key => $option) {
             $correct = strtolower(str_replace(' ', '', $request->correct[$key]));
             $correct = ($correct === 'yes') ? 1 : 0;
-        
+
             $optionData = [
                 'question_id' => $quesId,
                 'option' => $option,
                 'correct' => $correct,
             ];
-        
+
             if (isset($request->option_id[$key])) {
                 $existingOption = QuesOption::find($request->option_id[$key]);
                 if ($existingOption) {
@@ -262,13 +261,10 @@ class GenerateQuestionPaperController extends Controller
         try {
             DB::commit();
             toast('Success!', 'success');
-            return back();
-            return redirect()->route('admin.generate_question.show', $request->quesInfoId);
+            return redirect()->route('admin.generate_question.show', [$request->quesInfoId, $request->set, 'show']);
         } catch (\Exception $e) {
-            return $e->getMessage();
             DB::rollBack();
             toast('error', 'Error');
-
             return back();
         }
     }
