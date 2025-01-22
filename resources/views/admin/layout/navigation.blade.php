@@ -135,7 +135,7 @@
                 <li class="nav-item {{ activeNav('admin.generated_question.*') }}">
                     <a href="{{ route('admin.generated_question.index') }}">
                         <i class="fa-solid fa-clipboard-question"></i>
-                        <p>Question Paper</p>
+                        <p>Final Question</p>
                     </a>
                 </li>
 
