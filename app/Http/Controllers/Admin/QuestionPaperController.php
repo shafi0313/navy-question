@@ -22,7 +22,7 @@ class QuestionPaperController extends Controller
                 'exam:id,name',
                 'rank:id,name',
                 'questionSubjectInfo'])
-                ->whereStatus('Created')
+                ->whereStatus(2)
                 ->latest();
 
             return DataTables::of($queInfos)

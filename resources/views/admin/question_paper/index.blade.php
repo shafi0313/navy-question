@@ -33,10 +33,8 @@
                                 <div class="table-responsive">
                                     <table id="data_table"
                                         class="table table-bordered table-striped table-hover mb-0 w-100">
-                                        <thead>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
+                                        <thead></thead>
+                                        <tbody></tbody>
                                     </table>
                                 </div>
                             </div>
@@ -72,9 +70,9 @@
                             orderable: false,
                         },
                         {
-                            data: 'exam.name',
-                            name: 'exam.name',
-                            title: 'Exam'
+                            data: 'exam_name',
+                            name: 'exam_name',
+                            title: 'Exam Name'
                         },
                         {
                             data: 'rank.name',

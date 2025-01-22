@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreQuestionInfoRequest;
-use App\Models\Exam;
 use App\Models\QuesOption;
 use App\Models\Question;
 use App\Models\QuestionInfo;
@@ -170,7 +169,7 @@ class GenerateQuestionPaperController extends Controller
 
     public function status(QuestionInfo $quesInfo)
     {
-        $quesInfo->status = 'Created';
+        $quesInfo->status = 2;
         try {
             $quesInfo->save();
 
