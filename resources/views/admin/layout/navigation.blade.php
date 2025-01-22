@@ -117,15 +117,15 @@
                     </a>
                     <div class="collapse {{ openNav(['admin.generate_question.*']) }}" id="generateQuestion">
                         <ul class="nav nav-collapse">
+                            <li class="{{ activeSubNav(['admin.generate_question.create']) }}">
+                                <a href="{{ route('admin.generate_question.create') }}">
+                                    <span class="sub-item">Prepare Question</span>
+                                </a>
+                            </li>
                             <li
                                 class="{{ activeSubNav(['admin.generate_question.index', 'admin.generate_question.edit', 'admin.generate_question.show']) }}">
                                 <a href="{{ route('admin.generate_question.index') }}">
                                     <span class="sub-item">Draft Question</span>
-                                </a>
-                            </li>
-                            <li class="{{ activeSubNav(['admin.generate_question.create']) }}">
-                                <a href="{{ route('admin.generate_question.create') }}">
-                                    <span class="sub-item">Prepare Question</span>
                                 </a>
                             </li>
                         </ul>
