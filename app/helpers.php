@@ -40,23 +40,17 @@ if (! function_exists('questionSetInBangla')) {
     }
 }
 
-if (! function_exists('nu')) {
-    function nu($set)
+if (! function_exists('banglaNumber')) {
+    function banglaNumber($number)
     {
-        return match ($set) {
+        $bengaliDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+        $bengaliNumber = '';
 
-            0 => '০',
-            1 => '১',
-            2 => '২',
-            3 => '৩',
-            4 => '৪',
-            5 => '৫',
-            6 => '৬',
-            7 => '৭',
-            8 => '৮',
-            9 => '৯',
-            default => 'N/A',
-        };
+        foreach (str_split($number) as $digit) {
+            $bengaliNumber .= $bengaliDigits[$digit] ?? $digit;
+        }
+
+        return $bengaliNumber;
     }
 }
 
@@ -235,7 +229,7 @@ if (! function_exists('userCan')) {
 if (! function_exists('imgProcessAndStore')) {
     function imgProcessAndStore($image, string $path, ?array $size = null, $oldImage = null)
     {
-        $dir = public_path('/uploads/images/'.$path);
+        $dir = public_path('/uploads/images/' . $path);
         if (! is_dir($dir)) {
             mkdir($dir, 0777, true);
         }
@@ -243,14 +237,14 @@ if (! function_exists('imgProcessAndStore')) {
         $extension = strtolower($image->getClientOriginalExtension());
 
         if ($oldImage != null) {
-            $checkPath = $dir.'/'.$oldImage;
+            $checkPath = $dir . '/' . $oldImage;
             if ($oldImage && file_exists($checkPath)) {
                 unlink($checkPath);
             }
         }
 
         if ($extension == 'svg') {
-            $imageName = $path.'-'.uniqueId(10).'.svg';
+            $imageName = $path . '-' . uniqueId(10) . '.svg';
             $image->move($dir, $imageName);
         } else {
             $image = Image::make($image);
@@ -266,11 +260,11 @@ if (! function_exists('imgProcessAndStore')) {
             $uniqueId = uniqueId(10);
 
             if ($extension == 'png') {
-                $imageName = $path.'-'.$uniqueId.'.png';
-                $image->encode('png', 80)->save($dir.'/'.$imageName);
+                $imageName = $path . '-' . $uniqueId . '.png';
+                $image->encode('png', 80)->save($dir . '/' . $imageName);
             } else {
-                $imageName = $path.'-'.$uniqueId.'.webp';
-                $image->encode('webp', 80)->save($dir.'/'.$imageName);
+                $imageName = $path . '-' . $uniqueId . '.webp';
+                $image->encode('webp', 80)->save($dir . '/' . $imageName);
             }
         }
 
@@ -292,12 +286,12 @@ if (! function_exists('imgWebpStore')) {
             });
         }
 
-        $dir = public_path('/uploads/images/'.$path);
+        $dir = public_path('/uploads/images/' . $path);
         if (! is_dir($dir)) {
             mkdir($dir, 0777, true);
         }
-        $imageName = $path.'-'.uniqueId(10).'.webp';
-        $image->encode('webp', 70)->save($dir.'/'.$imageName);
+        $imageName = $path . '-' . uniqueId(10) . '.webp';
+        $image->encode('webp', 70)->save($dir . '/' . $imageName);
 
         return $imageName;
     }
@@ -317,14 +311,14 @@ if (! function_exists('imgWebpUpdate')) {
             });
         }
 
-        $dir = public_path('/uploads/images/'.$path);
+        $dir = public_path('/uploads/images/' . $path);
         if (! is_dir($dir)) {
             mkdir($dir, 0777, true);
         }
-        $imageName = $path.'-'.uniqueId(10).'.webp';
-        $image->encode('webp', 70)->save($dir.'/'.$imageName);
+        $imageName = $path . '-' . uniqueId(10) . '.webp';
+        $image->encode('webp', 70)->save($dir . '/' . $imageName);
 
-        $checkPath = $dir.'/'.$oldImage;
+        $checkPath = $dir . '/' . $oldImage;
         if ($oldImage && file_exists($checkPath)) {
             unlink($checkPath);
         }
@@ -335,7 +329,7 @@ if (! function_exists('imgWebpUpdate')) {
 if (! function_exists('imgUnlink')) {
     function imgUnlink($folder, $image)
     {
-        $path = public_path('uploads/images/'.$folder.'/'.$image);
+        $path = public_path('uploads/images/' . $folder . '/' . $image);
         if ($image && file_exists($path)) {
             return unlink($path);
         }
@@ -346,13 +340,13 @@ if (! function_exists('imageStore')) {
     function imageStore(Request $request, $request_name, string $name, string $path)
     {
         if ($request->hasFile($request_name)) {
-            $pathCreate = public_path().'/uploads/images/'.$path.'/';
+            $pathCreate = public_path() . '/uploads/images/' . $path . '/';
             ! file_exists($pathCreate) ?? File::makeDirectory($pathCreate, 0777, true, true);
 
             $image = $request->file($request_name);
-            $imageName = $name.uniqueId(10).'.'.$image->getClientOriginalExtension();
+            $imageName = $name . uniqueId(10) . '.' . $image->getClientOriginalExtension();
             if ($image->isValid()) {
-                $request->$request_name->move(public_path().'/uploads/images/'.$path.'/', $imageName);
+                $request->$request_name->move(public_path() . '/uploads/images/' . $path . '/', $imageName);
 
                 return $imageName;
             }
@@ -376,7 +370,7 @@ if (! function_exists('imageUpdate')) {
             }
 
             $image = $request->file($request_name);
-            $imageName = "{$name}_".uniqueId(10).'.'.$image->getClientOriginalExtension();
+            $imageName = "{$name}_" . uniqueId(10) . '.' . $image->getClientOriginalExtension();
 
             if ($image->isValid()) {
                 $image->move(public_path("uploads/images/{$path}/"), $imageName);
@@ -392,7 +386,7 @@ if (! function_exists('imageUpdate')) {
 if (! function_exists('imagePath')) {
     function imagePath($folder, $image)
     {
-        $path = 'uploads/images/'.$folder.'/'.$image;
+        $path = 'uploads/images/' . $folder . '/' . $image;
         if (@getimagesize($path)) {
             return asset($path);
         } else {
@@ -404,8 +398,8 @@ if (! function_exists('imagePath')) {
 if (! function_exists('profileImg')) {
     function profileImg()
     {
-        if (file_exists(asset('uploads/images/users/'.user()->image))) {
-            return asset('uploads/images/users/'.user()->image);
+        if (file_exists(asset('uploads/images/users/' . user()->image))) {
+            return asset('uploads/images/users/' . user()->image);
         } else {
             return asset('uploads/images/icons/navy.jpg');
         }

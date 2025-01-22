@@ -113,6 +113,15 @@
                             orderable: false,
                             searchable: false,
                         },
+                        {
+                            data: 'answer',
+                            name: 'answer',
+                            title: 'Answer',
+                            className: "text-center",
+                            width: "60px",
+                            orderable: false,
+                            searchable: false,
+                        },
                         // {
                         //     data: 'action',
                         //     name: 'action',

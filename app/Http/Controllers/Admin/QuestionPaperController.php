@@ -57,6 +57,24 @@ class QuestionPaperController extends Controller
 
                     return $btn;
                 })
+                ->addColumn('answer', function ($row) {
+                    $setColorCodes = [
+                        1 => '#dc3545', // Red (Bootstrap's badge-danger)
+                        2 => '#6c757d', // Brown/Secondary
+                        3 => '#ffc107', // Yellow (Bootstrap's badge-warning)
+                        4 => '#007bff', // Blue (Bootstrap's badge-primary)
+                        5 => '#6f42c1', // Purple (custom color)
+                        6 => '#28a745', // Green (Bootstrap's badge-success)
+                    ];
+
+                    $btn = '';
+                    for ($i = 1; $i <= 6; $i++) {
+                        $colorCode = $setColorCodes[$i];
+                        $btn .= '<a href="'.route('admin.generated_question.answer_sheet', [$row->id, $i, 'pdf']).'" class="badge mb-1" style="background-color: '.htmlspecialchars($colorCode).'; color: white;">Set '.questionSetInBangla($i).'</a> ';
+                    }
+
+                    return $btn;
+                })
                 // ->addColumn('action', function ($row) {
                 //     $btn = '';
                 //     if (userCan('slider-edit')) {
@@ -68,24 +86,12 @@ class QuestionPaperController extends Controller
 
                 //     return $btn;
                 // })
-                ->rawColumns(['set', 'generate', 'action'])
+                ->rawColumns(['answer', 'set', 'generate', 'action'])
                 ->make(true);
         }
 
         return view('admin.question_paper.index');
     }
-
-    // public function showBySubject($examId)
-    // {
-    //     $datum = QuesInfo::with(['exam'])->whereExam_id($examId)->whereStatus('Completed')->get();
-    //     return view('admin.question_paper.subject_show', compact('datum'));
-    // }
-
-    // public function showBySet($subjectId, $year)
-    // {
-    //     $datum = QuesInfo::with(['exam'])->whereSubject_id($subjectId)->whereStatus('Completed')->whereYear('date', $year)->get();
-    //     return view('admin.question_paper.set_show', compact('datum'));
-    // }
 
     public function show($quesInfoId, $set, $type)
     {
@@ -102,26 +108,21 @@ class QuestionPaperController extends Controller
         }
     }
 
-    // public function pdf($quesInfoId, $set)
-    // {
-    //     $chapters = QuestionPaper::with(['quesInfo', 'quesInfo.exam', 'options', 'question.chapter'])
-    //         ->join('questions', 'questions.id', '=', 'question_papers.question_id')
-    //         ->whereQuesInfoId($quesInfoId)
-    //         ->whereSet($set)
-    //         ->groupBy('chapter_id');
+    public function answerSheet($quesInfoId, $set, $type)
+    {
+        $data = $this->questionPaperShow($quesInfoId, $set, $type);
 
-    //     $mark = MarkDistribution::whereSubject_id($chapters->first()->first()->quesInfo->subject_id);
-    //     $passMark = $mark->first(['pass_mark'])->pass_mark;
-    //     $totalMark = $mark->sum('multiple') + $mark->sum('sort') + $mark->sum('long');
-    //     if ($chapters->count() <= 0) {
-    //         Alert::error('No Data Found');
-    //         return back();
-    //     }
-    //     // return view('admin.question_paper.pdf', compact('chapters','passMark','totalMark'));
-    //     $pdf = PDF::loadView('admin.question_paper.pdf', compact('chapters', 'passMark', 'totalMark'));
-    //     return $pdf->download($chapters->first()->first()->quesInfo->exam->name . ' - ' . $chapters->first()->first()->question->subject->name . ' - ' . date('h:i:sa d-M-Y') . '.pdf');
-    //     // return view('admin.question_paper.show', compact('questionPapers','passMark','totalMark'));
-    // }
+        if ($type == 'show') {
+            return view('admin.question_paper.answer_sheet', $data);
+        } elseif ($type == 'pdf') {
+            // return $data;
+            // return view('admin.question_paper.pdf', $data);
+            $pdf = PDF::loadView('admin.question_paper.answer_sheet_pdf', $data);
+
+            return $pdf->download($data['questionInfo']->exam_name.' - '.date('h:i:sa d-M-Y').'.pdf');
+        }
+    }
+
     public function destroy($id)
     {
         try {

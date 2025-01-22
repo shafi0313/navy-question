@@ -3,19 +3,6 @@
         font-family: 'bangla', sans-serif;
     }
 
-    .answer-instruction {
-        text-align: justify;
-        border: 2px solid #000;
-        padding: 10px;
-        margin-bottom: 5px;
-    }
-
-    .option {
-        /* padding-left: 24px !important; */
-        /* padding-left: 10px; */
-        /* display: inline-block; */
-    }
-
     .form-check [type=checkbox]:checked,
     .form-check [type=checkbox]:not(:checked) {
         position: absolute;
