@@ -80,7 +80,8 @@
             <tr>
                 <th style="font-size: 12px; width: 25px">প্রশ্ন <br> নং</th>
                 <th style="text-align:left; font-size: 14px;">উত্তর
-                    ({{ Str::limit($questionSubjectInfo->subject->name, 7) }})</th>
+                    ({{ Str::limit($questionSubjectInfo->subject->name, 7) }})
+                </th>
             </tr>
         </table>
         @php $x = 1 @endphp
