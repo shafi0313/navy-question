@@ -112,7 +112,7 @@ class QuestionPaperController extends Controller
 
     public function questionPFD()
     {
-        Browsershot::url('http://navy-question.test/admin/question-paper/show/1/1/show')->savePdf('example2.pdf');
+        Browsershot::url('https://dev4.softgiantbd.com/admin/question-paper/show/9/1/show')->savePdf('example2.pdf');
 
         // Browsershot::url('https://www.itsolutionstuff.com')
         //     ->setOption('landscape', true)
