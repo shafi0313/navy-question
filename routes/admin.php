@@ -149,7 +149,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::get('/answer-sheet/{quesInfo}/{set}/{type}', 'answerSheet')->name('answer_sheet');
         Route::delete('/destroy/{id}', 'destroy')->name('destroy');
 
-        Route::get('/pdf/download/', 'questionPFD')->name('questionPFD');
+        // Route::get('/pdf/download/', 'questionPFD')->name('questionPFD');
     });
 
     Route::controller(AnswerPaperController::class)->prefix('answer-paper')->name('answerPaper.')->group(function () {

@@ -1,7 +1,7 @@
 <style>
     body {
-        /* font-family: 'bangla', sans-serif; */
-        font-family: 'dejavu-sans', sans-serif !important;
+        font-family: 'bangla', sans-serif;
+        /* font-family: 'dejavu-sans', sans-serif !important; */
     }
 
     .form-check [type=checkbox]:checked,

@@ -5,8 +5,7 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^8.2",
-        "barryvdh/laravel-dompdf": "^3.1",
+        "php": "^8.3",
         "guzzlehttp/guzzle": "^7.2",
         "intervention/image": "^2.6.0",
         "laravel/fortify": "^1.20",
@@ -15,7 +14,6 @@
         "laravel/tinker": "^2.8",
         "maatwebsite/excel": "^3.1",
         "realrashid/sweet-alert": "^7.1",
-        "spatie/browsershot": "^5.0",
         "spatie/laravel-backup": "^8.6",
         "spatie/laravel-permission": "^6.3",
         "torann/geoip": "^3.0",

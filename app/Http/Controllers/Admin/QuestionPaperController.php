@@ -8,7 +8,6 @@ use App\Models\QuestionInfo;
 use Illuminate\Http\Request;
 use App\Models\QuestionPaper;
 use App\Traits\QuestionPaperTrait;
-use Spatie\Browsershot\Browsershot;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -100,7 +99,7 @@ class QuestionPaperController extends Controller
         $data = $this->questionPaperShow($quesInfoId, $set, $type);
 
         if ($type == 'show') {
-            return view('admin.question_paper.pdf', $data);
+            return view('admin.question_paper.show', $data);
         } elseif ($type == 'pdf') {
             // return $data;
             // return view('admin.question_paper.pdf', $data);
@@ -110,17 +109,17 @@ class QuestionPaperController extends Controller
         }
     }
 
-    public function questionPFD()
-    {
-        Browsershot::url('https://dev4.softgiantbd.com/admin/question-paper/show/9/1/show')->savePdf('example2.pdf');
+    // public function questionPFD()
+    // {
+    //     Browsershot::url('http://navy-question.test/admin/question-paper/show/1/1/show')->savePdf('example2.pdf');
 
-        // Browsershot::url('https://www.itsolutionstuff.com')
-        //     ->setOption('landscape', true)
-        //     ->windowSize(3840, 2160)
-        //     ->waitUntilNetworkIdle()
-        //     ->save('itsolutionstuff.jpg');
-        // dd("Done");
-    }
+    //     // Browsershot::url('https://www.itsolutionstuff.com')
+    //     //     ->setOption('landscape', true)
+    //     //     ->windowSize(3840, 2160)
+    //     //     ->waitUntilNetworkIdle()
+    //     //     ->save('itsolutionstuff.jpg');
+    //     // dd("Done");
+    // }
 
     public function answerSheet($quesInfoId, $set, $type)
     {
