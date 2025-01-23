@@ -1,24 +1,14 @@
 <?php
 
 return [
-    'custom_font_dir' => base_path('/public/backend/fonts/'),
+    'custom_font_dir' => base_path('public/fonts/'),
     'custom_font_data' => [
-        // 'bangla' => [
-        //     'R'  => 'SolaimanLipi.ttf', // regular font
-        //     'B'  => 'SolaimanLipi.ttf', // optional: bold font
-        //     'I'  => 'SolaimanLipi.ttf', // optional: italic font
-        //     'BI' => 'SolaimanLipi.ttf', // optional: bold-italic font
-        //     'useOTL' => 0xFF,
-        //     'useKashida' => 75,
-        // ]
         'bangla' => [
             'R' => 'Nirmala.ttf', // regular font
             'useOTL' => 0xFF,
             'useKashida' => 75,
         ],
     ],
-
-
 
     'mode'                     => '',
     'format'                   => 'A4',
@@ -51,5 +41,4 @@ return [
     'pdfa'                     => false,
     'pdfaauto'                 => false,
     'use_active_forms'         => false,
-
 ];

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use PDF;
+// use Mpdf\Mpdf;
+// use PDF;
+use Spatie\LaravelPdf\Facades\Pdf;
 use App\Models\QuesInfo;
 use App\Models\QuestionInfo;
 use Illuminate\Http\Request;
@@ -96,6 +98,7 @@ class QuestionPaperController extends Controller
 
     public function show($quesInfoId, $set, $type)
     {
+        // return base_path('public/fonts/Nirmala.ttf');
         $data = $this->questionPaperShow($quesInfoId, $set, $type);
 
         if ($type == 'show') {
@@ -103,9 +106,12 @@ class QuestionPaperController extends Controller
         } elseif ($type == 'pdf') {
             // return $data;
             // return view('admin.question_paper.pdf', $data);
-            $pdf = PDF::loadView('admin.question_paper.pdf', $data);
+            Pdf::view('admin.question_paper.pdf', $data)
+            ->format('a4')
+            ->save('invoice.pdf');
+            // $pdf = PDF::loadView('admin.question_paper.pdf', $data);
 
-            return $pdf->download($data['questionInfo']->exam_name . ' - ' . date('h:i:sa d-M-Y') . '.pdf');
+            // return $pdf->download($data['questionInfo']->exam_name . ' - ' . date('h:i:sa d-M-Y') . '.pdf');
         }
     }
 
@@ -129,11 +135,13 @@ class QuestionPaperController extends Controller
             return view('admin.question_paper.answer_sheet', $data);
         } elseif ($type == 'pdf') {
             // return $data;
-            // return view('admin.question_paper.pdf', $data);
+            // Pdf::view('admin.question_paper.answer_sheet_pdf', $data)
+            // ->format('a4')
+            // ->save('invoice.pdf');
             // return view('admin.question_paper.answer_sheet_pdf', $data);
-            $pdf = PDF::loadView('admin.question_paper.answer_sheet_pdf', $data);
+            // $pdf = PDF::loadView('admin.question_paper.answer_sheet_pdf', $data);
 
-            return $pdf->download($data['questionInfo']->exam_name . ' - ' . date('h:i:sa d-M-Y') . '.pdf');
+            // return $pdf->download($data['questionInfo']->exam_name . ' - ' . date('h:i:sa d-M-Y') . '.pdf');
         }
     }
 

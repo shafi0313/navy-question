@@ -3,6 +3,7 @@
         font-family: 'bangla', sans-serif;
         /* font-family: 'dejavu-sans', sans-serif !important; */
     }
+
     /* * {
         font-family: 'bangla', sans-serif;
     } */
@@ -33,9 +34,10 @@
         /* text-transform: uppercase; */
     }
 
-    .navy{
+    .navy {
         border: none !important;
     }
+
     .navy table,
     .navy th,
     .navy td {
@@ -98,6 +100,4 @@
         width: 100%;
         z-index: 1;
     } */
-
-
 </style>
