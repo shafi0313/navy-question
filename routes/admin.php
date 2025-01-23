@@ -148,7 +148,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::get('/show/{quesInfo}/{set}/{type}', 'show')->name('show');
         Route::get('/answer-sheet/{quesInfo}/{set}/{type}', 'answerSheet')->name('answer_sheet');
         Route::delete('/destroy/{id}', 'destroy')->name('destroy');
-        // Route::get('/pdf/download/{quesInfo}/{set}', 'pdf')->name('pdf');
+
+        Route::get('/pdf/download/', 'questionPFD')->name('questionPFD');
     });
 
     Route::controller(AnswerPaperController::class)->prefix('answer-paper')->name('answerPaper.')->group(function () {

@@ -4,13 +4,15 @@
 </htmlpageheader>
 
 <style>
+    * {
+        font-family: 'dejavu-sans', sans-serif !important;
+        /* font-family: 'bangla', sans-serif; */
+    }
+
     /* :root {
         --option: #f92d71;
     } */
 
-    .row {
-        width: 100%;
-    }
     .question-div {
         /* margin-top: 20px; */
         width: 190px;
@@ -61,7 +63,7 @@
     }
 </style>
 @foreach ($questionSubjectInfos as $questionSubjectInfo)
-{{-- <div class="row">
+    {{-- <div class="row">
     @php
         $totalQuestionMark = 0;
     @endphp
@@ -87,7 +89,7 @@
         @php $x = 1 @endphp
         {{-- Question paper subject info start --}}
         @foreach ($questionSubjectInfo->questionPapers as $questionPaper)
-            <table>
+            <table style="background: #f92d71">
                 <tr>
                     <td class="sl">{{ banglaNumber($x++) }} </td>
                     <td>
@@ -95,10 +97,10 @@
                             $i = 1;
                         @endphp
                         @foreach ($questionPaper->options as $index => $option)
-                        @if (!$loop->first)
-                        &nbsp;&nbsp;&nbsp;
-                        @endif
-                            
+                            @if (!$loop->first)
+                                &nbsp;&nbsp;&nbsp;
+                            @endif
+
                             @if ($option->correct == 1)
                                 <div class="correct-option">
                                     <i class="fa-regular fa-circle-check"></i>
@@ -116,8 +118,4 @@
             </table>
         @endforeach
     </div>
-
-    
-
-
 @endforeach
