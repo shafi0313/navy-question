@@ -1,17 +1,12 @@
 @include('admin.question_paper.css')
-<htmlpageheader name="page-header">
+{{-- <htmlpageheader name="page-header">
     <p style="display: block; width: 100%; text-align: center; line-height: 15px">গোপনীয়</p>
-</htmlpageheader>
+</htmlpageheader> --}}
 
 <style>
-    * {
-        font-family: 'dejavu-sans', sans-serif !important;
-        /* font-family: 'bangla', sans-serif; */
-    }
-
-    /* :root {
+    :root {
         --option: #f92d71;
-    } */
+    }
 
     .question-div {
         /* margin-top: 20px; */
@@ -26,7 +21,7 @@
     table,
     th,
     td {
-        border: 1px solid #f92d71;
+        border: 1px solid var(--option);
         padding: 5px 8px;
     }
 
@@ -35,33 +30,34 @@
     }
 
     .sl {
-        color: #f92d71;
+        color: var(--option);
         font-weight: bold;
         text-align: center;
-        width: 38px !important;
+        width: 25px !important;
     }
 
     .correct-option {
         text-align: center;
-        color: #f92d71;
-        border: 1px solid #f92d71;
+        color: var(--option);
+        border: 1px solid var(--option);
         height: 20px;
         width: 20px;
         border-radius: 50%;
         display: inline-block;
-        background: #f92d71;
+        background: var(--option);
     }
 
     .option {
         text-align: center;
-        border: 1px solid #f92d71;
+        border: 1px solid var(--option);
         height: 20px;
         width: 20px;
         border-radius: 50%;
         display: inline-block;
-        color: #f92d71;
+        color: var(--option);
     }
 </style>
+
 @foreach ($questionSubjectInfos as $questionSubjectInfo)
     {{-- <div class="row">
     @php
@@ -82,14 +78,15 @@
     <div class="question-div">
         <table>
             <tr>
-                <th style="font-size: 12px; width: 38px">প্রশ্ন <br> নং</th>
-                <th style="text-align:left">উত্তর ({{ Str::limit($questionSubjectInfo->subject->name, 10) }})</th>
+                <th style="font-size: 12px; width: 25px">প্রশ্ন <br> নং</th>
+                <th style="text-align:left; font-size: 14px;">উত্তর
+                    ({{ Str::limit($questionSubjectInfo->subject->name, 7) }})</th>
             </tr>
         </table>
         @php $x = 1 @endphp
         {{-- Question paper subject info start --}}
         @foreach ($questionSubjectInfo->questionPapers as $questionPaper)
-            <table style="background: #f92d71">
+            <table>
                 <tr>
                     <td class="sl">{{ banglaNumber($x++) }} </td>
                     <td>
@@ -98,7 +95,7 @@
                         @endphp
                         @foreach ($questionPaper->options as $index => $option)
                             @if (!$loop->first)
-                                &nbsp;&nbsp;&nbsp;
+                                &nbsp;
                             @endif
 
                             @if ($option->correct == 1)

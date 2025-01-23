@@ -3,6 +3,9 @@
         font-family: 'bangla', sans-serif;
         /* font-family: 'dejavu-sans', sans-serif !important; */
     }
+    /* * {
+        font-family: 'bangla', sans-serif;
+    } */
 
     .form-check [type=checkbox]:checked,
     .form-check [type=checkbox]:not(:checked) {

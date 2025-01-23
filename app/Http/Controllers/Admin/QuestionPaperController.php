@@ -99,7 +99,7 @@ class QuestionPaperController extends Controller
         $data = $this->questionPaperShow($quesInfoId, $set, $type);
 
         if ($type == 'show') {
-            return view('admin.question_paper.show', $data);
+            return view('admin.question_paper.pdf', $data);
         } elseif ($type == 'pdf') {
             // return $data;
             // return view('admin.question_paper.pdf', $data);
@@ -130,6 +130,7 @@ class QuestionPaperController extends Controller
         } elseif ($type == 'pdf') {
             // return $data;
             // return view('admin.question_paper.pdf', $data);
+            return view('admin.question_paper.answer_sheet_pdf', $data);
             $pdf = PDF::loadView('admin.question_paper.answer_sheet_pdf', $data);
 
             return $pdf->download($data['questionInfo']->exam_name . ' - ' . date('h:i:sa d-M-Y') . '.pdf');
