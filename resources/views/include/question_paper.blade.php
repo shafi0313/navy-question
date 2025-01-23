@@ -16,7 +16,6 @@
                 @endif
                 {{ $questionInfo->exam_name }} <br>
                 {{ $questionInfo->rank->name }}
-                {{-- {{ \Carbon\Carbon::parse($questionInfo->date)->format('F Y') }} --}}
             </h4>
 
             {{-- <table class="table table-bordered text-left">
@@ -31,6 +30,7 @@
             <p style="margin-bottom: 10px"><b><u>{{ $questionInfo->option_note }}</u></b></p> --}}
         </div>
     </div>
+    
     <p class="answer-instruction">
         সঠিক উত্তরটি নির্বাচন করে সরবরাহকৃত উত্তর পত্রে বৃত্ত পূরণ করতে হবে । যে উত্তরটি সঠিক, উত্তর পত্রের বিষয় ভিত্তিক
         প্রশ্ন নম্বরে প্রদত্ত ক্রমিকে(ক, খ, গ, ঘ/a, b, c, d) বৃত্ত পূরণ করতে হবে। যেমন 'খ' উত্তরটি সঠিক হলে উত্তর পত্রের

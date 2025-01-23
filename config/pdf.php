@@ -1,6 +1,25 @@
 <?php
 
 return [
+    'custom_font_dir' => base_path('/public/backend/fonts/'),
+    'custom_font_data' => [
+        // 'bangla' => [
+        //     'R'  => 'SolaimanLipi.ttf', // regular font
+        //     'B'  => 'SolaimanLipi.ttf', // optional: bold font
+        //     'I'  => 'SolaimanLipi.ttf', // optional: italic font
+        //     'BI' => 'SolaimanLipi.ttf', // optional: bold-italic font
+        //     'useOTL' => 0xFF,
+        //     'useKashida' => 75,
+        // ]
+        'bangla' => [
+            'R' => 'Nirmala.ttf', // regular font
+            'useOTL' => 0xFF,
+            'useKashida' => 75,
+        ],
+    ],
+
+
+
     'mode'                     => '',
     'format'                   => 'A4',
     'default_font_size'        => '12',
@@ -25,30 +44,12 @@ return [
     'watermark_image_alpha'    => 0.2,
     'watermark_image_size'     => 'D',
     'watermark_image_position' => 'P',
-    'custom_font_dir'          => '',
-    'custom_font_data'         => [],
+    // 'custom_font_dir'          => '',
+    // 'custom_font_data'         => [],
     'auto_language_detection'  => false,
     'temp_dir'                 => storage_path('app'),
     'pdfa'                     => false,
     'pdfaauto'                 => false,
     'use_active_forms'         => false,
 
-
-    'custom_font_dir' => base_path('/public/backend/fonts/'),
-    'custom_font_data' => [
-        // 'bangla' => [
-        //     'R'  => 'SolaimanLipi.ttf',    // regular font
-        //     'B'  => 'SolaimanLipi.ttf',       // optional: bold font
-        //     'I'  => 'SolaimanLipi.ttf',     // optional: italic font
-        //     'BI' => 'SolaimanLipi.ttf', // optional: bold-italic font
-        //     'useOTL' => 0xFF,
-        //     'useKashida' => 75,
-        // ]
-        'bangla' => [
-            'R' => 'Nirmala.ttf',    // regular font
-            // 'useOTL' => 0xFF,
-            // 'useKashida' => 75,
-        ],
-        // ...add as many as you want.
-    ],
 ];
