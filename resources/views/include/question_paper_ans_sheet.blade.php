@@ -85,6 +85,7 @@
             </tr>
         </table>
         @php $x = 1 @endphp
+
         {{-- Question paper subject info start --}}
         @foreach ($questionSubjectInfo->questionPapers as $questionPaper)
             <table>
