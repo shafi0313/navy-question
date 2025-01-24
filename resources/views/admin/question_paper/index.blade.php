@@ -72,7 +72,7 @@
                         {
                             data: 'exam_name',
                             name: 'exam_name',
-                            title: 'Exam Name'
+                            title: 'Exam'
                         },
                         {
                             data: 'rank.name',
@@ -80,30 +80,10 @@
                             title: 'Rank'
                         },
                         {
-                            data: 'date',
-                            name: 'date',
-                            title: 'Date'
+                            data: 'comment',
+                            name: 'comment',
+                            title: 'Comment'
                         },
-                        {
-                            data: 'time',
-                            name: 'time',
-                            title: 'Time'
-                        },
-                        {
-                            data: 'duration',
-                            name: 'duration',
-                            title: 'duration'
-                        },
-                        // {
-                        //     data: 'status',
-                        //     name: 'status',
-                        //     title: 'Status'
-                        // },
-                        // {
-                        //     data: 'generate',
-                        //     name: 'generate',
-                        //     title: 'Generate'
-                        // },
                         {
                             data: 'set',
                             name: 'set',

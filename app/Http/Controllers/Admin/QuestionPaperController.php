@@ -34,12 +34,12 @@ class QuestionPaperController extends Controller
                 ->addColumn('date', function ($row) {
                     return bdDate($row->date);
                 })
-                ->addColumn('time', function ($row) {
-                    return time12($row->time);
+                ->addColumn('status', function ($row) {
+                    return $row->status == 1 ? 'Draft' : 'Created';
                 })
-                ->addColumn('duration', function ($row) {
-                    return $row->d_hour . ':' . $row->d_minute . ' Minute';
-                })
+                // ->addColumn('duration', function ($row) {
+                //     return $row->d_hour . ':' . $row->d_minute . ' Minute';
+                // })
                 // ->addColumn('content', function ($row) {
                 //     return '<textarea class="form-control">'.strip_tags($row->content).'</textarea>';
                 // })
@@ -79,18 +79,7 @@ class QuestionPaperController extends Controller
 
                     return $btn;
                 })
-                // ->addColumn('action', function ($row) {
-                //     $btn = '';
-                //     if (userCan('slider-edit')) {
-                //         $btn .= view('button', ['type' => 'ajax-edit', 'route' => route('admin.sliders.edit', $row->id), 'row' => $row]);
-                //     }
-                //     if (userCan('slider-delete')) {
-                //         $btn .= view('button', ['type' => 'ajax-delete', 'route' => route('admin.sliders.destroy', $row->id), 'row' => $row, 'src' => 'dt']);
-                //     }
-
-                //     return $btn;
-                // })
-                ->rawColumns(['answer', 'set', 'generate', 'action'])
+                ->rawColumns(['answer', 'set'])
                 ->make(true);
         }
 

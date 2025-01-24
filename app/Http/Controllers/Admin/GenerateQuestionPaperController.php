@@ -38,9 +38,12 @@ class GenerateQuestionPaperController extends Controller
                 ->addColumn('status', function ($row) {
                     return $row->status == 1 ? 'Draft' : 'Created';
                 })
-                ->addColumn('duration', function ($row) {
-                    return $row->d_hour . ':' . $row->d_minute . ' Minute';
-                })
+                // ->addColumn('duration', function ($row) {
+                //     if($row->d_hour || $row->d_minute) {
+                //         return $row->d_hour . ':' . $row->d_minute . ' Minute';
+                //     }
+                    
+                // })
                 ->addColumn('set', function ($row) {
                     $setColorCodes = [
                         1 => '#dc3545', // Red (Bootstrap's badge-danger)
