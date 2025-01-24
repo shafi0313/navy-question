@@ -127,7 +127,7 @@ class QuestionPaperController extends Controller
             return view('admin.question_paper.answer_sheet', $data);
         } elseif ($type == 'pdf') {
             // return $data;
-            return view('admin.question_paper.answer_sheet_pdf', $data);
+            // return view('admin.question_paper.answer_sheet_pdf', $data);
             $filePath = public_path('uploads/question/উত্তর-পত্র-' . slug($data['questionInfo']->exam_name) . '-' . questionSetBn($set) . '.pdf');
             Pdf::view('admin.question_paper.answer_sheet_pdf', $data)
                 ->format('a4')
