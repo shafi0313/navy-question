@@ -59,14 +59,10 @@ class GenerateQuestionPaperController extends Controller
 
                     return $btn;
                 })
-                // ->addColumn('generate', function ($row) {
-                //     return '<a data-route="'.route('admin.generate_question.status', $row->id).'" class="btn btn-primary text-light btn-sm" onclick="changeStatus(this)">Generate</a>';
-                // })
                 ->addColumn('action', function ($row) {
                     $btn = '';
-                    // if (userCan('slider-edit')) {
-                    //     $btn .= view('button', ['type' => 'ajax-edit', 'route' => route('admin.sliders.edit', $row->id), 'row' => $row]);
-                    // }
+                    //     $btn .= view('button', ['type' => 'edit', 'route' => route('admin.generate_question.edit', $row->id), 'row' => $row]);
+                  
                     $btn .= '<a data-route="' . route('admin.generate_question.status', $row->id) . '" class="btn btn-primary text-light btn-sm mb-2" onclick="changeStatus(this)">Generate</a>';
                     $btn .= view('button', ['type' => 'ajax-delete', 'route' => route('admin.generate_question.destroy', $row->id), 'row' => $row, 'src' => 'dt']);
                     return $btn;
@@ -143,16 +139,14 @@ class GenerateQuestionPaperController extends Controller
         }
 
         try {
-            toast('Success!', 'success');
             DB::commit();
-
-            return redirect()->route('admin.generate_question.index');
+            Alert::success('Success', 'Draft question has been successfully generated');
+            // return redirect()->route('admin.generate_question.index');
         } catch (\Exception $ex) {
-            toast('Error', 'error');
             DB::rollBack();
-
-            return back();
+            Alert::error('Error', 'An error occurred while generating the draft question. Please try again.');
         }
+        return back();
     }
 
     public function show($quesInfoId, $set, $type)

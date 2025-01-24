@@ -129,15 +129,22 @@
                                             </div>
                                         </div>
                                     </div>
-
-
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="note">Note</label>
-                                                <textarea name="note" class="form-control" rows="5">সঠিক উত্তরটি নির্বাচন করে সরবরাহকৃত উত্তর পত্রে বৃত্ত পূরণ করতে হবে । যে উত্তরটি সঠিক, উত্তর পত্রের বিষয় ভিত্তিক প্রশ্ন নম্বরে প্রদত্ত ক্রমিকে(ক, খ, গ, ঘ/a, b, c, d) বৃত্ত পূরণ করতে হবে। যেমন 'খ' উত্তরটি সঠিক হলে উত্তর পত্রের বিষয় ভিত্তিক প্রশ্ন নম্বরের 'খ' উত্তরটিতে বৃত্ত পূরণ করতে হবে। একটি প্রশ্নের জন্য একটি উত্তর পূরণ করতে হবে। একাধিক বৃত্ত পূরণ করলে তা বাতিল বলে গণ্য হবে।</textarea>
+                                                <textarea name="note" class="form-control" rows="3">সঠিক উত্তরটি নির্বাচন করে সরবরাহকৃত উত্তর পত্রে বৃত্ত পূরণ করতে হবে । যে উত্তরটি সঠিক, উত্তর পত্রের বিষয় ভিত্তিক প্রশ্ন নম্বরে প্রদত্ত ক্রমিকে(ক, খ, গ, ঘ/a, b, c, d) বৃত্ত পূরণ করতে হবে। যেমন 'খ' উত্তরটি সঠিক হলে উত্তর পত্রের বিষয় ভিত্তিক প্রশ্ন নম্বরের 'খ' উত্তরটিতে বৃত্ত পূরণ করতে হবে। একটি প্রশ্নের জন্য একটি উত্তর পূরণ করতে হবে। একাধিক বৃত্ত পূরণ করলে তা বাতিল বলে গণ্য হবে।</textarea>
                                                 @if ($errors->has('note'))
                                                     <div class="alert alert-danger">{{ $errors->first('note') }}</div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="comment">Comment</label>
+                                                <textarea name="comment" class="form-control" rows="2"></textarea>
+                                                @if ($errors->has('comment'))
+                                                    <div class="alert alert-danger">{{ $errors->first('comment') }}</div>
                                                 @endif
                                             </div>
                                         </div>

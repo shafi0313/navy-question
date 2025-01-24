@@ -30,6 +30,7 @@ class StoreQuestionInfoRequest extends FormRequest
             'd_minute' => ['nullable', 'integer', 'min:0', 'max:127'],
             'status' => ['nullable'],
             'note' => ['nullable', 'string', 'min:1'],
+            'comment' => ['nullable', 'string', 'min:1'],
 
             'subject_id.*' => ['required', 'exists:subjects,id'],
             'mark.*' => ['required', 'integer'],
