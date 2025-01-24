@@ -32,7 +32,7 @@ class QuestionController extends Controller
                             $options .= '<p class="mb-2">';
                             $options .= $option->correct == 1
                                 ? '<i class="fa-regular fa-circle-check"></i> '
-                                : numberToBanglaWord($index + 1).') ';
+                                : numberToBnWord($index + 1).') ';
                             $options .= $option->option.'</p>';
                         }
 

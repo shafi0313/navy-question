@@ -8,8 +8,12 @@
         --option: #f92d71;
     }
 
+    body {
+        margin: 8mm 10mm 10mm 10mm;
+    }
+
     .question-div {
-        /* margin-top: 20px; */
+        margin-right: 10px;
         width: 190px;
         display: inline-block;
     }
@@ -23,6 +27,7 @@
     td {
         border: 1px solid var(--option);
         padding: 5px 8px;
+        height: 24px;
     }
 
     table tr:nth-child(even) {
@@ -38,13 +43,13 @@
 
     .correct-option {
         text-align: center;
-        color: var(--option);
-        border: 1px solid var(--option);
-        height: 20px;
-        width: 20px;
+        color: #000;
+        border: 1px solid #000;
+        height: 18px;
+        width: 18px;
         border-radius: 50%;
         display: inline-block;
-        background: var(--option);
+        background: #000;
     }
 
     .option {
@@ -58,13 +63,19 @@
     }
 </style>
 
+<div class="title" style="margin-bottom: 20px">
+    <h4 class="exam_title">
+        {{ $questionInfo->exam_name }} <br>
+        {{ $questionInfo->rank->name }}
+    </h4>
+</div>
 @foreach ($questionSubjectInfos as $questionSubjectInfo)
     {{-- <div class="row">
     @php
         $totalQuestionMark = 0;
     @endphp
     <div class="navy" style="margin-bottom: 5px">
-        <span>{{ questionSetInBangla((int) $questionSubjectInfo->set) }}</span>
+        <span>{{ questionSetBn((int) $questionSubjectInfo->set) }}</span>
         <div class="title">
             <h4 class="exam_title">
                 {{ $questionInfo->exam_name }} <br>
@@ -73,24 +84,32 @@
         </div>
     </div>
 </div> --}}
-
+    @php
+        $subject = $questionSubjectInfo->subject->name;
+    @endphp
 
     <div class="question-div">
         <table>
             <tr>
                 <th style="font-size: 12px; width: 25px">প্রশ্ন <br> নং</th>
                 <th style="text-align:left; font-size: 14px;">উত্তর
-                    ({{ Str::limit($questionSubjectInfo->subject->name, 7) }})
+                    ({{ Str::limit($subject, 7) }})
                 </th>
             </tr>
         </table>
-        @php $x = 1 @endphp
 
         {{-- Question paper subject info start --}}
+        @php $x = 1 @endphp
         @foreach ($questionSubjectInfo->questionPapers as $questionPaper)
             <table>
                 <tr>
-                    <td class="sl">{{ banglaNumber($x++) }} </td>
+                    <td class="sl">
+                        @if (in_array($subject, ['ইংরেজি', 'ইংরেজী', 'English', 'english']))
+                            {{ $x++ }}
+                        @else
+                            {{ bnNumber($x++) }}
+                        @endif
+                    </td>
                     <td>
                         @php
                             $i = 1;
@@ -102,12 +121,16 @@
 
                             @if ($option->correct == 1)
                                 <div class="correct-option">
-                                    <i class="fa-regular fa-circle-check"></i>
+                                    a
                                 </div>
                             @else
                                 <div class="option">
                                     <span class="">
-                                        {{ numberToBanglaWord($index + 1) }}
+                                        @if (in_array($subject, ['ইংরেজি', 'ইংরেজী', 'English', 'english']))
+                                            {{ numberToEnWord($index + 1) }}
+                                        @else
+                                            {{ numberToBnWord($index + 1) }}
+                                        @endif
                                     </span>
                                 </div>
                             @endif

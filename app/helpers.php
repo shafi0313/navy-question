@@ -25,23 +25,33 @@ if (! function_exists('time12')) {
     }
 }
 
-if (! function_exists('questionSetInBangla')) {
-    function questionSetInBangla($set)
+if (! function_exists('questionSetBn')) {
+    function questionSetBn($set)
     {
-        return match ($set) {
+        return match ((int)$set) {
             1 => 'লাল',
             2 => 'বাদামি',
             3 => 'হলুদ',
             4 => 'নীল',
             5 => 'বেগুনি',
             6 => 'সবুজ',
-            default => 'N/A',
+            default => 'NA',
         };
     }
 }
 
-if (! function_exists('banglaNumber')) {
-    function banglaNumber($number)
+if (! function_exists('slug')) {
+    function slug(string $text): string
+    {
+        $array = [':', ',', '.', '!', '|', '।', 'ঃ', '{', '}', '[', ']', '(', ')', '৳', '%', '$', '#', '@', '*', '+', ';'];
+        $slug = strtolower(str_replace($array, '', trim($text)));
+
+        return str_replace(' ', '-', $slug);
+    }
+}
+
+if (! function_exists('bnNumber')) {
+    function bnNumber($number)
     {
         $bengaliDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
         $bengaliNumber = '';
@@ -54,8 +64,8 @@ if (! function_exists('banglaNumber')) {
     }
 }
 
-if (! function_exists('numberToBanglaWord')) {
-    function numberToBanglaWord($set)
+if (! function_exists('numberToBnWord')) {
+    function numberToBnWord($set)
     {
         return match ($set) {
             1 => 'ক',
@@ -101,6 +111,33 @@ if (! function_exists('numberToBanglaWord')) {
         };
     }
 }
+
+
+if (! function_exists('numberToEnWord')) {
+    function numberToEnWord($set)
+    {
+        return match ($set) {
+            1 => 'a',
+            2 => 'b',
+            3 => 'c',
+            4 => 'd',
+            5 => 'e',
+            6 => 'f',
+            7 => 'g',
+            8 => 'h',
+            9 => 'i',
+            10 => 'j',
+            11 => 'k',
+            12 => 'l',
+            13 => 'm',
+            14 => 'n',
+            15 => 'o',
+            16 => 'p',
+            default => 'NA',
+        };
+    }
+}
+
 
 if (! function_exists('permissionText')) {
     function permissionText($permission)

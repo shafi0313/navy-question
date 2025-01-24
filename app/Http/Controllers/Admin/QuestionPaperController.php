@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 // use Mpdf\Mpdf;
 // use PDF;
-use Spatie\LaravelPdf\Facades\Pdf;
 use App\Models\QuesInfo;
 use App\Models\QuestionInfo;
 use Illuminate\Http\Request;
 use App\Models\QuestionPaper;
+use Spatie\LaravelPdf\Enums\Unit;
 use App\Traits\QuestionPaperTrait;
+use Spatie\LaravelPdf\Facades\Pdf;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -55,7 +56,7 @@ class QuestionPaperController extends Controller
                     $btn = '';
                     for ($i = 1; $i <= 6; $i++) {
                         $colorCode = $setColorCodes[$i];
-                        $btn .= '<a href="' . route('admin.generated_question.show', [$row->id, $i, 'show']) . '" class="badge mb-1" style="background-color: ' . htmlspecialchars($colorCode) . '; color: white;">Set ' . questionSetInBangla($i) . '</a> ';
+                        $btn .= '<a href="' . route('admin.generated_question.show', [$row->id, $i, 'show']) . '" class="badge mb-1" style="background-color: ' . htmlspecialchars($colorCode) . '; color: white;">Set ' . questionSetBn($i) . '</a> ';
                     }
 
                     return $btn;
@@ -73,7 +74,7 @@ class QuestionPaperController extends Controller
                     $btn = '';
                     for ($i = 1; $i <= 6; $i++) {
                         $colorCode = $setColorCodes[$i];
-                        $btn .= '<a href="' . route('admin.generated_question.answer_sheet', [$row->id, $i, 'pdf']) . '" class="badge mb-1" style="background-color: ' . htmlspecialchars($colorCode) . '; color: white;">Set ' . questionSetInBangla($i) . '</a> ';
+                        $btn .= '<a href="' . route('admin.generated_question.answer_sheet', [$row->id, $i, 'pdf']) . '" class="badge mb-1" style="background-color: ' . htmlspecialchars($colorCode) . '; color: white;">Set ' . questionSetBn($i) . '</a> ';
                     }
 
                     return $btn;
@@ -106,26 +107,17 @@ class QuestionPaperController extends Controller
         } elseif ($type == 'pdf') {
             // return $data;
             // return view('admin.question_paper.pdf', $data);
+            $filePath = public_path('uploads/question/' . slug($data['questionInfo']->exam_name) . '-' . questionSetBn($set) . '.pdf');
             Pdf::view('admin.question_paper.pdf', $data)
-            ->format('a4')
-            ->save('invoice.pdf');
-            // $pdf = PDF::loadView('admin.question_paper.pdf', $data);
+                ->format('a4')
+                ->margins(80, 80, 80, 80, Unit::Pixel)
+                ->save($filePath);
 
-            // return $pdf->download($data['questionInfo']->exam_name . ' - ' . date('h:i:sa d-M-Y') . '.pdf');
+            if (file_exists($filePath)) {
+                return response()->download($filePath)->deleteFileAfterSend(true);
+            }
         }
     }
-
-    // public function questionPFD()
-    // {
-    //     Browsershot::url('http://navy-question.test/admin/question-paper/show/1/1/show')->savePdf('example2.pdf');
-
-    //     // Browsershot::url('https://www.itsolutionstuff.com')
-    //     //     ->setOption('landscape', true)
-    //     //     ->windowSize(3840, 2160)
-    //     //     ->waitUntilNetworkIdle()
-    //     //     ->save('itsolutionstuff.jpg');
-    //     // dd("Done");
-    // }
 
     public function answerSheet($quesInfoId, $set, $type)
     {
@@ -135,9 +127,18 @@ class QuestionPaperController extends Controller
             return view('admin.question_paper.answer_sheet', $data);
         } elseif ($type == 'pdf') {
             // return $data;
-            // Pdf::view('admin.question_paper.answer_sheet_pdf', $data)
-            // ->format('a4')
-            // ->save('invoice.pdf');
+            return view('admin.question_paper.answer_sheet_pdf', $data);
+            $filePath = public_path('uploads/question/উত্তর-পত্র-' . slug($data['questionInfo']->exam_name) . '-' . questionSetBn($set) . '.pdf');
+            Pdf::view('admin.question_paper.answer_sheet_pdf', $data)
+                ->format('a4')
+                ->landscape()
+                ->save($filePath);
+
+            if (file_exists($filePath)) {
+                return response()->download($filePath)->deleteFileAfterSend(true);
+            }
+
+
             // return view('admin.question_paper.answer_sheet_pdf', $data);
             // $pdf = PDF::loadView('admin.question_paper.answer_sheet_pdf', $data);
 

@@ -1,12 +1,13 @@
 <style>
-    body {
+    /* body {
         font-family: 'bangla', sans-serif;
-        /* font-family: 'dejavu-sans', sans-serif !important; */
-    }
+        font-family: 'dejavu-sans', sans-serif !important;
+    } */
 
     /* * {
         font-family: 'bangla', sans-serif;
     } */
+
 
     .form-check [type=checkbox]:checked,
     .form-check [type=checkbox]:not(:checked) {
@@ -68,8 +69,9 @@
     }
 
     @page {
-        margin-bottom: 60px;
-        margin-top: 60px;
+        /* margin-left: 60px;
+        margin: 60px; */
+        /* margin-top: 60px; */
     }
 
     @page {

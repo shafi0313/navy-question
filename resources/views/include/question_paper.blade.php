@@ -1,4 +1,5 @@
 @include('admin.question_paper.css')
+
 <htmlpageheader name="page-header">
     <p style="display: block; width: 100%; text-align: center; line-height: 15px">গোপনীয়</p>
 </htmlpageheader>
@@ -8,7 +9,7 @@
         $totalQuestionMark = 0;
     @endphp
     <div class="navy" style="margin-bottom: 5px">
-        <span>{{ questionSetInBangla((int) $questionSubjectInfo->set) }}</span>
+        <span>{{ questionSetBn((int) $questionSubjectInfo->set) }}</span>
         <div class="title">
             <h4 class="exam_title">
                 @if ($questionInfo->status == 'Pending')
@@ -30,10 +31,12 @@
             <p style="margin-bottom: 10px"><b><u>{{ $questionInfo->option_note }}</u></b></p> --}}
         </div>
     </div>
-    
+
     <p class="answer-instruction">
-        সঠিক উত্তরটি নির্বাচন করে সরবরাহকৃত উত্তর পত্রে বৃত্ত পূরণ করতে হবে । যে উত্তরটি সঠিক, উত্তর পত্রের বিষয় ভিত্তিক
-        প্রশ্ন নম্বরে প্রদত্ত ক্রমিকে(ক, খ, গ, ঘ/a, b, c, d) বৃত্ত পূরণ করতে হবে। যেমন 'খ' উত্তরটি সঠিক হলে উত্তর পত্রের
+        সঠিক উত্তরটি নির্বাচন করে সরবরাহকৃত উত্তর পত্রে বৃত্ত পূরণ করতে হবে । যে উত্তরটি সঠিক, উত্তর পত্রের বিষয়
+        ভিত্তিক
+        প্রশ্ন নম্বরে প্রদত্ত ক্রমিকে(ক, খ, গ, ঘ/a, b, c, d) বৃত্ত পূরণ করতে হবে। যেমন 'খ' উত্তরটি সঠিক হলে উত্তর
+        পত্রের
         বিষয় ভিত্তিক প্রশ্ন নম্বরের 'খ' উত্তরটিতে বৃত্ত পূরণ করতে হবে। একটি প্রশ্নের জন্য একটি উত্তর পূরণ করতে হবে।
         একাধিক বৃত্ত পূরণ করলে তা বাতিল বলে গণ্য হবে।
     </p>
@@ -45,33 +48,56 @@
         @endphp
     @endforeach
     {{-- For total question mark end --}}
+    @php
+        $subject = $questionSubjectInfo->subject->name;
+    @endphp
     <table>
         <tr>
-            <th style="text-align:left">বিষয়: {{ $questionSubjectInfo->subject->name }}</th>
-            <th style="text-align:right">পূর্ণমান: {{ $totalQuestionMark }}</th>
+            <th style="text-align:left">বিষয়: {{ $subject }}</th>
+            <th style="text-align:right">পূর্ণমান:
+                @if (in_array($subject, ['ইংরেজি', 'ইংরেজী', 'English', 'english']))
+                    {{ $totalQuestionMark }}
+                @else
+                    {{ bnNumber($totalQuestionMark) }}
+                @endif
+            </th>
         </tr>
     </table>
-    @php $x = 1 @endphp
+
     {{-- Question paper subject info start --}}
+    @php $x = 1 @endphp
     @foreach ($questionSubjectInfo->questionPapers as $questionPaper)
         <input type="hidden" name="get_question_id[]" value="{{ $questionPaper->question_id }}">
         <input type="hidden" name="question_subject_info_id[]" value="{{ $questionPaper->question_subject_info_id }}">
         <table class="question-table">
-            <tr>
-                <td class="sl">{{ $x++ }}. </td>
-                <td style="text-align:left;">{!! $questionPaper->question->ques !!}</td>
-                <td style="text-align:right">{{ $questionPaper->question->mark }}
-                    <span>
-                        @if (!empty($edit))
-                            <a href="{{ route('admin.generate_question.edit', [$questionPaper->question->id, $questionInfo->id, $set]) }}"
-                                style="margin-left: 20px" class="text-info">Edit</a>
-                        @endif
-                        @if (!empty($delete))
-                            <a href="{{ route('admin.generate_question.quesDestroy', $questionPaper->id) }}"
-                                style="margin-left: 20px" class="text-danger" onclick="return confirm('Are you sure?')">Delete</a>
-                        @endif
-                    </span>
-                </td>
+            <td class="sl">
+                @if (in_array($subject, ['ইংরেজি', 'ইংরেজী', 'English', 'english']))
+                    {{ $x++ }}
+                @else
+                    {{ bnNumber($x++) }}
+                @endif
+                .
+            </td>
+            <td style="text-align:left;">{!! $questionPaper->question->ques !!}</td>
+            <td style="text-align:right">
+                @if (in_array($subject, ['ইংরেজি', 'ইংরেজী', 'English', 'english']))
+                    {{ $questionPaper->question->mark }}
+                @else
+                    {{ bnNumber($questionPaper->question->mark) }}
+                @endif
+
+                <span>
+                    @if (!empty($edit))
+                        <a href="{{ route('admin.generate_question.edit', [$questionPaper->question->id, $questionInfo->id, $set]) }}"
+                            style="margin-left: 20px" class="text-info">Edit</a>
+                    @endif
+                    @if (!empty($delete))
+                        <a href="{{ route('admin.generate_question.quesDestroy', $questionPaper->id) }}"
+                            style="margin-left: 20px" class="text-danger"
+                            onclick="return confirm('Are you sure?')">Delete</a>
+                    @endif
+                </span>
+            </td>
             </tr>
         </table>
         @if ($questionPaper->question->image)
@@ -81,10 +107,15 @@
             @php
                 $i = 1;
             @endphp
-            @foreach ($questionPaper->options as $option)
+            @foreach ($questionPaper->options as $index => $option)
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <label class="option">
-                    {{ numberToBanglaWord($i++) . ') ' }} {{ $option->option }}
+                    @if (in_array($subject, ['ইংরেজি', 'ইংরেজী', 'English', 'english']))
+                        {{ numberToEnWord($index + 1). ') ' }}
+                    @else
+                        {{ numberToBnWord($index + 1). ') ' }}
+                    @endif
+                     {{ $option->option }}
                 </label>
             @endforeach
         @endif

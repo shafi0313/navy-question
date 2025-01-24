@@ -54,7 +54,7 @@ class GenerateQuestionPaperController extends Controller
                     $btn = '';
                     for ($i = 1; $i <= 6; $i++) {
                         $colorCode = $setColorCodes[$i];
-                        $btn .= '<a href="' . route('admin.generate_question.show', [$row->id, $i, 'show']) . '" class="badge mb-1" style="background-color: ' . htmlspecialchars($colorCode) . '; color: white;">Set ' . questionSetInBangla($i) . '</a> ';
+                        $btn .= '<a href="' . route('admin.generate_question.show', [$row->id, $i, 'show']) . '" class="badge mb-1" style="background-color: ' . htmlspecialchars($colorCode) . '; color: white;">Set ' . questionSetBn($i) . '</a> ';
                     }
 
                     return $btn;

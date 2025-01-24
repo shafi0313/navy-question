@@ -9,7 +9,9 @@
 </head>
 
 <body>
+
     @include('include.question_paper')
+
 </body>
 
 </html>
