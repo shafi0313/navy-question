@@ -120,7 +120,7 @@ class QuestionPaperController extends Controller
             $filePath = public_path('uploads/question/উত্তর-পত্র-' . slug($data['questionInfo']->exam_name) . '-' . questionSetBn($set) . '.pdf');
             Pdf::view('admin.question_paper.answer_sheet_pdf', $data)
                 ->format('a4')
-                ->landscape()
+                // ->landscape()
                 ->save($filePath);
 
             if (file_exists($filePath)) {
