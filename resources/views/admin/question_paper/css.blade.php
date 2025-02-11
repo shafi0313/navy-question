@@ -75,7 +75,7 @@
     }
 
     @page {
-        header: page-header;
+        /* header: page-header; */
         /* footer: page-footer; */
     }
 
