@@ -2,7 +2,7 @@
 <style>
     :root {
         --option: #f92d71;
-        --background: #ecccdf;
+        --background: rgba(248, 155, 210, 0.3) !important;
     }
 
     body {
@@ -45,8 +45,7 @@
     }
 
     table tbody tr:nth-child(even) {
-        background-color: rgba(248, 155, 210, 0.3) !important;
-        /* Adjust the alpha value as needed */
+        background-color: var(--background);
     }
 
     .sl {
@@ -81,23 +80,32 @@
         border-radius: 50%;
         display: inline-block;
         color: var(--option);
+        position: relative;
     }
 
     .option span {
         font-size: 12px;
         font-weight: bold;
+        position: absolute;
+        left: 1px;
+        top: 0;
+    }    
+
+    .option-english span {
+        left: 3px;
+        top: 0;
     }
 
     .ans {
         text-align: center;
         margin: 10px 12px 10px 6px;
         border: 1px solid var(--option);
-        padding: 8px 0;
-        background-color: var(--background) !important;
+        padding: 5px 0;
+        background-color: var(--background);
     }
 
     .ans p {
-        font-size: 20px;
+        font-size: 16px;
         font-weight: bold;
     }
 
@@ -225,9 +233,12 @@
                                             a
                                         </div>
                                     @else
-                                        <div class="option">
+                                    @php
+                                        $isEnglish = in_array($subject, ['ইংরেজি', 'ইংরেজী', 'English', 'english']);
+                                    @endphp
+                                        <div class="option {{ $isEnglish ? 'option-english': '' }}">
                                             <span class="">
-                                                @if (in_array($subject, ['ইংরেজি', 'ইংরেজী', 'English', 'english']))
+                                                @if ($isEnglish)
                                                     {{ numberToEnWord($index + 1) }}
                                                 @else
                                                     {{ numberToBnWord($index + 1) }}
