@@ -133,7 +133,6 @@ class QuestionController extends Controller
             return $error;
         }
         $question = Question::with([
-            'exam:id,name',
             'rank:id,name',
             'subject:id,name',
             'options',
