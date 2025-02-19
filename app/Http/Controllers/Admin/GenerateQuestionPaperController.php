@@ -222,7 +222,7 @@ class GenerateQuestionPaperController extends Controller
             'mark' => 'required|numeric',
             'ques' => 'required|string',
             'option' => 'required|array',
-            'correct' => 'required|array',
+            'correct' => 'required|array|in:yes,no',
         ]);
 
         $data['type'] = 'multiple_choice';
@@ -233,7 +233,7 @@ class GenerateQuestionPaperController extends Controller
 
         foreach ($request->option as $key => $option) {
             $correct = strtolower(str_replace(' ', '', $request->correct[$key]));
-            $correct = ($correct === 'yes') ? 1 : 0;
+            $correct = ($correct == 'yes') ? 1 : 0;
 
             $optionData = [
                 'question_id' => $quesId,

@@ -22,15 +22,16 @@ class UpdateQuestionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'subject_id' => ['required', 'exists:subjects,id'],
             'rank_id' => ['required', 'exists:ranks,id'],
-            'type' => ['required', 'string', 'in:multiple_choice,short_question,long_question'],
+            'subject_id' => ['required', 'exists:subjects,id'],
+            'type' => ['required', 'string', 'in:multiple_choice'],
             'ques' => ['required', 'string', 'min:1'],
-            'mark' => ['required', 'integer', 'min:0', 'max:2147483647'],
+            'mark' => ['required', 'integer', 'min:1', 'max:10'],
             'image' => ['nullable', 'image', 'mimes:jpeg,jpg,JPG,png,webp,svg'],
 
-            'option.*' => ['nullable', 'string', 'min:1', 'max:255'],
-            'correct' => ['nullable', 'boolean'],
+            
+            'option' => 'required|array',
+            'correct' => 'required|array|in:yes,no',
         ];
     }
 }

@@ -114,7 +114,7 @@
                                                     <tr>
                                                         <td>SL</td>
                                                         <th>Option</th>
-                                                        <th width="100px">Correct ans</th>
+                                                        <th width="100px">Correct Ans</th>
                                                         <th style="width: 100px; text-align:center;" title="Add More">
                                                             <span class="btn btn-sm btn-success add-row">
                                                                 <i class="fa fa-plus" aria-hidden="true"></i>

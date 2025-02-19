@@ -85,11 +85,14 @@
                                                 @endif
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="row justify-content-center">
                                         @if ($question->type == 'multiple_choice')
-                                            <div class="col-md-6 ml-2 quesTypeDiv">
+                                            <div class="col-md-8 ml-2 quesTypeDiv">
                                                 <table class="table table-bordered">
                                                     <tr>
                                                         <th>Options</th>
+                                                        <th width="100px">Correct Ans</th>
                                                         <th style="width: 100px;text-align:center;">
                                                             <button type="button" class="btn btn-primary btn-sm"
                                                                 data-toggle="modal" data-target="#newOptionAdd">
@@ -101,9 +104,16 @@
                                                         <tr>
                                                             <input type="hidden" name="option_id[]" class="form-control"
                                                                 value="{{ $option->id }}" />
-                                                            <td><input type="text" name="option[]" id="option"
+                                                            <td>
+                                                                <input type="text" name="option[]" id="option"
                                                                     class="form-control" value="{{ $option->option }}" />
                                                             </td>
+
+                                                            <td class="text-center">
+                                                                <input type="text" name="correct[]" class="form-control"
+                                                                    value="{{ $option->correct == 1 ? 'yes' : 'no' }}" />
+                                                            </td>
+
                                                             <td class="text-center">
                                                                 <a href="{{ route('admin.questions.optionDestroy', $option->id) }}"
                                                                     data-toggle="tooltip" title=""
@@ -122,17 +132,18 @@
                                         @endif
                                     </div>
                                 </div>
-                                <div class="text-center card-action">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                    <button type="reset" class="btn btn-danger">Cancel</button>
-                                </div>
-                            </form>
                         </div>
+                        <div class="text-center card-action">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="reset" class="btn btn-danger">Cancel</button>
+                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-        @include('include.footer')
+    </div>
+    @include('include.footer')
     </div>
 
     <!-- Modal -->
