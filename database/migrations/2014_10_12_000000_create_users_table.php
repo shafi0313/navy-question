@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('name', 100);
             $table->string('email', 64)->unique();
-            $table->enum('permission', [0, 1, 2])->default(0)->comment('0=No login,1=Admin,2=User');
+            $table->unsignedTinyInteger('permission')->default(0)->comment('1:Super Admin, 2:Admin, 3:User');
             $table->string('mobile', 64)->nullable();
             $table->string('address')->nullable();
             $table->string('image', 32)->nullable();

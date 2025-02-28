@@ -20,7 +20,7 @@
         </div> --}}
         <div class="page-inner mt-5">
             <div class="row">
-                <div class="col-sm-6 col-md-3">
+                {{-- <div class="col-sm-6 col-md-3">
                     <div class="card card-stats card-round">
                         <div class="card-body ">
                             <div class="row">
@@ -38,8 +38,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-6 col-md-3">
+                </div> --}}
+                {{-- <div class="col-sm-6 col-md-3">
                     <div class="card card-stats card-round">
                         <div class="card-body ">
                             <div class="row">
@@ -76,7 +76,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>

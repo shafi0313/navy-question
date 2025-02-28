@@ -37,16 +37,19 @@
                             <form action="{{ route('admin.generate_question.store') }}" method="post">
                                 @csrf
                                 <div class="card-body">
-                                    <div class="row"> 
+                                    <div class="row">
                                         <div class="col-md-6">
                                             {{-- Question Info --}}
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="exam_name">Exam Name <span class="t_r">*</span></label>
-                                                        <input type="text" name="exam_name" class="form-control" value="{{ old('exam_name') }}" required>
+                                                        <label for="exam_name">Exam Name <span
+                                                                class="t_r">*</span></label>
+                                                        <input type="text" name="exam_name" class="form-control"
+                                                            value="{{ old('exam_name') }}" required>
                                                         @if ($errors->has('exam_name'))
-                                                            <div class="alert alert-danger">{{ $errors->first('exam_name') }}</div>
+                                                            <div class="alert alert-danger">
+                                                                {{ $errors->first('exam_name') }}</div>
                                                         @endif
                                                     </div>
                                                 </div>
@@ -56,7 +59,8 @@
                                                         <select class="form-control" name="rank_id" id="rank_id"
                                                             required></select>
                                                         @if ($errors->has('rank_id'))
-                                                            <div class="alert alert-danger">{{ $errors->first('rank_id') }}</div>
+                                                            <div class="alert alert-danger">{{ $errors->first('rank_id') }}
+                                                            </div>
                                                         @endif
                                                     </div>
                                                 </div>
