@@ -18,39 +18,28 @@ class UserController extends Controller
             $users = User::with([
                 'createdBy:id,name',
                 'updatedBy:id,name',
-                'roles:id,name',
-            ])->orderBy('name');
+            ]);
 
             return DataTables::of($users)
                 ->addIndexColumn()
                 ->addColumn('image', function ($row) {
-                    return '<img src="'.imagePath('users', $row->image).'" width="70px">';
+                    return '<img src="' . imagePath('users', $row->image) . '" width="70px">';
                 })
-                ->addColumn('roleName', function ($row) {
-                    $roleName = '';
-                    foreach ($row->roles as $role) {
-                        $roleName .= '<span class="badge badge-primary">'.$role->name.'</span>';
-                    }
-
-                    return $roleName;
+                ->addColumn('permission', function ($row) {
+                    $permissions = config('var.permission');
+                    return $permissions[$row->permission] ?? 'Unknown';
                 })
                 ->addColumn('action', function ($row) {
                     $btn = '';
-                    if (userCan('user-edit')) {
-                        $btn .= view('button', ['type' => 'ajax-edit', 'route' => route('admin.users.edit', $row->id), 'row' => $row]);
-                    }
-                    if (userCan('user-delete')) {
-                        $btn .= view('button', ['type' => 'ajax-delete', 'route' => route('admin.users.destroy', $row->id), 'row' => $row, 'src' => 'dt']);
-                    }
-
+                    $btn .= view('button', ['type' => 'ajax-edit', 'route' => route('admin.users.edit', $row->id), 'row' => $row]);
+                    $btn .= view('button', ['type' => 'ajax-delete', 'route' => route('admin.users.destroy', $row->id), 'row' => $row, 'src' => 'dt']);
                     return $btn;
                 })
-                ->rawColumns(['roleName', 'action', 'image'])
+                ->rawColumns(['permission', 'action', 'image'])
                 ->make(true);
         }
-        $roles = Role::all();
 
-        return view('admin.user.index', compact('roles'));
+        return view('admin.user.index');
     }
 
     public function store(StoreUserRequest $request)

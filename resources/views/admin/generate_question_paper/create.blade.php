@@ -94,12 +94,12 @@
 
                                                         <input style="width:50%; display: inline-block" type="text"
                                                             name="d_hour" class="form-control" value="{{ old('d_hour') }}"
-                                                            placeholder="Hour"
+                                                            placeholder="Hour. Ex: 1"
                                                             onInput="this.value = this.value.replace(/[^\d]/g,'');">
 
                                                         <input style="width:49%; display: inline-block" type="text"
                                                             name="d_minute" class="form-control"
-                                                            value="{{ old('d_minute') }}" placeholder="Minute"
+                                                            value="{{ old('d_minute') }}" placeholder="Minute. Ex: 30"
                                                             onInput="this.value = this.value.replace(/[^\d]/g,'');">
 
                                                         @if ($errors->has('d_hour'))
@@ -146,7 +146,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="comment">Comment</label>
-                                                <textarea name="comment" class="form-control" rows="2"></textarea>
+                                                <textarea name="comment" class="form-control" rows="2">{{ old('comment') }}</textarea>
                                                 @if ($errors->has('comment'))
                                                     <div class="alert alert-danger">{{ $errors->first('comment') }}</div>
                                                 @endif

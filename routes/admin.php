@@ -53,7 +53,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     // Global Ajax Route
     Route::get('select-2-ajax', [AjaxController::class, 'select2'])->name('select2');
-    Route::post('response', [AjaxController::class, 'response'])->name('ajax');
 
     Route::post('role/permission/{role}', [RoleController::class, 'assignPermission'])->name('role.permission');
     Route::resource('role', RoleController::class);

@@ -16,7 +16,7 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::user()->permission == 1) {
+        if (Auth::user()->permission == 1 || Auth::user()->permission == 2 || Auth::user()->permission == 3) {
             return $next($request);
         } else {
             Session::flush();

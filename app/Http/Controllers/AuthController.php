@@ -29,13 +29,13 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
-            if (Auth::user()->permission == 1) {
+            if (Auth::user()->permission == 1 || Auth::user()->permission == 2 || Auth::user()->permission == 3) {
                 $request->session()->regenerate();
 
                 return redirect()->intended('admin/dashboard');
             }
 
-            return redirect()->route('user.dashboard');
+            return to_route('login');
         }
 
         return back()->withErrors([

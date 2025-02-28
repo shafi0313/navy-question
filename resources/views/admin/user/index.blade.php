@@ -35,9 +35,7 @@
             </div>
         </div>
 
-        @can('user-add')
             @include('admin.user.create')
-        @endcan
 
         @push('custom_scripts')
             <!-- Datatables -->
@@ -65,8 +63,8 @@
                                 title: 'Name'
                             },
                             {
-                                data: 'roleName',
-                                name: 'roleName',
+                                data: 'permission',
+                                name: 'permission',
                                 title: 'Permission'
                             },
                             {

@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('exam_name', 255);
             $table->date('date');
             $table->time('time')->nullable();
-            $table->unsignedTinyInteger('d_hour')->nullable();
-            $table->unsignedTinyInteger('d_minute')->nullable();
+            $table->string('d_hour', 8)->nullable();
+            $table->string('d_minute', 8)->nullable();
             $table->unsignedTinyInteger('status')->nullable();
             $table->text('note')->nullable();
             $table->text('comment')->nullable();

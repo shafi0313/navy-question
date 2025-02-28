@@ -25,10 +25,5 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         view()->share('faPlusBit', '<i class="fa-solid fa-plus fa-beat fa-lg"></i>');
-
-        $this->registerPolicies();
-        Gate::before(function ($user, $ability) {
-            return $user->hasRole('super_admin') ? true : null;
-        });
     }
 }

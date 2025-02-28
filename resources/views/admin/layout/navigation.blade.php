@@ -122,7 +122,7 @@
                             <ul class="nav nav-collapse">
                                 <li class="{{ activeSubNav(['admin.generate_question.create']) }}">
                                     <a href="{{ route('admin.generate_question.create') }}">
-                                        <span class="sub-item">Prepare Question</span>
+                                        <span class="sub-item">Create Question Paper</span>
                                     </a>
                                 </li>
                                 <li

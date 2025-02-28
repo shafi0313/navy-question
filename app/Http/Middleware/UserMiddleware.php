@@ -16,7 +16,7 @@ class UserMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (auth()->user()->permission == 2) {
+        if (auth()->user()->permission == 3) {
             return $next($request);
         } else {
             Session::flush();

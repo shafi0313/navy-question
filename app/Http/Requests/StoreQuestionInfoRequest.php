@@ -23,12 +23,12 @@ class StoreQuestionInfoRequest extends FormRequest
     {
         return [
             'rank_id' => ['required', 'exists:ranks,id'],
-            'exam_name' => ['required'],
+            'exam_name' => ['required', 'string', 'min:1', 'max:255'],
             'date' => ['required', 'date'],
-            'time' => ['nullable'],
-            'd_hour' => ['nullable', 'integer', 'min:0', 'max:127'],
-            'd_minute' => ['nullable', 'integer', 'min:0', 'max:127'],
-            'status' => ['nullable'],
+            'time' => ['nullable', 'date'],
+            'd_hour' => ['nullable', 'string', 'min:1', 'max:8'],
+            'd_minute' => ['nullable', 'string', 'min:1', 'max:8'],
+            'status' => ['nullable', 'integer', 'min:0', 'max:255'],
             'note' => ['nullable', 'string', 'min:1'],
             'comment' => ['nullable', 'string', 'min:1'],
 

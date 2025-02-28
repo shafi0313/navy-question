@@ -14,15 +14,15 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="role">Permission <span class="t_r">*</span></label>
-                                <select name="role" class="form-control">
+                                <label for="permission">Permission <span class="t_r">*</span></label>
+                                <select name="permission" class="form-control">
                                     <option selected>Select</option>
-                                    @foreach ($roles as $role)
-                                        <option value="{{ $role->name }}">{{ $role->name }}</option>
+                                    @foreach (config('var.permission') as $k => $v)
+                                        <option value="{{ $k }}">{{ $v }}</option>
                                     @endforeach
                                 </select>
-                                @if ($errors->has('role'))
-                                    <div class="alert alert-danger">{{ $errors->first('role') }}</div>
+                                @if ($errors->has('permission'))
+                                    <div class="alert alert-danger">{{ $errors->first('permission') }}</div>
                                 @endif
                             </div>
                         </div>
