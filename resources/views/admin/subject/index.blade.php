@@ -44,9 +44,7 @@
         </div>
 
         @push('custom_scripts')
-            @can('subject-add')
                 @include('admin.subject.create')
-            @endcan
             <!-- Datatables -->
             @include('include.data_table')
             <script>

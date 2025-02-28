@@ -38,9 +38,7 @@
         </div>
 
         @push('custom_scripts')
-            @can('exam-add')
                 @include('admin.exam.create')
-            @endcan
             <!-- Datatables -->
             @include('include.data_table')
             <script>

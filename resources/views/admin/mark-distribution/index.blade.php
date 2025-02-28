@@ -39,9 +39,6 @@
         </div>
 
         @push('custom_scripts')
-            {{-- @can('mark-distribution-add')
-                @include('admin.mark-distribution.create')
-            @endcan --}}
             <!-- Datatables -->
             @include('include.data_table')
             <script>

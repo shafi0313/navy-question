@@ -42,9 +42,7 @@
         </div>
 
         @push('custom_scripts')
-            @can('rank-add')
                 @include('admin.rank.create')
-            @endcan
             <!-- Datatables -->
             @include('include.data_table')
             <script>
