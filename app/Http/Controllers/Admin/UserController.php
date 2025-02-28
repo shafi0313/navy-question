@@ -7,7 +7,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
@@ -45,7 +45,6 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         $data = $request->validated();
-        $data['permission'] = '1';
         $data['password'] = bcrypt($request->password);
         $data['created_by'] = user()->id;
         if ($request->hasFile('image')) {
@@ -53,11 +52,12 @@ class UserController extends Controller
         }
 
         try {
-            $user = User::create($data);
-            $user->assignRole($request->role);
-
+            DB::beginTransaction();
+            User::create($data);
+            DB::commit();
             return response()->json(['message' => 'The information has been inserted'], 200);
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json(['message' => 'Oops something went wrong, Please try again.'], 500);
         }
     }
@@ -65,8 +65,7 @@ class UserController extends Controller
     public function edit(Request $request, User $user)
     {
         if ($request->ajax()) {
-            $roles = Role::all();
-            $modal = view('admin.user.edit')->with(['user' => $user, 'roles' => $roles])->render();
+            $modal = view('admin.user.edit')->with(['user' => $user])->render();
 
             return response()->json(['modal' => $modal], 200);
         }

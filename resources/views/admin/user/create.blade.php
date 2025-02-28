@@ -15,7 +15,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="permission">Permission <span class="t_r">*</span></label>
-                                <select name="permission" class="form-control">
+                                <select name="permission" class="form-control" required>
                                     <option selected>Select</option>
                                     @foreach (config('var.permission') as $k => $v)
                                         <option value="{{ $k }}">{{ $v }}</option>

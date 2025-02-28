@@ -14,16 +14,14 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="role">Permission <span class="t_r">*</span></label>
-                                <select name="role" class="form-control">
-                                    <option selected>Select</option>
-                                    @foreach ($roles as $role)
-                                        <option value="{{ $role->name }}" @selected($role->id == $user->roles->first()->id)>
-                                            {{ $role->name }}</option>
+                                <label for="permission">Permission <span class="t_r">*</span></label>
+                                <select name="permission" class="form-control" required>
+                                    @foreach (config('var.permission') as $k => $v)
+                                        <option value="{{ $k }}" @selected($k == $user->permission)>{{ $v }}</option>
                                     @endforeach
                                 </select>
-                                @if ($errors->has('role'))
-                                    <div class="alert alert-danger">{{ $errors->first('role') }}</div>
+                                @if ($errors->has('permission'))
+                                    <div class="alert alert-danger">{{ $errors->first('permission') }}</div>
                                 @endif
                             </div>
                         </div>
@@ -92,10 +90,10 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="confirmpassword">Confirm Password</label>
+                                <label for="password_confirmation">Confirm Password</label>
                                 <input class="form-control" type="password" name="password_confirmation" >
-                                @if ($errors->has('password'))
-                                    <div class="alert alert-danger">{{ $errors->first('password') }}</div>
+                                @if ($errors->has('password_confirmation'))
+                                    <div class="alert alert-danger">{{ $errors->first('password_confirmation') }}</div>
                                 @endif
                             </div>
                         </div>
