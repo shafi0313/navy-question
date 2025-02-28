@@ -27,7 +27,7 @@
                             <form action="{{ route('admin.question_imports.imports') }}" method="post"
                                 enctype="multipart/form-data">
                                 @csrf
-                                <div class="card-body row justify-content-center">
+                                <div class="row justify-content-center">
                                     <div class="form-group col-sm-4">
                                         <label for="file">File
                                             <span class="t_r"> *
@@ -40,6 +40,49 @@
 
                                     <div class="col-md-3" style="margin-top: 40px">
                                         <button type="submit" class="btn btn-primary">Import</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <form action="{{ route('admin.question-imports.store') }}" method="post">
+                                @csrf @method('POST')
+                                <input type="hidden" name="type" value="multiple_choice">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-7">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="rank_id">Rank <span class="t_r">*</span></label>
+                                                    <select class="form-control" name="rank_id" id="rank_id"
+                                                        required></select>
+                                                    @if ($errors->has('rank_id'))
+                                                        <div class="alert alert-danger">{{ $errors->first('rank_id') }}
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="subject_id">Subject <span class="t_r">*</span></label>
+                                                    <select class="form-control" name="subject_id" id="subject_id"
+                                                        required></select>
+                                                    @if ($errors->has('subject_id'))
+                                                        <div class="alert alert-danger">{{ $errors->first('subject_id') }}
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row my-3">
+                                            <div class="col-md-12 text-right">
+                                                <a href="{{ route('admin.question_imports.all_deletes') }}"
+                                                    onclick="return confirm('Do you want to delete all data on this page?')"
+                                                    class="btn btn-danger mr-3">Delete All</a>
+                                                    
+                                                <button type="submit" onclick="return confirm('Are you sure?')"
+                                                    class="btn btn-primary">Post</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </form>
@@ -89,70 +132,6 @@
                                         </table>
                                     </div>
                                 </div>
-                                <form action="{{ route('admin.question-imports.store') }}" method="post">
-                                    @csrf @method('POST')
-                                    <input type="hidden" name="type" value="multiple_choice">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            {{-- <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="exam_id">Exam <span class="t_r">*</span></label>
-                                                    <select class="form-control" name="exam_id" id="exam_id" required>
-                                                    </select>
-                                                    @if ($errors->has('exam_id'))
-                                                        <div class="alert alert-danger">{{ $errors->first('exam_id') }}
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                            </div> --}}
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="rank_id">Rank <span class="t_r">*</span></label>
-                                                    <select class="form-control" name="rank_id" id="rank_id"
-                                                        required></select>
-                                                    @if ($errors->has('rank_id'))
-                                                        <div class="alert alert-danger">{{ $errors->first('rank_id') }}</div>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="subject_id">Subject <span class="t_r">*</span></label>
-                                                    <select class="form-control" name="subject_id" id="subject_id"
-                                                        required></select>
-                                                    @if ($errors->has('subject_id'))
-                                                        <div class="alert alert-danger">{{ $errors->first('subject_id') }}</div>
-                                                    @endif
-                                                </div>
-                                            </div>   
-                                            
-                                            {{-- <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="type">Question Type <span
-                                                            class="t_r">*</span></label>
-                                                    <select class="form-control" name="type" id="quesType" required>
-                                                        <option selected value disabled>Select</option>
-                                                        <option value="multiple_choice">Multiple Choice</option>
-                                                        <option value="short_question">Short Question</option>
-                                                        <option value="long_question">Long Question</option>
-                                                    </select>
-                                                    @if ($errors->has('type'))
-                                                        <div class="alert alert-danger">{{ $errors->first('type') }}</div>
-                                                    @endif
-                                                </div>
-                                            </div> --}}
-                                        </div>
-                                        <div class="row mt-5">
-                                            <div class="col-md-12 text-right">
-                                                <a href="{{ route('admin.question_imports.all_deletes') }}"
-                                                    onclick="return confirm('Do you want to delete all data on this page?')"
-                                                    class="btn btn-danger">Delete All</a>
-                                                <button type="submit" onclick="return confirm('Are you sure?')"
-                                                    class="btn btn-primary">Post</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
                             </div>
                         @else
                             <div class="card">
