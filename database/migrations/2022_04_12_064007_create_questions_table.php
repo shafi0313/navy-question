@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('subject_id')->constrained()->cascadeOnDelete();
             $table->foreignId('rank_id')->constrained()->cascadeOnDelete();
             $table->enum('type', ['multiple_choice', 'short_question', 'long_question']);
-            $table->text('ques');
+            $table->longText('ques');
             $table->integer('mark');
             $table->string('image', 64)->nullable();
             $table->timestamps();

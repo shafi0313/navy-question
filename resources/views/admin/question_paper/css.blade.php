@@ -8,6 +8,10 @@
         font-family: 'bangla', sans-serif;
     } */
 
+    .option p {
+        display: inline-block;
+    }
+
 
     .form-check [type=checkbox]:checked,
     .form-check [type=checkbox]:not(:checked) {

@@ -105,11 +105,10 @@
     <!-- Atlantis JS -->
     <script src="{{ asset('backend/js/atlantis.min.js') }}"></script>
 
-
     <script src="{{ asset('backend/js/custom.js') }}"></script>
     <script src="{{ asset('backend/js/plugins-init.js') }}"></script>
     <script src="{{ asset('backend/js/sweet-alert.js') }}"></script>
-
+{{-- <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script> --}}
     {{-- <script>
         $("form").on('submit', function(e){
             $(this).find('button[type="submit"]').attr('disabled', 'disabled');

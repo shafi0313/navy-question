@@ -64,7 +64,7 @@
                                                     <div class="alert alert-danger">{{ $errors->first('subject_id') }}</div>
                                                 @endif
                                             </div>
-                                        </div>                                        
+                                        </div>
                                         {{-- <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="type">Question Type <span class="t_r">*</span></label>
@@ -79,7 +79,7 @@
                                                 @endif
                                             </div>
                                         </div> --}}
-                                        
+
                                         {{-- <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="type">Is Important <span class="t_r">*</span></label>
@@ -119,13 +119,13 @@
                                         </div>
                                     </div>
 
-                                    <div class="row mt-4 justify-content-center">
-                                        <div class="col-md-10">
-                                            <table class="table table-bordered table-hover">
+                                    <div class="row mt-4">
+                                        <div class="col-md-12">
+                                            <table class="table table-bordered">
                                                 <tr>
                                                     <td>Option</td>
-                                                    <td>Answer</td>
-                                                    <td></td>
+                                                    <td width="80px">Answer</td>
+                                                    <td width="50px"></td>
                                                 </tr>
                                                 <tr>
                                                     <td>
@@ -142,13 +142,13 @@
                                                     </td>
                                                 </tr>
                                             </table>
-                                            
+
                                             <table class="table table-bordered table-hover item_data_table">
                                                 <thead>
                                                     <tr>
-                                                        <th>SN</th>
+                                                        <th width="40px">SN</th>
                                                         <th>Option</th>
-                                                        <th>Correct</th>
+                                                        <th width="80px">Correct</th>
                                                         <th width="50px"></th>
                                                     </tr>
                                                 </thead>
@@ -161,7 +161,6 @@
                                         <button type="reset" class="btn btn-danger">Cancel</button>
                                     </div>
                                 </div>
-                                
                             </form>
                         </div>
                     </div>
@@ -172,46 +171,103 @@
     </div>
 
     @push('custom_scripts')
+        <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
         @include('include.toast');
+        @include('include.summer-note');
         @include('admin.question_entry.get-js')
         <script>
-            $('.add-item').on('click', function() {
-                const option = $('#option').val();
-                const isCorrect = $('#correct').prop('checked');
-                let correct, correctText;
+            // $('#option').summernote({
+            //     height: 100,
+            // });
+            $(document).ready(function() {
+                // Define the custom button for inserting LaTeX equations
+                var LatexButton = function(context) {
+                    var ui = $.summernote.ui;
+                    var button = ui.button({
+                        contents: '<i class="note-icon-pencil"></i> Insert Equation',
+                        tooltip: 'Insert LaTeX Equation',
+                        click: function() {
+                            var latex = prompt('Enter LaTeX code:', '\\frac{a}{b}');
+                            if (latex) {
+                                var math = `\\(${latex}\\)`;
+                                context.invoke('editor.pasteHTML', math); // Insert as proper HTML
+                                // Re-render MathJax if available
+                                if (window.MathJax) {
+                                    MathJax.typeset();
+                                }
+                            }
+                        }
+                    });
+                    return button.render();
+                };
 
-                if (isCorrect) {
-                    correct = 1;
-                    correctText = 'Yes';
-                } else {
-                    correct = 0;
-                    correctText = 'No';
-                }
-                if (option === '') {
-                    alert('This option field is required');
-                    $('#option').focus();
-                    return false;
-                }
+                // Initialize Summernote with the custom LaTeX button
+                $('#option').summernote({
+                    height: 100,
+                    toolbar: [
+                        ['style', ['bold', 'italic']],
+                        ['insert', ['latex']]
+                    ],
+                    buttons: {
+                        latex: LatexButton
+                    }
+                });
 
-                var html = `
-                    <tr class="trData">
-                        <td class="serial"></td>
-                        <td>${option}</td>
-                        <td>${correctText}</td>
-                        <td align="center">
-                            <input type="hidden" name="option[]" value="${option}" />
-                            <input type="hidden" name="correct[]" value="${correct}" />
-                            <a class="item-delete" href="#"><i class="fas fa-trash"></i></a>
-                        </td>
-                    </tr>
-                `;
+                // Handle adding items to the table
+                $('.add-item').on('click', function() {
+                    const option = $('#option').summernote('code').trim(); // Get rich text
+                    const isCorrect = $('#correct').prop('checked');
+                    let correct, correctText;
 
-                toast('success', 'Added');
-                $('.item_data_table tbody').append(html);
-                $('#option').val('');
-                $('#correct').prop('checked', false);
-                serialMaintain();
+                    if (isCorrect) {
+                        correct = 1;
+                        correctText = 'Yes';
+                    } else {
+                        correct = 0;
+                        correctText = 'No';
+                    }
+
+                    if (option === '' || option === '<p><br></p>') { // Handle empty Summernote
+                        alert('This option field is required');
+                        $('#option').summernote('focus');
+                        return false;
+                    }
+
+                    var html = `
+                        <tr class="trData">
+                            <td class="serial"></td>
+                            <td>${option}</td> <!-- ✅ Corrected: Equation now appears here -->
+                            <td>${correctText}</td>
+                            <td align="center">
+                                <input type="hidden" name="option[]" value='${option.replace(/'/g, "&#39;")}' />
+                                <input type="hidden" name="correct[]" value="${correct}" />
+                                <a class="item-delete text-danger" href="#"><i class="fas fa-trash"></i></a>
+                            </td>
+                        </tr>
+                    `;
+
+                    toast('success', 'Added');
+                    $('.item_data_table tbody').append(html);
+                    $('#option').summernote('code', ''); // Clear Summernote
+                    $('#correct').prop('checked', false);
+                    serialMaintain();
+
+                    // Re-render MathJax to process new equations
+                    if (window.MathJax) {
+                        MathJax.typeset();
+                    }
+                });
+
+                // Handle deletion of dynamically added rows
+                $(document).on('click', '.item-delete', function(e) {
+                    e.preventDefault();
+                    $(this).closest('tr').remove();
+                    serialMaintain();
+                });
             });
+
+
             $('.item_data_table').on('click', '.item-delete', function(e) {
                 e.preventDefault();
                 var element = $(this).parents('tr');

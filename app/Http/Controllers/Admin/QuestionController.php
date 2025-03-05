@@ -18,20 +18,17 @@ class QuestionController extends Controller
     {
 
         // Fetch questions with their options
-    // $questions = Question::with([
-    //     'options:id,question_id,option,correct',
-    // ])->get();
+        // $questions = Question::with([
+        //     'options:id,question_id,option,correct',
+        // ])->get();
 
-    // // Delete questions that do not have any options
-    // foreach ($questions as $question) {
-    //     if ($question->options->isEmpty()) {
-    //         $question->delete();
-    //     }
-    // }
-
+        // // Delete questions that do not have any options
+        // foreach ($questions as $question) {
+        //     if ($question->options->isEmpty()) {
+        //         $question->delete();
+        //     }
+        // }
         
-
-
         if ($request->ajax()) {
             $questions = Question::with([
                 'rank:id,name',
@@ -48,8 +45,8 @@ class QuestionController extends Controller
                             $options .= '<p class="mb-2">';
                             $options .= $option->correct == 1
                                 ? '<i class="fa-regular fa-circle-check"></i> '
-                                : numberToBnWord($index + 1).') ';
-                            $options .= $option->option.'</p>';
+                                : numberToBnWord($index + 1) . ') ';
+                            $options .= $option->option . '</p>';
                         }
 
                         return $options;
@@ -174,7 +171,7 @@ class QuestionController extends Controller
 
                 return back();
             }
-            
+
             foreach ($request->option as $key => $value) {
                 $correct = strtolower(str_replace(' ', '', $request->correct[$key]));
                 $correct = ($correct == 'yes') ? 1 : 0;

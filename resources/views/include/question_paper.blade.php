@@ -115,7 +115,7 @@
                     @else
                         {{ numberToBnWord($index + 1). ') ' }}
                     @endif
-                     {{ $option->option }}
+                     {!! $option->option !!}
                 </label>
             @endforeach
         @endif

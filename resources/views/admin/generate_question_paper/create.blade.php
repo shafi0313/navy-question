@@ -76,7 +76,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-6">
+                                                {{-- <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="time">Time </label>
                                                         <input type="time" name="time" class="form-control"
@@ -86,7 +86,7 @@
                                                             </div>
                                                         @endif
                                                     </div>
-                                                </div>
+                                                </div> --}}
 
                                                 <div class="col-md-12">
                                                     <div class="form-group">
