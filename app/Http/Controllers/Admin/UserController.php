@@ -81,10 +81,16 @@ class UserController extends Controller
     {
         $data = $request->validated();
 
-        $date['updated_by'] = user()->id;
-        if ($request->filled('password')) {
+        if($request->password == $request->password_confirmation){
             $data['password'] = bcrypt($request->password);
+        }else{
+            return response()->json(['message' => 'Password and Confirm Password does not match'], 500);
         }
+
+        $date['updated_by'] = user()->id;
+        // if ($request->filled('password')) {
+        //     $data['password'] = bcrypt($request->password);
+        // }
 
         $existingImage = $user->image;
         if ($request->hasFile('image')) {
@@ -93,10 +99,6 @@ class UserController extends Controller
 
         try {
             $user->update($data);
-            if ($request->has('role')) {
-                $user->syncRoles($data['role']);
-            }
-
             return response()->json(['message' => 'The information has been updated successfully'], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
