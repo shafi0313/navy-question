@@ -22,6 +22,7 @@ class SubjectController extends Controller
                     $btn = '';
                     $btn .= view('button', ['type' => 'ajax-edit', 'route' => route('admin.subjects.edit', $row->id), 'row' => $row]);
                     $btn .= view('button', ['type' => 'ajax-delete', 'route' => route('admin.subjects.destroy', $row->id), 'row' => $row, 'src' => 'dt']);
+
                     return $btn;
                 })
                 ->rawColumns(['action', 'created_at'])

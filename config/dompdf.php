@@ -55,19 +55,15 @@ return [
          */
         'font_cache' => base_path('/public/backend/fonts/dejavu'),
 
-
         'font_data' => [
             'dejavu-sans' => [
-                'R'  => 'DejaVuSans.ttf', // Regular font
-                'B'  => 'DejaVuSans-Bold.ttf', // Bold font
-                'I'  => 'DejaVuSans-Oblique.ttf', // Italic font
+                'R' => 'DejaVuSans.ttf', // Regular font
+                'B' => 'DejaVuSans-Bold.ttf', // Bold font
+                'I' => 'DejaVuSans-Oblique.ttf', // Italic font
                 'BI' => 'DejaVuSans-BoldOblique.ttf', // Bold Italic font
             ],
             // Add other fonts as needed
         ],
-
-
-
 
         /**
          * The location of a temporary directory.
@@ -138,7 +134,7 @@ return [
          * If pdflib present in web server and auto or selected explicitely above,
          * a real license code must exist!
          */
-        //"DOMPDF_PDFLIB_LICENSE" => "your license key here",
+        // "DOMPDF_PDFLIB_LICENSE" => "your license key here",
 
         /**
          * html target media view which should be rendered into pdf.

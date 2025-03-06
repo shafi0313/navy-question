@@ -23,16 +23,18 @@ class UserController extends Controller
             return DataTables::of($users)
                 ->addIndexColumn()
                 ->addColumn('image', function ($row) {
-                    return '<img src="' . imagePath('users', $row->image) . '" width="70px">';
+                    return '<img src="'.imagePath('users', $row->image).'" width="70px">';
                 })
                 ->addColumn('permission', function ($row) {
                     $permissions = config('var.permission');
+
                     return $permissions[$row->permission] ?? 'Unknown';
                 })
                 ->addColumn('action', function ($row) {
                     $btn = '';
                     $btn .= view('button', ['type' => 'ajax-edit', 'route' => route('admin.users.edit', $row->id), 'row' => $row]);
                     $btn .= view('button', ['type' => 'ajax-delete', 'route' => route('admin.users.destroy', $row->id), 'row' => $row, 'src' => 'dt']);
+
                     return $btn;
                 })
                 ->rawColumns(['permission', 'action', 'image'])
@@ -55,9 +57,11 @@ class UserController extends Controller
             DB::beginTransaction();
             User::create($data);
             DB::commit();
+
             return response()->json(['message' => 'The information has been inserted'], 200);
         } catch (\Exception $e) {
             DB::rollBack();
+
             return response()->json(['message' => 'Oops something went wrong, Please try again.'], 500);
         }
     }
@@ -76,7 +80,7 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
         $data = $request->validated();
-        
+
         $date['updated_by'] = user()->id;
         if ($request->filled('password')) {
             $data['password'] = bcrypt($request->password);

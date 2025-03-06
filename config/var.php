@@ -1,4 +1,5 @@
 <?php
+
 return [
     'permission' => [
         1 => 'Super Admin',

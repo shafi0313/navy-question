@@ -77,7 +77,7 @@ class QuestionImportController extends Controller
                 $question->option_1,
                 $question->option_2,
                 $question->option_3,
-                $question->option_4
+                $question->option_4,
             ];
 
             $correctAnswerIndex = (int) $question->correct - 1;

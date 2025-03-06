@@ -28,7 +28,7 @@ class QuestionController extends Controller
         //         $question->delete();
         //     }
         // }
-        
+
         if ($request->ajax()) {
             $questions = Question::with([
                 'rank:id,name',
@@ -45,8 +45,8 @@ class QuestionController extends Controller
                             $options .= '<p class="mb-2">';
                             $options .= $option->correct == 1
                                 ? '<i class="fa-regular fa-circle-check"></i> '
-                                : numberToBnWord($index + 1) . ') ';
-                            $options .= $option->option . '</p>';
+                                : numberToBnWord($index + 1).') ';
+                            $options .= $option->option.'</p>';
                         }
 
                         return $options;

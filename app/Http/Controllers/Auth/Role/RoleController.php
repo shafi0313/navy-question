@@ -202,7 +202,7 @@ class RoleController extends Controller
         // Reset cached roles and permissions
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        //Default role cannot be deleted
+        // Default role cannot be deleted
         if (! $role->removable) {
             return redirect()->back()->withErrors('This role cannot be deleted');
         }

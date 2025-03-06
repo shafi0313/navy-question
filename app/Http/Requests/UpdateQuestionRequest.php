@@ -29,7 +29,6 @@ class UpdateQuestionRequest extends FormRequest
             'mark' => ['required', 'integer', 'min:1', 'max:10'],
             'image' => ['nullable', 'image', 'mimes:jpeg,jpg,JPG,png,webp,svg'],
 
-            
             'option' => 'required|array',
             'correct' => 'required|array|in:yes,no',
         ];

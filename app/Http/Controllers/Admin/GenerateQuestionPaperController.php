@@ -42,7 +42,7 @@ class GenerateQuestionPaperController extends Controller
                 //     if($row->d_hour || $row->d_minute) {
                 //         return $row->d_hour . ':' . $row->d_minute . ' Minute';
                 //     }
-                    
+
                 // })
                 ->addColumn('set', function ($row) {
                     $setColorCodes = [
@@ -57,7 +57,7 @@ class GenerateQuestionPaperController extends Controller
                     $btn = '';
                     for ($i = 1; $i <= 6; $i++) {
                         $colorCode = $setColorCodes[$i];
-                        $btn .= '<a href="' . route('admin.generate_question.show', [$row->id, $i, 'show']) . '" class="badge mb-1" style="background-color: ' . htmlspecialchars($colorCode) . '; color: white;">Set ' . questionSetBn($i) . '</a> ';
+                        $btn .= '<a href="'.route('admin.generate_question.show', [$row->id, $i, 'show']).'" class="badge mb-1" style="background-color: '.htmlspecialchars($colorCode).'; color: white;">Set '.questionSetBn($i).'</a> ';
                     }
 
                     return $btn;
@@ -65,9 +65,10 @@ class GenerateQuestionPaperController extends Controller
                 ->addColumn('action', function ($row) {
                     $btn = '';
                     //     $btn .= view('button', ['type' => 'edit', 'route' => route('admin.generate_question.edit', $row->id), 'row' => $row]);
-                  
-                    $btn .= '<a data-route="' . route('admin.generate_question.status', $row->id) . '" class="btn btn-primary text-light btn-sm mb-2" onclick="changeStatus(this)">Generate</a>';
+
+                    $btn .= '<a data-route="'.route('admin.generate_question.status', $row->id).'" class="btn btn-primary text-light btn-sm mb-2" onclick="changeStatus(this)">Generate</a>';
                     $btn .= view('button', ['type' => 'ajax-delete', 'route' => route('admin.generate_question.destroy', $row->id), 'row' => $row, 'src' => 'dt']);
+
                     return $btn;
                 })
                 ->rawColumns(['set', 'generate', 'action'])
@@ -100,8 +101,10 @@ class GenerateQuestionPaperController extends Controller
     {
         if ($request->ajax()) {
             $subjects = Subject::whereRankId($request->rank_id)->get();
+
             return response()->json(['subjects' => $subjects, 'status' => 200]);
         }
+
         return response()->json(['message' => 'Invalid request'], 400);
     }
 
@@ -149,6 +152,7 @@ class GenerateQuestionPaperController extends Controller
             DB::rollBack();
             Alert::error('Error', 'An error occurred while generating the draft question. Please try again.');
         }
+
         return back();
     }
 
@@ -253,14 +257,15 @@ class GenerateQuestionPaperController extends Controller
             }
         }
 
-
         try {
             DB::commit();
             toast('Success!', 'success');
+
             return redirect()->route('admin.generate_question.show', [$request->quesInfoId, $request->set, 'show']);
         } catch (\Exception $e) {
             DB::rollBack();
             toast('error', 'Error');
+
             return back();
         }
     }
