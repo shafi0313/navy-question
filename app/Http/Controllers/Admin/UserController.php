@@ -76,11 +76,12 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
         $data = $request->validated();
-        $data['permission'] = '1';
+        
         $date['updated_by'] = user()->id;
         if ($request->filled('password')) {
             $data['password'] = bcrypt($request->password);
         }
+
         $existingImage = $user->image;
         if ($request->hasFile('image')) {
             $data['image'] = imgProcessAndStore($request->image, 'users', [200, 200], $existingImage);

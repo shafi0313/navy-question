@@ -47,10 +47,10 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="mobile">Mobile <span class="t_r">*</span></label>
+                                <label for="mobile">Mobile</label>
                                 <input type="text" name="mobile" class="form-control"
                                     oninput="this.value = this.value.replace(/[a-zA-z\-*/]/g,'');" class="form-control"
-                                    value="{{ $user->mobile }}" required>
+                                    value="{{ $user->mobile }}">
                                 @if ($errors->has('mobile'))
                                     <div class="alert alert-danger">{{ $errors->first('mobile') }}</div>
                                 @endif
@@ -72,7 +72,7 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="comment">Address <span class="t_r">*</span></label>
+                                <label for="comment">Address</label>
                                 <textarea name="address" class="form-control" id="comment" rows="2" required>{{ $user->address }}</textarea>
                                 @if ($errors->has('address'))
                                     <div class="alert alert-danger">{{ $errors->first('address') }}</div>
