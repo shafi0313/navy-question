@@ -72,8 +72,8 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="comment">Address</label>
-                                <textarea name="address" class="form-control" id="comment" rows="2" required>{{ $user->address }}</textarea>
+                                <label for="address">Address</label>
+                                <textarea name="address" class="form-control" id="address" rows="2">{{ $user->address }}</textarea>
                                 @if ($errors->has('address'))
                                     <div class="alert alert-danger">{{ $errors->first('address') }}</div>
                                 @endif
