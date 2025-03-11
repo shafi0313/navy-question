@@ -217,6 +217,7 @@
 
                 $('#rank_id').on('change', function() {
                     var rank_id = $(this).val();
+                    $(".subjectTable tbody").html('');
                     $.ajax({
                         type: 'get',
                         url: '{{ route('admin.generate_question.getSubject') }}',

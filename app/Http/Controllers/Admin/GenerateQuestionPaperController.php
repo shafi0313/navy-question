@@ -64,11 +64,8 @@ class GenerateQuestionPaperController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $btn = '';
-                    //     $btn .= view('button', ['type' => 'edit', 'route' => route('admin.generate_question.edit', $row->id), 'row' => $row]);
-
                     $btn .= '<a data-route="'.route('admin.generate_question.status', $row->id).'" class="btn btn-primary text-light btn-sm mb-2" onclick="changeStatus(this)">Generate</a>';
                     $btn .= view('button', ['type' => 'ajax-delete', 'route' => route('admin.generate_question.destroy', $row->id), 'row' => $row, 'src' => 'dt']);
-
                     return $btn;
                 })
                 ->rawColumns(['set', 'generate', 'action'])
