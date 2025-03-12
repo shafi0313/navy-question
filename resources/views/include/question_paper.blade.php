@@ -18,17 +18,6 @@
                 {{ $questionInfo->exam_name }} <br>
                 {{ $questionInfo->rank->name }}
             </h4>
-
-            {{-- <table class="table table-bordered text-left">
-                <tr>
-                    <td>Mode of Examination</td>
-                    <td>{{ $questionInfo->mode }}</td>
-                    <td>Duration of Examination</td>
-                    <td>{{ $questionInfo->d_hour }} Hrs {{ $questionInfo->d_minute }} Min</td>
-                </tr>
-            </table> --}}
-            {{-- <p style="margin: 6px 0px"><b>{{ $questionInfo->note }}</b></p>
-            <p style="margin-bottom: 10px"><b><u>{{ $questionInfo->option_note }}</u></b></p> --}}
         </div>
     </div>
 
@@ -111,11 +100,11 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <label class="option">
                     @if (in_array($subject, ['ইংরেজি', 'ইংরেজী', 'English', 'english']))
-                        {{ numberToEnWord($index + 1). ') ' }}
+                        {{ numberToEnWord($index + 1) . ') ' }}
                     @else
-                        {{ numberToBnWord($index + 1). ') ' }}
+                        {{ numberToBnWord($index + 1) . ') ' }}
                     @endif
-                     {!! $option->option !!}
+                    {!! $option->option !!}
                 </label>
             @endforeach
         @endif
