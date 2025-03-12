@@ -81,9 +81,9 @@ class UserController extends Controller
     {
         $data = $request->validated();
 
-        if($request->password == $request->password_confirmation){
+        if ($request->password == $request->password_confirmation) {
             $data['password'] = bcrypt($request->password);
-        }else{
+        } else {
             return response()->json(['message' => 'Password and Confirm Password does not match'], 500);
         }
 
@@ -99,6 +99,7 @@ class UserController extends Controller
 
         try {
             $user->update($data);
+
             return response()->json(['message' => 'The information has been updated successfully'], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
