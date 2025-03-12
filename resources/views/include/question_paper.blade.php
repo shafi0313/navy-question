@@ -44,7 +44,7 @@
     {{-- For total question mark start --}}
     @foreach ($questionSubjectInfo->questionPapers as $item)
         @php
-            $totalQuestionMark += $item->question->mark;
+            $totalQuestionMark += $item->question->mark ?? 0;
         @endphp
     @endforeach
     {{-- For total question mark end --}}
@@ -78,12 +78,12 @@
                 @endif
                 .
             </td>
-            <td style="text-align:left;">{!! $questionPaper->question->ques !!}</td>
+            <td style="text-align:left;">{!! $questionPaper->question->ques ?? '' !!}</td>
             <td style="text-align:right">
                 @if (in_array($subject, ['ইংরেজি', 'ইংরেজী', 'English', 'english']))
                     {{ $questionPaper->question->mark }}
                 @else
-                    {{ bnNumber($questionPaper->question->mark) }}
+                    {{ bnNumber($questionPaper->question->mark ?? 0) }}
                 @endif
 
                 <span>
@@ -100,7 +100,7 @@
             </td>
             </tr>
         </table>
-        @if ($questionPaper->question->image)
+        @if ($questionPaper->question?->image)
             <img src="{{ asset('uploads/images/question/' . $questionPaper->question->image) }}" alt="">
         @endif
         @if ($questionPaper->options)
