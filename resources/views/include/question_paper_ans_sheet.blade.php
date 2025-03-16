@@ -128,13 +128,13 @@
             $setPath = $formatPath . 'set_3.png';
             break;
         case 4:
-            $setPath = $formatPath . 'set_1.png';
+            $setPath = $formatPath . 'set_4.png';
             break;
         case 5:
-            $setPath = $formatPath . 'set_1.png';
+            $setPath = $formatPath . 'set_5.png';
             break;
         case 6:
-            $setPath = $formatPath . 'set_1.png';
+            $setPath = $formatPath . 'set_6.png';
             break;
         default:
             $setPath = $formatPath . 'set.png';
