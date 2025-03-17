@@ -31,6 +31,11 @@
                                         <span class="sub-item">User</span>
                                     </a>
                                 </li>
+                                <li class="{{ activeSubNav(['admin.deletes.*']) }}">
+                                    <a href="{{ route('admin.deletes.index') }}">
+                                        <span class="sub-item">Question Delete</span>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </li>
@@ -80,7 +85,7 @@
                 @if (in_array(user()->permission, [1, 3]))
                     <li class="nav-item {{ activeNav('admin.questions.*', 'admin.question-imports.*') }}">
                         <a data-toggle="collapse" href="#questionMenu">
-                            <i class="fas fa-users-cog"></i>
+                            <i class="fa-solid fa-circle-question"></i>
                             <p>Question</p>
                             <span class="caret"></span>
                         </a>
@@ -114,7 +119,7 @@
                     </li> --}}
                     <li class="nav-item {{ activeNav('admin.generate_question.*') }}">
                         <a data-toggle="collapse" href="#generateQuestion">
-                            <i class="fas fa-users-cog"></i>
+                            <i class="fa-solid fa-file-circle-question"></i>
                             <p>Prepare Question</p>
                             <span class="caret"></span>
                         </a>

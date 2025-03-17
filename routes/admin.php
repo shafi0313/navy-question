@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AnswerPaperController;
 use App\Http\Controllers\Admin\BackupController;
 use App\Http\Controllers\Admin\ChapterController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DeleteController;
 use App\Http\Controllers\Admin\ExamController;
 use App\Http\Controllers\Admin\GenerateQuestionPaperController;
 use App\Http\Controllers\Admin\GlobalController;
@@ -174,6 +175,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         // Route::get('/get-subject', 'getSubject')->name('getSubject');
         // Route::get('/get-chapter', 'getChapter')->name('getChapter');
         Route::get('/get-question', 'getQuestion')->name('getQuestion');
+    });
+
+    Route::controller(DeleteController::class)->prefix('/deletes')->name('deletes.')->group(function(){
+        Route::get('/', 'index')->name('index');
+        Route::delete('/question', 'question')->name('question');
+        Route::delete('/draft-question', 'draftQues')->name('draft_ques');
+        Route::delete('/final-question', 'finalQues')->name('final_ques');
     });
 
 });

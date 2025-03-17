@@ -59,7 +59,7 @@
     }
 
     .sl {
-        width: 22px
+        width: 28px
     }
 
     p {

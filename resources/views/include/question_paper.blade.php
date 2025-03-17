@@ -12,7 +12,7 @@
         <span>{{ questionSetBn((int) $questionSubjectInfo->set) }}</span>
         <div class="title">
             <h4 class="exam_title">
-                @if ($questionInfo->status == 'Pending')
+                @if ($questionInfo->status == 1)
                     <h2>Draft Question Paper</h2>
                 @endif
                 {{ $questionInfo->exam_name }} <br>
@@ -21,7 +21,7 @@
         </div>
     </div>
 
-    <p class="answer-instruction">
+    <p class="answer-instruction" style="text-align: justify;">
         সঠিক উত্তরটি নির্বাচন করে সরবরাহকৃত উত্তর পত্রে বৃত্ত পূরণ করতে হবে । যে উত্তরটি সঠিক, উত্তর পত্রের বিষয়
         ভিত্তিক
         প্রশ্ন নম্বরে প্রদত্ত ক্রমিকে(ক, খ, গ, ঘ/a, b, c, d) বৃত্ত পূরণ করতে হবে। যেমন 'খ' উত্তরটি সঠিক হলে উত্তর

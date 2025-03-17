@@ -85,10 +85,12 @@ class QuestionPaperController extends Controller
         if ($type == 'show') {
             return view('admin.question_paper.show', $data);
         } elseif ($type == 'pdf') {
+            // return view('admin.question_paper.pdf', $data);
             $filePath = public_path('uploads/question/'.slug($data['questionInfo']->exam_name).'-'.questionSetBn($set).'.pdf');
             Pdf::view('admin.question_paper.pdf', $data)
                 ->format('a4')
                 ->margins(80, 80, 80, 80, Unit::Pixel)
+                ->footerView('admin.question_paper.pdf-footer')
                 ->save($filePath);
 
             if (file_exists($filePath)) {

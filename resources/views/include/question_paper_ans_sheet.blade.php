@@ -149,7 +149,7 @@
             $groupPath = $formatPath . 'group_2.png';
             break;
         case 3:
-            $groupPath = $formatPath . 'group_3.png';
+            $groupPath = $formatPath . 'group_3_6.png';
             break;
         case 4:
             $groupPath = $formatPath . 'group_4.png';
@@ -158,7 +158,7 @@
             $groupPath = $formatPath . 'group_5.png';
             break;
         case 6:
-            $groupPath = $formatPath . 'group_6.png';
+            $groupPath = $formatPath . 'group_3_6.png';
             break;
         default:
             $groupPath = $formatPath . 'group.png';
