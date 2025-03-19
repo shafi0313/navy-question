@@ -4,31 +4,33 @@
     <p style="display: block; width: 100%; text-align: center; line-height: 15px">গোপনীয়</p>
 </htmlpageheader>
 
+<div class="navy" style="margin-bottom: 5px">
+    <span>{{ questionSetBn((int) $questionSubjectInfos->first()->set) }}</span>
+    <div class="title">
+        <h4 class="exam_title">
+            @if ($questionInfo->status == 1)
+                <h2>Draft Question Paper</h2>
+            @endif
+            {{ $questionInfo->exam_name }} <br>
+            {{ $questionInfo->rank->name }}
+        </h4>
+    </div>
+</div>
+
+<p class="answer-instruction" style="text-align: justify;">
+    সঠিক উত্তরটি নির্বাচন করে সরবরাহকৃত উত্তর পত্রে বৃত্ত পূরণ করতে হবে । যে উত্তরটি সঠিক, উত্তর পত্রের বিষয়
+    ভিত্তিক
+    প্রশ্ন নম্বরে প্রদত্ত ক্রমিকে(ক, খ, গ, ঘ/a, b, c, d) বৃত্ত পূরণ করতে হবে। যেমন 'খ' উত্তরটি সঠিক হলে উত্তর
+    পত্রের
+    বিষয় ভিত্তিক প্রশ্ন নম্বরের 'খ' উত্তরটিতে বৃত্ত পূরণ করতে হবে। একটি প্রশ্নের জন্য একটি উত্তর পূরণ করতে হবে।
+    একাধিক বৃত্ত পূরণ করলে তা বাতিল বলে গণ্য হবে।
+</p>
+
 @foreach ($questionSubjectInfos as $questionSubjectInfo)
     @php
         $totalQuestionMark = 0;
     @endphp
-    <div class="navy" style="margin-bottom: 5px">
-        <span>{{ questionSetBn((int) $questionSubjectInfo->set) }}</span>
-        <div class="title">
-            <h4 class="exam_title">
-                @if ($questionInfo->status == 1)
-                    <h2>Draft Question Paper</h2>
-                @endif
-                {{ $questionInfo->exam_name }} <br>
-                {{ $questionInfo->rank->name }}
-            </h4>
-        </div>
-    </div>
 
-    <p class="answer-instruction" style="text-align: justify;">
-        সঠিক উত্তরটি নির্বাচন করে সরবরাহকৃত উত্তর পত্রে বৃত্ত পূরণ করতে হবে । যে উত্তরটি সঠিক, উত্তর পত্রের বিষয়
-        ভিত্তিক
-        প্রশ্ন নম্বরে প্রদত্ত ক্রমিকে(ক, খ, গ, ঘ/a, b, c, d) বৃত্ত পূরণ করতে হবে। যেমন 'খ' উত্তরটি সঠিক হলে উত্তর
-        পত্রের
-        বিষয় ভিত্তিক প্রশ্ন নম্বরের 'খ' উত্তরটিতে বৃত্ত পূরণ করতে হবে। একটি প্রশ্নের জন্য একটি উত্তর পূরণ করতে হবে।
-        একাধিক বৃত্ত পূরণ করলে তা বাতিল বলে গণ্য হবে।
-    </p>
 
     {{-- For total question mark start --}}
     @foreach ($questionSubjectInfo->questionPapers as $item)
@@ -37,17 +39,23 @@
         @endphp
     @endforeach
     {{-- For total question mark end --}}
+    @if (!$loop->first)
+        <div style="margin: 10px 0">
+            .............................................................................................................................................................................
+        </div>
+    @endif
+
     @php
         $subject = $questionSubjectInfo->subject->name;
     @endphp
     <table>
         <tr>
             <th style="text-align:left">বিষয়: {{ $subject }}</th>
-            <th style="text-align:right">পূর্ণমান:
+            <th style="text-align:right">পূর্ণমান: 
                 @if (in_array($subject, ['ইংরেজি', 'ইংরেজী', 'English', 'english']))
-                    {{ $totalQuestionMark }}
+                    2x10={{ $totalQuestionMark }}
                 @else
-                    {{ bnNumber($totalQuestionMark) }}
+                {{ bnNumber(2) }}x{{ bnNumber(10) }}={{ bnNumber($totalQuestionMark) }}
                 @endif
             </th>
         </tr>
@@ -69,11 +77,11 @@
             </td>
             <td style="text-align:left;">{!! $questionPaper->question->ques ?? '' !!}</td>
             <td style="text-align:right">
-                @if (in_array($subject, ['ইংরেজি', 'ইংরেজী', 'English', 'english']))
+                {{-- @if (in_array($subject, ['ইংরেজি', 'ইংরেজী', 'English', 'english']))
                     {{ $questionPaper->question->mark }}
                 @else
                     {{ bnNumber($questionPaper->question->mark ?? 0) }}
-                @endif
+                @endif --}}
 
                 <span>
                     @if (!empty($edit))
@@ -109,7 +117,7 @@
             @endforeach
         @endif
     @endforeach
-    @if (!$loop->last)
+    {{-- @if (!$loop->last)
         <div class="page-break"></div>
-    @endif
+    @endif --}}
 @endforeach
