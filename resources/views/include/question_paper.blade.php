@@ -4,9 +4,9 @@
     <p style="display: block; width: 100%; text-align: center; line-height: 15px">গোপনীয়</p>
 </htmlpageheader>
 
-<div class="navy" style="margin-bottom: 5px">
+<div class="navy" style="margin-bottom: 5px;">
     <span>{{ questionSetBn((int) $questionSubjectInfos->first()->set) }}</span>
-    <div class="title">
+    <div class="title" style="text-align: center">
         <h4 class="exam_title">
             @if ($questionInfo->status == 1)
                 <h2>Draft Question Paper</h2>

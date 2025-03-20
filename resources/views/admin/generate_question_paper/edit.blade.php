@@ -100,7 +100,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="ques">Question <span class="t_r">*</span></label>
-                                                <textarea name="ques" class="form-control" id="ques" rows="5" required>{!! $question->ques !!}</textarea>
+                                                <textarea name="ques" class="form-control" id="ques" rows="2" required>{!! $question->ques !!}</textarea>
                                                 @if ($errors->has('ques'))
                                                     <div class="alert alert-danger">{{ $errors->first('ques') }}</div>
                                                 @endif
@@ -109,31 +109,61 @@
                                     </div>
                                     <div class="row justify-content-center">
                                         @if ($question->type == 'multiple_choice')
-                                            <div class="col-md-8 quesTypeDiv">
+                                            <div class="col-md-12 quesTypeDiv">
+                                                <table class="table table-bordered item_data_table">
+                                                    <tr>
+                                                        <td>Add New Option</td>
+                                                        <td width="80px">Answer</td>
+                                                        <td width="50px"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <input type="text" id="option" class="form-control">
+                                                        </td>
+                                                        <td>
+                                                            <input type="checkbox" id="correct" class="form-check"
+                                                                style="display: inline-block">
+                                                            <label for="correct" class="form-label">Correct</label>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <button class="btn btn-success btn-sm add-item"
+                                                                type="button">Add</button>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+
+                                                <hr class="my-5">
+
                                                 <table class="table table-bordered">
                                                     <tr>
                                                         <td>SL</td>
-                                                        <th>Option</th>
+                                                        <th>Old Option</th>
                                                         <th width="100px">Correct Ans</th>
                                                         <th style="width: 100px; text-align:center;" title="Add More">
-                                                            <span class="btn btn-sm btn-success add-row">
-                                                                <i class="fa fa-plus" aria-hidden="true"></i>
-                                                            </span>
+                                                            Action
                                                         </th>
                                                     </tr>
+
                                                     @foreach ($question->options as $option)
                                                         <tr>
                                                             <input type="hidden" name="option_id[]"
                                                                 value="{{ $option->id }}" />
 
-                                                            <th class="serial">{{ @$i += 1 }}</th>
+                                                            <th width="40px" class="serial">{{ @$i += 1 }}</th>
                                                             <td>
-                                                                <input type="text" name="option[]" id="option"
-                                                                    class="form-control" value="{{ $option->option }}" />
+                                                                <input type="text" name="option[]"
+                                                                    class="form-control option"
+                                                                    value="{!! old('value') ?? $option->option !!}" />
                                                             </td>
                                                             <td class="text-center">
-                                                                <input type="text" name="correct[]"
-                                                                    class="form-control" value="{{ $option->correct == 1 ? 'yes' : 'no' }}"/>
+                                                                <select name="correct[]">
+                                                                    <option value="0">No</option>
+                                                                    <option value="1" @selected($option->correct == 1)>Yes</option>
+                                                                </select>
+
+
+                                                                {{-- <input type="text" name="correct[]" class="form-control"
+                                                                    value="{{ $option->correct == 1 ? 'yes' : 'no' }}" /> --}}
                                                             </td>
                                                             <td class="text-center">
                                                                 <a href="{{ route('admin.questions.optionDestroy', $option->id) }}"
@@ -149,8 +179,6 @@
                                                 </table>
                                             </div>
                                         @endif
-
-
                                     </div>
                                 </div>
                                 <div class="text-center card-action">
@@ -167,77 +195,156 @@
     </div>
 
     @push('custom_scripts')
+        <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+        @include('include.toast');
+        @include('include.summer-note');
         @include('admin.question_entry.get-js')
 
         <script>
-            // $('#subject_id').change(function() {
-            //     $.ajax({
-            //         url: "{{ 'admin.questions.getChapter' }}",
-            //         data: {
-            //             subjectId: $(this).val()
-            //         },
-            //         method: 'get',
-            //         success: res => {
-            //             let opt = '<option disabled selected>- -</option>';
-            //             if (res.status == 200) {
-            //                 $.each(res.chapters, function(i, v) {
-            //                     opt += '<option value="' + v.id + '">' + v.name + '</option>';
-            //                 });
-            //                 $("#chapter_id").html(opt);
-            //             } else {
-            //                 alert('No chapter found')
-            //             }
-            //         },
-            //         error: err => {
-            //             alert('No chapter found')
-            //         }
-            //     });
-            // });
-
-            // $("#quesType").change(function() {
-            //     const type = $(this).val();
-            //     if (type == "multiple_choice") {
-            //         $(".quesTypeDiv").show();
-            //     } else {
-            //         $(".quesTypeDiv").hide();
-            //     }
-            // })
             $(document).ready(function() {
-                var i = 1;
-                $('.add-row').click(function() {
-                    i++;
+                // Define the custom button for inserting LaTeX equations
+                var LatexButton = function(context) {
+                    var ui = $.summernote.ui;
+                    var button = ui.button({
+                        contents: '<i class="note-icon-pencil"></i> Insert Equation',
+                        tooltip: 'Insert LaTeX Equation',
+                        click: function() {
+                            var latex = prompt('Enter LaTeX code:', '\\frac{a}{b}');
+                            if (latex) {
+                                var math = `\\(${latex}\\)`;
+                                context.invoke('editor.pasteHTML', math); // Insert as proper HTML
+                                // Re-render MathJax if available
+                                if (window.MathJax) {
+                                    MathJax.typeset();
+                                }
+                            }
+                        }
+                    });
+                    return button.render();
+                };
+
+                // Initialize Summernote with the custom LaTeX button
+                $('#option').summernote({
+                    height: 100,
+                    toolbar: [
+                        ['style', ['bold', 'italic']],
+                        ['insert', ['latex']]
+                    ],
+                    buttons: {
+                        latex: LatexButton
+                    }
+                });
+                $('.option').each(function() {
+                    let value = $(this).val(); // Get the value from the input
+                    $(this).summernote({
+                        height: 100,
+                        toolbar: [
+                            ['style', ['bold', 'italic']],
+                            ['insert', ['latex']]
+                        ],
+                        buttons: {
+                            latex: LatexButton
+                        },
+                        callbacks: {
+                            onChange: function(contents) {
+                                $(this).closest('td').find('.option').val(contents); // Update the hidden input value
+                            }
+                        }
+                    }).summernote('code', value); // Set the value in Summernote
+                });
+
+                // Handle adding items to the table
+                $('.add-item').on('click', function() {
+                    const option = $('#option').summernote('code').trim(); // Get rich text
+                    const isCorrect = $('#correct').prop('checked');
+                    let correct, correctText;
+
+                    if (isCorrect) {
+                        correct = 1;
+                        correctText = 'Yes';
+                    } else {
+                        correct = 0;
+                        correctText = 'No';
+                    }
+
+                    if (option === '' || option === '<p><br></p>') { // Handle empty Summernote
+                        alert('This option field is required');
+                        $('#option').summernote('focus');
+                        return false;
+                    }
+
                     var html = `
-                        <tr id="remove_${i}">
-                            <td class="serial">${i}</td>
-                            <td>
-                                <input type="text" name="option[]" class="form-control"/>
-                            </td>
-                            <td class="text-center">
-                                <input type="text" name="correct[]"  class="form-control" />
-                            </td>
-                            <td style="width: 20px" class="text-center">
-                                <span class="btn btn-sm btn-danger" onClick="return remove(${i})">
-                                    <i class="fa fa-times" aria-hidden="true"></i>
-                                </span>
+                        <tr class="trData">
+                            <td class="serial"></td>
+                            <td>${option}</td> <!-- ✅ Corrected: Equation now appears here -->
+                            <td>${correctText}</td>
+                            <td align="center">
+                                <input type="hidden" name="option[]" value='${option.replace(/'/g, "&#39;")}' />
+                                <input type="hidden" name="correct[]" value="${correct}" />
+                                <a class="item-delete text-danger" href="#"><i class="fas fa-trash"></i></a>
                             </td>
                         </tr>
                     `;
 
+                    toast('success', 'Added');
+                    // $('.item_data_table tbody').append(html);
                     $('#showItem').append(html);
-                    updateSerialNumbers();
+                    // $('.option').summernote('code', ''); // Clear Summernote
+                    $('#option').summernote('code', ''); // Clear Summernote
+                    $('#correct').prop('checked', false);
+                    serialMaintain();
+
+                    // Re-render MathJax to process new equations
+                    if (window.MathJax) {
+                        MathJax.typeset();
+                    }
                 });
 
-                window.remove = function(id) {
-                    $('#remove_' + id).remove();
-                    updateSerialNumbers();
-                }
-
-                function updateSerialNumbers() {
-                    $('.serial').each(function(index) {
-                        $(this).text(index + 1);
-                    });
-                }
+                // Handle deletion of dynamically added rows
+                $(document).on('click', '.item-delete', function(e) {
+                    e.preventDefault();
+                    $(this).closest('tr').remove();
+                    serialMaintain();
+                });
             });
+
+            // $(document).ready(function() {
+            //     var i = 1;
+            //     $('.add-row').click(function() {
+            //         i++;
+            //         var html = `
+    //             <tr id="remove_${i}">
+    //                 <td class="serial">${i}</td>
+    //                 <td>
+    //                     <input type="text" name="option[]" class="form-control"/>
+    //                 </td>
+    //                 <td class="text-center">
+    //                     <input type="text" name="correct[]"  class="form-control" />
+    //                 </td>
+    //                 <td style="width: 20px" class="text-center">
+    //                     <span class="btn btn-sm btn-danger" onClick="return remove(${i})">
+    //                         <i class="fa fa-times" aria-hidden="true"></i>
+    //                     </span>
+    //                 </td>
+    //             </tr>
+    //         `;
+
+            //         $('#showItem').append(html);
+            //         updateSerialNumbers();
+            //     });
+
+            //     window.remove = function(id) {
+            //         $('#remove_' + id).remove();
+            //         updateSerialNumbers();
+            //     }
+
+            //     function updateSerialNumbers() {
+            //         $('.serial').each(function(index) {
+            //             $(this).text(index + 1);
+            //         });
+            //     }
+            // });
         </script>
     @endpush
 @endsection

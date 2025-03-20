@@ -181,16 +181,19 @@
     </div>
 
     @push('custom_scripts')
+        <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+        @include('include.summer-note');
         @include('admin.question_entry.get-js')
         <script>
-            $("#quesType").change(function() {
-                const type = $(this).val();
-                if (type == "multiple_choice") {
-                    $(".quesTypeDiv").show();
-                } else {
-                    $(".quesTypeDiv").hide();
-                }
-            })
+            // $("#quesType").change(function() {
+            //     const type = $(this).val();
+            //     if (type == "multiple_choice") {
+            //         $(".quesTypeDiv").show();
+            //     } else {
+            //         $(".quesTypeDiv").hide();
+            //     }
+            // })
             // $(document).ready(function() {
             //     var i = 1;
             //     $('.addrow').click(function() {

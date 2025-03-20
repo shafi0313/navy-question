@@ -16,19 +16,6 @@ class QuestionController extends Controller
 {
     public function index(Request $request)
     {
-
-        // Fetch questions with their options
-        // $questions = Question::with([
-        //     'options:id,question_id,option,correct',
-        // ])->get();
-
-        // // Delete questions that do not have any options
-        // foreach ($questions as $question) {
-        //     if ($question->options->isEmpty()) {
-        //         $question->delete();
-        //     }
-        // }
-
         if ($request->ajax()) {
             $questions = Question::with([
                 'rank:id,name',
@@ -142,9 +129,6 @@ class QuestionController extends Controller
 
     public function edit($id)
     {
-        if ($error = $this->authorize('question-entry-edit')) {
-            return $error;
-        }
         $question = Question::with([
             'rank:id,name',
             'subject:id,name',
@@ -173,12 +157,12 @@ class QuestionController extends Controller
             }
 
             foreach ($request->option as $key => $value) {
-                $correct = strtolower(str_replace(' ', '', $request->correct[$key]));
-                $correct = ($correct == 'yes') ? 1 : 0;
+                // $correct = strtolower(str_replace(' ', '', $request->correct[$key]));
+                // $correct = ($correct == 'yes') ? 1 : 0;
                 $option = [
                     'question_id' => $id,
                     'option' => $request->option[$key],
-                    'correct' => $correct,
+                    'correct' =>  $request->correct[$key],
                 ];
                 if (! empty(QuesOption::whereId($request->option_id[$key]))) {
                     QuesOption::where('id', $request->option_id[$key])->update($option);

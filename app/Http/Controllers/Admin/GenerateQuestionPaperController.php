@@ -217,23 +217,27 @@ class GenerateQuestionPaperController extends Controller
             'mark' => 'required|numeric',
             'ques' => 'required|string',
             'option' => 'required|array',
-            'correct' => 'required|array|in:yes,no',
+            'correct' => 'required|array|in:0,1',
         ]);
 
         $data['type'] = 'multiple_choice';
+
+        // return $data;
+
+        if(count($request->option) > 4) {
+            Alert::error('Error', 'You can not add more than 4 options');
+            return back();
+        }
 
         DB::beginTransaction();
 
         Question::find($quesId)->update($data);
 
         foreach ($request->option as $key => $option) {
-            $correct = strtolower(str_replace(' ', '', $request->correct[$key]));
-            $correct = ($correct == 'yes') ? 1 : 0;
-
             $optionData = [
                 'question_id' => $quesId,
                 'option' => $option,
-                'correct' => $correct,
+                'correct' => $request->correct[$key],
             ];
 
             if (isset($request->option_id[$key])) {

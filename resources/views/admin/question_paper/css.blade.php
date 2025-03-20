@@ -26,7 +26,7 @@
     }
 
     .title h4 {
-        text-align: center;
+        text-align: center !important;
         padding: 0;
         margin: 0;
         /* text-transform: uppercase; */
