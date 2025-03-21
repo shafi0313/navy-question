@@ -1,8 +1,8 @@
 @include('admin.question_paper.css')
 
-<htmlpageheader name="page-header">
+<div>
     <p style="display: block; width: 100%; text-align: center; line-height: 15px">গোপনীয়</p>
-</htmlpageheader>
+</div>
 
 <div class="navy" style="margin-bottom: 5px;">
     <span>{{ questionSetBn((int) $questionSubjectInfos->first()->set) }}</span>

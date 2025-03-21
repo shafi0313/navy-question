@@ -48,7 +48,7 @@ class QuestionPaperController extends Controller
                     $btn = '';
                     for ($i = 1; $i <= 6; $i++) {
                         $colorCode = $setColorCodes[$i];
-                        $btn .= '<a href="'.route('admin.generated_question.show', [$row->id, $i, 'show']).'" class="badge mb-1" style="background-color: '.htmlspecialchars($colorCode).'; color: white;">Set '.questionSetBn($i).'</a> ';
+                        $btn .= '<a href="' . route('admin.generated_question.show', [$row->id, $i, 'show']) . '" class="badge mb-1" style="background-color: ' . htmlspecialchars($colorCode) . '; color: white;">Set ' . questionSetBn($i) . '</a> ';
                     }
 
                     return $btn;
@@ -66,7 +66,7 @@ class QuestionPaperController extends Controller
                     $btn = '';
                     for ($i = 1; $i <= 6; $i++) {
                         $colorCode = $setColorCodes[$i];
-                        $btn .= '<a href="'.route('admin.generated_question.answer_sheet', [$row->id, $i, 'pdf']).'" class="badge mb-1" style="background-color: '.htmlspecialchars($colorCode).'; color: white;">Set '.questionSetBn($i).'</a> ';
+                        $btn .= '<a href="' . route('admin.generated_question.answer_sheet', [$row->id, $i, 'pdf']) . '" class="badge mb-1" style="background-color: ' . htmlspecialchars($colorCode) . '; color: white;">Set ' . questionSetBn($i) . '</a> ';
                     }
 
                     return $btn;
@@ -86,7 +86,7 @@ class QuestionPaperController extends Controller
             return view('admin.question_paper.show', $data);
         } elseif ($type == 'pdf') {
             // return view('admin.question_paper.pdf', $data);
-            $filePath = public_path('uploads/question/'.slug($data['questionInfo']->exam_name).'-'.questionSetBn($set).'.pdf');
+            $filePath = public_path('uploads/question/' . slug($data['questionInfo']->exam_name) . '-' . questionSetBn($set) . '.pdf');
             Pdf::view('admin.question_paper.pdf', $data)
                 ->format('a4')
                 ->margins(80, 80, 80, 80, Unit::Pixel)
@@ -107,7 +107,7 @@ class QuestionPaperController extends Controller
         if ($type == 'show') {
             return view('admin.question_paper.answer_sheet', $data);
         } elseif ($type == 'pdf') {
-            $filePath = public_path('uploads/question/উত্তর-পত্র-'.slug($data['questionInfo']->exam_name).'-'.questionSetBn($set).'.pdf');
+            $filePath = public_path('uploads/question/উত্তর-পত্র-' . slug($data['questionInfo']->exam_name) . '-' . questionSetBn($set) . '.pdf');
             Pdf::view('admin.question_paper.answer_sheet_pdf', $data)
                 ->format('a4')
                 ->save($filePath);

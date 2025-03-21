@@ -1,13 +1,4 @@
 <style>
-    /* body {
-        font-family: 'bangla', sans-serif;
-        font-family: 'dejavu-sans', sans-serif !important;
-    } */
-
-    /* * {
-        font-family: 'bangla', sans-serif;
-    } */
-
     .option p {
         display: inline-block;
     }
@@ -72,38 +63,7 @@
         font-weight: bold;
     }
 
-    @page {
-        /* margin-left: 60px;
-        margin: 60px; */
-        /* margin-top: 60px; */
-    }
-
-    @page {
-        /* header: page-header; */
-        /* footer: page-footer; */
-    }
-
     .page-break {
         page-break-after: always;
     }
-
-    /* .page-footer {
-        position: fixed;
-        bottom: -60px;
-        left: 0px;
-        right: 0px;
-        text-align: center;
-        font-size: 12px;
-        width: 100%;
-        z-index: 1;
-    }
-
-    .page-header {
-        position: fixed;
-        top: -30px;
-        text-align: center;
-        font-size: 12px;
-        width: 100%;
-        z-index: 1;
-    } */
 </style>
