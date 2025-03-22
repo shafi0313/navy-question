@@ -17,7 +17,7 @@
     </div>
 </div>
 
-<p class="answer-instruction" style="text-align: justify;">
+<p class="answer-instruction" style="text-align: justify; margin-bottom: 20px;">
     সঠিক উত্তরটি নির্বাচন করে সরবরাহকৃত উত্তর পত্রে বৃত্ত পূরণ করতে হবে । যে উত্তরটি সঠিক, উত্তর পত্রের বিষয়
     ভিত্তিক
     প্রশ্ন নম্বরে প্রদত্ত ক্রমিকে(ক, খ, গ, ঘ/a, b, c, d) বৃত্ত পূরণ করতে হবে। যেমন 'খ' উত্তরটি সঠিক হলে উত্তর
@@ -31,7 +31,6 @@
         $totalQuestionMark = 0;
     @endphp
 
-
     {{-- For total question mark start --}}
     @foreach ($questionSubjectInfo->questionPapers as $item)
         @php
@@ -39,8 +38,9 @@
         @endphp
     @endforeach
     {{-- For total question mark end --}}
+
     @if (!$loop->first)
-        <div style="margin: 10px 0">
+        <div style="margin: 12px 0 8px 0;">
             .............................................................................................................................................................................
         </div>
     @endif

@@ -90,7 +90,8 @@ class QuestionPaperController extends Controller
             Pdf::view('admin.question_paper.pdf', $data)
                 ->format('a4')
                 ->margins(80, 80, 80, 80, Unit::Pixel)
-                ->footerView('admin.question_paper.pdf-footer')
+                ->headerView('admin.question_paper.pdf-header')
+                // ->footerView('admin.question_paper.pdf-footer')
                 ->save($filePath);
 
             if (file_exists($filePath)) {
