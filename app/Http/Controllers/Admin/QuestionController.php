@@ -25,6 +25,9 @@ class QuestionController extends Controller
 
             return DataTables::of($questions)
                 ->addIndexColumn()
+                ->addColumn('ques', function ($row) {
+                    return $row->ques;
+                })
                 ->addColumn('options', function ($row) {
                     if ($row->type == 'multiple_choice') {
                         $options = '';
@@ -68,7 +71,7 @@ class QuestionController extends Controller
                     if ($search = $request->get('search')['value']) {
                         $query->where(function ($q) use ($search) {
                             $q->where('type', 'LIKE', "%{$search}%")
-                                ->orWhere('ques', 'LIKE', "%{$search}%") // Searching in question text
+                                ->orWhere('ques', 'LIKE', "%{$search}%")
                                 ->orWhereHas('rank', function ($q) use ($search) {
                                     $q->where('name', 'LIKE', "%{$search}%");
                                 })
@@ -78,7 +81,7 @@ class QuestionController extends Controller
                         });
                     }
                 })
-                ->rawColumns(['options', 'action'])
+                ->rawColumns(['ques','options', 'action'])
                 ->make(true);
         }
 

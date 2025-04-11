@@ -111,7 +111,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="ques">Question <span class="t_r">*</span></label>
-                                                <textarea name="ques" class="form-control" id="ques" rows="2" required></textarea>
+                                                <textarea name="ques" class="form-control ques" id="ques" rows="2" required></textarea>
                                                 @if ($errors->has('ques'))
                                                     <div class="alert alert-danger">{{ $errors->first('ques') }}</div>
                                                 @endif
@@ -171,38 +171,101 @@
     </div>
 
     @push('custom_scripts')
+        {{-- <script>
+            window.MathJax = {
+                tex: {
+                    inlineMath: [
+                        ['\\(', '\\)'],
+                        ['$', '$']
+                    ]
+                },
+                svg: {
+                    fontCache: 'global'
+                }
+            };
+        </script> --}}
         <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
         @include('include.toast');
         @include('include.summer-note');
         @include('admin.question_entry.get-js')
         <script>
+            // $('form').on('submit', function(e) {
+            //     e.preventDefault(); // optional: prevent actual submission for testing
+
+            //     // Force MathJax to finish rendering (just to be safe)
+            //     if (window.MathJax && typeof MathJax.typesetPromise === 'function') {
+            //         MathJax.typesetPromise().then(() => {
+            //             // Now get the rendered HTML from Summernote
+            //             var renderedHtml = $('#ques').next('.note-editor').find('.note-editable').html();
+            //             $('#ques').val(renderedHtml); // Overwrite textarea with rendered content
+
+            //             // Submit the form after updating
+            //             this.submit(); // optional if you stopped it earlier
+            //         });
+            //     } else {
+            //         // Fallback if MathJax isn't loaded properly
+            //         console.error("MathJax is not available or hasn't finished rendering.");
+            //         var fallbackHtml = $('#ques').summernote('code');
+            //         $('#ques').val(fallbackHtml);
+            //         this.submit();
+            //     }
+            // });
             // $('#option').summernote({
             //     height: 100,
             // });
-            $(document).ready(function() {
-                // Define the custom button for inserting LaTeX equations
-                var LatexButton = function(context) {
-                    var ui = $.summernote.ui;
-                    var button = ui.button({
-                        contents: '<i class="note-icon-pencil"></i> Insert Equation',
-                        tooltip: 'Insert LaTeX Equation',
-                        click: function() {
-                            var latex = prompt('Enter LaTeX code:', '\\frac{a}{b}');
-                            if (latex) {
-                                var math = `\\(${latex}\\)`;
-                                context.invoke('editor.pasteHTML', math); // Insert as proper HTML
-                                // Re-render MathJax if available
-                                if (window.MathJax) {
-                                    MathJax.typeset();
-                                }
+            var LatexButton = function(context) {
+                var ui = $.summernote.ui;
+                var button = ui.button({
+                    contents: '<i class="note-icon-pencil"></i> Insert Equation',
+                    tooltip: 'Insert LaTeX Equation',
+                    click: function() {
+                        var latex = prompt('Enter LaTeX code:', '\\frac{a}{b}');
+                        if (latex) {
+                            var math = `\\(${latex}\\)`;
+                            context.invoke('editor.pasteHTML', math);
+                            if (window.MathJax && typeof MathJax.typeset === 'function') {
+                                MathJax.typeset(); // Re-render MathJax
                             }
                         }
-                    });
-                    return button.render();
-                };
+                    }
+                });
+                return button.render();
+            };
+            $(document).ready(function() {
+                // Define the custom button for inserting LaTeX equations
+                // var LatexButton = function(context) {
+                //     var ui = $.summernote.ui;
+                //     var button = ui.button({
+                //         contents: '<i class="note-icon-pencil"></i> Insert Equation',
+                //         tooltip: 'Insert LaTeX Equation',
+                //         click: function() {
+                //             var latex = prompt('Enter LaTeX code:', '\\frac{a}{b}');
+                //             if (latex) {
+                //                 var math = `\\(${latex}\\)`;
+                //                 context.invoke('editor.pasteHTML', math); // Insert as proper HTML
+                //                 // Re-render MathJax if available
+                //                 if (window.MathJax) {
+                //                     MathJax.typeset();
+                //                 }
+                //             }
+                //         }
+                //     });
+                //     return button.render();
+                // };
 
                 // Initialize Summernote with the custom LaTeX button
+                $('#ques').summernote({
+                    height: 100,
+                    toolbar: [
+                        ['style', ['bold', 'italic']],
+                        ['insert', ['latex']]
+                    ],
+                    buttons: {
+                        latex: LatexButton
+                    }
+                });
+
                 $('#option').summernote({
                     height: 100,
                     toolbar: [
@@ -278,35 +341,94 @@
 
             $('#quesStore').on('submit', function(e) {
                 e.preventDefault();
-                var formData = new FormData(this);
-                let url = $(this).attr('action');
-                let method = $(this).attr('method');
-                showLoadingAnimation();
-                var request = $.ajax({
-                    url: url,
-                    method: method,
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: res => {
-                        hideLoadingAnimation();
-                        clear();
-                        swal({
-                            icon: 'success',
-                            title: 'Success',
-                            text: res.message
+
+                const form = this;
+
+                // Ensure MathJax rendering is completed before sending the form
+                if (window.MathJax && typeof MathJax.typesetPromise === 'function') {
+                    MathJax.typesetPromise().then(() => {
+                        // Get the rendered HTML content from Summernote
+                        var renderedHtml = $('#ques').next('.note-editor').find('.note-editable').html();
+
+                        // Overwrite the textarea content with the rendered HTML
+                        $('#ques').val(renderedHtml);
+
+                        // Now continue with AJAX submission
+                        var formData = new FormData(form);
+                        let url = $(form).attr('action');
+                        let method = $(form).attr('method');
+
+                        showLoadingAnimation();
+
+                        $.ajax({
+                            url: url,
+                            method: method,
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+                            success: res => {
+                                hideLoadingAnimation();
+                                clear(); // Assuming you have a clear() function defined
+                                swal({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: res.message
+                                });
+                            },
+                            error: err => {
+                                hideLoadingAnimation();
+                                swal({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: err.responseJSON?.message ||
+                                        'Something went wrong'
+                                });
+                            }
                         });
-                    },
-                    error: err => {
-                        hideLoadingAnimation();
-                        swal({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: err.responseJSON.message
-                        });
-                    }
-                });
+
+                    }).catch(err => {
+                        console.error('MathJax rendering failed:', err);
+                    });
+                } else {
+                    // Fallback if MathJax isn't available
+                    console.warn("MathJax not found or not ready. Proceeding with unrendered content.");
+                    var fallbackHtml = $('#ques').summernote('code');
+                    $('#ques').val(fallbackHtml);
+
+                    // Proceed with submission
+                    var formData = new FormData(form);
+                    let url = $(form).attr('action');
+                    let method = $(form).attr('method');
+
+                    showLoadingAnimation();
+
+                    $.ajax({
+                        url: url,
+                        method: method,
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: res => {
+                            hideLoadingAnimation();
+                            clear();
+                            swal({
+                                icon: 'success',
+                                title: 'Success',
+                                text: res.message
+                            });
+                        },
+                        error: err => {
+                            hideLoadingAnimation();
+                            swal({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: err.responseJSON?.message || 'Something went wrong'
+                            });
+                        }
+                    });
+                }
             });
+
 
             function clear() {
                 $("#questionArea").html('');

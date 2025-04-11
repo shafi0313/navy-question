@@ -48,10 +48,8 @@
                                     </div>
                                 </div>
 
-
                                 <table id="DT" class="table table-striped table-hover">
-                                    <thead class="bg-secondary thw">
-                                    </thead>
+                                    <thead class="bg-secondary thw"></thead>
                                     <tbody></tbody>
                                 </table>
                             </div>
@@ -129,13 +127,9 @@
                         [0]
                     ],
                 });
-
-                // Trigger table redraw when the filter is changed
                 $(".filter").find('select').on('change', function() {
                     table.draw();
                 });
-
-                // Clear filters and redraw table
                 $(".filter").find('a').on('click', function(e) {
                     e.preventDefault();
                     $(".filter").find('select').val('').trigger('change');
