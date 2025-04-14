@@ -41,11 +41,11 @@ class GenerateQuestionPaperController extends Controller
                 ->addColumn('set', function ($row) {
                     $setColorCodes = [
                         1 => '#dc3545', // Red (Bootstrap's badge-danger)
-                        2 => '#6c757d', // Brown/Secondary
-                        3 => '#ffc107', // Yellow (Bootstrap's badge-warning)
-                        4 => '#007bff', // Blue (Bootstrap's badge-primary)
-                        5 => '#6f42c1', // Purple (custom color)
-                        6 => '#28a745', // Green (Bootstrap's badge-success)
+                        2 => '#28a745', // Green (Bootstrap's badge-success)
+                        3 => '#007bff', // Blue (Bootstrap's badge-primary)
+                        4 => '#000', // Black (Bootstrap's badge-primary)
+                        5 => '#ffc107', // Yellow (Bootstrap's badge-warning)
+                        6 => '#964B00', // Brown/Secondary
                     ];
 
                     $btn = '';

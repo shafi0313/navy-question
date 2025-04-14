@@ -1,4 +1,16 @@
 @include('admin.question_paper.css')
+{{-- <style>
+    header {
+        display: flex;
+        margin-top: 150px;
+        justify-content: space-between;
+     }
+</style>
+<header>
+    <p>1R</p>
+    <p>Page @pageNumber of @totalPages</p>
+    <p>1R</p>     
+</header> --}}
 
 <div>
     <p style="display: block; width: 100%; text-align: center; line-height: 15px">গোপনীয়</p>

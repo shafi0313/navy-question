@@ -40,6 +40,50 @@ if (! function_exists('questionSetBn')) {
     }
 }
 
+if (! function_exists('questionSetShort')) {
+    function questionSetShort($set)
+    {
+        return match ((int) $set) {
+            1 => 'RE',
+            2 => 'GR',
+            3 => 'BU',
+            4 => 'BK',
+            5 => 'YE',
+            6 => 'BR',
+            default => 'NA',
+        };
+    }
+}
+if (! function_exists('questionSet')) {
+    function questionSet($set)
+    {
+        return match ((int) $set) {
+            1 => 'Red',
+            2 => 'Green',
+            3 => 'Blue',
+            4 => 'Black',
+            5 => 'Yellow',
+            6 => 'Brown',
+            default => 'NA',
+        };
+    }
+}
+
+if (! function_exists('questionGroup')) {
+    function questionGroup($set)
+    {
+        return match ((int) $set) {
+            1 => 'DEUC',
+            2 => 'Medical',
+            3 => 'Store, Writer, Patrolman, Musician',
+            4 => 'Cook, Steward',
+            5 => 'Topass',
+            6 => 'MODC(N)',
+            default => 'NA',
+        };
+    }
+}
+
 if (! function_exists('slug')) {
     function slug(string $text): string
     {

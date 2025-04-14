@@ -1,5 +1,13 @@
 @extends('admin.layout.master')
-@section('title', 'Question Paper')
+@php
+    if ($questionInfo->status == 1) {
+        $status = 'Draft';
+    } else {
+        $status = 'Final';
+    }
+    $rank = $questionInfo->rank->id;
+@endphp
+@section('title', $status . ' Gp ' . $rank . '-' . questionGroup($rank) . '-' . questionSet($questionInfo->set))
 @section('content')
     @php
         $m = 'generatedQues';

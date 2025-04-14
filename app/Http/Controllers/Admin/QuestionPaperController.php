@@ -60,7 +60,7 @@ class QuestionPaperController extends Controller
                         3 => '#007bff', // Blue (Bootstrap's badge-primary)
                         4 => '#000', // Black (Bootstrap's badge-primary)
                         5 => '#ffc107', // Yellow (Bootstrap's badge-warning)
-                        6 => '#6c757d', // Brown/Secondary
+                        6 => '#964B00', // Brown/Secondary
                     ];
 
                     $btn = '';
@@ -82,16 +82,23 @@ class QuestionPaperController extends Controller
     {
         $data = $this->questionPaperShow($quesInfoId, $set, $type);
 
+        $rank = $data['questionInfo']->rank_id;
+        if ($data['questionInfo']->status == 1) {
+            $quesStatus = 'Draft';
+        } else {
+            $quesStatus = 'Final';
+        }
+
         if ($type == 'show') {
             return view('admin.question_paper.show', $data);
         } elseif ($type == 'pdf') {
             // return view('admin.question_paper.pdf', $data);
-            $filePath = public_path('uploads/question/' . slug($data['questionInfo']->exam_name) . '-' . questionSetBn($set) . '.pdf');
+            $filePath = public_path('uploads/question/' . $quesStatus . ' Gp ' . $rank . '-' . questionGroup($rank) . '-' . questionSet($set) . '.pdf');
             Pdf::view('admin.question_paper.pdf', $data)
                 ->format('a4')
                 ->margins(80, 80, 80, 80, Unit::Pixel)
-                ->headerView('admin.question_paper.pdf-header')
-                // ->footerView('admin.question_paper.pdf-footer')
+                ->headerView('admin.question_paper.pdf-header', ['group' => $rank, 'set' => questionSetShort($set)])
+                ->footerView('admin.question_paper.pdf-footer', ['group' => $rank, 'set' => questionSetShort($set)])
                 ->save($filePath);
 
             if (file_exists($filePath)) {
