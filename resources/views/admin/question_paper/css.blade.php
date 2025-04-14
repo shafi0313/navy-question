@@ -3,6 +3,14 @@
         display: inline-block;
     }
 
+    .correct {
+        border-radius: 10px;
+        background-color: red;
+        color: white !important;
+        font-weight: bold;
+        padding: 2px 5px;
+    }
+
 
     .form-check [type=checkbox]:checked,
     .form-check [type=checkbox]:not(:checked) {

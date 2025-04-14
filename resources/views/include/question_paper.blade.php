@@ -118,7 +118,14 @@
             @endphp
             @foreach ($questionPaper->options as $index => $option)
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <label class="option">
+                @php
+                    if ($questionInfo->status == 1 && $option->correct == 1) {
+                        $correct = 1;
+                    }else{
+                        $correct = 0;
+                    }
+                @endphp
+                <label class="option {{ $correct == 1 ? 'correct' : '' }}">
                     @if (in_array($subject, ['ইংরেজি', 'ইংরেজী', 'English', 'english']))
                         {{ numberToEnWord($index + 1) . ') ' }}
                     @else
