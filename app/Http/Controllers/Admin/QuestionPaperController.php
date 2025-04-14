@@ -111,11 +111,11 @@ class QuestionPaperController extends Controller
     {
         $data = $this->questionPaperShow($quesInfoId, $set, $type);
         $data['set'] = $set;
-
+        $rank = $data['questionInfo']->rank_id;
         if ($type == 'show') {
             return view('admin.question_paper.answer_sheet', $data);
         } elseif ($type == 'pdf') {
-            $filePath = public_path('uploads/question/উত্তর-পত্র-' . slug($data['questionInfo']->exam_name) . '-' . questionSetBn($set) . '.pdf');
+            $filePath = public_path('uploads/question/ফাইনাল উত্তর গ্রুপ ' . bnNumber($rank) . '- ' . questionSetBn($set) .  '.pdf');
             Pdf::view('admin.question_paper.answer_sheet_pdf', $data)
                 ->format('a4')
                 ->save($filePath);
