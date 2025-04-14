@@ -231,7 +231,7 @@
                                         <input type="hidden" name="subject_id[]" value="${subject.id}" />
                                         <td>${subject.name}</td>
                                         <td>
-                                            <input type="text" name="mark[]" class="form-control" />
+                                            <input type="text" name="mark[]" value="20" class="form-control" />
                                         </td>
                                     </tr>
                                 `).join('');
