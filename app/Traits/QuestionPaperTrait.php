@@ -10,6 +10,7 @@ trait QuestionPaperTrait
     public function questionPaperShow($quesInfoId, $set, $type)
     {
         $data['questionInfo'] = QuestionInfo::with(['rank:id,name'])->find($quesInfoId);
+        $data['set'] = $set;
 
         $customOrder = ['বাংলা', 'গণিত', 'ইংরেজি', 'বিজ্ঞান', 'সাধারণ জ্ঞান ও বুদ্ধিমত্তা'];
         $orderByRaw = "FIELD(subjects.name, '".implode("','", $customOrder)."')";

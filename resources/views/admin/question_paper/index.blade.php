@@ -1,5 +1,5 @@
 @extends('admin.layout.master')
-@section('title', 'Question Paper')
+@section('title', 'Final Question')
 @section('content')
     @php
         $m = '';
@@ -14,7 +14,7 @@
                     <ul class="breadcrumbs">
                         <li class="nav-home"><a href="{{ route('admin.dashboard') }}"><i class="flaticon-home"></i></a></li>
                         <li class="separator"><i class="flaticon-right-arrow"></i></li>
-                        <li class="nav-item">Question Paper</li>
+                        <li class="nav-item">Final Question</li>
                     </ul>
                 </div>
 
@@ -23,7 +23,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <div class="d-flex align-items-center">
-                                    <h4 class="card-title">Final Question Paper</h4>
+                                    <h4 class="card-title">Final Question</h4>
                                     {{-- <a href="{{ route('admin.questions.create') }}" class="btn btn-primary btn-round ml-auto text-light" style="min-width: 200px">
                                     <i class="fa fa-plus"></i> Add New
                                 </a> --}}
