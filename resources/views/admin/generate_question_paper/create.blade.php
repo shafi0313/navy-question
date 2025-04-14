@@ -46,7 +46,7 @@
                                                         <label for="exam_name">Exam Name <span
                                                                 class="t_r">*</span></label>
                                                         <input type="text" name="exam_name" class="form-control"
-                                                            value="{{ old('exam_name') }}" required>
+                                                            value="{{ old('exam_name') ?? 'বাংলাদেশ নৌবাহিনী নাবিক ভর্তি পরীক্ষা' }}" required>
                                                         @if ($errors->has('exam_name'))
                                                             <div class="alert alert-danger">
                                                                 {{ $errors->first('exam_name') }}</div>
