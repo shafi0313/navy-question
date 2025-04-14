@@ -42,7 +42,7 @@ class QuestionPaperController extends Controller
                         3 => '#007bff', // Blue (Bootstrap's badge-primary)
                         4 => '#000', // Black (Bootstrap's badge-primary)
                         5 => '#ffc107', // Yellow (Bootstrap's badge-warning)
-                        6 => '#6c757d', // Brown/Secondary
+                        6 => '#964B00', // Brown/Secondary
                     ];
 
                     $btn = '';
