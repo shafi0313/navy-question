@@ -1,5 +1,13 @@
 @extends('admin.layout.master')
-@section('title', 'Generate Question')
+@php
+    if ($questionInfo->status == 1) {
+        $quesStatus = 'ড্রাফট';
+    } else {
+        $quesStatus = 'ফাইনাল';
+    }
+    $rank = $questionInfo->rank->id;
+@endphp
+@section('title', $quesStatus . ' প্রশ্ন গ্রুপ ' . bnNumber($rank) . '- ' . questionSetBn($set))
 @section('content')
 
 @php
@@ -101,14 +109,7 @@
                                     class="fas fa-print"></i> PDF Download</a>
                         </div>
                     </div>
-                    {{-- <form action="{{ route('admin.generate_question.complete') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="quesInfoId" value="{{ $questionInfoId }}"> --}}
                     @include('include.question_paper')
-                    {{-- <div class="col-md-12 text-center card-action">
-                        <button type="submit" class="btn btn-primary">Generate Question</button>
-                    </div>
-                </form> --}}
                 </form>
             </div>
         </div>

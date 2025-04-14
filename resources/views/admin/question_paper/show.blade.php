@@ -1,13 +1,13 @@
 @extends('admin.layout.master')
 @php
     if ($questionInfo->status == 1) {
-        $status = 'Draft';
+        $quesStatus = 'ড্রাফট';
     } else {
-        $status = 'Final';
+        $quesStatus = 'ফাইনাল';
     }
     $rank = $questionInfo->rank->id;
 @endphp
-@section('title', $status . ' Gp ' . $rank . '-' . questionGroup($rank) . '-' . questionSet($questionInfo->set))
+@section('title', $quesStatus . ' প্রশ্ন গ্রুপ ' . bnNumber($rank) . '- ' . questionSetBn($set))
 @section('content')
     @php
         $m = 'generatedQues';

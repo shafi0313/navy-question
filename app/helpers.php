@@ -83,6 +83,20 @@ if (! function_exists('questionGroup')) {
         };
     }
 }
+if (! function_exists('questionGroupBn')) {
+    function questionGroupBn($set)
+    {
+        return match ((int) $set) {
+            1 => 'ডিই/ইউসি',
+            2 => 'মেডিকেল',
+            3 => 'স্টোর, রাইটার, পেট্রোলম্যান, মিউজিসিয়ান',
+            4 => 'কুক, স্টুয়ার্ড',
+            5 => 'টোপাস',
+            6 => 'এমওডিসি(এন)',
+            default => 'NA',
+        };
+    }
+}
 
 if (! function_exists('slug')) {
     function slug(string $text): string

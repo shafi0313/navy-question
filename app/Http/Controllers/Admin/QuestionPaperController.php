@@ -84,16 +84,16 @@ class QuestionPaperController extends Controller
 
         $rank = $data['questionInfo']->rank_id;
         if ($data['questionInfo']->status == 1) {
-            $quesStatus = 'Draft';
+            $quesStatus = 'ড্রাফট';
         } else {
-            $quesStatus = 'Final';
+            $quesStatus = 'ফাইনাল';
         }
 
         if ($type == 'show') {
             return view('admin.question_paper.show', $data);
         } elseif ($type == 'pdf') {
-            // return view('admin.question_paper.pdf', $data);
-            $filePath = public_path('uploads/question/' . $quesStatus . ' Gp ' . $rank . '-' . questionGroup($rank) . '-' . questionSet($set) . '.pdf');
+            // return view('admin.question_paper.pdf', $data);questionGroupBn($rank)
+            $filePath = public_path('uploads/question/' . $quesStatus . ' প্রশ্ন গ্রুপ ' . bnNumber($rank) . '- ' . questionSetBn($set) . '.pdf');
             Pdf::view('admin.question_paper.pdf', $data)
                 ->format('a4')
                 ->margins(80, 80, 80, 80, Unit::Pixel)
