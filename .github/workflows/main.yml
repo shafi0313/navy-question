@@ -1,5 +1,5 @@
 on: push
-name: 🚀 Deploy Navy QR Code
+name: 🚀 Deploy Navy Question Bank
 jobs:
   web-deploy:
     name: 🎉 Deploy
