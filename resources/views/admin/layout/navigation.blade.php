@@ -21,19 +21,14 @@
                     <li class="nav-item {{ activeNav('admin.users.*') }}">
                         <a data-toggle="collapse" href="#base">
                             <i class="fas fa-users-cog"></i>
-                            <p>Admin</p>
+                            <p>Settings</p>
                             <span class="caret"></span>
                         </a>
                         <div class="collapse {{ openNav(['admin.users.*']) }}" id="base">
                             <ul class="nav nav-collapse">
                                 <li class="{{ activeSubNav(['admin.users.*']) }}">
                                     <a href="{{ route('admin.users.index') }}">
-                                        <span class="sub-item">User</span>
-                                    </a>
-                                </li>
-                                <li class="{{ activeSubNav(['admin.deletes.*']) }}">
-                                    <a href="{{ route('admin.deletes.index') }}">
-                                        <span class="sub-item">Question Delete</span>
+                                        <span class="sub-item">User Set Up</span>
                                     </a>
                                 </li>
                             </ul>
@@ -46,7 +41,7 @@
                     <li class="nav-item {{ activeNav($setup) }}">
                         <a data-toggle="collapse" href="#setup">
                             <i class="fa-solid fa-screwdriver-wrench"></i>
-                            <p>Setup</p>
+                            <p>1.0 Question Bank Set Up</p>
                             <span class="caret"></span>
                         </a>
                         <div class="collapse {{ openNav($setup) }}" id="setup">
@@ -56,14 +51,20 @@
                                     <span class="sub-item">Exam</span>
                                 </a>
                             </li> --}}
+
+                                <li class="{{ activeSubNav('admin.subjects.*') }}">
+                                    <a href="{{ route('admin.subjects.index') }}">
+                                        <span class="sub-item">1.1 Add or Remove Session</span>
+                                    </a>
+                                </li>
                                 <li class="{{ activeSubNav('admin.ranks.*') }}">
                                     <a href="{{ route('admin.ranks.index') }}">
-                                        <span class="sub-item">Rank</span>
+                                        <span class="sub-item">1.2 Add or Remove Exam Group</span>
                                     </a>
                                 </li>
                                 <li class="{{ activeSubNav('admin.subjects.*') }}">
                                     <a href="{{ route('admin.subjects.index') }}">
-                                        <span class="sub-item">Subject</span>
+                                        <span class="sub-item">1.3 Add or Remove Subject</span>
                                     </a>
                                 </li>
                                 {{-- <li class="{{ activeSubNav('admin.mark-distributions.*') }}">
@@ -86,7 +87,7 @@
                     <li class="nav-item {{ activeNav('admin.questions.*', 'admin.question-imports.*') }}">
                         <a data-toggle="collapse" href="#questionMenu">
                             <i class="fa-solid fa-circle-question"></i>
-                            <p>Question</p>
+                            <p>2.0 Question Bank Management</p>
                             <span class="caret"></span>
                         </a>
                         <div class="collapse {{ openNav(['admin.questions.*', 'admin.question-imports.*']) }}"
@@ -94,17 +95,22 @@
                             <ul class="nav nav-collapse">
                                 <li class="{{ activeSubNav(['admin.question-imports.*']) }}">
                                     <a href="{{ route('admin.question-imports.index') }}">
-                                        <span class="sub-item">Import</span>
+                                        <span class="sub-item">2.1 Import Bulk Question</span>
                                     </a>
                                 </li>
-                                {{-- <li class="{{ activeSubNav(['admin.questions.index', 'admin.questions.edit']) }}">
-                                    <a href="{{ route('admin.questions.index') }}">
-                                        <span class="sub-item">Manage</span>
-                                    </a>
-                                </li> --}}
                                 <li class="{{ activeSubNav(['admin.questions.create']) }}">
                                     <a href="{{ route('admin.questions.create') }}">
-                                        <span class="sub-item">Entry</span>
+                                        <span class="sub-item">2.2 Import Single Question</span>
+                                    </a>
+                                </li>
+                                <li class="{{ activeSubNav(['admin.questions.index', 'admin.questions.edit']) }}">
+                                    <a href="{{ route('admin.questions.index') }}">
+                                        <span class="sub-item">2.3 Edit Question Bank</span>
+                                    </a>
+                                </li>
+                                <li class="{{ activeSubNav(['admin.deletes.*']) }}">
+                                    <a href="{{ route('admin.deletes.index') }}">
+                                        <span class="sub-item">2.4 Delete Question</span>
                                     </a>
                                 </li>
                             </ul>
@@ -120,20 +126,21 @@
                     <li class="nav-item {{ activeNav('admin.generate_question.*') }}">
                         <a data-toggle="collapse" href="#generateQuestion">
                             <i class="fa-solid fa-file-circle-question"></i>
-                            <p>Prepare Question</p>
+                            <p>3.0 Make Question Paper</p>
                             <span class="caret"></span>
                         </a>
                         <div class="collapse {{ openNav(['admin.generate_question.*']) }}" id="generateQuestion">
                             <ul class="nav nav-collapse">
                                 <li class="{{ activeSubNav(['admin.generate_question.create']) }}">
                                     <a href="{{ route('admin.generate_question.create') }}">
-                                        <span class="sub-item">Create Question Paper</span>
+                                        <span class="sub-item">3.1 Create Q. Paper</span>
                                     </a>
                                 </li>
                                 <li
                                     class="{{ activeSubNav(['admin.generate_question.index', 'admin.generate_question.edit', 'admin.generate_question.show']) }}">
                                     <a href="{{ route('admin.generate_question.index') }}">
-                                        <span class="sub-item">Draft Question</span>
+                                        <span class="sub-item">3.2 Draft Q. Paper</span> 
+                                        {{-- // draft question --}}
                                     </a>
                                 </li>
                             </ul>
